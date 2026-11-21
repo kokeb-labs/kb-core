@@ -1,4 +1,4 @@
-# ADR-0015: Non-blocking bus access and held bus transactions
+# ADR-0016: Non-blocking bus access and held bus transactions
 
 Status: Proposed (2026-11-14), for the owner's decision.
 

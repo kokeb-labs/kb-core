@@ -257,7 +257,7 @@ KB_TEST("at25040b: owner model: the owner task starts and serves requests") {
   KB_CHECK(kb_it::StateOf(io) == HealthState::Unknown);
 }
 
-// --- Held ranges (ADR-0015) ---------------------------------------------------------------------
+// --- Held ranges (ADR-0016) ---------------------------------------------------------------------
 
 /// 40 bytes of `value`: three chunks, five pages.
 std::array<uint8_t, 40> Filled(uint8_t value) {

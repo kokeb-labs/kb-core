@@ -152,7 +152,7 @@ A sequence of calls that must not be interleaved (an EEPROM range of several chu
 `Guarded<H>::Hold(timeout)` keeps both locks in the same order, and on an owner bus the owner task takes
 `BusDomain::Hold()` between passes and calls through `OwnerAccess<H>::Held(hold)`. A hot-path read that must not
 wait at all uses the asynchronous contract through `AsyncPoller`. Both are on [Bus access](bus-access.md)
-(ADR-0015); the liveness verdict and the fault journal are on [Fault evidence](fault-journal.md).
+(ADR-0016); the liveness verdict and the fault journal are on [Fault evidence](fault-journal.md).
 
 ## Uniform API across driver shapes
 

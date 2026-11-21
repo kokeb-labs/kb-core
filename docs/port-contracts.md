@@ -38,7 +38,7 @@ with the adapters that prove they serve the drivers' ports.
 | `kb::iface::BusyWait` | `WaitUs` below 1 ms; longer waits use `kb::rtos::SleepFor` |
 | `kb::iface::LogSink` | `Write(level, text)`, bounded, no allocation |
 
-The asynchronous forms `I2cAsync` and `SpiAsync` (`async.hpp`, ADR-0015) are the sync contracts plus
+The asynchronous forms `I2cAsync` and `SpiAsync` (`async.hpp`, ADR-0016) are the sync contracts plus
 `Start...(deadline)`, `Poll(now)` and `Cancel()`; a port without a native form serves them through
 `AsyncFromSync`. Planned: `PulseTx` (ws2812-rmt).
 

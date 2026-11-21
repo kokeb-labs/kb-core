@@ -84,7 +84,7 @@ nav:
           - "ADR-0013 Hosted configurator": adr/ADR-0013-hosted-configurator.md
           - "ADR-0014 kb-core is the assembler": adr/ADR-0014-kb-core-is-the-assembler.md
           - "ADR-0015 ThreadX backend": adr/ADR-0015-threadx-backend.md
-          - "ADR-0015 Async bus and held transactions": adr/ADR-0015-async-bus-and-held-transactions.md
+          - "ADR-0016 Async bus and held transactions": adr/ADR-0016-async-bus-and-held-transactions.md
           - "ADR-0030 DMA buffers and leases": adr/ADR-0030-dma-buffers-and-leases.md
           - "ADR-0031 DMA stream copy-out": adr/ADR-0031-dma-stream-copy-out.md
           - "ADR-0032 DMA region policy": adr/ADR-0032-dma-region-policy.md

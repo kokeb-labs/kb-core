@@ -1,6 +1,6 @@
 /**
  * @file fake_async.hpp
- * @brief kb::iface::host::FakeAsyncI2c and FakeAsyncSpi: the asynchronous contract (ADR-0015) over
+ * @brief kb::iface::host::FakeAsyncI2c and FakeAsyncSpi: the asynchronous contract (ADR-0016) over
  * the host I2C and SPI fakes, with fault injection, for host tests. Test code, outside the MISRA
  * claim.
  *

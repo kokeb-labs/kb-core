@@ -1053,8 +1053,8 @@ KB_TEST(
   uint32_t bad = 0U;
   uint32_t last = 0U;
   const uint64_t end = NowUs() + 3000000U;
-  // Reads go on until the writer has made all its samples (or the time is up), whatever the counts: a torn read
-  // is rare, and a seqlock that accepted one must be given every chance to show it.
+  // Reads go on until the writer has made all its samples (or the time is up), whatever the counts:
+  // a torn read is rare, and a seqlock that accepted one must be given every chance to show it.
   while ((NowUs() < end) && (!written.load(std::memory_order_acquire))) {
     const kb::Result<h::Snapshot<Wide>> latest = handler.Latest();
     if (latest.IsOk()) {
@@ -1147,7 +1147,7 @@ KB_TEST("threads: a completion racing the caller's timeout loses no slot and cro
   KB_CHECK_EQ(st.posted, ok + timeouts);
 }
 
-// --- Held calls (ADR-0015) ---------------------------------------------------------------------
+// --- Held calls (ADR-0016) ---------------------------------------------------------------------
 
 KB_TEST("threads: a guarded hold keeps every other task's call out of its sequence") {
   Bus bus{};

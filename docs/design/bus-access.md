@@ -1,6 +1,6 @@
 # Bus access: non-blocking reads and held transactions
 
-Decision: [ADR-0015](../adr/ADR-0015-async-bus-and-held-transactions.md). Every contract call is bounded; this page
+Decision: [ADR-0016](../adr/ADR-0016-async-bus-and-held-transactions.md). Every contract call is bounded; this page
 is about the two cases bounded is not enough for: a hot-path read that must not wait at all, and a sequence of
 transfers or calls that must not be interleaved.
 
@@ -29,7 +29,7 @@ transfers or calls that must not be interleaved.
 
 `AsyncFromSync<Bus, Clock>` serves the contract from a synchronous port (Start() runs the transfer, the deadline
 rules still hold, `kNonBlocking` is false), so a binding builds on every port today and the remaining wait is
-visible in its type. What each port adds for a native form is listed in ADR-0015.
+visible in its type. What each port adds for a native form is listed in ADR-0016.
 
 <!-- figure: async-poll -->
 <picture>

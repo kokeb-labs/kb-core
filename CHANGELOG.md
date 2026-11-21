@@ -6,6 +6,12 @@ lists its changes per part, the ESP32 port and its driver pins. The format follo
 
 ## [Unreleased]
 
+### Fixed
+
+- ADR numbers: the asynchronous bus and held transactions record is ADR-0016 (it shared 0015 with the ThreadX
+  backend); every reference follows.
+- `components/lib/handlers/tests/test_threads.cpp`: a comment line over the 100-column limit.
+
 ## [0.1.0-rc.1] - 2026-11-21
 
 The first release candidate: every part, the ESP32 and host ports and 23 pinned chip drivers, tested in CI. APIs
@@ -110,7 +116,7 @@ may still change before 0.1.0.
   `kokeb-labs-drivers/driver-requests`; per-version `requires_owner` in the site catalogue and `kb` reads the
   site's `data/catalog.json` as the page does (a wrong catalogue is exit 2); the kb tool tests fail instead of
   skipping in CI without PyYAML.
-- ADR-0015 (proposed): non-blocking bus access (`Start`/`Poll`, ports may adapt synchronous calls for now) and held
+- ADR-0016 (proposed): non-blocking bus access (`Start`/`Poll`, ports may adapt synchronous calls for now) and held
   bus transactions; design pages [Bus access](docs/design/bus-access.md) and
   [Fault evidence](docs/design/fault-journal.md) with their figures.
 
@@ -180,7 +186,7 @@ may still change before 0.1.0.
 - Host port `kb::interfaces_host`: fakes of every contract with fault injection.
 - Proof against the pinned drivers tmc5160, bno08x and pcal9555: thin adapters satisfy
   their port concepts over the fakes and over the `*Ref` values; compile-fail tests for misuse.
-- The asynchronous contract (`async.hpp`, ADR-0015): `I2cAsync`, `SpiAsync`, `AsyncOperation`, `NonBlocking`,
+- The asynchronous contract (`async.hpp`, ADR-0016): `I2cAsync`, `SpiAsync`, `AsyncOperation`, `NonBlocking`,
   `AsyncPoll`; `AsyncFromSync<Bus, Clock>` serves it from a synchronous port with the same deadline rules. Host
   fakes `FakeAsyncI2c` and `FakeAsyncSpi` inject latency, hangs, late completions, NACKs and the cancel race.
 

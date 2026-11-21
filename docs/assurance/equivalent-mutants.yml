@@ -273,7 +273,7 @@ equivalent:
   - id: m-df13d6621951
     reason: >-
       types.hpp Duty clamp permyriad > full vs >=: at permyriad == full both store full
-  # The asynchronous contract (ADR-0015).
+  # The asynchronous contract (ADR-0016).
   - id: m-a23938ff4d20
     reason: >-
       async.hpp AsyncFromSync::StartTransfer count tx > rx vs >=: with equal sizes both pick the same length

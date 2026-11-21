@@ -1,5 +1,5 @@
 // Held calls of an owner-bus handler take a hold of that handler's bus type: a hold of another bus
-// does not compile (ADR-0015).
+// does not compile (ADR-0016).
 // EXPECT: (no matching|cannot bind|cannot convert|could not convert|no viable conversion)
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 The kb-core authors

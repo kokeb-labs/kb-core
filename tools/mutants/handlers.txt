@@ -153,7 +153,7 @@ TY-01 | components/lib/handlers/inc/kb/handlers/common/types.hpp | a plan's stag
 -     const bool ordered = known && (LowestKind(s.kinds) > previous);
 +     const bool ordered = known;
 
-# Held transactions and non-blocking reads (ADR-0015).
+# Held transactions and non-blocking reads (ADR-0016).
 
 BH-01 | components/lib/handlers/inc/kb/handlers/common/bus_domain.hpp | an owner hold excludes a running pass or hold
 -     const bool owned = in_service_.compare_exchange_strong(idle, true, std::memory_order_acq_rel);
