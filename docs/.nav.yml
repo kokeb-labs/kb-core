@@ -64,6 +64,7 @@ nav:
       - Testing and CI: testing.md
       - Deviations: deviations.md
       - Assurance records: assurance/README.md
+      - Test evidence: assurance/evidence.md
       - SOUP list: assurance/soup.md
   - Project:
       - Versioning and release: versioning.md

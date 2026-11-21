@@ -17,7 +17,7 @@ export async function load(withEngine = true) {
   // TextEncoder is not an ECMAScript built-in; give the context one that returns the context's own Uint8Array,
   // as a browser would (the vendored ZIP library checks instanceof Uint8Array).
   vm.runInContext('globalThis.TextEncoder = class { encode(s) { return new Uint8Array(hostEncode(s)); } };', context);
-  for (const f of ['vendor/fflate-0.8.2/fflate.umd.js', 'data/catalog.js', 'js/core.js', 'js/resolver.js', 'js/generate.js', 'js/state.js', 'js/shared.js', 'js/project.js']) {
+  for (const f of ['vendor/fflate-0.8.2/fflate.umd.js', 'data/catalog.js', 'js/core.js', 'js/resolver.js', 'js/generate.js', 'js/state.js', 'js/shared.js', 'js/project.js', 'data/evidence.js', 'js/views.js']) {
     vm.runInContext(readFileSync(join(root, f), 'utf8'), context, { filename: f });
   }
   if (withEngine) context.KB.engine = await import(pathToFileURL(join(root, 'resolver.mjs')).href);

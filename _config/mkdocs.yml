@@ -15,8 +15,16 @@ theme:
 
 plugins:
   - kokeb
-  - search
+  - material/search  # the theme's own search (plain `search` adds MkDocs' search/main.js, which throws on load)
   - awesome-nav
+
+# The configurator page itself is published with the site at app/ (docs/app links to configurator/): the static
+# files only, not its README, tests, tools or draft schemas.
+exclude_docs: |
+  /app/README.md
+  /app/tests/
+  /app/tools/
+  /app/schemas-draft/
 
 # Mermaid is not used: it does not render on phones. kokeb-docs check fails on a mermaid fence or a .mmd file.
 extra:

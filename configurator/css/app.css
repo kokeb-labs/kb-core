@@ -328,18 +328,83 @@ footer.foot { max-width: 1480px; margin: 0 auto; padding: 8px 24px 40px; color: 
 footer.foot p { margin: 4px 0; }
 
 .file-notice { display: none; }
+details.open-project > summary { cursor: pointer; list-style: none; display: flex; flex-wrap: wrap; align-items: baseline;
+  gap: 4px 12px; }
+details.open-project > summary::-webkit-details-marker { display: none; }
+details.open-project > summary h2 { margin: 0; }
+details.open-project > summary h2::before { content: "\25B8"; color: var(--muted); font-size: 0.9em; }
+details.open-project[open] > summary h2::before { content: "\25BE"; }
+details.open-project[open] > summary { margin-bottom: 12px; }
+details.open-project:not([open]) { padding-top: 14px; padding-bottom: 14px; }
+/* Small screens: the result is below every step, so a bar at the bottom says where it stands and offers the ZIP. */
+.result-bar { display: none; }
+.bar-status { font-weight: 600; }
+.bar-status.ok { color: var(--ok); }
+.bar-status.err { color: var(--err); }
 /* Until the first render, the steps stay hidden so filling them in does not shift the layout; if the scripts never
    run, they appear after three seconds anyway. */
 .booting main, .booting footer { visibility: hidden; animation: kb-reveal 0s 3s forwards; }
 @keyframes kb-reveal { to { visibility: visible; } }
 noscript p { max-width: 720px; margin: 40px auto; padding: 16px; }
 
+/* -- step 5: architecture, evidence, versions ----------------------------------------------------------------- */
+.explore-panel { margin-top: 12px; }
+#h-explore { flex-wrap: wrap; }
+#explore-version { color: var(--muted); font-weight: 600; }
+.arch { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 16px; align-items: start; }
+.arch-map { display: flex; flex-direction: column; gap: 8px; }
+.lane { border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; background: var(--surface-2); }
+.lane-title { display: block; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 6px; font-weight: 600; }
+.lane-items { display: flex; flex-wrap: wrap; gap: 8px; }
+.node { display: flex; flex-direction: column; align-items: flex-start; text-align: left; gap: 2px; border-left-width: 4px; min-width: 9rem; max-width: 100%; }
+.node span { font-size: 0.8rem; color: var(--muted); }
+.node.open, .node[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); }
+.node.unused { opacity: 0.7; border-style: dashed; }
+.tone-product { border-left-color: #a2337a; } .tone-handler { border-left-color: #6a3fb5; } .tone-contract { border-left-color: #1f5fbf; }
+.tone-rtos { border-left-color: #9a5b00; } .tone-core { border-left-color: #a5520f; } .tone-port { border-left-color: #0f766e; }
+.tone-driver { border-left-color: #237a35; }
+.arch-detail { border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; background: var(--surface); min-height: 8rem; }
+.arch-detail h4 { margin: 0 0 6px; }
+dl.facts { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 4px 12px; margin: 8px 0; font-size: 0.9rem; }
+dl.facts dt { color: var(--muted); }
+dl.facts dd { margin: 0; }
+details.twin { margin-top: 12px; }
+table.data { width: 100%; border-collapse: collapse; font-size: 0.88rem; margin: 8px 0 16px; }
+table.data caption { text-align: left; font-weight: 600; padding: 4px 0; color: var(--muted); }
+table.data th, table.data td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+table.data thead th { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
+.tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr)); gap: 8px; margin: 8px 0 16px; }
+.tile { border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; display: flex; flex-direction: column; gap: 2px; background: var(--surface-2); }
+.tile strong { font-size: 1.2rem; }
+.tile-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); font-weight: 600; }
+.tile-sub { font-size: 0.8rem; color: var(--muted); }
+.tile.ok { border-left: 4px solid var(--ok); } .tile.bad { border-left: 4px solid var(--err); }
+.charts { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 16px; }
+.charts figure { margin: 0; }
+.charts figcaption { font-size: 0.82rem; color: var(--muted); }
+svg.chart { width: 100%; height: auto; max-width: 420px; }
+.chart-label, .chart-value { font-size: 11px; fill: var(--fg); }
+.chart-track { fill: var(--surface-2); stroke: var(--line); }
+.chart-bar.good { fill: var(--ok); } .chart-bar.bad { fill: var(--err); }
+.chart-floor { stroke: var(--fg); stroke-dasharray: 3 3; }
+.explore-panel .badge { margin-left: 6px; }
+
 /* -- responsive ---------------------------------------------------------------------------------------------- */
 @media (max-width: 1080px) {
-  .layout { grid-template-columns: minmax(0, 1fr); }
+  .layout { grid-template-columns: minmax(0, 1fr); padding-bottom: 88px; }
+  .result-bar {
+    display: flex; align-items: center; gap: 12px; position: fixed; left: 0; right: 0; bottom: 0; z-index: 6;
+    padding: 10px 16px; background: var(--surface); border-top: 1px solid var(--line); box-shadow: var(--shadow);
+  }
+  .result-bar .bar-status { flex: 1 1 auto; }
+  .result-bar a { color: var(--accent); white-space: nowrap; }
   .side { position: static; max-height: none; }
   pre.code { max-height: 60vh; }
   .findings { max-height: none; }
+}
+@media (max-width: 760px) {
+  .arch { grid-template-columns: minmax(0, 1fr); }
+  table.data { display: block; overflow-x: auto; }
 }
 @media (max-width: 640px) {
   .top { padding: 8px 16px; position: static; backdrop-filter: none; background: var(--surface); }

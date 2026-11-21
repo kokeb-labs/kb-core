@@ -55,3 +55,5 @@ jobs:
         run: python3 configurator/tools/sri.py --check
       - name: offline.html is current
         run: python3 configurator/tools/bundle_offline.py --check
+      - name: Evidence data and page are current (kb-evidence/1, tools/evidence/collect.py)
+        run: python3 tools/evidence/collect.py --site configurator/data --docs docs/assurance/evidence.md --check
