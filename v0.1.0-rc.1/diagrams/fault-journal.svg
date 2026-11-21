@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="764" viewBox="0 0 1200 764" role="img" aria-labelledby="fault-journal-title fault-journal-desc" font-family="Inter, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
+<title id="fault-journal-title">Fault evidence path</title>
+<desc id="fault-journal-desc">Flow: handler health edges and the liveness verdict go to the health journal, which appends one record to a CRC-checked ring in a port-provided store that survives a reset; the boot reset reason is recorded too; the watchdog is kicked only when nothing is stale; after a reset Open finds the newest record.</desc>
+<defs><marker id="fk-arrow-amber-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#C26A05"/></marker><marker id="fk-arrow-brand-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#9A4A17"/></marker><marker id="fk-arrow-teal-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#0B7A72"/></marker><marker id="fk-arrow-violet-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#7C3AED"/></marker></defs>
+<rect x="0.5" y="0.5" width="1199" height="763" rx="16" fill="#FFFFFF" stroke="#E2E7EE"/>
+<text x="32" y="44" font-size="12.5" font-weight="700" letter-spacing="1.2" fill="#7A360E">HANDLERS</text>
+<text x="32" y="77.3" font-size="26" font-weight="700" fill="#0E1726">Fault evidence path</text>
+<text x="32" y="103.8" font-size="15" fill="#566070">Health edges and stalls into a CRC-checked ring that survives a reset.</text>
+<rect x="32" y="119.8" width="1136" height="1" fill="#E2E7EE"/>
+<path d="M306 209.8 L458 263.8" fill="none" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-violet-strong)"/>
+<path d="M894 209.8 L742 263.8" fill="none" stroke="#C26A05" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-amber-strong)"/>
+<path d="M600 338.8 L600 392.8" fill="none" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-violet-strong)"/>
+<path d="M560 467.8 L351.7 521.8" fill="none" stroke="#9A4A17" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-brand-strong)"/>
+<path d="M939.7 521.8 L640 467.8" fill="none" stroke="#0B7A72" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-teal-strong)"/>
+<rect x="32" y="137.8" width="548" height="69" rx="10" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1.4"/>
+<rect x="32" y="145.8" width="4" height="53" rx="2" fill="#7C3AED"/>
+<rect x="620" y="137.8" width="548" height="69" rx="10" fill="#FFF5E3" stroke="#C26A05" stroke-width="1.4"/>
+<rect x="620" y="145.8" width="4" height="53" rx="2" fill="#C26A05"/>
+<rect x="316" y="266.8" width="568" height="69" rx="10" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1.4"/>
+<rect x="316" y="274.8" width="4" height="53" rx="2" fill="#7C3AED"/>
+<rect x="259.2" y="395.8" width="681.6" height="69" rx="10" fill="#FBEFE6" stroke="#9A4A17" stroke-width="1.4"/>
+<rect x="259.2" y="403.8" width="4" height="53" rx="2" fill="#9A4A17"/>
+<rect x="32" y="524.8" width="639.3" height="69" rx="10" fill="#E6F6F4" stroke="#0B7A72" stroke-width="1.4"/>
+<rect x="32" y="532.8" width="4" height="53" rx="2" fill="#0B7A72"/>
+<rect x="711.3" y="524.8" width="456.7" height="69" rx="10" fill="#E6F6F4" stroke="#0B7A72" stroke-width="1.4"/>
+<rect x="711.3" y="532.8" width="4" height="53" rx="2" fill="#0B7A72"/>
+<rect x="32" y="641.8" width="1136" height="60.5" rx="10" fill="#F1F4F8" stroke="#CBD5E1" stroke-width="1"/>
+<text x="52" y="164.6" font-size="15" font-weight="700" fill="#5B21B6">Handlers</text>
+<text x="52" y="189.4" font-size="13" fill="#2B3442">Health(): lock-free</text>
+<text x="640" y="164.6" font-size="15" font-weight="700" fill="#8A3C0B">LivenessMonitor</text>
+<text x="640" y="189.4" font-size="13" fill="#2B3442">Verdict(now)</text>
+<text x="336" y="293.6" font-size="15" font-weight="700" fill="#5B21B6">HealthJournal</text>
+<text x="336" y="318.4" font-size="13" fill="#2B3442">edges only</text>
+<text x="279.2" y="422.6" font-size="15" font-weight="700" fill="#7A360E">FaultJournal ring</text>
+<text x="279.2" y="447.4" font-size="13" fill="#2B3442">32-byte records, CRC-32, sequence</text>
+<rect x="492.1" y="355.8" width="215.7" height="20" rx="10" fill="#FFFFFF"/>
+<text x="600" y="370.1" font-size="12" font-weight="500" text-anchor="middle" fill="#566070">Append: one bounded store write</text>
+<text x="52" y="551.5" font-size="15" font-weight="700" fill="#0B5F59">Store</text>
+<text x="52" y="576.4" font-size="13" fill="#2B3442">RTC / no-init RAM, NVS, FRAM, flash</text>
+<text x="731.3" y="551.5" font-size="15" font-weight="700" fill="#0B5F59">Boot</text>
+<text x="731.3" y="576.4" font-size="13" fill="#2B3442">port reset reason</text>
+<rect x="426.3" y="484.8" width="59" height="20" rx="10" fill="#FFFFFF"/>
+<text x="455.8" y="499.1" font-size="12" font-weight="500" text-anchor="middle" fill="#566070">records</text>
+<rect x="744.9" y="484.8" width="89.9" height="20" rx="10" fill="#FFFFFF"/>
+<text x="789.8" y="499.1" font-size="12" font-weight="500" text-anchor="middle" fill="#566070">RecordReset</text>
+<text x="46" y="668.5" font-size="15" font-weight="700" fill="#334155">Reading it back</text>
+<text x="46" y="686.3" font-size="13" fill="#334155">After a reset Open() finds the newest record and skips a torn slot. The watchdog owner is kicked only when nothing is stale.</text>
+<rect x="32" y="717.7" width="14" height="14" rx="4" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1.4"/>
+<text x="54" y="729.3" font-size="12.5" fill="#566070">handler and journal</text>
+<rect x="198.4" y="717.7" width="14" height="14" rx="4" fill="#FFF5E3" stroke="#C26A05" stroke-width="1.4"/>
+<text x="220.4" y="729.3" font-size="12.5" fill="#566070">liveness</text>
+<rect x="295.6" y="717.7" width="14" height="14" rx="4" fill="#E6F6F4" stroke="#0B7A72" stroke-width="1.4"/>
+<text x="317.6" y="729.3" font-size="12.5" fill="#566070">port</text>
+<rect x="366.9" y="717.7" width="14" height="14" rx="4" fill="#FBEFE6" stroke="#9A4A17" stroke-width="1.4"/>
+<text x="388.9" y="729.3" font-size="12.5" fill="#566070">stored record</text>
+</svg>

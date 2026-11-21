@@ -1,0 +1,407 @@
+---
+# Equivalent mutants of kb-core (ci-mutation.yml, input equivalents_file): one-edit mutants that cannot change any
+# observable behaviour, each with the reason. A survivor is either killed by a new test or recorded here; never by
+# deleting the mutant. Ids are the mutation tool's (ci-tools mutate.py), stable while the mutated line is unchanged.
+equivalent:
+  # Initial values that every path overwrites before reading them.
+  - id: m-3e5376fb005e
+    reason: >-
+      numeric.hpp CheckedAdd: wide is written by WideAdd before Narrow reads it, or not read (computed false
+      short-circuits)
+  - id: m-b63979b722be
+    reason: >-
+      numeric.hpp CheckedSub: same as CheckedAdd, the initial wide value is never read
+  - id: m-c18034969eba
+    reason: >-
+      numeric.hpp CheckedMul: same as CheckedAdd, the initial wide value is never read
+  - id: m-ae16a3149ba8
+    reason: >-
+      numeric.hpp SaturatingAdd: out is written by CheckedAdd or by the saturation branch before return
+  - id: m-454e514fcd21
+    reason: >-
+      numeric.hpp SaturatingSub: out is written by CheckedSub or by the saturation branch before return
+  - id: m-15b824fb12c0
+    reason: >-
+      numeric.hpp SaturatingMul: out is written by CheckedMul or by the saturation branch before return
+  - id: m-415b6c849745
+    reason: >-
+      crc.hpp MakeCrcTable: reg is assigned on both branches before use
+  - id: m-ce06de392a8f
+    reason: >-
+      crc.hpp MakeCrcTable: reg is assigned on both branches before use
+  - id: m-557a004beb7f
+    reason: >-
+      crc.hpp Crc::step: next is assigned on the only branch before return
+  # Bits shifted out of the width before the value is used.
+  - id: m-bf6c28fab6f5
+    reason: >-
+      crc.hpp ReflectBits: a 1 in the initial out is shifted left by bits (8, 16 or 32) and cut by the cast to T
+  - id: m-27e412f00fa5
+    reason: >-
+      endian.hpp LoadBe64: a 1 in the initial value is shifted left 8 x 8 = 64 bits, out of the 64-bit value
+  - id: m-54edceb26403
+    reason: >-
+      endian.hpp LoadLe64: a 1 in the initial value is shifted left 8 x 8 = 64 bits, out of the 64-bit value
+  # Comparisons whose two forms differ only at a value where both give the same result.
+  - id: m-21eef0fe61b2
+    reason: >-
+      numeric.hpp WideAdd b > 0 vs b >= 0: with b == 0, a > max - 0 is false for every a
+  - id: m-1e33028be959
+    reason: >-
+      numeric.hpp WideAdd b < 0 vs b <= 0: with b == 0, a < min - 0 is false for every a
+  - id: m-75f0108bb4bc
+    reason: >-
+      numeric.hpp WideAdd b < 0 vs b < 1: the same set of integers
+  - id: m-790ac2e3c235
+    reason: >-
+      numeric.hpp WideSub b < 0 vs b <= 0: with b == 0, a > max + 0 is false for every a
+  - id: m-cd6bddcdaa0d
+    reason: >-
+      numeric.hpp WideSub b < 0 vs b < 1: the same set of integers
+  - id: m-211ff60c9a6d
+    reason: >-
+      numeric.hpp WideSub b > 0 vs b >= 0: with b == 0, a < min + 0 is false for every a
+  - id: m-9c68c58b2952
+    reason: >-
+      numeric.hpp WideMul a > 0 vs a >= 0: a == 0 took the earlier zero branch
+  - id: m-8847e1060480
+    reason: >-
+      numeric.hpp WideMul a > 0 vs a > 1: for a == 1 both formulas accept every b, since 1 * b never overflows
+  - id: m-e4175782b9f0
+    reason: >-
+      numeric.hpp WideMul b > 0 vs b >= 0 (a > 0): b == 0 took the earlier zero branch
+  - id: m-ff6b06de3b5e
+    reason: >-
+      numeric.hpp WideMul b > 0 vs b > 1 (a > 0): for b == 1, b >= min / a holds as min / a <= 0
+  - id: m-c886a6bef607
+    reason: >-
+      numeric.hpp WideMul b > 0 vs b >= 0 (a < 0): b == 0 took the earlier zero branch
+  - id: m-7e830663cc16
+    reason: >-
+      numeric.hpp WideMul b > 0 vs b > 1 (a < 0): for b == 1, b >= max / a holds as max / a < 0
+  - id: m-f0690f1d2175
+    reason: >-
+      numeric.hpp SaturatingAdd b < 0 vs b <= 0: b == 0 never overflows, so the branch is not reached
+  - id: m-fa41333f17a3
+    reason: >-
+      numeric.hpp SaturatingAdd b < 0 vs b < 1: the same set of integers
+  - id: m-6ca718da71b0
+    reason: >-
+      numeric.hpp SaturatingSub b < 0 vs b <= 0: b == 0 never overflows, so the branch is not reached
+  - id: m-6d786c437ff8
+    reason: >-
+      numeric.hpp SaturatingSub b < 0 vs b < 1: the same set of integers
+  - id: m-4d5efaf37f5c
+    reason: >-
+      numeric.hpp SaturatingMul a < 0 vs a <= 0: a == 0 never overflows, so the branch is not reached
+  - id: m-fa6ec709037a
+    reason: >-
+      numeric.hpp SaturatingMul b < 0 vs b <= 0: b == 0 never overflows, so the branch is not reached
+  - id: m-6d27407b0221
+    reason: >-
+      numeric.hpp SaturatingMul a < 0 vs a < 1: the same set of integers
+  - id: m-2169a59ee1d7
+    reason: >-
+      numeric.hpp SaturatingMul b < 0 vs b < 1: the same set of integers
+  - id: m-8e8e2cb306a2
+    reason: >-
+      numeric.hpp Clamp value < low vs <=: at value == low both return low
+  - id: m-89ce7a1a088a
+    reason: >-
+      numeric.hpp Clamp value > high vs >=: at value == high both return high
+  - id: m-79460d26a01d
+    reason: >-
+      numeric.hpp Clamp low <= high vs <: at low == high the result and low are the same value
+  - id: m-42fa48af140e
+    reason: >-
+      time.hpp MillisecondsToTicksCeil ticks > max vs >=: at ticks == max both return max
+  - id: m-e0f8ece81ad3
+    reason: >-
+      time.hpp Deadline::RemainingUs elapsed >= timeout vs >: at equality both return 0
+  - id: m-3751f7e36d33
+    reason: >-
+      ring_buffer.hpp Discard count < count_ vs <=: at equality both take the same value (a minimum)
+  - id: m-1a5569d05ead
+    reason: >-
+      fixed_string.hpp AppendUnsigned min_digits < 64 vs <=: at 64 both take 64 (a minimum)
+  - id: m-f238700c13a2
+    reason: >-
+      ring_buffer.hpp Clear: the head index of an empty ring is arbitrary; every access is relative to it
+  # Default arguments and sizes that only matter where another rule already decides.
+  - id: m-3004f3899757
+    reason: >-
+      fixed_string.hpp AppendUnsigned default min_digits 1 vs 0: the do-while emits at least one digit either way
+  - id: m-101e082efdb4
+    reason: >-
+      fixed_string.hpp AppendHex default min_digits 1 vs 0: the do-while emits at least one digit either way
+  - id: m-0c2d56927cb9
+    reason: >-
+      fixed_string.hpp kDigits size 16 vs 17: the extra element is never indexed (digit values are below 16)
+  # Constraints whose other conjuncts are required again by the class body.
+  - id: m-8b032c20187e
+    reason: >-
+      result.hpp ResultValue && vs ||: a type failing a conjunct cannot be a default-initialised member or copied
+      noexcept, so the class does not instantiate either way
+  - id: m-6cdd8a2beb27
+    reason: >-
+      result.hpp ResultValue && vs ||: as above, for the other conjunct
+  - id: m-6accdad4b54f
+    reason: >-
+      fixed_string.hpp requires N > 0 vs N >= 0: N == 0 still gives a valid buffer of one NUL; the compile-fail
+      test then fails for a different reason, and no behaviour of N >= 1 changes
+  - id: m-a0e394d92766
+    reason: >-
+      ring_buffer.hpp requires N > 0 vs N >= 0: no N >= 1 instantiation changes; N == 0 is refused by the compile-
+      fail test through the modulo by N
+  # kb::rtos.
+  - id: m-6bdb42605b13
+    reason: >-
+      freertos_boundary.cpp static_assert sizeof <= kMutexBytes vs <: the native object is strictly smaller on
+      every supported kernel; a compile-time margin check, no run-time behaviour
+  - id: m-4c7e70e4a8ed
+    reason: >-
+      freertos_boundary.cpp static_assert for the semaphore size, as above
+  - id: m-f1e1a6b196fa
+    reason: >-
+      freertos_boundary.cpp static_assert for the queue size, as above
+  - id: m-e3149ab63bf4
+    reason: >-
+      freertos_boundary.cpp static_assert for the event group size, as above
+  - id: m-3632aebaaf1b
+    reason: >-
+      freertos_boundary.cpp static_assert for the timer block size, as above
+  - id: m-3f10b8f1813e
+    reason: >-
+      freertos_boundary.cpp static_assert for the task size, as above
+  - id: m-fa96684771f3
+    reason: >-
+      none_backend.cpp NoneSemaphore count default: SemaphoreCreate sets it before any use
+  - id: m-8280837c05cd
+    reason: >-
+      none_backend.cpp NoneSemaphore max default: SemaphoreCreate sets it before any use
+  - id: m-5704047be687
+    reason: >-
+      none_backend.cpp NoneQueue item_bytes default: QueueCreate sets it before any use
+  - id: m-4b8b33c43280
+    reason: >-
+      none_backend.cpp NoneQueue capacity default: QueueCreate sets it before any use
+  - id: m-f5f2fa4ad33d
+    reason: >-
+      none_backend.cpp NoneQueue head default 0 vs 1: every slot is computed relative to head, so FIFO order does
+      not depend on where it starts
+  - id: m-1b9270d37de3
+    reason: >-
+      none_backend.cpp NoneTimer remaining default: TimerStart sets it before the timer can fire
+  - id: m-addf1dae5b8b
+    reason: >-
+      none_backend.cpp NoneTimer active default false vs true: remaining is 0 until a start, so a created but not
+      started timer would first fire after 2^32 ticks
+  - id: m-c2e265d16bbc
+    reason: >-
+      none_backend.cpp Clock ticks default 0 vs 1: only moves the arbitrary origin of the fake clock; the tests
+      reset it and use differences
+  - id: m-01ddb76efa28
+    reason: >-
+      none_backend.cpp Construct static_assert size <= Bytes vs <: compile-time margin check, every native type is
+      strictly smaller
+  - id: m-eda4f0207b6d
+    reason: >-
+      none_backend.cpp Construct static_assert alignment <= kStorageAlign vs <: compile-time margin check
+  - id: m-0b94e0f14a1b
+    reason: >-
+      backend.hpp kMutexBytes 128 vs 129: a storage size larger than every native object; no behaviour depends on
+      the margin
+  - id: m-e7b8f33e78dd
+    reason: >-
+      backend.hpp kSemaphoreBytes 192 vs 193: as above
+  - id: m-df86f745f532
+    reason: >-
+      backend.hpp kQueueBytes 256 vs 257: as above
+  - id: m-7d74654dbc04
+    reason: >-
+      backend.hpp kEventFlagsBytes 192 vs 193: as above
+  - id: m-b8c1ac1d3301
+    reason: >-
+      backend.hpp kTimerBytes 256 vs 257: as above
+  - id: m-e5a7c1d8d38f
+    reason: >-
+      backend.hpp kThreadBytes 512 vs 513: as above
+  - id: m-580287df3ae6
+    reason: >-
+      backend.hpp ThreadParams stack_bytes default: Thread::Start always sets it
+  - id: m-65502fb197ff
+    reason: >-
+      backend.hpp ThreadParams priority default: Thread::Start always sets it from ThreadConfig
+  - id: m-99fb407702d5
+    reason: >-
+      backend.hpp TimerParams period_ms default: Timer::Create always sets it (and refuses 0)
+  - id: m-16d006c526f8
+    reason: >-
+      backend.hpp TimerParams periodic default: Timer::Create always sets it
+  - id: m-147096bef899
+    reason: >-
+      thread.hpp ThreadStats steps default: Stats() sets every field explicitly
+  - id: m-0ad829143522
+    reason: >-
+      thread.hpp ThreadStats overruns default: Stats() sets every field explicitly
+  - id: m-fc80731d10c2
+    reason: >-
+      thread.hpp ThreadStats max_step_us default: Stats() sets every field explicitly
+  - id: m-c6273d152992
+    reason: >-
+      thread.hpp ~Thread State() != Idle vs ==: releasing an idle thread is a no-op on every backend, and not
+      releasing a started one only leaks its control block at the end of the program
+  - id: m-5dd50764ca66
+    reason: >-
+      thread.hpp record clipped > max vs >=: at equality both store the same value
+  - id: m-10464f8c165e
+    reason: >-
+      time.hpp ToTicksAtLeast result initial value: every branch assigns it before return
+  - id: m-4363db393d36
+    reason: >-
+      time.hpp ToTicksAtLeast ticks >= forever - 1 vs >: at ticks == forever - 1 both give forever (ticks + 1)
+  - id: m-20ebbb1ec9f2
+    reason: >-
+      time.hpp ToTicksAtLeast forever - 1 vs forever - 0: at ticks == forever - 1 both give forever (ticks + 1)
+  - id: m-ad8e5e3689e3
+    reason: >-
+      time.hpp Periodic last_wake_ default: the first Wait calls Reset, which sets it, before it is read
+  - id: m-bd9487c877f3
+    reason: >-
+      freertos_boundary.cpp ThreadCreate priority > top vs >=: at priority == top both give top (a clamp)
+  # kb::interfaces.
+  - id: m-df13d6621951
+    reason: >-
+      types.hpp Duty clamp permyriad > full vs >=: at permyriad == full both store full
+  # The asynchronous contract (ADR-0015).
+  - id: m-a23938ff4d20
+    reason: >-
+      async.hpp AsyncFromSync::StartTransfer count tx > rx vs >=: with equal sizes both pick the same length
+  # The fault journal.
+  - id: m-0ab7595c38ed
+    reason: >-
+      fault_journal.hpp FindNewest age < count vs <=: the extra Read(count) is refused with OutOfRange and skipped
+  - id: m-98a54c5f1aeb
+    reason: >-
+      fault_journal.hpp head_ initial value: Open() sets it before any Append() or Read(), which refuse until open
+  - id: m-a4908723c7d2
+    reason: >-
+      fault_journal.hpp next_ initial value: Open() sets it (1 for an empty store) before the first Append()
+  # The handler core's catalogue (tools/mutants/handlers.txt).
+  - id: HC-13
+    reason: >-
+      The start budget of EnsureInitialized() is a second, outer bound: every polled stage already fails at its
+      own deadline and every sync stage ends in one step, so a run always ends before the budget expires.
+      Counting the deadlines of skipped optional stages only makes the outer bound longer, which no run reaches.
+  # The ThreadX backend's compile-time configuration checks (threadx_boundary.cpp).
+  - id: m-ff421e633678
+    reason: >-
+      threadx_boundary.cpp TX_NO_TIMER guard: the static_assert is compiled only when the kernel defines TX_NO_TIMER, which no tested kernel does; any edit inside the disabled block changes nothing a build or test sees
+  - id: m-3881b6e520c3
+    reason: >-
+      threadx_boundary.cpp TX_NO_TIMER guard: the same disabled block, operator edit
+  - id: m-4b5f5886ca54
+    reason: >-
+      threadx_boundary.cpp KB_THREADX_TICK_HZ guard: the static_assert is compiled only when the build does not pass KB_THREADX_TICK_HZ, which every kb-core build of the backend does; an edit inside the disabled block changes nothing
+  - id: m-b1fe2d7da205
+    reason: >-
+      threadx_boundary.cpp KB_THREADX_THREAD_BYTES check: compiled only when a product passes its kernel's sizeof(TX_THREAD), which no kb-core test build does; an edit inside the disabled block changes nothing
+  - id: m-e38f196f9278
+    reason: >-
+      threadx_boundary.cpp static_assert sizeof(TX_MUTEX) <= kMutexBytes vs <: compile-time margin check, the native object is strictly smaller on every tested kernel (fake, Linux port, Cortex-M ports)
+  - id: m-c07d912b82d1
+    reason: >-
+      threadx_boundary.cpp static_assert for the semaphore block size, as above
+  - id: m-4a96d8d85d44
+    reason: >-
+      threadx_boundary.cpp static_assert for the queue block size, as above
+  - id: m-d9769394c996
+    reason: >-
+      threadx_boundary.cpp static_assert for the event-flag group size, as above
+  - id: m-579374b76450
+    reason: >-
+      threadx_boundary.cpp static_assert for the timer block size, as above
+  - id: m-c7af793528b5
+    reason: >-
+      threadx_boundary.cpp static_assert for the thread block size, as above
+  - id: m-cbf36f6ca8d6
+    reason: >-
+      threadx_boundary.cpp static_assert alignof(ThreadBlock) <= kStorageAlign vs <: compile-time margin check
+  - id: m-b3b4215772cb
+    reason: >-
+      threadx_boundary.cpp KB_THREADX_TICK_HZ guard: the same disabled block, constant edit
+  # The timer table bounds (threadx_boundary.cpp). Both edits only add a read of the element one past the end of
+  # the table, which the unknown-slot and full-table cases of test_threadx_seam.cpp reach with no observable
+  # difference (a sanitizer or hardened-library build of that test would flag it).
+  - id: m-94e1fcd6651c
+    reason: >-
+      threadx_boundary.cpp TimerEntry slot < kMaxTimers vs <=: slot == kMaxTimers then reads one element past the table; the unknown-slot case (slot 32) is tested and ignored either way
+  - id: m-741601e7c189
+    reason: >-
+      threadx_boundary.cpp TimerCreate free-slot scan slot < size vs <=: a full table ends the scan at slot == size either way, and the room test then refuses the creation
+  # The queue word default (backend.hpp).
+  - id: m-cff6f3e8506d
+    reason: >-
+      backend.hpp kQueueWordBytes default 1 vs 0: the #else branch is compiled only when the build sets no KB_RTOS_QUEUE_WORD_BYTES, and the test build sets it (for the ThreadX fake); a 0 there is also rejected by the static_assert below it
+  - id: m-537460e298df
+    reason: >-
+      backend.hpp static_assert kQueueWordBytes > 0 vs >=: compile-time check, the configured word is 4 or 8
+  - id: m-632459fc1aaf
+    reason: >-
+      backend.hpp static_assert kQueueWordBytes > 0 vs > 1: compile-time check, as above
+  # The thread base's park semaphore (thread.hpp Start).
+  - id: m-75f3864c83a9
+    reason: >-
+      thread.hpp Start: the wake semaphore created with one count instead of none only lets the first park's wait return at once; the park loop tests the park request again and waits, so no step and no state differs
+  - id: m-724b257775c1
+    reason: >-
+      none_backend.cpp CopyBytes i < n vs <=: the one extra byte lands in the next queue slot, which a send writes before any receive reads it, or past the last slot where nothing reads it
+  # kb::dma
+  - id: m-84636bf3af4f
+    reason: >-
+      completion.hpp kCancelling: the value only has to differ from the other three states
+  - id: m-298c9a59032f
+    reason: >-
+      region.hpp Region concept: a line size of 0 is already refused by has_single_bit
+  - id: m-a58432abd6f8
+    reason: >-
+      region.hpp RoundUp: at n equal to the largest multiple both branches give the same value
+  - id: m-d6d2627e98dc
+    reason: >-
+      stream.hpp Completion hw_flags default: every caller in kb-core states the flags; the default is never read
+  - id: m-0435488f3bb0
+    reason: >-
+      stream.hpp SampleInstant: at index equal to samples the distance is 0, so the result is the same
+  - id: m-ca87745692ed
+    reason: >-
+      stream.hpp SampleInstant: with a rate of 0 the mutant divides by zero, which gives 0 on a target that does not trap, and the same instant results
+  - id: m-cdbe81671166
+    reason: >-
+      stream.hpp SampleInstant: at back equal to us both branches give 0
+  - id: m-710b2be58aa3
+    reason: >-
+      stream.hpp NoteIsrCycles: storing the same maximum again changes nothing
+  - id: m-2b8477f481c7
+    reason: >-
+      stream.hpp Slot: every field is written by Publish before a slot is read
+  - id: m-18d68d8565f3
+    reason: >-
+      stream.hpp Slot: every field is written by Publish before a slot is read
+  - id: m-d6cd3f39516f
+    reason: >-
+      stream.hpp Slot: every field is written by Publish before a slot is read
+  - id: m-9c600cb1e84f
+    reason: >-
+      stream.hpp Slot: every field is written by Publish before a slot is read
+  - id: m-0796bda2a513
+    reason: >-
+      stream.hpp Slot: every field is written by Publish before a slot is read
+  - id: m-75a5809d02e2
+    reason: >-
+      stream.hpp Slot: every field is written by Publish before a slot is read
+  - id: m-96d2ae3694cc
+    reason: >-
+      stream.hpp bad_in_row_: Start clears it, and the supervisor reports nothing before Start
+  - id: m-7eccd42e7279
+    reason: >-
+      stream.hpp stall_reported_: Start and every re-arm clear it before the supervisor can read it

@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="789" viewBox="0 0 1200 789" role="img" aria-labelledby="rtos-threadx-title rtos-threadx-desc" font-family="Inter, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
+<title id="rtos-threadx-title">The ThreadX backend</title>
+<desc id="rtos-threadx-desc">The kb::rtos API and seam lead to two ThreadX backend files; the boundary file reaches the ThreadX kernel, which comes either from a product's copy or the pinned submodule; tests run it on a fake kernel and on the Linux port.</desc>
+<defs><marker id="fk-arrow-amber-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#FBBF24"/></marker><marker id="fk-arrow-brown-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#D6A26B"/></marker><marker id="fk-arrow-slate-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#94A3B8"/></marker></defs>
+<rect x="0.5" y="0.5" width="1199" height="788" rx="16" fill="#0E131A" stroke="#283241"/>
+<text x="32" y="44" font-size="12.5" font-weight="700" letter-spacing="1.2" fill="#F8D27A">RTOS</text>
+<text x="32" y="77.3" font-size="26" font-weight="700" fill="#E8EDF3">The ThreadX backend</text>
+<text x="32" y="103.8" font-size="15" fill="#9AA6B5">One boundary file between the kb::rtos seam and the kernel, three ways to get the kernel.</text>
+<rect x="32" y="119.8" width="1136" height="1" fill="#252F3C"/>
+<rect x="32" y="453.8" width="1136" height="145" rx="14" fill="#1B232E" stroke="#3A4656" stroke-width="1.2"/>
+<path d="M384.9 181.8 L428.9 181.8" fill="none" stroke="#FBBF24" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-amber-strong)"/>
+<path d="M606.8 228.8 L606.8 251.8 Q606.8 259.8 598.8 259.8 L216 259.8 Q208 259.8 208 267.8 L208 292.8" fill="none" stroke="#FBBF24" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-amber-strong)"/>
+<path d="M646.8 228.8 L646.8 251.8 Q646.8 259.8 638.8 259.8 L608 259.8 Q600 259.8 600 267.8 L600 292.8" fill="none" stroke="#FBBF24" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-amber-strong)"/>
+<path d="M387 339.8 L421 339.8" fill="none" stroke="#FBBF24" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-amber-strong)"/>
+<path d="M779 339.8 L813 339.8" fill="none" stroke="#D6A26B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 5" marker-end="url(#fk-arrow-brown-strong)"/>
+<path d="M600 386.8 L600 450.8" fill="none" stroke="#94A3B8" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-slate-strong)"/>
+<path d="M319.5 601.8 L319.5 655.8" fill="none" stroke="#D6A26B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 5" marker-end="url(#fk-arrow-brown-strong)"/>
+<rect x="32" y="137.8" width="349.9" height="88" rx="10" fill="#2C2310" stroke="#FBBF24" stroke-width="1.4"/>
+<rect x="32" y="145.8" width="4" height="72" rx="2" fill="#FBBF24"/>
+<rect x="431.9" y="137.8" width="349.9" height="88" rx="10" fill="#2C2310" stroke="#FBBF24" stroke-width="1.4"/>
+<rect x="431.9" y="145.8" width="4" height="72" rx="2" fill="#FBBF24"/>
+<rect x="32" y="295.8" width="352" height="88" rx="10" fill="#2C2310" stroke="#FBBF24" stroke-width="1.4"/>
+<rect x="32" y="303.8" width="4" height="72" rx="2" fill="#FBBF24"/>
+<rect x="424" y="295.8" width="352" height="88" rx="10" fill="#2C2310" stroke="#FBBF24" stroke-width="1.4"/>
+<rect x="424" y="303.8" width="4" height="72" rx="2" fill="#FBBF24"/>
+<rect x="816" y="295.8" width="352" height="88" rx="10" fill="#2A1F14" stroke="#D6A26B" stroke-width="1.4"/>
+<rect x="816" y="303.8" width="4" height="72" rx="2" fill="#D6A26B"/>
+<rect x="48" y="494.8" width="543" height="88" rx="10" fill="#1B232E" stroke="#94A3B8" stroke-width="1.4" stroke-dasharray="6 4"/>
+<rect x="609" y="494.8" width="543" height="88" rx="10" fill="#1B232E" stroke="#94A3B8" stroke-width="1.4" stroke-dasharray="6 4"/>
+<rect x="48" y="658.8" width="543" height="69" rx="10" fill="#2A1F14" stroke="#D6A26B" stroke-width="1.4"/>
+<rect x="48" y="666.8" width="4" height="53" rx="2" fill="#D6A26B"/>
+<text x="52" y="164.6" font-size="15" font-weight="700" fill="#FDE68A">kb::rtos API</text>
+<text x="52" y="189.4" font-size="13" fill="#D2DAE4">Mutex, RecursiveMutex, Semaphore, Queue,</text>
+<text x="52" y="208.2" font-size="13" fill="#D2DAE4">EventFlags, Timer, Thread, CriticalSection</text>
+<text x="451.9" y="164.6" font-size="15" font-weight="700" fill="#FDE68A">kb::rtos::backend</text>
+<text x="451.9" y="189.4" font-size="13" fill="#D2DAE4">backend.hpp, the seam</text>
+<text x="52" y="322.6" font-size="15" font-weight="700" fill="#FDE68A">threadx_isr.cpp</text>
+<text x="52" y="347.4" font-size="13" fill="#D2DAE4">every FromIsr call is the same call with</text>
+<text x="52" y="366.2" font-size="13" fill="#D2DAE4">TX_NO_WAIT</text>
+<text x="444" y="322.6" font-size="15" font-weight="700" fill="#FDE68A">threadx_boundary.cpp</text>
+<text x="444" y="347.4" font-size="13" fill="#D2DAE4">the only boundary file; creates objects on</text>
+<text x="444" y="366.2" font-size="13" fill="#D2DAE4">kb-owned control blocks and stacks</text>
+<text x="836" y="322.6" font-size="15" font-weight="700" fill="#F1D5B5">Fake kernel</text>
+<text x="836" y="347.4" font-size="13" fill="#D2DAE4">tests/fakes/threadx: contract and seam, exact</text>
+<text x="836" y="366.2" font-size="13" fill="#D2DAE4">ticks (kb_rtos_tests_threadx)</text>
+<text x="68" y="521.5" font-size="15" font-weight="700" fill="#E2E8F0">Pinned submodule</text>
+<text x="68" y="546.4" font-size="13" fill="#D2DAE4">third_party/threadx at a release tag; KB_THREADX_PORT = cortex_m0,</text>
+<text x="68" y="565.2" font-size="13" fill="#D2DAE4">cortex_m4, cortex_m7 or linux</text>
+<text x="629" y="521.5" font-size="15" font-weight="700" fill="#E2E8F0">A product's copy</text>
+<text x="629" y="546.4" font-size="13" fill="#D2DAE4">KB_THREADX_INCLUDE_DIRS: STM32Cube or a vendor SDK</text>
+<text x="48" y="478.8" font-size="13" font-weight="700" fill="#E2E8F0">THREADX KERNEL</text>
+<text x="184.6" y="478.8" font-size="12" fill="#E2E8F0">SOUP, never edited</text>
+<rect x="559.7" y="408.8" width="80.6" height="20" rx="10" fill="#0E131A"/>
+<text x="600" y="423.1" font-size="12" font-weight="500" text-anchor="middle" fill="#9AA6B5">tx_*_create</text>
+<text x="68" y="685.5" font-size="15" font-weight="700" fill="#F1D5B5">Linux port</text>
+<text x="68" y="710.4" font-size="13" fill="#D2DAE4">threaded suite with priority inheritance</text>
+<rect x="229.8" y="618.8" width="179.5" height="20" rx="10" fill="#0E131A"/>
+<text x="319.5" y="633.1" font-size="12" font-weight="500" text-anchor="middle" fill="#9AA6B5">kb_rtos_tests_threadx_linux</text>
+<rect x="32" y="743.2" width="14" height="14" rx="4" fill="#2C2310" stroke="#FBBF24" stroke-width="1.4"/>
+<text x="54" y="754.8" font-size="12.5" fill="#9AA6B5">kb::rtos</text>
+<rect x="125.3" y="743.2" width="14" height="14" rx="4" fill="#1B232E" stroke="#94A3B8" stroke-width="1.4"/>
+<text x="147.3" y="754.8" font-size="12.5" fill="#9AA6B5">SOUP and planned</text>
+<rect x="289.3" y="743.2" width="14" height="14" rx="4" fill="#2A1F14" stroke="#D6A26B" stroke-width="1.4"/>
+<text x="311.3" y="754.8" font-size="12.5" fill="#9AA6B5">tests</text>
+</svg>

@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="711" viewBox="0 0 1200 711" role="img" aria-labelledby="rtos-backends-title rtos-backends-desc" font-family="Inter, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
+<title id="rtos-backends-title">kb::rtos backends</title>
+<desc id="rtos-backends-desc">The kb::rtos API reaches one backend through a single seam: none, FreeRTOS, host (tests only) or ThreadX; FreeRTOS and ThreadX reach their kernel, which is SOUP, through boundary files and are tested on fake kernels.</desc>
+<defs><marker id="fk-arrow-amber-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#FBBF24"/></marker><marker id="fk-arrow-slate-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#94A3B8"/></marker></defs>
+<rect x="0.5" y="0.5" width="1199" height="710" rx="16" fill="#0E131A" stroke="#283241"/>
+<text x="32" y="44" font-size="12.5" font-weight="700" letter-spacing="1.2" fill="#F8D27A">RTOS</text>
+<text x="32" y="77.3" font-size="26" font-weight="700" fill="#E8EDF3">kb::rtos backends</text>
+<text x="32" y="103.8" font-size="15" fill="#9AA6B5">One API and one seam. Each backend owns its objects in opaque storage.</text>
+<rect x="32" y="119.8" width="1136" height="1" fill="#252F3C"/>
+<path d="M600 209.8 L600 243.8" fill="none" stroke="#FBBF24" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-amber-strong)"/>
+<path d="M166.5 318.8 L166.5 372.8" fill="none" stroke="#FBBF24" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-amber-strong)"/>
+<path d="M455.5 318.8 L455.5 372.8" fill="none" stroke="#FBBF24" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-amber-strong)"/>
+<path d="M744.5 318.8 L744.5 372.8" fill="none" stroke="#FBBF24" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-amber-strong)"/>
+<path d="M1033.5 318.8 L1033.5 372.8" fill="none" stroke="#FBBF24" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-amber-strong)"/>
+<path d="M455.5 485.8 L455.5 539.8" fill="none" stroke="#94A3B8" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-slate-strong)"/>
+<path d="M744.5 485.8 L744.5 539.8" fill="none" stroke="#94A3B8" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-slate-strong)"/>
+<rect x="32" y="137.8" width="1136" height="69" rx="10" fill="#2C2310" stroke="#FBBF24" stroke-width="1.4"/>
+<rect x="32" y="145.8" width="4" height="53" rx="2" fill="#FBBF24"/>
+<rect x="32" y="246.8" width="1136" height="69" rx="10" fill="#2C2310" stroke="#FBBF24" stroke-width="1.4"/>
+<rect x="32" y="254.8" width="4" height="53" rx="2" fill="#FBBF24"/>
+<rect x="32" y="375.8" width="269" height="107" rx="10" fill="#2C2310" stroke="#FBBF24" stroke-width="1.4"/>
+<rect x="32" y="383.8" width="4" height="91" rx="2" fill="#FBBF24"/>
+<rect x="321" y="375.8" width="269" height="107" rx="10" fill="#2C2310" stroke="#FBBF24" stroke-width="1.4"/>
+<rect x="321" y="383.8" width="4" height="91" rx="2" fill="#FBBF24"/>
+<rect x="610" y="375.8" width="269" height="107" rx="10" fill="#2C2310" stroke="#FBBF24" stroke-width="1.4"/>
+<rect x="610" y="383.8" width="4" height="91" rx="2" fill="#FBBF24"/>
+<rect x="899" y="375.8" width="269" height="107" rx="10" fill="#2A1F14" stroke="#D6A26B" stroke-width="1.4"/>
+<rect x="899" y="383.8" width="4" height="91" rx="2" fill="#D6A26B"/>
+<rect x="321" y="542.8" width="269" height="107" rx="10" fill="#151C26" stroke="#3A4657" stroke-width="1" stroke-dasharray="6 4"/>
+<rect x="610" y="542.8" width="269" height="107" rx="10" fill="#151C26" stroke="#3A4657" stroke-width="1" stroke-dasharray="6 4"/>
+<rect x="32" y="548.8" width="265" height="98.2" rx="10" fill="#2A1F14" stroke="#66492C" stroke-width="1"/>
+<text x="52" y="164.6" font-size="15" font-weight="700" fill="#FDE68A">kb::rtos API</text>
+<text x="52" y="189.4" font-size="13" fill="#D2DAE4">Mutex, RecursiveMutex, Semaphore, Queue, EventFlags, Timer, Thread, CriticalSection (components/lib/rtos/inc)</text>
+<text x="52" y="273.6" font-size="15" font-weight="700" fill="#FDE68A">kb::rtos::backend</text>
+<text x="52" y="298.4" font-size="13" fill="#D2DAE4">backend.hpp: the seam. Each native object lives in opaque storage sized there; every backend static_asserts it fits.</text>
+<text x="52" y="402.6" font-size="15" font-weight="700" fill="#FDE68A">none</text>
+<text x="52" y="427.4" font-size="13" fill="#D2DAE4">Host tests, bare-metal bring-up.</text>
+<text x="52" y="446.3" font-size="13" fill="#D2DAE4">One context, a deterministic fake</text>
+<text x="52" y="465.1" font-size="13" fill="#D2DAE4">clock.</text>
+<text x="341" y="402.6" font-size="15" font-weight="700" fill="#FDE68A">freertos</text>
+<text x="341" y="427.4" font-size="13" fill="#D2DAE4">ESP32 default, any FreeRTOS</text>
+<text x="341" y="446.3" font-size="13" fill="#D2DAE4">target. Boundary files, static API</text>
+<text x="341" y="465.1" font-size="13" fill="#D2DAE4">only.</text>
+<text x="630" y="402.6" font-size="15" font-weight="700" fill="#FDE68A">threadx</text>
+<text x="630" y="427.4" font-size="13" fill="#D2DAE4">Eclipse ThreadX targets. One</text>
+<text x="630" y="446.3" font-size="13" fill="#D2DAE4">boundary file.</text>
+<text x="919" y="402.6" font-size="15" font-weight="700" fill="#F1D5B5">host</text>
+<text x="919" y="427.4" font-size="13" fill="#D2DAE4">PC tests with real threads</text>
+<text x="919" y="446.3" font-size="13" fill="#D2DAE4">(std::thread), never built for a</text>
+<text x="919" y="465.1" font-size="13" fill="#D2DAE4">target.</text>
+<text x="341" y="569.5" font-size="15" font-weight="700" fill="#E8EDF3">FreeRTOS kernel</text>
+<text x="341" y="594.4" font-size="13" fill="#D2DAE4">SOUP: ESP-IDF, or</text>
+<text x="341" y="613.2" font-size="13" fill="#D2DAE4">KB_FREERTOS_INCLUDE_DIRS</text>
+<text x="630" y="569.5" font-size="15" font-weight="700" fill="#E8EDF3">ThreadX kernel</text>
+<text x="630" y="594.4" font-size="13" fill="#D2DAE4">SOUP:</text>
+<text x="630" y="613.2" font-size="13" fill="#D2DAE4">KB_THREADX_INCLUDE_DIRS, or</text>
+<text x="630" y="632.1" font-size="13" fill="#D2DAE4">third_party/threadx</text>
+<rect x="405.9" y="502.8" width="99.1" height="20" rx="10" fill="#0E131A"/>
+<text x="455.5" y="517.1" font-size="12" font-weight="500" text-anchor="middle" fill="#9AA6B5">boundary files</text>
+<rect x="698.4" y="502.8" width="92.3" height="20" rx="10" fill="#0E131A"/>
+<text x="744.5" y="517.1" font-size="12" font-weight="500" text-anchor="middle" fill="#9AA6B5">boundary file</text>
+<text x="46" y="575.5" font-size="15" font-weight="700" fill="#F1D5B5">Tests</text>
+<text x="46" y="593.4" font-size="13" fill="#F1D5B5">FreeRTOS and ThreadX also run</text>
+<text x="46" y="612.2" font-size="13" fill="#F1D5B5">their tests on fake kernels</text>
+<text x="46" y="631.1" font-size="13" fill="#F1D5B5">(tests/fakes) with exact ticks.</text>
+<rect x="32" y="665.2" width="14" height="14" rx="4" fill="#2C2310" stroke="#FBBF24" stroke-width="1.4"/>
+<text x="54" y="676.8" font-size="12.5" fill="#9AA6B5">kb::rtos</text>
+<rect x="125.3" y="665.2" width="14" height="14" rx="4" fill="#1B232E" stroke="#94A3B8" stroke-width="1.4"/>
+<text x="147.3" y="676.8" font-size="12.5" fill="#9AA6B5">SOUP and planned</text>
+<rect x="289.3" y="665.2" width="14" height="14" rx="4" fill="#2A1F14" stroke="#D6A26B" stroke-width="1.4"/>
+<text x="311.3" y="676.8" font-size="12.5" fill="#9AA6B5">tests only</text>
+</svg>

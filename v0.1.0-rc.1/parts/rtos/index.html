@@ -1,0 +1,1865 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Utilities, RTOS wrapper, bus and pin interfaces and driver handlers between the Kokeb Labs drivers and a board HAL.">
+      
+      
+      
+        <link rel="canonical" href="https://kokeb-labs.github.io/kb-core/latest/parts/rtos/">
+      
+      
+        <link rel="prev" href="../utils/">
+      
+      
+        <link rel="next" href="../rtos-threadx/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/kokeb/favicon.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+    
+    
+      
+        <title>rtos - kb-core</title>
+      
+    
+    
+  
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+  
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+  
+  <style>:root{--md-admonition-icon--note:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M0%208a8%208%200%201%201%2016%200A8%208%200%200%201%200%208m8-6.5a6.5%206.5%200%201%200%200%2013%206.5%206.5%200%200%200%200-13M6.5%207.75A.75.75%200%200%201%207.25%207h1a.75.75%200%200%201%20.75.75v2.75h.25a.75.75%200%200%201%200%201.5h-2a.75.75%200%200%201%200-1.5h.25v-2h-.25a.75.75%200%200%201-.75-.75M8%206a1%201%200%201%201%200-2%201%201%200%200%201%200%202%22/%3E%3C/svg%3E');--md-admonition-icon--tip:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M8%201.5c-2.363%200-4%201.69-4%203.75%200%20.984.424%201.625.984%202.304l.214.253c.223.264.47.556.673.848.284.411.537.896.621%201.49a.75.75%200%200%201-1.484.211c-.04-.282-.163-.547-.37-.847a9%209%200%200%200-.542-.68q-.126-.149-.268-.32C3.201%207.75%202.5%206.766%202.5%205.25%202.5%202.31%204.863%200%208%200s5.5%202.31%205.5%205.25c0%201.516-.701%202.5-1.328%203.259q-.142.172-.268.319c-.207.245-.383.453-.541.681-.208.3-.33.565-.37.847a.751.751%200%200%201-1.485-.212c.084-.593.337-1.078.621-1.489.203-.292.45-.584.673-.848q.113-.133.213-.253c.561-.679.985-1.32.985-2.304%200-2.06-1.637-3.75-4-3.75M5.75%2012h4.5a.75.75%200%200%201%200%201.5h-4.5a.75.75%200%200%201%200-1.5M6%2015.25a.75.75%200%200%201%20.75-.75h2.5a.75.75%200%200%201%200%201.5h-2.5a.75.75%200%200%201-.75-.75%22/%3E%3C/svg%3E');--md-admonition-icon--warning:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M6.457%201.047c.659-1.234%202.427-1.234%203.086%200l6.082%2011.378A1.75%201.75%200%200%201%2014.082%2015H1.918a1.75%201.75%200%200%201-1.543-2.575Zm1.763.707a.25.25%200%200%200-.44%200L1.698%2013.132a.25.25%200%200%200%20.22.368h12.164a.25.25%200%200%200%20.22-.368Zm.53%203.996v2.5a.75.75%200%200%201-1.5%200v-2.5a.75.75%200%200%201%201.5%200M9%2011a1%201%200%201%201-2%200%201%201%200%200%201%202%200%22/%3E%3C/svg%3E');--md-admonition-icon--danger:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M9.504.43a1.516%201.516%200%200%201%202.437%201.713L10.415%205.5h2.123c1.57%200%202.346%201.909%201.22%203.004l-7.34%207.142a1.25%201.25%200%200%201-.871.354h-.302a1.25%201.25%200%200%201-1.157-1.723L5.633%2010.5H3.462c-1.57%200-2.346-1.909-1.22-3.004zm1.047%201.074L3.286%208.571A.25.25%200%200%200%203.462%209H6.75a.75.75%200%200%201%20.694%201.034l-1.713%204.188%206.982-6.793A.25.25%200%200%200%2012.538%207H9.25a.75.75%200%200%201-.683-1.06l2.008-4.418.003-.006-.004-.009-.006-.006-.008-.001q-.005%200-.009.004%22/%3E%3C/svg%3E');--md-admonition-icon--example:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M5%205.782V2.5h-.25a.75.75%200%200%201%200-1.5h6.5a.75.75%200%200%201%200%201.5H11v3.282l3.666%205.76C15.619%2013.04%2014.543%2015%2012.767%2015H3.233c-1.776%200-2.852-1.96-1.899-3.458Zm-2.4%206.565a.75.75%200%200%200%20.633%201.153h9.534a.75.75%200%200%200%20.633-1.153L12.225%2010.5h-8.45ZM9.5%202.5h-3V6c0%20.143-.04.283-.117.403L4.73%209h6.54L9.617%206.403A.75.75%200%200%201%209.5%206Z%22/%3E%3C/svg%3E');--md-admonition-icon--quote:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M1.75%202.5h10.5a.75.75%200%200%201%200%201.5H1.75a.75.75%200%200%201%200-1.5m4%205h8.5a.75.75%200%200%201%200%201.5h-8.5a.75.75%200%200%201%200-1.5m0%205h8.5a.75.75%200%200%201%200%201.5h-8.5a.75.75%200%200%201%200-1.5M2.5%207.75v6a.75.75%200%200%201-1.5%200v-6a.75.75%200%200%201%201.5%200%22/%3E%3C/svg%3E');}</style>
+
+
+
+    
+  <link rel="stylesheet" href="../../assets/kokeb/kokeb.css">
+
+    
+      
+    
+    <link rel="stylesheet" media="print" onload="this.media='all'" href="../../assets/kokeb/fonts.css">
+  <noscript><link rel="stylesheet" href="../../assets/kokeb/fonts.css"></noscript>
+
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  
+  
+  
+  <meta name="theme-color" content="#0e1726" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#1b2140" media="(prefers-color-scheme: dark)">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Kokeb Labs">
+  <meta property="og:title" content="rtos - kb-core">
+  <meta property="og:description" content="Utilities, RTOS wrapper, bus and pin interfaces and driver handlers between the Kokeb Labs drivers and a board HAL.">
+  <meta property="og:url" content="https://kokeb-labs.github.io/kb-core/latest/parts/rtos/">
+  <meta name="twitter:card" content="summary">
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#kbrtos" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+          <aside class="md-banner md-banner--warning">
+            <div class="md-banner__inner md-grid md-typeset">
+              
+  You are reading the documentation of an older version.
+  <a href="https://kokeb-labs.github.io/kb-core/"><strong>Go to the latest version.</strong></a>
+
+            </div>
+            <script>var el=document.querySelector("[data-md-component=outdated]"),base=new URL("../.."),outdated=__md_get("__outdated",sessionStorage,base);!0===outdated&&el&&(el.hidden=!1)</script>
+          </aside>
+        
+      </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="kb-core" class="md-header__button md-logo" aria-label="kb-core" data-md-component="logo">
+      
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" aria-hidden="true" focusable="false" class="kb-mark">
+    <g transform="translate(1.28 1.28) scale(0.12000)"><path d="M232,66 Q265.29,246.71 446,280 Q265.29,313.29 232,494 Q198.71,313.29 18,280 Q198.71,246.71 232,66 Z" fill="#F4B942"/><path d="M386,38 Q399.69,112.31 474,126 Q399.69,139.69 386,214 Q372.31,139.69 298,126 Q372.31,112.31 386,38 Z" fill="#0E1726" stroke="#0E1726" stroke-width="24" stroke-linejoin="round"/><path d="M386,38 Q399.69,112.31 474,126 Q399.69,139.69 386,214 Q372.31,139.69 298,126 Q372.31,112.31 386,38 Z" fill="#D9773B"/></g>
+  </svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          
+          <a class="kb-org" href="https://kokeb-labs.github.io/" title="All Kokeb Labs documentation">Kokeb Labs</a>
+          <span class="kb-org__sep" aria-hidden="true">/</span>
+          <span class="md-ellipsis">
+            kb-core
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              rtos
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Follow the system theme"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Follow the system theme" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/kokeb-labs/kb-core" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    kokeb-labs/kb-core
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../architecture/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Concepts
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../utils/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Parts
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../examples/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Examples
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../configurator/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Configurator
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../handlers/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Handlers
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../design/plan/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Design
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../testing/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Quality
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../versioning/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Project
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="kb-core" class="md-nav__button md-logo" aria-label="kb-core" data-md-component="logo">
+      
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" aria-hidden="true" focusable="false" class="kb-mark">
+    <g transform="translate(1.28 1.28) scale(0.12000)"><path d="M232,66 Q265.29,246.71 446,280 Q265.29,313.29 232,494 Q198.71,313.29 18,280 Q198.71,246.71 232,66 Z" fill="#F4B942"/><path d="M386,38 Q399.69,112.31 474,126 Q399.69,139.69 386,214 Q372.31,139.69 298,126 Q372.31,112.31 386,38 Z" fill="#0E1726" stroke="#0E1726" stroke-width="24" stroke-linejoin="round"/><path d="M386,38 Q399.69,112.31 474,126 Q399.69,139.69 386,214 Q372.31,139.69 298,126 Q372.31,112.31 386,38 Z" fill="#D9773B"/></g>
+  </svg>
+
+    </a>
+    kb-core
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/kokeb-labs/kb-core" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    kokeb-labs/kb-core
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../architecture/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concepts
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Parts
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Parts
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../utils/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    utils
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    rtos
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    rtos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#life-cycle-construct-inert-create-explicitly" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Life cycle: construct inert, create explicitly
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#threads" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Threads
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#backends" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Backends
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#misra-c2023-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MISRA C++:2023 notes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tests
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rtos-threadx/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    rtos on ThreadX
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dma/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    dma
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../interfaces/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    interfaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../handlers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    handlers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Examples
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../configurator/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configurator
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../handlers/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Handlers
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../design/plan/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../testing/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quality
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../versioning/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Project
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#life-cycle-construct-inert-create-explicitly" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Life cycle: construct inert, create explicitly
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#threads" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Threads
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#backends" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Backends
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#misra-c2023-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MISRA C++:2023 notes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tests
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/kokeb-labs/kb-core/edit/main/docs/parts/rtos.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="kbrtos">kb::rtos<a class="headerlink" href="#kbrtos" title="Permanent link">&para;</a></h1>
+<p>The only place a scheduler is touched. A small typed API (header-only, no RTOS type in any signature) over one
+backend chosen by <code>KB_RTOS</code>. Depends on <code>kb::utils</code>; applications, the HAL, handlers and ports may all use it.</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">"kb/rtos/rtos.hpp"</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Header</th>
+<th>Gives</th>
+<th>Contract in one line</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>time.hpp</code></td>
+<td><code>SleepFor</code>, <code>Periodic</code>, <code>Now</code>, <code>TickRateHz</code>, <code>ToTicksAtLeast</code>, <code>Yield</code></td>
+<td>A sleep or timeout is never shorter than asked: ticks rounded up, plus one</td>
+</tr>
+<tr>
+<td><code>mutex.hpp</code></td>
+<td><code>Mutex</code>, <code>LockGuard</code>, <code>RecursiveMutex</code>, <code>RecursiveLockGuard</code></td>
+<td>Every lock is bounded; a failed <code>TryLockFor</code> waited at least its timeout; priority inheriting where the RTOS has it</td>
+</tr>
+<tr>
+<td><code>semaphore.hpp</code></td>
+<td><code>Semaphore</code></td>
+<td>Counting, bounded by its maximum; <code>GiveFromIsr</code> is ISR-safe</td>
+</tr>
+<tr>
+<td><code>queue.hpp</code></td>
+<td><code>Queue&lt;T, N&gt;</code></td>
+<td>N copies of a trivially copyable T, storage inside the object (on ThreadX each slot is whole kernel words); <code>SendFromIsr</code> is ISR-safe</td>
+</tr>
+<tr>
+<td><code>event_flags.hpp</code></td>
+<td><code>EventFlags</code></td>
+<td>24 flags; <code>WaitAny</code>/<code>WaitAll</code> return the flags seen; <code>SetFromIsr</code> is ISR-safe</td>
+</tr>
+<tr>
+<td><code>timer.hpp</code></td>
+<td><code>Timer</code></td>
+<td>Periodic or one-shot callback in the timer context; never blocks</td>
+</tr>
+<tr>
+<td><code>critical_section.hpp</code></td>
+<td><code>CriticalSection</code></td>
+<td>RAII mask of interrupts and preemption; nests</td>
+</tr>
+<tr>
+<td><code>thread.hpp</code></td>
+<td><code>Thread&lt;Derived, StackBytes&gt;</code>, <code>ThreadConfig</code>, <code>ThreadStats</code>, <code>ThreadState</code></td>
+<td>CRTP base (ADR-0006 register): static stack, fixed-rate loop, verified start, stop, park and resume, statistics, stack high-water</td>
+</tr>
+</tbody>
+</table>
+<h2 id="life-cycle-construct-inert-create-explicitly">Life cycle: construct inert, create explicitly<a class="headerlink" href="#life-cycle-construct-inert-create-explicitly" title="Permanent link">&para;</a></h2>
+<p>Every kb-core RTOS object has a <code>constexpr</code> constructor that does nothing an RTOS could notice, so it can be a
+static object without the static-initialisation hazards of RTOS calls before the scheduler runs. It becomes usable
+with <code>Create()</code> (<code>Start()</code> for a thread), which returns <code>kb::Result&lt;void&gt;</code> and fails closed: <code>AlreadyStarted</code> on a
+second call, <code>InvalidArgument</code> for a bad count or period, the backend's status otherwise. Every call on an object
+that was never created fails harmlessly (returns false or 0).</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">kb</span><span class="o">::</span><span class="n">rtos</span><span class="o">::</span><span class="n">Queue</span><span class="o">&lt;</span><span class="n">Sample</span><span class="p">,</span><span class="w"> </span><span class="mi">16</span><span class="o">&gt;</span><span class="w"> </span><span class="n">g_samples</span><span class="p">{};</span><span class="w">      </span><span class="c1">// static, no RTOS call</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">kb</span><span class="o">::</span><span class="n">rtos</span><span class="o">::</span><span class="n">Mutex</span><span class="w"> </span><span class="n">g_bus</span><span class="p">{};</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="n">kb</span><span class="o">::</span><span class="n">Status</span><span class="w"> </span><span class="nf">StartAll</span><span class="p">()</span><span class="w"> </span><span class="k">noexcept</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">g_samples</span><span class="p">.</span><span class="n">Create</span><span class="p">().</span><span class="n">IsOk</span><span class="p">()</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="o">!</span><span class="n">g_bus</span><span class="p">.</span><span class="n">Create</span><span class="p">().</span><span class="n">IsOk</span><span class="p">())</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">kb</span><span class="o">::</span><span class="n">Status</span><span class="o">::</span><span class="n">Fault</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">kb</span><span class="o">::</span><span class="n">Status</span><span class="o">::</span><span class="n">Ok</span><span class="p">;</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="p">}</span>
+</span></code></pre></div>
+<h2 id="threads">Threads<a class="headerlink" href="#threads" title="Permanent link">&para;</a></h2>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">Sampler</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">kb</span><span class="o">::</span><span class="n">rtos</span><span class="o">::</span><span class="n">Thread</span><span class="o">&lt;</span><span class="n">Sampler</span><span class="p">,</span><span class="w"> </span><span class="mi">4096U</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="k">public</span><span class="o">:</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="n">Setup</span><span class="p">()</span><span class="w"> </span><span class="k">noexcept</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">sensor_</span><span class="p">.</span><span class="n">Start</span><span class="p">().</span><span class="n">IsOk</span><span class="p">();</span><span class="w"> </span><span class="p">}</span><span class="w">        </span><span class="c1">// false: the thread ends Failed</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="n">Step</span><span class="p">()</span><span class="w"> </span><span class="k">noexcept</span><span class="w"> </span><span class="p">{</span><span class="w">                                          </span><span class="c1">// false: the loop ends</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">g_samples</span><span class="p">.</span><span class="n">SendFor</span><span class="p">(</span><span class="n">sensor_</span><span class="p">.</span><span class="n">Read</span><span class="p">(),</span><span class="w"> </span><span class="n">kb</span><span class="o">::</span><span class="n">Milliseconds</span><span class="p">{</span><span class="mi">2U</span><span class="p">});</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="n">Cleanup</span><span class="p">()</span><span class="w"> </span><span class="k">noexcept</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">sensor_</span><span class="p">.</span><span class="n">Stop</span><span class="p">();</span><span class="w"> </span><span class="p">}</span><span class="w">                     </span><span class="c1">// always runs last</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="p">};</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="n">Sampler</span><span class="w"> </span><span class="n">g_sampler</span><span class="p">{};</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="n">kb</span><span class="o">::</span><span class="n">rtos</span><span class="o">::</span><span class="n">ThreadConfig</span><span class="w"> </span><span class="n">cfg</span><span class="p">{};</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="n">cfg</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"sampler"</span><span class="p">;</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="n">cfg</span><span class="p">.</span><span class="n">priority</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5U</span><span class="p">;</span>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="n">cfg</span><span class="p">.</span><span class="n">period</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">kb</span><span class="o">::</span><span class="n">Milliseconds</span><span class="p">{</span><span class="mi">10U</span><span class="p">};</span><span class="w">                               </span><span class="c1">// a 10 ms grid; 0 runs back to back</span>
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="w"> </span><span class="n">started</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">g_sampler</span><span class="p">.</span><span class="n">Start</span><span class="p">(</span><span class="n">cfg</span><span class="p">);</span>
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="p">...</span>
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="n">g_sampler</span><span class="p">.</span><span class="n">RequestStop</span><span class="p">();</span>
+</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="k">const</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">ended</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">g_sampler</span><span class="p">.</span><span class="n">Join</span><span class="p">(</span><span class="n">kb</span><span class="o">::</span><span class="n">Milliseconds</span><span class="p">{</span><span class="mi">100U</span><span class="p">});</span>
+</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="k">const</span><span class="w"> </span><span class="n">kb</span><span class="o">::</span><span class="n">rtos</span><span class="o">::</span><span class="n">ThreadStats</span><span class="w"> </span><span class="n">stats</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">g_sampler</span><span class="p">.</span><span class="n">Stats</span><span class="p">();</span><span class="w">           </span><span class="c1">// steps, overruns, max_step_us</span>
+</span></code></pre></div>
+<p>The loop wakes on a fixed grid from its first step: a late step does not shift later ones, and every wake-up that
+had already passed is counted as an overrun.</p>
+<table>
+<thead>
+<tr>
+<th>Call</th>
+<th>Does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>StartAndWaitToVerify(cfg, timeout)</code></td>
+<td><code>Start()</code>, then waits for <code>Setup()</code> to return: <code>Ok</code>, <code>Fault</code> (Setup failed, Cleanup ran) or <code>Timeout</code></td>
+</tr>
+<tr>
+<td><code>RequestPark()</code> / <code>Resume()</code> / <code>ResumeFromIsr()</code></td>
+<td>Parks the loop after the current step until resumed; the grid restarts on resume, so a park is not counted as overruns; <code>RequestStop()</code> also ends a park; <code>IsParked()</code></td>
+</tr>
+<tr>
+<td><code>StackFreeBytes()</code></td>
+<td>The fewest free stack bytes seen, while the thread is starting or running; <code>Unsupported</code> where the backend cannot measure (none, host, ThreadX without stack checking)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="backends">Backends<a class="headerlink" href="#backends" title="Permanent link">&para;</a></h2>
+<figure class="kb-figure">
+<img src="../../diagrams/rtos-backends.svg#only-light" alt="The kb::rtos API reaches one backend through a single seam: none, FreeRTOS, host (tests only) or ThreadX; FreeRTOS and ThreadX reach their kernel, which is SOUP, through boundary files and are tested on fake kernels." width="1200" height="711"><img src="../../diagrams/rtos-backends.dark.svg#only-dark" alt="The kb::rtos API reaches one backend through a single seam: none, FreeRTOS, host (tests only) or ThreadX; FreeRTOS and ThreadX reach their kernel, which is SOUP, through boundary files and are tested on fake kernels." width="1200" height="711">
+<figcaption>kb::rtos backends</figcaption>
+</figure>
+
+<details class="kb-figure-desc">
+<summary>Figure description and sources</summary>
+<p>One API, one seam, four backends. The kb::rtos API (components/lib/rtos/inc) reaches a backend through kb::rtos::backend (backend.hpp). The none backend is for host tests and bare-metal bring-up; FreeRTOS and ThreadX each have boundary files that reach the kernel, which is SOUP, either a product's copy or the pinned or ESP-IDF one; the host backend (std::thread) is for tests only. FreeRTOS and ThreadX tests run against a fake kernel.</p>
+</details>
+<table>
+<thead>
+<tr>
+<th><code>KB_RTOS</code></th>
+<th>Folder</th>
+<th>Use</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>NONE</code></td>
+<td><code>components/lib/rtos/backends/none/</code></td>
+<td>Host tests, bare-metal bring-up</td>
+<td>One context, deterministic fake clock (<code>kb/rtos/none/control.hpp</code>); timers fire as time advances; threads <code>Unsupported</code></td>
+</tr>
+<tr>
+<td><code>FREERTOS</code></td>
+<td><code>components/lib/rtos/backends/freertos/</code></td>
+<td>ESP32 (default), any FreeRTOS target</td>
+<td>Static API only; 32-bit ticks; ESP-IDF builds it into the component <code>kb</code></td>
+</tr>
+<tr>
+<td><code>HOST</code></td>
+<td><code>components/ports/host/</code></td>
+<td>PC tests with real threads</td>
+<td>std::thread; outside the MISRA claim; never built for a target</td>
+</tr>
+<tr>
+<td><code>THREADX</code></td>
+<td><code>components/lib/rtos/backends/threadx/</code></td>
+<td>Eclipse ThreadX targets (STM32 next)</td>
+<td>One boundary file; a product's kernel or the pinned <code>third_party/threadx</code>; <a href="../rtos-threadx/">ThreadX backend</a></td>
+</tr>
+</tbody>
+</table>
+<p>Each native object lives in opaque storage inside the kb object (<code>detail::OpaqueStorage</code>), sized and aligned in
+<code>backend.hpp</code>; every backend <code>static_assert</code>s that its object fits. A wait without a limit is <code>kb::kMaxMilliseconds</code>.
+Give every <code>kb::rtos</code> object static storage: objects are never deleted, and ThreadX keeps created objects on kernel
+lists.</p>
+<h2 id="misra-c2023-notes">MISRA C++:2023 notes<a class="headerlink" href="#misra-c2023-notes" title="Permanent link">&para;</a></h2>
+<ul>
+<li>The API headers and the <code>none</code> backend: zero findings, zero deviations (level <code>high</code>).</li>
+<li>The FreeRTOS backend is two boundary files (<code>deviations/boundary-files.yml</code>). FreeRTOS headers are SOUP, reached
+  with <code>-isystem</code>; a finding at a FreeRTOS call site (a macro of the kernel API, a cast of the opaque storage to the
+  static buffer type) is a recorded deviation in <code>deviations/deviations.yml</code>, cited at the line.</li>
+<li>The ThreadX backend is one boundary file (<code>threadx_boundary.cpp</code>) under the same records; <code>threadx_isr.cpp</code>
+  includes no ThreadX header. The ThreadX sources are SOUP: listed, pinned, never scanned.</li>
+<li>The <code>host</code> backend and the test fakes are test code, outside the claim.</li>
+</ul>
+<h2 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
+<p><a href="../../examples/"><code>examples/host/rtos_thread/</code></a> runs on the <code>host</code> backend on a PC and is built and run by CI; the
+ESP32 port's <code>kb_rtos_smoke</code> is the same program over FreeRTOS. Its source is shown by snippet includes.</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1">// A thread is a class: Setup runs once, Step runs on the period until it returns false, Cleanup</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="c1">// runs last. It gets the queue and the flags it works with by pointer, so the example needs no</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="c1">// global.</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="k">class</span><span class="w"> </span><span class="nc">Ticker</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">kb</span><span class="o">::</span><span class="n">rtos</span><span class="o">::</span><span class="n">Thread</span><span class="o">&lt;</span><span class="n">Ticker</span><span class="p">,</span><span class="w"> </span><span class="mi">4096U</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="k">public</span><span class="o">:</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">  </span><span class="n">Ticker</span><span class="p">(</span><span class="n">kb</span><span class="o">::</span><span class="n">rtos</span><span class="o">::</span><span class="n">Queue</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">queue</span><span class="p">,</span><span class="w"> </span><span class="n">kb</span><span class="o">::</span><span class="n">rtos</span><span class="o">::</span><span class="n">EventFlags</span><span class="o">&amp;</span><span class="w"> </span><span class="n">flags</span><span class="p">)</span><span class="w"> </span><span class="k">noexcept</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">      </span><span class="o">:</span><span class="w"> </span><span class="n">queue_</span><span class="p">{</span><span class="o">&amp;</span><span class="n">queue</span><span class="p">},</span><span class="w"> </span><span class="n">flags_</span><span class="p">{</span><span class="o">&amp;</span><span class="n">flags</span><span class="p">}</span><span class="w"> </span><span class="p">{}</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="n">Setup</span><span class="p">()</span><span class="w"> </span><span class="k">noexcept</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">    </span><span class="n">count_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0U</span><span class="p">;</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="n">Step</span><span class="p">()</span><span class="w"> </span><span class="k">noexcept</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">sent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">queue_</span><span class="o">-&gt;</span><span class="n">SendFor</span><span class="p">(</span><span class="n">count_</span><span class="p">,</span><span class="w"> </span><span class="n">kb</span><span class="o">::</span><span class="n">Milliseconds</span><span class="p">{</span><span class="mi">10U</span><span class="p">});</span>
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="w">    </span><span class="o">++</span><span class="n">count_</span><span class="p">;</span>
+</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">sent</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">count_</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">5U</span><span class="p">);</span>
+</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="n">Cleanup</span><span class="p">()</span><span class="w"> </span><span class="k">noexcept</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="w">    </span><span class="n">flags_</span><span class="o">-&gt;</span><span class="n">Set</span><span class="p">(</span><span class="mh">0x1U</span><span class="p">);</span>
+</span><span id="__span-3-19"><a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-3-20"><a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a>
+</span><span id="__span-3-21"><a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a><span class="k">private</span><span class="o">:</span>
+</span><span id="__span-3-22"><a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a><span class="w">  </span><span class="n">kb</span><span class="o">::</span><span class="n">rtos</span><span class="o">::</span><span class="n">Queue</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="o">&gt;*</span><span class="w"> </span><span class="n">queue_</span><span class="p">;</span>
+</span><span id="__span-3-23"><a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a><span class="w">  </span><span class="n">kb</span><span class="o">::</span><span class="n">rtos</span><span class="o">::</span><span class="n">EventFlags</span><span class="o">*</span><span class="w"> </span><span class="n">flags_</span><span class="p">;</span>
+</span><span id="__span-3-24"><a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a><span class="w">  </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">count_</span><span class="p">{</span><span class="mi">0U</span><span class="p">};</span>
+</span><span id="__span-3-25"><a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a><span class="p">};</span>
+</span><span id="__span-3-26"><a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a>
+</span><span id="__span-3-27"><a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a><span class="kt">void</span><span class="w"> </span><span class="nf">OnTimer</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">context</span><span class="p">)</span><span class="w"> </span><span class="k">noexcept</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-28"><a id="__codelineno-3-28" name="__codelineno-3-28" href="#__codelineno-3-28"></a><span class="w">  </span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">kb</span><span class="o">::</span><span class="n">rtos</span><span class="o">::</span><span class="n">EventFlags</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">context</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">Set</span><span class="p">(</span><span class="mh">0x2U</span><span class="p">);</span>
+</span><span id="__span-3-29"><a id="__codelineno-3-29" name="__codelineno-3-29" href="#__codelineno-3-29"></a><span class="p">}</span>
+</span></code></pre></div>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kt">bool</span><span class="w"> </span><span class="nf">RunChecks</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="n">kb</span><span class="o">::</span><span class="n">rtos</span><span class="o">::</span><span class="n">Queue</span><span class="o">&lt;</span><span class="kt">uint32_t</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="o">&gt;</span><span class="w"> </span><span class="n">queue</span><span class="p">{};</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="n">kb</span><span class="o">::</span><span class="n">rtos</span><span class="o">::</span><span class="n">Mutex</span><span class="w"> </span><span class="n">mutex</span><span class="p">{};</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span><span class="n">kb</span><span class="o">::</span><span class="n">rtos</span><span class="o">::</span><span class="n">EventFlags</span><span class="w"> </span><span class="n">flags</span><span class="p">{};</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">  </span><span class="n">kb</span><span class="o">::</span><span class="n">rtos</span><span class="o">::</span><span class="n">Timer</span><span class="w"> </span><span class="n">timer</span><span class="p">{};</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">  </span><span class="n">Ticker</span><span class="w"> </span><span class="n">ticker</span><span class="p">{</span><span class="n">queue</span><span class="p">,</span><span class="w"> </span><span class="n">flags</span><span class="p">};</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="n">ok</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">queue</span><span class="p">.</span><span class="n">Create</span><span class="p">().</span><span class="n">IsOk</span><span class="p">()</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">mutex</span><span class="p">.</span><span class="n">Create</span><span class="p">().</span><span class="n">IsOk</span><span class="p">()</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">flags</span><span class="p">.</span><span class="n">Create</span><span class="p">().</span><span class="n">IsOk</span><span class="p">();</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">  </span><span class="n">ok</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ok</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">timer</span><span class="p">.</span><span class="n">Create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">OnTimer</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">flags</span><span class="p">,</span><span class="w"> </span><span class="n">kb</span><span class="o">::</span><span class="n">Milliseconds</span><span class="p">{</span><span class="mi">20U</span><span class="p">},</span><span class="w"> </span><span class="nb">false</span><span class="p">).</span><span class="n">IsOk</span><span class="p">()</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">timer</span><span class="p">.</span><span class="n">Start</span><span class="p">();</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">  </span><span class="n">kb</span><span class="o">::</span><span class="n">rtos</span><span class="o">::</span><span class="n">ThreadConfig</span><span class="w"> </span><span class="n">config</span><span class="p">{};</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">  </span><span class="n">config</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"kb_ticker"</span><span class="p">;</span>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">  </span><span class="n">config</span><span class="p">.</span><span class="n">priority</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5U</span><span class="p">;</span>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="w">  </span><span class="n">config</span><span class="p">.</span><span class="n">period</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">kb</span><span class="o">::</span><span class="n">Milliseconds</span><span class="p">{</span><span class="mi">10U</span><span class="p">};</span>
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="w">  </span><span class="n">ok</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ok</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">ticker</span><span class="p">.</span><span class="n">Start</span><span class="p">(</span><span class="n">config</span><span class="p">).</span><span class="n">IsOk</span><span class="p">();</span>
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="w">  </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0U</span><span class="p">;</span>
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">expected</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0U</span><span class="p">;</span><span class="w"> </span><span class="n">ok</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">expected</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">5U</span><span class="p">);</span><span class="w"> </span><span class="o">++</span><span class="n">expected</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="w">    </span><span class="n">ok</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">queue</span><span class="p">.</span><span class="n">ReceiveFor</span><span class="p">(</span><span class="n">value</span><span class="p">,</span><span class="w"> </span><span class="n">kb</span><span class="o">::</span><span class="n">Milliseconds</span><span class="p">{</span><span class="mi">100U</span><span class="p">})</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">value</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">expected</span><span class="p">);</span>
+</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a><span class="w">  </span><span class="n">ok</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ok</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">((</span><span class="n">flags</span><span class="p">.</span><span class="n">WaitAll</span><span class="p">(</span><span class="mh">0x3U</span><span class="p">,</span><span class="w"> </span><span class="n">kb</span><span class="o">::</span><span class="n">Milliseconds</span><span class="p">{</span><span class="mi">200U</span><span class="p">})</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0x3U</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mh">0x3U</span><span class="p">);</span>
+</span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a><span class="w">  </span><span class="n">ok</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ok</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">ticker</span><span class="p">.</span><span class="n">Join</span><span class="p">(</span><span class="n">kb</span><span class="o">::</span><span class="n">Milliseconds</span><span class="p">{</span><span class="mi">100U</span><span class="p">});</span>
+</span><span id="__span-4-20"><a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a><span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="n">kb</span><span class="o">::</span><span class="n">Instant</span><span class="w"> </span><span class="n">before</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">kb</span><span class="o">::</span><span class="n">rtos</span><span class="o">::</span><span class="n">Now</span><span class="p">();</span>
+</span><span id="__span-4-21"><a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a><span class="w">  </span><span class="n">kb</span><span class="o">::</span><span class="n">rtos</span><span class="o">::</span><span class="n">SleepFor</span><span class="p">(</span><span class="n">kb</span><span class="o">::</span><span class="n">Milliseconds</span><span class="p">{</span><span class="mi">5U</span><span class="p">});</span>
+</span><span id="__span-4-22"><a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a><span class="w">  </span><span class="n">ok</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ok</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">kb</span><span class="o">::</span><span class="n">utils</span><span class="o">::</span><span class="n">ElapsedUs</span><span class="p">(</span><span class="n">kb</span><span class="o">::</span><span class="n">rtos</span><span class="o">::</span><span class="n">Now</span><span class="p">(),</span><span class="w"> </span><span class="n">before</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">5000U</span><span class="p">);</span>
+</span><span id="__span-4-23"><a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a><span class="w">  </span><span class="n">ok</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ok</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">mutex</span><span class="p">.</span><span class="n">TryLockFor</span><span class="p">(</span><span class="n">kb</span><span class="o">::</span><span class="n">Milliseconds</span><span class="p">{</span><span class="mi">1U</span><span class="p">});</span>
+</span><span id="__span-4-24"><a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a><span class="w">  </span><span class="n">mutex</span><span class="p">.</span><span class="n">Unlock</span><span class="p">();</span>
+</span><span id="__span-4-25"><a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">ok</span><span class="p">;</span>
+</span><span id="__span-4-26"><a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a><span class="p">}</span>
+</span></code></pre></div>
+<h2 id="tests">Tests<a class="headerlink" href="#tests" title="Permanent link">&para;</a></h2>
+<ul>
+<li><code>kb_rtos_tests_none</code>, <code>kb_rtos_tests_freertos</code> and <code>kb_rtos_tests_threadx</code>: one contract suite
+  (<code>test_rtos_single.cpp</code>) run over the <code>none</code> backend and over the FreeRTOS and ThreadX boundaries with their fake
+  kernels, with exact tick counts.</li>
+<li><code>test_threadx_seam.cpp</code>: the ThreadX seam (<a href="../rtos-threadx/#tests">ThreadX backend</a>); with
+  <code>-DKB_THREADX_HOST_TESTS=ON</code> on Linux, <code>kb_rtos_tests_threadx_linux</code> runs the threaded suite on the real kernel.</li>
+<li><code>test_freertos_seam.cpp</code>: creation failures, task parameters (stack depth, clamped priority), the whole thread
+  life cycle, ISR context switches, critical sections, the 64-bit clock across a tick wrap.</li>
+<li><code>kb_rtos_tests_host</code>: real threads and contention (producer and consumer, bounded lock refused for at least its
+  timeout, timers, periodic thread, recursive mutex, verified start, park and resume); the same file is the
+  threaded suite on ThreadX.</li>
+<li><code>compile_fail/</code>: non-copyable items, bare-integer sleeps, a thread without <code>Step</code>, copied RTOS objects.</li>
+<li>ESP32-C6: <code>components/ports/esp32/examples</code> app <code>kb_rtos_smoke</code>, built in CI with ESP-IDF v5.5.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../utils/" class="md-footer__link md-footer__link--prev" aria-label="Previous: utils">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                utils
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../rtos-threadx/" class="md-footer__link md-footer__link--next" aria-label="Next: rtos on ThreadX">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                rtos on ThreadX
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      
+<div class="md-copyright kb-footer">
+  <nav class="kb-footer__links" aria-label="Kokeb Labs">
+    <a href="https://kokeb-labs.github.io/">Kokeb Labs docs</a>
+    <a href="https://github.com/kokeb-labs">GitHub organisation</a>
+    
+      <a href="https://github.com/kokeb-labs/kb-core">Source</a>
+      <a href="https://github.com/kokeb-labs/kb-core/issues">Report an issue</a>
+      <a href="https://github.com/kokeb-labs/kb-core/blob/main/LICENSE">License</a>
+    
+  </nav>
+  
+    <div class="md-copyright__highlight">Copyright (c) 2026 The kb-core authors</div>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://github.com/kokeb-labs" target="_blank" rel="noopener" title="Kokeb Labs on GitHub" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "navigation.tracking", "navigation.instant", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.action.edit", "content.tabs.link", "toc.follow"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"alias": true, "default": "latest", "provider": "mike"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
+      
+        <script src="../../search/main.js"></script>
+      
+    
+  </body>
+</html>

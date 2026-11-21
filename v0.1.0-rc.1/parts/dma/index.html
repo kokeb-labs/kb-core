@@ -1,0 +1,1941 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Utilities, RTOS wrapper, bus and pin interfaces and driver handlers between the Kokeb Labs drivers and a board HAL.">
+      
+      
+      
+        <link rel="canonical" href="https://kokeb-labs.github.io/kb-core/latest/parts/dma/">
+      
+      
+        <link rel="prev" href="../rtos-threadx/">
+      
+      
+        <link rel="next" href="../interfaces/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/kokeb/favicon.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+    
+    
+      
+        <title>dma - kb-core</title>
+      
+    
+    
+  
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+  
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+  
+  <style>:root{--md-admonition-icon--note:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M0%208a8%208%200%201%201%2016%200A8%208%200%200%201%200%208m8-6.5a6.5%206.5%200%201%200%200%2013%206.5%206.5%200%200%200%200-13M6.5%207.75A.75.75%200%200%201%207.25%207h1a.75.75%200%200%201%20.75.75v2.75h.25a.75.75%200%200%201%200%201.5h-2a.75.75%200%200%201%200-1.5h.25v-2h-.25a.75.75%200%200%201-.75-.75M8%206a1%201%200%201%201%200-2%201%201%200%200%201%200%202%22/%3E%3C/svg%3E');--md-admonition-icon--tip:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M8%201.5c-2.363%200-4%201.69-4%203.75%200%20.984.424%201.625.984%202.304l.214.253c.223.264.47.556.673.848.284.411.537.896.621%201.49a.75.75%200%200%201-1.484.211c-.04-.282-.163-.547-.37-.847a9%209%200%200%200-.542-.68q-.126-.149-.268-.32C3.201%207.75%202.5%206.766%202.5%205.25%202.5%202.31%204.863%200%208%200s5.5%202.31%205.5%205.25c0%201.516-.701%202.5-1.328%203.259q-.142.172-.268.319c-.207.245-.383.453-.541.681-.208.3-.33.565-.37.847a.751.751%200%200%201-1.485-.212c.084-.593.337-1.078.621-1.489.203-.292.45-.584.673-.848q.113-.133.213-.253c.561-.679.985-1.32.985-2.304%200-2.06-1.637-3.75-4-3.75M5.75%2012h4.5a.75.75%200%200%201%200%201.5h-4.5a.75.75%200%200%201%200-1.5M6%2015.25a.75.75%200%200%201%20.75-.75h2.5a.75.75%200%200%201%200%201.5h-2.5a.75.75%200%200%201-.75-.75%22/%3E%3C/svg%3E');--md-admonition-icon--warning:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M6.457%201.047c.659-1.234%202.427-1.234%203.086%200l6.082%2011.378A1.75%201.75%200%200%201%2014.082%2015H1.918a1.75%201.75%200%200%201-1.543-2.575Zm1.763.707a.25.25%200%200%200-.44%200L1.698%2013.132a.25.25%200%200%200%20.22.368h12.164a.25.25%200%200%200%20.22-.368Zm.53%203.996v2.5a.75.75%200%200%201-1.5%200v-2.5a.75.75%200%200%201%201.5%200M9%2011a1%201%200%201%201-2%200%201%201%200%200%201%202%200%22/%3E%3C/svg%3E');--md-admonition-icon--danger:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M9.504.43a1.516%201.516%200%200%201%202.437%201.713L10.415%205.5h2.123c1.57%200%202.346%201.909%201.22%203.004l-7.34%207.142a1.25%201.25%200%200%201-.871.354h-.302a1.25%201.25%200%200%201-1.157-1.723L5.633%2010.5H3.462c-1.57%200-2.346-1.909-1.22-3.004zm1.047%201.074L3.286%208.571A.25.25%200%200%200%203.462%209H6.75a.75.75%200%200%201%20.694%201.034l-1.713%204.188%206.982-6.793A.25.25%200%200%200%2012.538%207H9.25a.75.75%200%200%201-.683-1.06l2.008-4.418.003-.006-.004-.009-.006-.006-.008-.001q-.005%200-.009.004%22/%3E%3C/svg%3E');--md-admonition-icon--example:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M5%205.782V2.5h-.25a.75.75%200%200%201%200-1.5h6.5a.75.75%200%200%201%200%201.5H11v3.282l3.666%205.76C15.619%2013.04%2014.543%2015%2012.767%2015H3.233c-1.776%200-2.852-1.96-1.899-3.458Zm-2.4%206.565a.75.75%200%200%200%20.633%201.153h9.534a.75.75%200%200%200%20.633-1.153L12.225%2010.5h-8.45ZM9.5%202.5h-3V6c0%20.143-.04.283-.117.403L4.73%209h6.54L9.617%206.403A.75.75%200%200%201%209.5%206Z%22/%3E%3C/svg%3E');--md-admonition-icon--quote:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M1.75%202.5h10.5a.75.75%200%200%201%200%201.5H1.75a.75.75%200%200%201%200-1.5m4%205h8.5a.75.75%200%200%201%200%201.5h-8.5a.75.75%200%200%201%200-1.5m0%205h8.5a.75.75%200%200%201%200%201.5h-8.5a.75.75%200%200%201%200-1.5M2.5%207.75v6a.75.75%200%200%201-1.5%200v-6a.75.75%200%200%201%201.5%200%22/%3E%3C/svg%3E');}</style>
+
+
+
+    
+  <link rel="stylesheet" href="../../assets/kokeb/kokeb.css">
+
+    
+      
+    
+    <link rel="stylesheet" media="print" onload="this.media='all'" href="../../assets/kokeb/fonts.css">
+  <noscript><link rel="stylesheet" href="../../assets/kokeb/fonts.css"></noscript>
+
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  
+  
+  
+  <meta name="theme-color" content="#0e1726" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#1b2140" media="(prefers-color-scheme: dark)">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Kokeb Labs">
+  <meta property="og:title" content="dma - kb-core">
+  <meta property="og:description" content="Utilities, RTOS wrapper, bus and pin interfaces and driver handlers between the Kokeb Labs drivers and a board HAL.">
+  <meta property="og:url" content="https://kokeb-labs.github.io/kb-core/latest/parts/dma/">
+  <meta name="twitter:card" content="summary">
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#kbdma" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+          <aside class="md-banner md-banner--warning">
+            <div class="md-banner__inner md-grid md-typeset">
+              
+  You are reading the documentation of an older version.
+  <a href="https://kokeb-labs.github.io/kb-core/"><strong>Go to the latest version.</strong></a>
+
+            </div>
+            <script>var el=document.querySelector("[data-md-component=outdated]"),base=new URL("../.."),outdated=__md_get("__outdated",sessionStorage,base);!0===outdated&&el&&(el.hidden=!1)</script>
+          </aside>
+        
+      </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="kb-core" class="md-header__button md-logo" aria-label="kb-core" data-md-component="logo">
+      
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" aria-hidden="true" focusable="false" class="kb-mark">
+    <g transform="translate(1.28 1.28) scale(0.12000)"><path d="M232,66 Q265.29,246.71 446,280 Q265.29,313.29 232,494 Q198.71,313.29 18,280 Q198.71,246.71 232,66 Z" fill="#F4B942"/><path d="M386,38 Q399.69,112.31 474,126 Q399.69,139.69 386,214 Q372.31,139.69 298,126 Q372.31,112.31 386,38 Z" fill="#0E1726" stroke="#0E1726" stroke-width="24" stroke-linejoin="round"/><path d="M386,38 Q399.69,112.31 474,126 Q399.69,139.69 386,214 Q372.31,139.69 298,126 Q372.31,112.31 386,38 Z" fill="#D9773B"/></g>
+  </svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          
+          <a class="kb-org" href="https://kokeb-labs.github.io/" title="All Kokeb Labs documentation">Kokeb Labs</a>
+          <span class="kb-org__sep" aria-hidden="true">/</span>
+          <span class="md-ellipsis">
+            kb-core
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              dma
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Follow the system theme"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Follow the system theme" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/kokeb-labs/kb-core" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    kokeb-labs/kb-core
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../architecture/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Concepts
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../utils/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Parts
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../examples/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Examples
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../configurator/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Configurator
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../handlers/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Handlers
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../design/plan/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Design
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../testing/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Quality
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../versioning/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Project
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="kb-core" class="md-nav__button md-logo" aria-label="kb-core" data-md-component="logo">
+      
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" aria-hidden="true" focusable="false" class="kb-mark">
+    <g transform="translate(1.28 1.28) scale(0.12000)"><path d="M232,66 Q265.29,246.71 446,280 Q265.29,313.29 232,494 Q198.71,313.29 18,280 Q198.71,246.71 232,66 Z" fill="#F4B942"/><path d="M386,38 Q399.69,112.31 474,126 Q399.69,139.69 386,214 Q372.31,139.69 298,126 Q372.31,112.31 386,38 Z" fill="#0E1726" stroke="#0E1726" stroke-width="24" stroke-linejoin="round"/><path d="M386,38 Q399.69,112.31 474,126 Q399.69,139.69 386,214 Q372.31,139.69 298,126 Q372.31,112.31 386,38 Z" fill="#D9773B"/></g>
+  </svg>
+
+    </a>
+    kb-core
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/kokeb-labs/kb-core" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    kokeb-labs/kb-core
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../architecture/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concepts
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Parts
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Parts
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../utils/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    utils
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rtos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    rtos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rtos-threadx/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    rtos on ThreadX
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    dma
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    dma
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#ownership-a-buffer-is-either-the-cpus-or-the-devices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ownership: a buffer is either the CPU's or the device's
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#streams-copy-out-never-lend-the-ring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Streams: copy out, never lend the ring
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-a-port-implements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What a port implements
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#host-model-and-conformance-suite" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Host model and conformance suite
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compile-time-checks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Compile-time checks
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../interfaces/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    interfaces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../handlers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    handlers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Examples
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../configurator/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configurator
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../handlers/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Handlers
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../design/plan/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../testing/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quality
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../versioning/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Project
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#ownership-a-buffer-is-either-the-cpus-or-the-devices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ownership: a buffer is either the CPU's or the device's
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#streams-copy-out-never-lend-the-ring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Streams: copy out, never lend the ring
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-a-port-implements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What a port implements
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#host-model-and-conformance-suite" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Host model and conformance suite
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compile-time-checks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Compile-time checks
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/kokeb-labs/kb-core/edit/main/docs/parts/dma.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="kbdma">kb::dma<a class="headerlink" href="#kbdma" title="Permanent link">&para;</a></h1>
+<p>Buffers that a DMA master reads or writes, and the streams built on them, with the cache rules, the ownership rules
+and the failure rules written once. Header-only; depends on <code>kb::utils</code>. A port supplies the cache hooks and the
+register code; a driver or handler gets a buffer it cannot misuse. Decisions: <a href="../../adr/ADR-0030-dma-buffers-and-leases/">ADR-0030</a>,
+<a href="../../adr/ADR-0031-dma-stream-copy-out/">ADR-0031</a>, <a href="../../adr/ADR-0032-dma-region-policy/">ADR-0032</a>.</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">"kb/dma/dma.hpp"</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Header</th>
+<th>Gives</th>
+<th>Contract in one line</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>region.hpp</code></td>
+<td><code>Region</code> concept, <code>CachePolicy</code>, <code>Direction</code>, <code>MasterSet</code>, <code>RoundUp</code>, <code>RequireFrameFits</code>, <code>RequireReachable</code>, <code>RequireWholeUnits</code>, <code>RequireElementBytes</code></td>
+<td>A region states its cache policy, line size, alignment unit and the masters that reach it; a mismatch is a build error</td>
+</tr>
+<tr>
+<td><code>cache.hpp</code></td>
+<td><code>CacheOps</code> concept, <code>NoCacheOps</code></td>
+<td>The port's <code>Clean</code>, <code>Invalidate</code>, <code>Barrier</code>; called only over lines the buffer owns</td>
+</tr>
+<tr>
+<td><code>buffer.hpp</code></td>
+<td><code>Buffer&lt;Region, Bytes&gt;</code>, <code>Lease&lt;Region&gt;</code>, <code>PortKey&lt;Tag&gt;</code>, <code>BufferState</code>, <code>BufferStats</code></td>
+<td>Static, line-aligned and padded; the CPU has a view only while it owns the buffer; a lease is move-only</td>
+</tr>
+<tr>
+<td><code>completion.hpp</code></td>
+<td><code>CompletionLatch</code>, <code>Outcome</code>, <code>StopEvidence</code>, <code>CancelClaim</code></td>
+<td>A transfer completes once and is reported once, whatever races a cancel</td>
+</tr>
+<tr>
+<td><code>stream.hpp</code></td>
+<td><code>Stream&lt;Frame, Frames, Region&gt;</code>, <code>FrameView</code>, <code>StreamConfig</code>, <code>StreamStats</code>, <code>SupervisorAction</code></td>
+<td>Copy-out ring of at least two frames with sequence numbers, timestamps, overrun checks, a signed stall check and a restart policy</td>
+</tr>
+<tr>
+<td><code>capabilities.hpp</code></td>
+<td><code>Capabilities</code>, <code>DmaHealth</code>, <code>TransferMode</code></td>
+<td>A port says which path serves (DMA, interrupt or polled) and its ceiling; a fallback is never silent</td>
+</tr>
+</tbody>
+</table>
+<h2 id="ownership-a-buffer-is-either-the-cpus-or-the-devices">Ownership: a buffer is either the CPU's or the device's<a class="headerlink" href="#ownership-a-buffer-is-either-the-cpus-or-the-devices" title="Permanent link">&para;</a></h2>
+<figure class="kb-figure">
+<img src="../../diagrams/dma-lease.svg#only-light" alt="State machine with the states Cpu, Device and Quarantined: Lend moves a buffer from Cpu to Device, Complete or a proven Abort returns it to Cpu, an unproven Abort moves it to Quarantined, and Recover with proof returns it to Cpu." width="1200" height="552"><img src="../../diagrams/dma-lease.dark.svg#only-dark" alt="State machine with the states Cpu, Device and Quarantined: Lend moves a buffer from Cpu to Device, Complete or a proven Abort returns it to Cpu, an unproven Abort moves it to Quarantined, and Recover with proof returns it to Cpu." width="1200" height="552">
+<figcaption>Ownership of a DMA buffer</figcaption>
+</figure>
+
+<details class="kb-figure-desc">
+<summary>Figure description and sources</summary>
+<p>Three states. A buffer is constructed in Cpu: static, line-aligned and padded. Lend moves it from Cpu to Device after the owned cache lines are cleaned or invalidated and a barrier ran. Complete moves it from Device back to Cpu after a receive is invalidated and a barrier ran. Abort with proof that the bus master stopped also returns it to Cpu. Abort without proof, or a lease destroyed while the device owns the buffer, moves it from Device to Quarantined. Recover with proof, after the peripheral was re-initialised, moves it from Quarantined to Cpu. In Quarantined a Lend is refused with a Fault and the CPU view is empty. Only the port holds the key that moves a buffer between states (ADR-0030).</p>
+</details>
+<p>A <code>Buffer</code> is a static object: aligned to its region's unit, padded to a whole number of units, so cache
+maintenance over it never reaches a neighbour. <code>CpuView()</code> returns the data while the CPU owns the buffer and an
+empty span otherwise (counted in <code>Stats().cpu_denied</code>). The port moves it with a <code>PortKey</code>, a passkey only the
+port's own class can construct:</p>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">Lease</span><span class="o">&lt;</span><span class="n">Region</span><span class="o">&gt;</span><span class="w"> </span><span class="n">lease</span><span class="p">;</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">buffer</span><span class="p">.</span><span class="n">Lend</span><span class="p">(</span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="n">Direction</span><span class="o">::</span><span class="n">FromDevice</span><span class="p">,</span><span class="w"> </span><span class="n">used</span><span class="p">,</span><span class="w"> </span><span class="n">ops</span><span class="p">,</span><span class="w"> </span><span class="n">lease</span><span class="p">);</span><span class="w">   </span><span class="c1">// clean + invalidate the owned lines, barrier</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="c1">// ... program the DMA with lease.DeviceView(key) ...</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="n">lease</span><span class="p">.</span><span class="n">Complete</span><span class="p">(</span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="n">ops</span><span class="p">,</span><span class="w"> </span><span class="n">Outcome</span><span class="o">::</span><span class="n">Ok</span><span class="p">);</span><span class="w">                        </span><span class="c1">// invalidate, barrier, the CPU owns it again</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Call</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Lend</code></td>
+<td><code>Ok</code>; <code>InvalidArgument</code> (bad length, or the lease is already active); <code>Busy</code> (on the device); <code>Fault</code> (quarantined)</td>
+</tr>
+<tr>
+<td><code>Complete</code></td>
+<td>Memory back to the CPU; <code>InvalidArgument</code> for an inactive lease</td>
+</tr>
+<tr>
+<td><code>Abort(Confirmed)</code></td>
+<td>Memory back to the CPU: the port saw the enable bit read 0</td>
+</tr>
+<tr>
+<td><code>Abort(NotConfirmed)</code></td>
+<td><code>Fault</code>, the buffer is quarantined: nobody may touch it while a master may still write</td>
+</tr>
+<tr>
+<td><code>Recover</code></td>
+<td>Only with proof, after the peripheral was re-initialised</td>
+</tr>
+<tr>
+<td>destroying an active lease</td>
+<td>Quarantines the buffer</td>
+</tr>
+</tbody>
+</table>
+<p>Cache maintenance per policy:</p>
+<table>
+<thead>
+<tr>
+<th>Policy</th>
+<th>Transmit lend</th>
+<th>Receive lend</th>
+<th>Receive return</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Coherent</code>, <code>NonCacheable</code></td>
+<td>barrier</td>
+<td>barrier</td>
+<td>barrier</td>
+</tr>
+<tr>
+<td><code>Maintained</code></td>
+<td>clean the used lines</td>
+<td>clean, then invalidate all owned lines</td>
+<td>invalidate the used lines</td>
+</tr>
+</tbody>
+</table>
+<p>The receive lend cleans before it invalidates so that a dirty line cannot be evicted over the data the device is
+about to write. The default region on a part with a data cache is a non-cacheable block set up by the MPU
+(<a href="../../adr/ADR-0032-dma-region-policy/">ADR-0032</a>).</p>
+<h2 id="streams-copy-out-never-lend-the-ring">Streams: copy out, never lend the ring<a class="headerlink" href="#streams-copy-out-never-lend-the-ring" title="Permanent link">&para;</a></h2>
+<figure class="kb-figure">
+<img src="../../diagrams/dma-stream.svg#only-light" alt="Flow: the DMA ring raises an interrupt that copies each finished frame into a slot; the task takes a slot as a FrameView, a content check feeds the supervisor, which can switch to a declared fallback producer; a full ring drops the frame and flags the next one with Gap." width="1200" height="566" loading="lazy"><img src="../../diagrams/dma-stream.dark.svg#only-dark" alt="Flow: the DMA ring raises an interrupt that copies each finished frame into a slot; the task takes a slot as a FrameView, a content check feeds the supervisor, which can switch to a declared fallback producer; a full ring drops the frame and flags the next one with Gap." width="1200" height="566" loading="lazy">
+<figcaption>The DMA copy-out stream</figcaption>
+</figure>
+
+<details class="kb-figure-desc">
+<summary>Figure description and sources</summary>
+<p>Two rows of three steps. The DMA ring in the buffer holds two halves or N frames. A half or complete interrupt makes PublishFromDevice invalidate the lines, copy the finished frame out and stamp a sequence number, a time and a torn flag. It copies into a slot of a ring of at least two slots; when every slot is held the frame is dropped, counted as Full, and the next frame carries Gap(). The task takes a slot with TryTake and reads it through a move-only FrameView that releases on its end. Judge checks the content, and Supervise answers None, Restart, BackOff or UseFallback. EnterFallback switches to the declared fallback producer, whose frames carry Fallback(). The ring is never lent to the task (ADR-0031).</p>
+</details>
+<p><code>Stream&lt;Frame, Frames, Region&gt;</code> has at least two slots. The interrupt copies each finished hardware frame
+(<code>PublishFromDevice</code>, which invalidates the frame's lines first) into a slot with a sequence number and the time
+of the completion; the task takes the oldest frame (<code>TryTake</code>) and holds it while it reads (<code>FrameView</code>, released
+on <code>Give</code> or when the view ends). Zero-copy is available only through a <code>Lease</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Situation</th>
+<th>What happens</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>All slots held when a frame arrives</td>
+<td>The frame is dropped and counted (<code>overruns</code>); the next delivered frame has <code>Gap()</code> and a larger sequence number</td>
+</tr>
+<tr>
+<td>The peripheral overruns, or the pool overflows</td>
+<td><code>OnOverrun</code>: counted, never a frame, flags the next frame</td>
+</tr>
+<tr>
+<td>The hardware lapped the copy (both flags pending, counter inside the half)</td>
+<td>The frame is published <code>Torn</code></td>
+</tr>
+<tr>
+<td>No frame for <code>stall_periods</code> periods</td>
+<td><code>CheckStall</code>: signed elapsed time, so a frame stamped after the task read its clock is not a stall</td>
+</tr>
+<tr>
+<td>The content check rejects <code>bad_frames_to_restart</code> frames in a row</td>
+<td><code>Supervise</code> returns <code>Restart</code></td>
+</tr>
+<tr>
+<td>A restart came too recently</td>
+<td><code>BackOff</code></td>
+</tr>
+<tr>
+<td>Restarts keep failing</td>
+<td><code>UseFallback</code>; frames from the declared fallback producer carry <code>Fallback()</code> and a new epoch</td>
+</tr>
+</tbody>
+</table>
+<p>One context publishes (the interrupt) and one context consumes (the owner task); the counters are atomics, the ring
+indices are single-writer.</p>
+<h2 id="what-a-port-implements">What a port implements<a class="headerlink" href="#what-a-port-implements" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Piece</th>
+<th>Rule</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CacheOps</code></td>
+<td><code>Clean(range)</code>, <code>Invalidate(range)</code>, <code>Barrier()</code>; ranges are whole lines of the buffer, never a caller's memory</td>
+</tr>
+<tr>
+<td>Start</td>
+<td>Check <code>Buffer::Verify</code> once; <code>Lend</code>; program the transfer from <code>DeviceView(key)</code>; round a receive length up to the unit inside the padding</td>
+</tr>
+<tr>
+<td>Completion</td>
+<td>One interrupt path reads and clears the flags; <code>TryComplete</code> on a <code>CompletionLatch</code>, <code>Complete</code> the lease</td>
+</tr>
+<tr>
+<td>Errors</td>
+<td>Clear each flag by its own bit; report an error as an error; the first fault ends the transfer</td>
+</tr>
+<tr>
+<td>Cancel</td>
+<td>Disable the stream, wait for the enable bit to read 0 within a bound, then <code>Abort(Confirmed)</code>; otherwise <code>Abort(NotConfirmed)</code> and return <code>Fault</code></td>
+</tr>
+<tr>
+<td>Timeout</td>
+<td>A timed-out transfer is cancelled the same way before the buffer is returned</td>
+</tr>
+<tr>
+<td>Capabilities</td>
+<td><code>Capabilities()</code> says the mode, the ceiling and the staging size; <code>DmaHealth</code> carries the mode and a fault flag</td>
+</tr>
+<tr>
+<td>Fallback</td>
+<td>Interrupt or polled service up to a published ceiling, reported in <code>Capabilities()</code> and in the health record</td>
+</tr>
+</tbody>
+</table>
+<h2 id="host-model-and-conformance-suite">Host model and conformance suite<a class="headerlink" href="#host-model-and-conformance-suite" title="Permanent link">&para;</a></h2>
+<p><code>components/lib/dma/host</code> is a model of the hardware side: memory with a write-back cache (with speculative refills), a DMA
+engine with bursts, a stuck mode and receive-length rounding, and a reference port with injectable defects. The
+conformance suite <code>T1</code> to <code>T18</code> (<code>kb/dma/host/conformance.hpp</code>) runs against any rig with the same member
+functions; each case passes on the good model and is shown to fail on a model with the defect it targets.</p>
+<table>
+<thead>
+<tr>
+<th>Case</th>
+<th>Defect it catches</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>T1</td>
+<td>transmit without a clean</td>
+</tr>
+<tr>
+<td>T2</td>
+<td>receive without an invalidate (before or after)</td>
+</tr>
+<tr>
+<td>T3</td>
+<td>an invalidate after a CPU-copy transfer</td>
+</tr>
+<tr>
+<td>T4</td>
+<td>a receive target that shares a cache line with a neighbour</td>
+</tr>
+<tr>
+<td>T5</td>
+<td>CPU access during a lease</td>
+</tr>
+<tr>
+<td>T6</td>
+<td>a DMA write after a timeout returned the buffer</td>
+</tr>
+<tr>
+<td>T7</td>
+<td>an abort that does not wait for the enable bit</td>
+</tr>
+<tr>
+<td>T8</td>
+<td>receive-length rounding past an unpadded buffer</td>
+</tr>
+<tr>
+<td>T9</td>
+<td>a held frame overwritten, an overrun not counted</td>
+</tr>
+<tr>
+<td>T10</td>
+<td>a lapped copy published as clean</td>
+</tr>
+<tr>
+<td>T11</td>
+<td>a half delivered twice by two drainers</td>
+</tr>
+<tr>
+<td>T12</td>
+<td>an unsigned stall check</td>
+</tr>
+<tr>
+<td>T13</td>
+<td>a pool overflow delivered as a frame</td>
+</tr>
+<tr>
+<td>T14</td>
+<td>an error reported as success; the other pending flag lost to a global clear</td>
+</tr>
+<tr>
+<td>T15</td>
+<td>a cancel racing a completion reporting twice</td>
+</tr>
+<tr>
+<td>T16</td>
+<td>an unconfirmed stop returning the buffer to the CPU</td>
+</tr>
+<tr>
+<td>T17</td>
+<td>an unreported fallback</td>
+</tr>
+<tr>
+<td>T18</td>
+<td>a synchronous transfer making the caller's memory a DMA target</td>
+</tr>
+</tbody>
+</table>
+<h2 id="compile-time-checks">Compile-time checks<a class="headerlink" href="#compile-time-checks" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Helper</th>
+<th>Fails the build when</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>RequireFrameFits&lt;Driver, Port&gt;</code></td>
+<td>the driver's largest frame exceeds the port's DMA limit</td>
+</tr>
+<tr>
+<td><code>RequireReachable&lt;Masters, Region&gt;</code></td>
+<td>a named DMA master cannot reach the region (tightly coupled memory)</td>
+</tr>
+<tr>
+<td><code>RequireWholeUnits&lt;Bytes, Region&gt;</code></td>
+<td>a size is not a multiple of the alignment unit</td>
+</tr>
+<tr>
+<td><code>RequireElementBytes&lt;Element, Bytes&gt;</code></td>
+<td>a stream element differs in size from the board declaration</td>
+</tr>
+<tr>
+<td><code>Region</code> concept</td>
+<td>line or unit is not a power of two, the unit is smaller than a line, or a cached region has no line</td>
+</tr>
+<tr>
+<td><code>Stream&lt;Frame, 1, ...&gt;</code></td>
+<td>fewer than two frames</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../rtos-threadx/" class="md-footer__link md-footer__link--prev" aria-label="Previous: rtos on ThreadX">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                rtos on ThreadX
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../interfaces/" class="md-footer__link md-footer__link--next" aria-label="Next: interfaces">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                interfaces
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      
+<div class="md-copyright kb-footer">
+  <nav class="kb-footer__links" aria-label="Kokeb Labs">
+    <a href="https://kokeb-labs.github.io/">Kokeb Labs docs</a>
+    <a href="https://github.com/kokeb-labs">GitHub organisation</a>
+    
+      <a href="https://github.com/kokeb-labs/kb-core">Source</a>
+      <a href="https://github.com/kokeb-labs/kb-core/issues">Report an issue</a>
+      <a href="https://github.com/kokeb-labs/kb-core/blob/main/LICENSE">License</a>
+    
+  </nav>
+  
+    <div class="md-copyright__highlight">Copyright (c) 2026 The kb-core authors</div>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://github.com/kokeb-labs" target="_blank" rel="noopener" title="Kokeb Labs on GitHub" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "navigation.tracking", "navigation.instant", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.action.edit", "content.tabs.link", "toc.follow"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"alias": true, "default": "latest", "provider": "mike"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
+      
+        <script src="../../search/main.js"></script>
+      
+    
+  </body>
+</html>
