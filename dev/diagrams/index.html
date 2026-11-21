@@ -1,0 +1,2026 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Utilities, RTOS wrapper, bus and pin interfaces and driver handlers between the Kokeb Labs drivers and a board HAL.">
+      
+      
+      
+        <link rel="canonical" href="https://kokeb-labs.github.io/kb-core/latest/diagrams/">
+      
+      
+        <link rel="prev" href="../design/rules/">
+      
+      
+        <link rel="next" href="../testing/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/kokeb/favicon.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+    
+    
+      
+        <title>Figure catalogue - kb-core</title>
+      
+    
+    
+  
+      <link rel="stylesheet" href="../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+  
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+  
+  <style>:root{--md-admonition-icon--note:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M0%208a8%208%200%201%201%2016%200A8%208%200%200%201%200%208m8-6.5a6.5%206.5%200%201%200%200%2013%206.5%206.5%200%200%200%200-13M6.5%207.75A.75.75%200%200%201%207.25%207h1a.75.75%200%200%201%20.75.75v2.75h.25a.75.75%200%200%201%200%201.5h-2a.75.75%200%200%201%200-1.5h.25v-2h-.25a.75.75%200%200%201-.75-.75M8%206a1%201%200%201%201%200-2%201%201%200%200%201%200%202%22/%3E%3C/svg%3E');--md-admonition-icon--tip:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M8%201.5c-2.363%200-4%201.69-4%203.75%200%20.984.424%201.625.984%202.304l.214.253c.223.264.47.556.673.848.284.411.537.896.621%201.49a.75.75%200%200%201-1.484.211c-.04-.282-.163-.547-.37-.847a9%209%200%200%200-.542-.68q-.126-.149-.268-.32C3.201%207.75%202.5%206.766%202.5%205.25%202.5%202.31%204.863%200%208%200s5.5%202.31%205.5%205.25c0%201.516-.701%202.5-1.328%203.259q-.142.172-.268.319c-.207.245-.383.453-.541.681-.208.3-.33.565-.37.847a.751.751%200%200%201-1.485-.212c.084-.593.337-1.078.621-1.489.203-.292.45-.584.673-.848q.113-.133.213-.253c.561-.679.985-1.32.985-2.304%200-2.06-1.637-3.75-4-3.75M5.75%2012h4.5a.75.75%200%200%201%200%201.5h-4.5a.75.75%200%200%201%200-1.5M6%2015.25a.75.75%200%200%201%20.75-.75h2.5a.75.75%200%200%201%200%201.5h-2.5a.75.75%200%200%201-.75-.75%22/%3E%3C/svg%3E');--md-admonition-icon--warning:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M6.457%201.047c.659-1.234%202.427-1.234%203.086%200l6.082%2011.378A1.75%201.75%200%200%201%2014.082%2015H1.918a1.75%201.75%200%200%201-1.543-2.575Zm1.763.707a.25.25%200%200%200-.44%200L1.698%2013.132a.25.25%200%200%200%20.22.368h12.164a.25.25%200%200%200%20.22-.368Zm.53%203.996v2.5a.75.75%200%200%201-1.5%200v-2.5a.75.75%200%200%201%201.5%200M9%2011a1%201%200%201%201-2%200%201%201%200%200%201%202%200%22/%3E%3C/svg%3E');--md-admonition-icon--danger:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M9.504.43a1.516%201.516%200%200%201%202.437%201.713L10.415%205.5h2.123c1.57%200%202.346%201.909%201.22%203.004l-7.34%207.142a1.25%201.25%200%200%201-.871.354h-.302a1.25%201.25%200%200%201-1.157-1.723L5.633%2010.5H3.462c-1.57%200-2.346-1.909-1.22-3.004zm1.047%201.074L3.286%208.571A.25.25%200%200%200%203.462%209H6.75a.75.75%200%200%201%20.694%201.034l-1.713%204.188%206.982-6.793A.25.25%200%200%200%2012.538%207H9.25a.75.75%200%200%201-.683-1.06l2.008-4.418.003-.006-.004-.009-.006-.006-.008-.001q-.005%200-.009.004%22/%3E%3C/svg%3E');--md-admonition-icon--example:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M5%205.782V2.5h-.25a.75.75%200%200%201%200-1.5h6.5a.75.75%200%200%201%200%201.5H11v3.282l3.666%205.76C15.619%2013.04%2014.543%2015%2012.767%2015H3.233c-1.776%200-2.852-1.96-1.899-3.458Zm-2.4%206.565a.75.75%200%200%200%20.633%201.153h9.534a.75.75%200%200%200%20.633-1.153L12.225%2010.5h-8.45ZM9.5%202.5h-3V6c0%20.143-.04.283-.117.403L4.73%209h6.54L9.617%206.403A.75.75%200%200%201%209.5%206Z%22/%3E%3C/svg%3E');--md-admonition-icon--quote:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M1.75%202.5h10.5a.75.75%200%200%201%200%201.5H1.75a.75.75%200%200%201%200-1.5m4%205h8.5a.75.75%200%200%201%200%201.5h-8.5a.75.75%200%200%201%200-1.5m0%205h8.5a.75.75%200%200%201%200%201.5h-8.5a.75.75%200%200%201%200-1.5M2.5%207.75v6a.75.75%200%200%201-1.5%200v-6a.75.75%200%200%201%201.5%200%22/%3E%3C/svg%3E');}</style>
+
+
+
+    
+  <link rel="stylesheet" href="../assets/kokeb/kokeb.css">
+
+    
+      
+    
+    <link rel="stylesheet" media="print" onload="this.media='all'" href="../assets/kokeb/fonts.css">
+  <noscript><link rel="stylesheet" href="../assets/kokeb/fonts.css"></noscript>
+
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  
+  
+  
+  <meta name="theme-color" content="#0e1726" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#1b2140" media="(prefers-color-scheme: dark)">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Kokeb Labs">
+  <meta property="og:title" content="Figure catalogue - kb-core">
+  <meta property="og:description" content="Utilities, RTOS wrapper, bus and pin interfaces and driver handlers between the Kokeb Labs drivers and a board HAL.">
+  <meta property="og:url" content="https://kokeb-labs.github.io/kb-core/latest/diagrams/">
+  <meta name="twitter:card" content="summary">
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#figures" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+          <aside class="md-banner md-banner--warning">
+            <div class="md-banner__inner md-grid md-typeset">
+              
+  You are reading the documentation of an older version.
+  <a href="https://kokeb-labs.github.io/kb-core/"><strong>Go to the latest version.</strong></a>
+
+            </div>
+            <script>var el=document.querySelector("[data-md-component=outdated]"),base=new URL(".."),outdated=__md_get("__outdated",sessionStorage,base);!0===outdated&&el&&(el.hidden=!1)</script>
+          </aside>
+        
+      </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="kb-core" class="md-header__button md-logo" aria-label="kb-core" data-md-component="logo">
+      
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" aria-hidden="true" focusable="false" class="kb-mark">
+    <g transform="translate(1.28 1.28) scale(0.12000)"><path d="M232,66 Q265.29,246.71 446,280 Q265.29,313.29 232,494 Q198.71,313.29 18,280 Q198.71,246.71 232,66 Z" fill="#F4B942"/><path d="M386,38 Q399.69,112.31 474,126 Q399.69,139.69 386,214 Q372.31,139.69 298,126 Q372.31,112.31 386,38 Z" fill="#0E1726" stroke="#0E1726" stroke-width="24" stroke-linejoin="round"/><path d="M386,38 Q399.69,112.31 474,126 Q399.69,139.69 386,214 Q372.31,139.69 298,126 Q372.31,112.31 386,38 Z" fill="#D9773B"/></g>
+  </svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          
+          <a class="kb-org" href="https://kokeb-labs.github.io/" title="All Kokeb Labs documentation">Kokeb Labs</a>
+          <span class="kb-org__sep" aria-hidden="true">/</span>
+          <span class="md-ellipsis">
+            kb-core
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Figure catalogue
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Follow the system theme"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Follow the system theme" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/kokeb-labs/kb-core" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    kokeb-labs/kb-core
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../architecture/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Concepts
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../parts/utils/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Parts
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../examples/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Examples
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../configurator/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Configurator
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../handlers/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Handlers
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../design/plan/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Design
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../testing/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Quality
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../versioning/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Project
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="kb-core" class="md-nav__button md-logo" aria-label="kb-core" data-md-component="logo">
+      
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" aria-hidden="true" focusable="false" class="kb-mark">
+    <g transform="translate(1.28 1.28) scale(0.12000)"><path d="M232,66 Q265.29,246.71 446,280 Q265.29,313.29 232,494 Q198.71,313.29 18,280 Q198.71,246.71 232,66 Z" fill="#F4B942"/><path d="M386,38 Q399.69,112.31 474,126 Q399.69,139.69 386,214 Q372.31,139.69 298,126 Q372.31,112.31 386,38 Z" fill="#0E1726" stroke="#0E1726" stroke-width="24" stroke-linejoin="round"/><path d="M386,38 Q399.69,112.31 474,126 Q399.69,139.69 386,214 Q372.31,139.69 298,126 Q372.31,112.31 386,38 Z" fill="#D9773B"/></g>
+  </svg>
+
+    </a>
+    kb-core
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/kokeb-labs/kb-core" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    kokeb-labs/kb-core
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../architecture/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concepts
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../parts/utils/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Parts
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Examples
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../configurator/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configurator
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../handlers/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Handlers
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="./" class="md-nav__link md-nav__link--active">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link md-nav__link--active" for="__nav_7" id="__nav_7_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Design
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../design/plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../design/handlers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Handlers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../design/bus-access/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bus access
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../design/fault-journal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fault evidence
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../design/ports/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MCU ports and repositories
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../design/assurance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Assurance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../design/configurator/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configurator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../design/assembler/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Assembler and resolver
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kb-tool/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The kb tool
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../design/rules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design rules
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../testing/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quality
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../versioning/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Project
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#from-tags-to-a-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        From tags to a project
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#one-asynchronous-read" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        One asynchronous read
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#held-transactions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Held transactions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#one-call-through-the-layers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        One call through the layers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-ci-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The CI flow
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parts-ports-and-drivers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parts, ports and drivers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#which-layer-may-depend-on-which" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Which layer may depend on which
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ownership-of-a-dma-buffer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ownership of a DMA buffer
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-dma-copy-out-stream" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The DMA copy-out stream
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fault-evidence-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fault evidence path
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#generators-and-the-configurator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Generators and the configurator
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#handler-lifecycle-and-health" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Handler lifecycle and health
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-pieces-of-a-handler" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The pieces of a handler
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-handler-start-up-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The handler start-up pipeline
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#handler-thread-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Handler thread models
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-layer-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The layer stack
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#misra-c2023-scope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MISRA C++:2023 scope
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-kb-repository-family" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The kb repository family
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#phase-roadmap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Phase roadmap
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kbrtos-backends" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        kb::rtos backends
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-threadx-backend" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The ThreadX backend
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-update-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The update path
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/kokeb-labs/kb-core/edit/main/docs/diagrams/index.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="figures">Figures<a class="headerlink" href="#figures" title="Permanent link">&para;</a></h1>
+<!-- Written by kokeb-docs figures from docs/diagrams/figures/*.py. Do not edit by hand. -->
+
+<p>Every figure on this site is drawn by a Python module from facts extracted from the code, so it is rebuilt,
+not redrawn, when the code changes. CI runs <code>kokeb-docs figures --check</code> and fails when a
+committed figure no longer matches the code. Each figure below lists the files it is drawn from.</p>
+<h2 id="from-tags-to-a-project">From tags to a project<a class="headerlink" href="#from-tags-to-a-project" title="Permanent link">&para;</a></h2>
+<figure class="kb-figure">
+<img src="assembler-flow.svg#only-light" alt="Driver and kb-core tags feed kb catalog build, which writes catalog.json; the resolver reads it and kb-image.yml and writes the lock and the project files; kb sbom turns the lock into SBOMs." width="1200" height="763"><img src="assembler-flow.dark.svg#only-dark" alt="Driver and kb-core tags feed kb catalog build, which writes catalog.json; the resolver reads it and kb-image.yml and writes the lock and the project files; kb sbom turns the lock into SBOMs." width="1200" height="763">
+<figcaption>From tags to a project</figcaption>
+</figure>
+
+<details class="kb-figure-desc">
+<summary>Figure description and sources</summary>
+<p>Left to right. kb catalog build reads each driver's driver.yml at its tags and the kb-core tags with their platform table and pins, and writes catalog.json. The resolver, one specification with a Python and a JavaScript implementation, reads kb-image.yml and the catalogue and writes the lock kb-image.lock.yml and three project files: CMakePresets.json, kb_image.cmake and kb-fetch.sh. kb sbom turns the lock into CycloneDX 1.6 and SPDX 2.3 documents.</p>
+</details>
+<p>Figure module: <a href="https://github.com/kokeb-labs/kb-core-clean/blob/68ec84ab4fdae8433b8b508162054470aa9a0d2b/docs/diagrams/figures/assembler-flow.py"><code>docs/diagrams/figures/assembler-flow.py</code></a></p>
+<h2 id="one-asynchronous-read">One asynchronous read<a class="headerlink" href="#one-asynchronous-read" title="Permanent link">&para;</a></h2>
+<figure class="kb-figure">
+<img src="async-poll.svg#only-light" alt="Sequence: the owner task starts a read through the poller and the port in pass n; the poller polls and gets Pending; the interrupt completes the transfer; in pass n+1 the poll returns Done with the byte count and the completion is Ok. Past the deadline the result is Timeout; Cancel releases the buffers." width="1200" height="1003" loading="lazy"><img src="async-poll.dark.svg#only-dark" alt="Sequence: the owner task starts a read through the poller and the port in pass n; the poller polls and gets Pending; the interrupt completes the transfer; in pass n+1 the poll returns Done with the byte count and the completion is Ok. Past the deadline the result is Timeout; Cancel releases the buffers." width="1200" height="1003" loading="lazy">
+<figcaption>One asynchronous read</figcaption>
+</figure>
+
+<details class="kb-figure-desc">
+<summary>Figure description and sources</summary>
+<p>The owner task starts the transfer in one service pass and collects the result in a later one; no pass waits. AsyncPoller owns the buffers and asks the port to start; a Poll in the next pass reports Pending until the peripheral interrupt has set the owner's event flag and the transfer is complete, then Done with the count. Past the deadline the result is Done with Timeout, late data included; Cancel makes the poller Idle and releases the buffers.</p>
+</details>
+<p>Figure module: <a href="https://github.com/kokeb-labs/kb-core-clean/blob/68ec84ab4fdae8433b8b508162054470aa9a0d2b/docs/diagrams/figures/async-poll.py"><code>docs/diagrams/figures/async-poll.py</code></a></p>
+<h2 id="held-transactions">Held transactions<a class="headerlink" href="#held-transactions" title="Permanent link">&para;</a></h2>
+<figure class="kb-figure">
+<img src="bus-hold.svg#only-light" alt="Two side by side models. Guarded bus: task X takes the handler mutex, then the bus mutex, and makes several calls while task Y&#x27;s plain request waits or times out. Owner bus: the owner task takes the hold between passes and runs inline calls; the service pass reports Busy while the hold is held." width="1200" height="780" loading="lazy"><img src="bus-hold.dark.svg#only-dark" alt="Two side by side models. Guarded bus: task X takes the handler mutex, then the bus mutex, and makes several calls while task Y&#x27;s plain request waits or times out. Owner bus: the owner task takes the hold between passes and runs inline calls; the service pass reports Busy while the hold is held." width="1200" height="780" loading="lazy">
+<figcaption>Held transactions</figcaption>
+</figure>
+
+<details class="kb-figure-desc">
+<summary>Figure description and sources</summary>
+<p>On a guarded bus a task takes the handler mutex first and then the bus mutex, both bounded, and holds the bus for several calls with nothing in between; another task's plain request waits (bounded) or times out. On an owner bus the owner task takes the hold between passes, which never waits, and runs inline calls for several handlers; the service pass reports Busy while the hold is held and the violation is counted.</p>
+</details>
+<p>Figure module: <a href="https://github.com/kokeb-labs/kb-core-clean/blob/68ec84ab4fdae8433b8b508162054470aa9a0d2b/docs/diagrams/figures/bus-hold.py"><code>docs/diagrams/figures/bus-hold.py</code></a></p>
+<h2 id="one-call-through-the-layers">One call through the layers<a class="headerlink" href="#one-call-through-the-layers" title="Permanent link">&para;</a></h2>
+<figure class="kb-figure">
+<img src="call-sequence.svg#only-light" alt="Sequence: the HAL calls a guarded handler, which locks and calls the pf1550 driver; the driver calls the kb binding&#x27;s WriteRead, which calls the ESP32 I2C device; results return the same way. Only the I2C device knows it is an ESP32." width="1200" height="868" loading="lazy"><img src="call-sequence.dark.svg#only-dark" alt="Sequence: the HAL calls a guarded handler, which locks and calls the pf1550 driver; the driver calls the kb binding&#x27;s WriteRead, which calls the ESP32 I2C device; results return the same way. Only the I2C device knows it is an ESP32." width="1200" height="868" loading="lazy">
+<figcaption>One call through the layers</figcaption>
+</figure>
+
+<details class="kb-figure-desc">
+<summary>Figure description and sources</summary>
+<p>A HAL reads a register of a PF1550 power IC. The HAL calls the guarded handler (its bus is declared guarded), which takes the handler lock and then the bus lock, both bounded, and calls the driver. The driver calls its own WriteRead hook, implemented by the kb binding, which calls the ESP32 I2C device of the port. The port answers ok or an I2cFailure (AddressNack, DataNack, Bus, Timeout, BusStuck); the binding returns a bool and keeps the failure for GetLastFailure; the driver returns its Result; the handler returns a kb::Result carrying the driver's error in detail. Only the last step knows it runs on an ESP32.</p>
+</details>
+<p>Figure module: <a href="https://github.com/kokeb-labs/kb-core-clean/blob/68ec84ab4fdae8433b8b508162054470aa9a0d2b/docs/diagrams/figures/call-sequence.py"><code>docs/diagrams/figures/call-sequence.py</code></a></p>
+<h2 id="the-ci-flow">The CI flow<a class="headerlink" href="#the-ci-flow" title="Permanent link">&para;</a></h2>
+<figure class="kb-figure">
+<img src="ci-flow.svg#only-light" alt="Flow: local preflight, then a pull request; always-run checks, path-gated checks and the drivers that are never re-run feed one required gate; a tag then produces the release assets and a schedule re-scans them." width="1200" height="1007" loading="lazy"><img src="ci-flow.dark.svg#only-dark" alt="Flow: local preflight, then a pull request; always-run checks, path-gated checks and the drivers that are never re-run feed one required gate; a tag then produces the release assets and a schedule re-scans them." width="1200" height="1007" loading="lazy">
+<figcaption>The CI flow</figcaption>
+</figure>
+
+<details class="kb-figure-desc">
+<summary>Figure description and sources</summary>
+<p>From the left. Every change first passes tools/preflight.sh on a workstation, then reaches CI as a pull request or push. Always run: repository checks, layering, layout and examples, own parts, MISRA and pin hygiene. Run when the paths match, and on main and tags: quality, integration, the ESP-IDF port job and the catalogue. Never re-run for components/drivers: the drivers' own tests, which are trusted through pin hygiene. Everything ends in one required gate; a tag adds the release assets, and a schedule re-scans releases for known vulnerabilities.</p>
+</details>
+<p>Figure module: <a href="https://github.com/kokeb-labs/kb-core-clean/blob/68ec84ab4fdae8433b8b508162054470aa9a0d2b/docs/diagrams/figures/ci-flow.py"><code>docs/diagrams/figures/ci-flow.py</code></a></p>
+<h2 id="parts-ports-and-drivers">Parts, ports and drivers<a class="headerlink" href="#parts-ports-and-drivers" title="Permanent link">&para;</a></h2>
+<figure class="kb-figure">
+<img src="components-map.svg#only-light" alt="Map of the repository: the lib parts utils, rtos, interfaces and handlers, each depending on the next down; MCU ports that satisfy the interface contracts; and the pinned drivers that handlers bind." width="1200" height="620" loading="lazy"><img src="components-map.dark.svg#only-dark" alt="Map of the repository: the lib parts utils, rtos, interfaces and handlers, each depending on the next down; MCU ports that satisfy the interface contracts; and the pinned drivers that handlers bind." width="1200" height="620" loading="lazy">
+<figcaption>Parts, ports and drivers</figcaption>
+</figure>
+
+<details class="kb-figure-desc">
+<summary>Figure description and sources</summary>
+<p>Three bands read from the folders of the repository, so the figure cannot drift. components/lib holds the parts: kb::utils at the bottom, kb::rtos on it, kb::interfaces on that, and kb::handlers on top. components/ports holds the MCU ports, which satisfy the interface contracts (the host port is for tests). components/drivers holds the pinned drivers, each a submodule at a release tag; kb::handlers binds them and nothing else may use them.</p>
+<p>Drawn from: <a href="https://github.com/kokeb-labs/kb-core-clean/tree/68ec84ab4fdae8433b8b508162054470aa9a0d2b/components/lib"><code>components/lib</code></a>; <a href="https://github.com/kokeb-labs/kb-core-clean/tree/68ec84ab4fdae8433b8b508162054470aa9a0d2b/components/ports"><code>components/ports</code></a>; <a href="https://github.com/kokeb-labs/kb-core-clean/tree/68ec84ab4fdae8433b8b508162054470aa9a0d2b/components/drivers"><code>components/drivers</code></a>; figure module <a href="https://github.com/kokeb-labs/kb-core-clean/blob/68ec84ab4fdae8433b8b508162054470aa9a0d2b/docs/diagrams/figures/components-map.py"><code>docs/diagrams/figures/components-map.py</code></a>.</p>
+</details>
+<p>Figure module: <a href="https://github.com/kokeb-labs/kb-core-clean/blob/68ec84ab4fdae8433b8b508162054470aa9a0d2b/docs/diagrams/figures/components-map.py"><code>docs/diagrams/figures/components-map.py</code></a></p>
+<p>Drawn from:</p>
+<ul>
+<li><a href="https://github.com/kokeb-labs/kb-core-clean/tree/68ec84ab4fdae8433b8b508162054470aa9a0d2b/components/lib"><code>components/lib</code></a></li>
+<li><a href="https://github.com/kokeb-labs/kb-core-clean/tree/68ec84ab4fdae8433b8b508162054470aa9a0d2b/components/ports"><code>components/ports</code></a></li>
+<li><a href="https://github.com/kokeb-labs/kb-core-clean/tree/68ec84ab4fdae8433b8b508162054470aa9a0d2b/components/drivers"><code>components/drivers</code></a></li>
+</ul>
+<h2 id="which-layer-may-depend-on-which">Which layer may depend on which<a class="headerlink" href="#which-layer-may-depend-on-which" title="Permanent link">&para;</a></h2>
+<figure class="kb-figure">
+<img src="dependency-rules.svg#only-light" alt="Two lists of dependency arrows between layers. Allowed: twelve, from the application down to kb::utils. Forbidden: seven, each labelled with the check that catches it." width="1200" height="774" loading="lazy"><img src="dependency-rules.dark.svg#only-dark" alt="Two lists of dependency arrows between layers. Allowed: twelve, from the application down to kb::utils. Forbidden: seven, each labelled with the check that catches it." width="1200" height="774" loading="lazy">
+<figcaption>Which layer may depend on which</figcaption>
+</figure>
+
+<details class="kb-figure-desc">
+<summary>Figure description and sources</summary>
+<p>Two columns. On the left, the allowed dependencies: the application uses the board HAL, kb::rtos and kb::utils; the board HAL uses kb::handlers, kb::interfaces and one MCU port; the MCU port uses installed interface headers and, in boundary files, the vendor SDK; handlers use drivers and interfaces; interfaces use kb::rtos; kb::rtos uses kb::utils. On the right, the forbidden dependencies, each with the check that catches it: the application using interfaces or the SDK directly, handlers using the SDK or an MCU port, interfaces using an MCU port, a driver using kb::utils, and kb::utils using kb::rtos.</p>
+</details>
+<p>Figure module: <a href="https://github.com/kokeb-labs/kb-core-clean/blob/68ec84ab4fdae8433b8b508162054470aa9a0d2b/docs/diagrams/figures/dependency-rules.py"><code>docs/diagrams/figures/dependency-rules.py</code></a></p>
+<h2 id="ownership-of-a-dma-buffer">Ownership of a DMA buffer<a class="headerlink" href="#ownership-of-a-dma-buffer" title="Permanent link">&para;</a></h2>
+<figure class="kb-figure">
+<img src="dma-lease.svg#only-light" alt="State machine with the states Cpu, Device and Quarantined: Lend moves a buffer from Cpu to Device, Complete or a proven Abort returns it to Cpu, an unproven Abort moves it to Quarantined, and Recover with proof returns it to Cpu." width="1200" height="552" loading="lazy"><img src="dma-lease.dark.svg#only-dark" alt="State machine with the states Cpu, Device and Quarantined: Lend moves a buffer from Cpu to Device, Complete or a proven Abort returns it to Cpu, an unproven Abort moves it to Quarantined, and Recover with proof returns it to Cpu." width="1200" height="552" loading="lazy">
+<figcaption>Ownership of a DMA buffer</figcaption>
+</figure>
+
+<details class="kb-figure-desc">
+<summary>Figure description and sources</summary>
+<p>Three states. A buffer is constructed in Cpu: static, line-aligned and padded. Lend moves it from Cpu to Device after the owned cache lines are cleaned or invalidated and a barrier ran. Complete moves it from Device back to Cpu after a receive is invalidated and a barrier ran. Abort with proof that the bus master stopped also returns it to Cpu. Abort without proof, or a lease destroyed while the device owns the buffer, moves it from Device to Quarantined. Recover with proof, after the peripheral was re-initialised, moves it from Quarantined to Cpu. In Quarantined a Lend is refused with a Fault and the CPU view is empty. Only the port holds the key that moves a buffer between states (ADR-0030).</p>
+</details>
+<p>Figure module: <a href="https://github.com/kokeb-labs/kb-core-clean/blob/68ec84ab4fdae8433b8b508162054470aa9a0d2b/docs/diagrams/figures/dma-lease.py"><code>docs/diagrams/figures/dma-lease.py</code></a></p>
+<h2 id="the-dma-copy-out-stream">The DMA copy-out stream<a class="headerlink" href="#the-dma-copy-out-stream" title="Permanent link">&para;</a></h2>
+<figure class="kb-figure">
+<img src="dma-stream.svg#only-light" alt="Flow: the DMA ring raises an interrupt that copies each finished frame into a slot; the task takes a slot as a FrameView, a content check feeds the supervisor, which can switch to a declared fallback producer; a full ring drops the frame and flags the next one with Gap." width="1200" height="566" loading="lazy"><img src="dma-stream.dark.svg#only-dark" alt="Flow: the DMA ring raises an interrupt that copies each finished frame into a slot; the task takes a slot as a FrameView, a content check feeds the supervisor, which can switch to a declared fallback producer; a full ring drops the frame and flags the next one with Gap." width="1200" height="566" loading="lazy">
+<figcaption>The DMA copy-out stream</figcaption>
+</figure>
+
+<details class="kb-figure-desc">
+<summary>Figure description and sources</summary>
+<p>Two rows of three steps. The DMA ring in the buffer holds two halves or N frames. A half or complete interrupt makes PublishFromDevice invalidate the lines, copy the finished frame out and stamp a sequence number, a time and a torn flag. It copies into a slot of a ring of at least two slots; when every slot is held the frame is dropped, counted as Full, and the next frame carries Gap(). The task takes a slot with TryTake and reads it through a move-only FrameView that releases on its end. Judge checks the content, and Supervise answers None, Restart, BackOff or UseFallback. EnterFallback switches to the declared fallback producer, whose frames carry Fallback(). The ring is never lent to the task (ADR-0031).</p>
+</details>
+<p>Figure module: <a href="https://github.com/kokeb-labs/kb-core-clean/blob/68ec84ab4fdae8433b8b508162054470aa9a0d2b/docs/diagrams/figures/dma-stream.py"><code>docs/diagrams/figures/dma-stream.py</code></a></p>
+<h2 id="fault-evidence-path">Fault evidence path<a class="headerlink" href="#fault-evidence-path" title="Permanent link">&para;</a></h2>
+<figure class="kb-figure">
+<img src="fault-journal.svg#only-light" alt="Flow: handler health edges and the liveness verdict go to the health journal, which appends one record to a CRC-checked ring in a port-provided store that survives a reset; the boot reset reason is recorded too; the watchdog is kicked only when nothing is stale; after a reset Open finds the newest record." width="1200" height="764" loading="lazy"><img src="fault-journal.dark.svg#only-dark" alt="Flow: handler health edges and the liveness verdict go to the health journal, which appends one record to a CRC-checked ring in a port-provided store that survives a reset; the boot reset reason is recorded too; the watchdog is kicked only when nothing is stale; after a reset Open finds the newest record." width="1200" height="764" loading="lazy">
+<figcaption>Fault evidence path</figcaption>
+</figure>
+
+<details class="kb-figure-desc">
+<summary>Figure description and sources</summary>
+<p>Handler health is read lock-free and only its edges go to the HealthJournal. The LivenessMonitor's verdict goes there too, and the watchdog owner is kicked only when nothing is stale. The journal appends with one bounded store write into a FaultJournal ring of 32-byte CRC-32 records with a sequence number; at boot the port's reset reason is recorded. The store (RTC or no-init RAM, NVS, FRAM, flash) belongs to the port; after a reset Open() finds the newest record and skips a torn slot.</p>
+</details>
+<p>Figure module: <a href="https://github.com/kokeb-labs/kb-core-clean/blob/68ec84ab4fdae8433b8b508162054470aa9a0d2b/docs/diagrams/figures/fault-journal.py"><code>docs/diagrams/figures/fault-journal.py</code></a></p>
+<h2 id="generators-and-the-configurator">Generators and the configurator<a class="headerlink" href="#generators-and-the-configurator" title="Permanent link">&para;</a></h2>
+<figure class="kb-figure">
+<img src="generator-flow.svg#only-light" alt="Three columns. Inputs: driver.yml files, the release lock, evidence, tested version sets and later board.yml. Middle: the kb command line and the configurator site, both using one resolver. Outputs: kb-image.yml, git commands, CMake presets, evidence for the selection and later a project archive." width="1200" height="733" loading="lazy"><img src="generator-flow.dark.svg#only-dark" alt="Three columns. Inputs: driver.yml files, the release lock, evidence, tested version sets and later board.yml. Middle: the kb command line and the configurator site, both using one resolver. Outputs: kb-image.yml, git commands, CMake presets, evidence for the selection and later a project archive." width="1200" height="733" loading="lazy">
+<figcaption>Generators and the configurator</figcaption>
+</figure>
+
+<details class="kb-figure-desc">
+<summary>Figure description and sources</summary>
+<p>Left to right. Inputs are single sources published with each kb-core release: each pinned driver's driver.yml, the release lock with its tags and SHAs, the evidence (SBOM, CVE scan, licence report), the tested version sets and, later, board.yml. One resolver specification has two front ends, the kb command line and the static configurator site; it resolves drivers to handlers to interfaces to parts, applies the MCU gates, kb_core_min and the thread model per bus. It produces byte-for-byte repeatable downloads: kb-image.yml, git commands, a CMake presets fragment with kb_image.cmake, the evidence for the selection and, later, a project archive.</p>
+</details>
+<p>Figure module: <a href="https://github.com/kokeb-labs/kb-core-clean/blob/68ec84ab4fdae8433b8b508162054470aa9a0d2b/docs/diagrams/figures/generator-flow.py"><code>docs/diagrams/figures/generator-flow.py</code></a></p>
+<h2 id="handler-lifecycle-and-health">Handler lifecycle and health<a class="headerlink" href="#handler-lifecycle-and-health" title="Permanent link">&para;</a></h2>
+<figure class="kb-figure">
+<img src="handler-health.svg#only-light" alt="State machine: Unknown to Starting to Ready; Ready and Degraded swap on a failing and a passing call; Starting, Degraded and Ready can go to Faulted; Faulted goes to Recovering and back to Ready or Faulted; Deinitialize returns Ready or Faulted to Unknown." width="1200" height="782" loading="lazy"><img src="handler-health.dark.svg#only-dark" alt="State machine: Unknown to Starting to Ready; Ready and Degraded swap on a failing and a passing call; Starting, Degraded and Ready can go to Faulted; Faulted goes to Recovering and back to Ready or Faulted; Deinitialize returns Ready or Faulted to Unknown." width="1200" height="782" loading="lazy">
+<figcaption>Handler lifecycle and health</figcaption>
+</figure>
+
+<details class="kb-figure-desc">
+<summary>Figure description and sources</summary>
+<p>Seven states. A handler starts Unknown (constructed, no I/O). EnsureInitialized or StartStep moves it to Starting, which walks the declared stages, each bounded by its deadline; the last stage makes it Ready. A failing call makes a Ready handler Degraded until the next call succeeds; fault_after failures in a row, or one fatal error (the chip reset or lost its state), make it Faulted. Recover() moves Faulted to Recovering with a backoff that doubles on each failure and is refused after max_attempts. Deinitialize() returns Ready or Faulted to Unknown. Only EnsureInitialized, StartStep, Deinitialize and Recover change the lifecycle: calls never start or restart the chip.</p>
+</details>
+<p>Figure module: <a href="https://github.com/kokeb-labs/kb-core-clean/blob/68ec84ab4fdae8433b8b508162054470aa9a0d2b/docs/diagrams/figures/handler-health.py"><code>docs/diagrams/figures/handler-health.py</code></a></p>
+<h2 id="the-pieces-of-a-handler">The pieces of a handler<a class="headerlink" href="#the-pieces-of-a-handler" title="Permanent link">&para;</a></h2>
+<figure class="kb-figure">
+<img src="handler-pieces.svg#only-light" alt="Stack: a HAL manager calls an access facade, OwnerAccess or Guarded; the facade calls the handler core with a service key and owns the bus domain; the core holds the start-up runner, health, snapshot and liveness beat and builds the driver, which reaches the HAL&#x27;s bus through the binding&#x27;s port and the kb::iface contract." width="1200" height="991" loading="lazy"><img src="handler-pieces.dark.svg#only-dark" alt="Stack: a HAL manager calls an access facade, OwnerAccess or Guarded; the facade calls the handler core with a service key and owns the bus domain; the core holds the start-up runner, health, snapshot and liveness beat and builds the driver, which reaches the HAL&#x27;s bus through the binding&#x27;s port and the kb::iface contract." width="1200" height="991" loading="lazy">
+<figcaption>The pieces of a handler</figcaption>
+</figure>
+
+<details class="kb-figure-desc">
+<summary>Figure description and sources</summary>
+<p>Top to bottom. A HAL manager or application task calls an access facade with EnsureStarted, Request, Sample, Latest or Health; there is one facade per handler, chosen by the bus's thread model: OwnerAccess (request queue and a lock-free snapshot) or Guarded (handler lock, then bus lock). Only a facade can make the ServiceKey that the handler core needs. The core, HandlerCore of the handler, the driver, the snapshot, the command and the reply, holds the start-up plan runner, the health record, the snapshot and a liveness beat. It builds the driver in a std::optional; the driver reaches the bus through the binding's Port, hooks over the kb::iface contract that the HAL supplies. The facade also owns the BusDomain of its bus.</p>
+</details>
+<p>Figure module: <a href="https://github.com/kokeb-labs/kb-core-clean/blob/68ec84ab4fdae8433b8b508162054470aa9a0d2b/docs/diagrams/figures/handler-pieces.py"><code>docs/diagrams/figures/handler-pieces.py</code></a></p>
+<h2 id="the-handler-start-up-pipeline">The handler start-up pipeline<a class="headerlink" href="#the-handler-start-up-pipeline" title="Permanent link">&para;</a></h2>
+<figure class="kb-figure">
+<img src="handler-startup.svg#only-light" alt="Pipeline of eight start-up stages in order, Power, HostReset, Boot, Link, Identify, Secure, Configure and Verify, ending in Ready; beside it the plans of most drivers, the bno08x and the se05x, each using only some of the stages." width="1200" height="1049" loading="lazy"><img src="handler-startup.dark.svg#only-dark" alt="Pipeline of eight start-up stages in order, Power, HostReset, Boot, Link, Identify, Secure, Configure and Verify, ending in Ready; beside it the plans of most drivers, the bno08x and the se05x, each using only some of the stages." width="1200" height="1049" loading="lazy">
+<figcaption>The handler start-up pipeline</figcaption>
+</figure>
+
+<details class="kb-figure-desc">
+<summary>Figure description and sources</summary>
+<p>One runner and a declared plan of stages per chip, in a fixed order: Power, HostReset, Boot, Link, Identify, Secure, Configure, Verify, then Ready. A plan lists only the stages its chip needs; an optional stage is skipped when the HAL supplies no pin, rail or key for it. Every stage is synchronous or polled, and bounded by a deadline. Most drivers declare one step that calls the driver's EnsureInitialized. The bno08x resets and boots with polled steps; the se05x sets platform keys, opens the secure link and optionally checks the lifecycle state.</p>
+</details>
+<p>Figure module: <a href="https://github.com/kokeb-labs/kb-core-clean/blob/68ec84ab4fdae8433b8b508162054470aa9a0d2b/docs/diagrams/figures/handler-startup.py"><code>docs/diagrams/figures/handler-startup.py</code></a></p>
+<h2 id="handler-thread-models">Handler thread models<a class="headerlink" href="#handler-thread-models" title="Permanent link">&para;</a></h2>
+<figure class="kb-figure">
+<img src="handler-threading.svg#only-light" alt="Two side by side models. Owner task: other tasks read a lock-free snapshot or post requests to a queue that the owner task publishes to and drains, and the owner task steps the handlers on an unlocked bus domain. Guarded facade: tasks call a guarded handler that takes the handler lock then a bounded bus lock." width="1200" height="951" loading="lazy"><img src="handler-threading.dark.svg#only-dark" alt="Two side by side models. Owner task: other tasks read a lock-free snapshot or post requests to a queue that the owner task publishes to and drains, and the owner task steps the handlers on an unlocked bus domain. Guarded facade: tasks call a guarded handler that takes the handler lock then a bounded bus lock." width="1200" height="951" loading="lazy">
+<figcaption>Handler thread models</figcaption>
+</figure>
+
+<details class="kb-figure-desc">
+<summary>Figure description and sources</summary>
+<p>Two models, declared per bus; callers on other tasks use one access API in both. In the owner-task model, one real-time task calls Service(now) at a fixed rate, steps the single-threaded handlers on a bus domain without a mutex, publishes each step to a lock-free seqlock snapshot and drains a bounded command queue. Other tasks read the latest snapshot (a lock-free copy) or post a request and wait with a timeout. In the guarded model, each calling task takes the handler lock and then, within a bounded wait, the bus lock of a mutex-protected bus domain. An interrupt service routine only sets event flags or notifies the owner task.</p>
+</details>
+<p>Figure module: <a href="https://github.com/kokeb-labs/kb-core-clean/blob/68ec84ab4fdae8433b8b508162054470aa9a0d2b/docs/diagrams/figures/handler-threading.py"><code>docs/diagrams/figures/handler-threading.py</code></a></p>
+<h2 id="the-layer-stack">The layer stack<a class="headerlink" href="#the-layer-stack" title="Permanent link">&para;</a></h2>
+<figure class="kb-figure">
+<img src="layer-stack.svg#only-light" alt="Layer stack, top to bottom: the product application; the board HAL repository; kb-core with kb::handlers, kb::interfaces, kb::rtos and kb::utils, each depending on the next; below it the drivers used by handlers, the MCU ports that satisfy the interface contracts, and the vendor SOUP reached only through boundary files." width="1200" height="1035" loading="lazy"><img src="layer-stack.dark.svg#only-dark" alt="Layer stack, top to bottom: the product application; the board HAL repository; kb-core with kb::handlers, kb::interfaces, kb::rtos and kb::utils, each depending on the next; below it the drivers used by handlers, the MCU ports that satisfy the interface contracts, and the vendor SOUP reached only through boundary files." width="1200" height="1035" loading="lazy">
+<figcaption>The layer stack</figcaption>
+</figure>
+
+<details class="kb-figure-desc">
+<summary>Figure description and sources</summary>
+<p>From top to bottom. The product application calls the board HAL. The board HAL talks to kb::handlers and picks one MCU port; handlers use the driver of each chip and the interface contracts, the contracts rest on kb::rtos, and kb::rtos rests on kb::utils. The MCU port satisfies the interface contracts and touches the vendor SDK in its boundary files only; the RTOS backends touch the kernel in theirs. The vendor SDK, kernels and mbedTLS are SOUP: never analysed, never edited.</p>
+</details>
+<p>Figure module: <a href="https://github.com/kokeb-labs/kb-core-clean/blob/68ec84ab4fdae8433b8b508162054470aa9a0d2b/docs/diagrams/figures/layer-stack.py"><code>docs/diagrams/figures/layer-stack.py</code></a></p>
+<h2 id="misra-c2023-scope">MISRA C++:2023 scope<a class="headerlink" href="#misra-c2023-scope" title="Permanent link">&para;</a></h2>
+<figure class="kb-figure">
+<img src="misra-scope.svg#only-light" alt="Four zones from strongest claim to none: kb-core own code claimed compliant with zero deviations; boundary files compliant with recorded deviations; drivers covered by their own evidence; SOUP out of scope and never reported." width="1200" height="905" loading="lazy"><img src="misra-scope.dark.svg#only-dark" alt="Four zones from strongest claim to none: kb-core own code claimed compliant with zero deviations; boundary files compliant with recorded deviations; drivers covered by their own evidence; SOUP out of scope and never reported." width="1200" height="905" loading="lazy">
+<figcaption>MISRA C++:2023 scope</figcaption>
+</figure>
+
+<details class="kb-figure-desc">
+<summary>Figure description and sources</summary>
+<p>Four zones, from strongest claim to none. kb-core's own code under components/lib is claimed compliant with zero repository deviations: utils, interface contracts and host port, the rtos public API, and handlers with bindings. Boundary files, the RTOS backends' and the ports' files that touch vendor code, are compliant with recorded deviations. Each driver at its pinned tag is covered by its own MISRA run at level high. SOUP (ESP-IDF, STM32 HAL, FreeRTOS, ThreadX, mbedTLS) is out of scope, listed with versions, included with -isystem and never reported.</p>
+</details>
+<p>Figure module: <a href="https://github.com/kokeb-labs/kb-core-clean/blob/68ec84ab4fdae8433b8b508162054470aa9a0d2b/docs/diagrams/figures/misra-scope.py"><code>docs/diagrams/figures/misra-scope.py</code></a></p>
+<h2 id="the-kb-repository-family">The kb repository family<a class="headerlink" href="#the-kb-repository-family" title="Permanent link">&para;</a></h2>
+<figure class="kb-figure">
+<img src="repo-family.svg#only-light" alt="Repository graph with consumers on top: the product application uses a product board HAL, which uses kb-hal-common and an MCU port; both depend on kb-core, which pins the drivers. The configurator reads kb-core releases and fills the application template; tested version sets list sets of kb-core." width="1200" height="919" loading="lazy"><img src="repo-family.dark.svg#only-dark" alt="Repository graph with consumers on top: the product application uses a product board HAL, which uses kb-hal-common and an MCU port; both depend on kb-core, which pins the drivers. The configurator reads kb-core releases and fills the application template; tested version sets list sets of kb-core." width="1200" height="919" loading="lazy">
+<figcaption>The kb repository family</figcaption>
+</figure>
+
+<details class="kb-figure-desc">
+<summary>Figure description and sources</summary>
+<p>Five levels, consumers on top. A product organisation owns the product application and its board HAL. The kokeb-labs organisation holds kb-core (utils, rtos, interfaces, handlers and the driver pins), kb-hal-common (shared HAL bases), the reference board HALs and, planned, the configurator, an application template and tested version sets. The kokeb-labs-drivers organisation holds each driver and each MCU port. The board HAL builds on kb-hal-common and one port; both rest on kb-core, which pins the drivers. The configurator reads kb-core releases and fills the application template. Only kb-core exists today; the other names are planned.</p>
+</details>
+<p>Figure module: <a href="https://github.com/kokeb-labs/kb-core-clean/blob/68ec84ab4fdae8433b8b508162054470aa9a0d2b/docs/diagrams/figures/repo-family.py"><code>docs/diagrams/figures/repo-family.py</code></a></p>
+<h2 id="phase-roadmap">Phase roadmap<a class="headerlink" href="#phase-roadmap" title="Permanent link">&para;</a></h2>
+<figure class="kb-figure">
+<img src="roadmap.svg#only-light" alt="Two rows of four phases, M0 to M7, in order: decisions, utils, rtos, interfaces, ESP32 port and bindings, handler rollout, breadth and generators, each with its exit criteria." width="1200" height="540" loading="lazy"><img src="roadmap.dark.svg#only-dark" alt="Two rows of four phases, M0 to M7, in order: decisions, utils, rtos, interfaces, ESP32 port and bindings, handler rollout, breadth and generators, each with its exit criteria." width="1200" height="540" loading="lazy">
+<figcaption>Phase roadmap</figcaption>
+</figure>
+
+<details class="kb-figure-desc">
+<summary>Figure description and sources</summary>
+<p>Eight phases, M0 to M7, in order; there are no calendar dates, each phase ends on its exit criteria. M0 fixes decisions and guardrails. M1 to M3 deliver kb::utils, kb::rtos and kb::interfaces, each with MISRA zero findings, the coverage floor, the mutation gate and fuzzing. M4 adds the ESP32 port and the first bindings. M5 rolls out handlers for all drivers, simplest to hardest. M6 adds breadth: a second port, the ThreadX backend, tested version sets and release evidence in the configurator. M7 adds the generators: pin tables from board.yml, a project archive and HIL in CI.</p>
+</details>
+<p>Figure module: <a href="https://github.com/kokeb-labs/kb-core-clean/blob/68ec84ab4fdae8433b8b508162054470aa9a0d2b/docs/diagrams/figures/roadmap.py"><code>docs/diagrams/figures/roadmap.py</code></a></p>
+<h2 id="kbrtos-backends">kb::rtos backends<a class="headerlink" href="#kbrtos-backends" title="Permanent link">&para;</a></h2>
+<figure class="kb-figure">
+<img src="rtos-backends.svg#only-light" alt="The kb::rtos API reaches one backend through a single seam: none, FreeRTOS, host (tests only) or ThreadX; FreeRTOS and ThreadX reach their kernel, which is SOUP, through boundary files and are tested on fake kernels." width="1200" height="711" loading="lazy"><img src="rtos-backends.dark.svg#only-dark" alt="The kb::rtos API reaches one backend through a single seam: none, FreeRTOS, host (tests only) or ThreadX; FreeRTOS and ThreadX reach their kernel, which is SOUP, through boundary files and are tested on fake kernels." width="1200" height="711" loading="lazy">
+<figcaption>kb::rtos backends</figcaption>
+</figure>
+
+<details class="kb-figure-desc">
+<summary>Figure description and sources</summary>
+<p>One API, one seam, four backends. The kb::rtos API (components/lib/rtos/inc) reaches a backend through kb::rtos::backend (backend.hpp). The none backend is for host tests and bare-metal bring-up; FreeRTOS and ThreadX each have boundary files that reach the kernel, which is SOUP, either a product's copy or the pinned or ESP-IDF one; the host backend (std::thread) is for tests only. FreeRTOS and ThreadX tests run against a fake kernel.</p>
+</details>
+<p>Figure module: <a href="https://github.com/kokeb-labs/kb-core-clean/blob/68ec84ab4fdae8433b8b508162054470aa9a0d2b/docs/diagrams/figures/rtos-backends.py"><code>docs/diagrams/figures/rtos-backends.py</code></a></p>
+<h2 id="the-threadx-backend">The ThreadX backend<a class="headerlink" href="#the-threadx-backend" title="Permanent link">&para;</a></h2>
+<figure class="kb-figure">
+<img src="rtos-threadx.svg#only-light" alt="The kb::rtos API and seam lead to two ThreadX backend files; the boundary file reaches the ThreadX kernel, which comes either from a product&#x27;s copy or the pinned submodule; tests run it on a fake kernel and on the Linux port." width="1200" height="789" loading="lazy"><img src="rtos-threadx.dark.svg#only-dark" alt="The kb::rtos API and seam lead to two ThreadX backend files; the boundary file reaches the ThreadX kernel, which comes either from a product&#x27;s copy or the pinned submodule; tests run it on a fake kernel and on the Linux port." width="1200" height="789" loading="lazy">
+<figcaption>The ThreadX backend</figcaption>
+</figure>
+
+<details class="kb-figure-desc">
+<summary>Figure description and sources</summary>
+<p>The kb::rtos API reaches the seam, kb::rtos::backend. The ThreadX backend is two files: threadx_isr.cpp, where every FromIsr call is the same call with TX_NO_WAIT, and threadx_boundary.cpp, the only boundary file, which creates ThreadX objects on kb-owned control blocks and stacks. The kernel is SOUP and never edited; it comes from a product's copy (KB_THREADX_INCLUDE_DIRS, for STM32Cube or a vendor SDK) or from the pinned submodule third_party/threadx at a release tag, with KB_THREADX_PORT choosing cortex_m0, cortex_m4, cortex_m7 or linux. Tests run the boundary on a fake kernel (contract and seam, exact ticks) and, on the pinned kernel's Linux port, as a threaded suite with priority inheritance.</p>
+</details>
+<p>Figure module: <a href="https://github.com/kokeb-labs/kb-core-clean/blob/68ec84ab4fdae8433b8b508162054470aa9a0d2b/docs/diagrams/figures/rtos-threadx.py"><code>docs/diagrams/figures/rtos-threadx.py</code></a></p>
+<h2 id="the-update-path">The update path<a class="headerlink" href="#the-update-path" title="Permanent link">&para;</a></h2>
+<figure class="kb-figure">
+<img src="update-path.svg#only-light" alt="Five steps: read the lock, catalogue and image; order kb-core, port and drivers; apply the driver gates and hold back what fails; write one row per component; write the new image, lock, CMake files, fetch script and report, then review, fetch, build and test." width="1200" height="513" loading="lazy"><img src="update-path.dark.svg#only-dark" alt="Five steps: read the lock, catalogue and image; order kb-core, port and drivers; apply the driver gates and hold back what fails; write one row per component; write the new image, lock, CMake files, fetch script and report, then review, fetch, build and test." width="1200" height="513" loading="lazy">
+<figcaption>The update path</figcaption>
+</figure>
+
+<details class="kb-figure-desc">
+<summary>Figure description and sources</summary>
+<p>Left to right. kb outdated, or the configurator's Open an existing project view, plans from the current lock, the catalogue and the image: kb-core moves first, then an extracted port, then each driver in name order. Each candidate must pass the driver gates in order (MCU family, kb_core_min, owner-task rule, bus kind in use); a newer version that fails is held back with the code of its first failing gate. The plan lists one row per component with the SemVer change, whether it breaks, and known vulnerabilities fixed and remaining. kb upgrade writes a new image and lock, the CMake files, the fetch script and kb-upgrade.md; the user reviews the diff and runs the fetch script, builds and tests.</p>
+</details>
+<p>Figure module: <a href="https://github.com/kokeb-labs/kb-core-clean/blob/68ec84ab4fdae8433b8b508162054470aa9a0d2b/docs/diagrams/figures/update-path.py"><code>docs/diagrams/figures/update-path.py</code></a></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../design/rules/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Design rules">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Design rules
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../testing/" class="md-footer__link md-footer__link--next" aria-label="Next: Testing and CI">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Testing and CI
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      
+<div class="md-copyright kb-footer">
+  <nav class="kb-footer__links" aria-label="Kokeb Labs">
+    <a href="https://kokeb-labs.github.io/">Kokeb Labs docs</a>
+    <a href="https://github.com/kokeb-labs">GitHub organisation</a>
+    
+      <a href="https://github.com/kokeb-labs/kb-core">Source</a>
+      <a href="https://github.com/kokeb-labs/kb-core/issues">Report an issue</a>
+      <a href="https://github.com/kokeb-labs/kb-core/blob/main/LICENSE">License</a>
+    
+  </nav>
+  
+    <div class="md-copyright__highlight">Copyright (c) 2026 The kb-core authors</div>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://github.com/kokeb-labs" target="_blank" rel="noopener" title="Kokeb Labs on GitHub" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "navigation.tracking", "navigation.instant", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.action.edit", "content.tabs.link", "toc.follow"], "search": "../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"alias": true, "default": "latest", "provider": "mike"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.c21346df.min.js"></script>
+      
+        <script src="../search/main.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="919" viewBox="0 0 1200 919" role="img" aria-labelledby="repo-family-title repo-family-desc" font-family="Inter, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
+<title id="repo-family-title">The kb repository family</title>
+<desc id="repo-family-desc">Repository graph with consumers on top: the product application uses a product board HAL, which uses kb-hal-common and an MCU port; both depend on kb-core, which pins the drivers. The configurator reads kb-core releases and fills the application template; tested version sets list sets of kb-core.</desc>
+<defs><marker id="fk-arrow-rail" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#8893A2"/></marker></defs>
+<rect x="0.5" y="0.5" width="1199" height="918" rx="16" fill="#FFFFFF" stroke="#E2E7EE"/>
+<text x="32" y="44" font-size="12.5" font-weight="700" letter-spacing="1.2" fill="#7A360E">PORTS AND REPOSITORIES</text>
+<text x="32" y="77.3" font-size="26" font-weight="700" fill="#0E1726">The kb repository family</text>
+<text x="32" y="103.8" font-size="15" fill="#566070">Only kb-core exists today. Dashed cards are planned repositories.</text>
+<rect x="32" y="119.8" width="1136" height="1" fill="#E2E7EE"/>
+<path d="M154.5 229.8 L154.5 291.8" fill="none" stroke="#8893A2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rail)"/>
+<path d="M228 387.8 L228 410.8 Q228 418.8 236 418.8 L342 418.8 Q350 418.8 350 426.8 L350 449.8" fill="none" stroke="#8893A2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rail)"/>
+<path d="M130 387.8 L130 410.8 Q130 418.8 138 418.8 L635.5 418.8 Q643.5 418.8 643.5 426.8 L643.5 449.8" fill="none" stroke="#8893A2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rail)"/>
+<path d="M423.5 387.8 L423.5 449.8" fill="none" stroke="#8893A2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rail)"/>
+<path d="M521.5 387.8 L521.5 410.8 Q521.5 418.8 529.5 418.8 L586.5 418.8 Q594.5 418.8 594.5 426.8 L594.5 449.8" fill="none" stroke="#8893A2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rail)"/>
+<path d="M423.5 545.8 L423.5 568.8 Q423.5 576.8 415.5 576.8 L355.6 576.8 Q347.6 576.8 347.6 584.8 L347.6 607.8" fill="none" stroke="#8893A2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rail)"/>
+<path d="M692.5 545.8 L692.5 568.8 Q692.5 576.8 700.5 576.8 L760.4 576.8 Q768.4 576.8 768.4 584.8 L768.4 607.8" fill="none" stroke="#8893A2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rail)"/>
+<path d="M137.2 703.8 L137.2 726.8 Q137.2 734.8 145.2 734.8 L146.5 734.8 Q154.5 734.8 154.5 742.8 L154.5 765.8" fill="none" stroke="#8893A2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rail)"/>
+<path d="M961.5 229.8 L961.5 291.8" fill="none" stroke="#8893A2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 5" marker-end="url(#fk-arrow-rail)"/>
+<path d="M888 545.8 L888 568.8 Q888 576.8 896 576.8 L1044.4 576.8 Q1052.4 576.8 1052.4 584.8 L1052.4 607.8" fill="none" stroke="#8893A2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 5" marker-end="url(#fk-arrow-rail)"/>
+<path d="M1087 181.8 L1112 181.8 Q1120 181.8 1120 189.8 L1120 647.8 Q1120 655.8 1112 655.8 L1087 655.8" fill="none" stroke="#8893A2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 5" marker-end="url(#fk-arrow-rail)"/>
+<rect x="32" y="137.8" width="245" height="88" rx="10" fill="#FDF0FF" stroke="#A21CAF" stroke-width="1.4"/>
+<rect x="32" y="145.8" width="4" height="72" rx="2" fill="#A21CAF"/>
+<rect x="32" y="295.8" width="245" height="88" rx="10" fill="#FDF0FF" stroke="#A21CAF" stroke-width="1.4"/>
+<rect x="32" y="303.8" width="4" height="72" rx="2" fill="#A21CAF"/>
+<rect x="301" y="295.8" width="245" height="88" rx="10" fill="#FBEFE6" stroke="#9A4A17" stroke-width="1.4" stroke-dasharray="6 4"/>
+<rect x="301" y="453.8" width="245" height="88" rx="10" fill="#FBEFE6" stroke="#9A4A17" stroke-width="1.4" stroke-dasharray="6 4"/>
+<rect x="570" y="453.8" width="245" height="88" rx="10" fill="#E6F6F4" stroke="#0B7A72" stroke-width="1.4"/>
+<rect x="570" y="461.8" width="4" height="72" rx="2" fill="#0B7A72"/>
+<rect x="839" y="137.8" width="245" height="88" rx="10" fill="#F8F1EA" stroke="#7C4A1E" stroke-width="1.4" stroke-dasharray="6 4"/>
+<rect x="839" y="295.8" width="245" height="88" rx="10" fill="#F8F1EA" stroke="#7C4A1E" stroke-width="1.4" stroke-dasharray="6 4"/>
+<rect x="839" y="453.8" width="245" height="88" rx="10" fill="#F8F1EA" stroke="#7C4A1E" stroke-width="1.4" stroke-dasharray="6 4"/>
+<rect x="32" y="611.8" width="1052" height="88" rx="10" fill="#FBEFE6" stroke="#9A4A17" stroke-width="1.4"/>
+<rect x="32" y="619.8" width="4" height="72" rx="2" fill="#9A4A17"/>
+<rect x="32" y="769.8" width="245" height="88" rx="10" fill="#EAF7EF" stroke="#15803D" stroke-width="1.4"/>
+<rect x="32" y="777.8" width="4" height="72" rx="2" fill="#15803D"/>
+<text x="52" y="164.6" font-size="15" font-weight="700" fill="#86198F">product application</text>
+<text x="52" y="189.4" font-size="13" fill="#2B3442">in a product organisation</text>
+<text x="52" y="322.6" font-size="15" font-weight="700" fill="#86198F">board-&lt;name&gt;</text>
+<text x="52" y="347.4" font-size="13" fill="#2B3442">product board HAL</text>
+<text x="321" y="322.6" font-size="15" font-weight="700" fill="#7A360E">kb-board-&lt;board&gt;</text>
+<text x="321" y="347.4" font-size="13" fill="#2B3442">reference board HALs</text>
+<text x="321" y="480.6" font-size="15" font-weight="700" fill="#7A360E">kb-hal-common</text>
+<text x="321" y="505.4" font-size="13" fill="#2B3442">shared HAL bases</text>
+<text x="590" y="480.6" font-size="15" font-weight="700" fill="#0B5F59">port-&lt;family&gt;</text>
+<text x="590" y="505.4" font-size="13" fill="#2B3442">port-esp32, port-stm32</text>
+<text x="859" y="164.6" font-size="15" font-weight="700" fill="#6B3F17">kb-configurator</text>
+<text x="859" y="189.4" font-size="13" fill="#2B3442">hosted configurator site</text>
+<text x="859" y="322.6" font-size="15" font-weight="700" fill="#6B3F17">kb-app-template</text>
+<text x="859" y="347.4" font-size="13" fill="#2B3442">starter project it fills</text>
+<text x="859" y="480.6" font-size="15" font-weight="700" fill="#6B3F17">kb-trains</text>
+<text x="859" y="505.4" font-size="13" fill="#2B3442">tested version sets</text>
+<text x="52" y="638.5" font-size="15" font-weight="700" fill="#7A360E">kb-core</text>
+<text x="52" y="663.4" font-size="13" fill="#2B3442">utils, rtos, interfaces, handlers, driver pins</text>
+<text x="52" y="796.5" font-size="15" font-weight="700" fill="#14532D">driver-&lt;chip&gt;</text>
+<text x="52" y="821.4" font-size="13" fill="#2B3442">one repository per chip</text>
+<rect x="127.1" y="724.8" width="37.6" height="20" rx="10" fill="#FFFFFF"/>
+<text x="145.8" y="739.1" font-size="12" font-weight="500" text-anchor="middle" fill="#566070">pins</text>
+<rect x="944.9" y="250.8" width="33.3" height="20" rx="10" fill="#FFFFFF"/>
+<text x="961.5" y="265.1" font-size="12" font-weight="500" text-anchor="middle" fill="#566070">fills</text>
+<rect x="1096.8" y="435.8" width="46.3" height="20" rx="10" fill="#FFFFFF"/>
+<text x="1120" y="450.1" font-size="12" font-weight="500" text-anchor="middle" fill="#566070">reads</text>
+<rect x="32" y="873.2" width="14" height="14" rx="4" fill="#FDF0FF" stroke="#A21CAF" stroke-width="1.4"/>
+<text x="54" y="884.8" font-size="12.5" fill="#566070">product organisation</text>
+<rect x="207.9" y="873.2" width="14" height="14" rx="4" fill="#FBEFE6" stroke="#9A4A17" stroke-width="1.4"/>
+<text x="229.9" y="884.8" font-size="12.5" fill="#566070">kokeb-labs</text>
+<rect x="324.1" y="873.2" width="14" height="14" rx="4" fill="#E6F6F4" stroke="#0B7A72" stroke-width="1.4"/>
+<text x="346.1" y="884.8" font-size="12.5" fill="#566070">kokeb-labs-drivers</text>
+<rect x="489.8" y="873.2" width="14" height="14" rx="4" fill="#EAF7EF" stroke="#15803D" stroke-width="1.4"/>
+<text x="511.8" y="884.8" font-size="12.5" fill="#566070">driver</text>
+<rect x="572.3" y="873.2" width="14" height="14" rx="4" fill="#F8F1EA" stroke="#7C4A1E" stroke-width="1.4"/>
+<text x="594.3" y="884.8" font-size="12.5" fill="#566070">tool, planned</text>
+</svg>

@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1007" viewBox="0 0 1200 1007" role="img" aria-labelledby="ci-flow-title ci-flow-desc" font-family="Inter, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
+<title id="ci-flow-title">The CI flow</title>
+<desc id="ci-flow-desc">Flow: local preflight, then a pull request; always-run checks, path-gated checks and the drivers that are never re-run feed one required gate; a tag then produces the release assets and a schedule re-scans them.</desc>
+<defs><marker id="fk-arrow-brand-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#F4B942"/></marker><marker id="fk-arrow-rail" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#6C7889"/></marker></defs>
+<rect x="0.5" y="0.5" width="1199" height="1006" rx="16" fill="#0E131A" stroke="#283241"/>
+<text x="32" y="44" font-size="12.5" font-weight="700" letter-spacing="1.2" fill="#F8D27A">TESTING</text>
+<text x="32" y="77.3" font-size="26" font-weight="700" fill="#E8EDF3">The CI flow</text>
+<text x="32" y="103.8" font-size="15" fill="#9AA6B5">Every CI job has a local equivalent in tools/preflight.sh, run before any push.</text>
+<rect x="32" y="119.8" width="1136" height="1" fill="#252F3C"/>
+<rect x="32" y="250.8" width="1136" height="183" rx="14" fill="#11281A" stroke="#285A3A" stroke-width="1.2"/>
+<rect x="32" y="473.8" width="1136" height="162.4" rx="14" fill="#13233A" stroke="#2B4C78" stroke-width="1.2"/>
+<rect x="32" y="676.2" width="1136" height="126" rx="14" fill="#1B232E" stroke="#3A4656" stroke-width="1.2"/>
+<path d="M346.8 172.3 L398.8 172.3" fill="none" stroke="#6C7889" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rail)"/>
+<path d="M558.2 209.8 L558.2 247.8" fill="none" stroke="#6C7889" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rail)"/>
+<path d="M152 805.2 L152 855.2" fill="none" stroke="#6C7889" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rail)"/>
+<path d="M275 902.2 L309 902.2" fill="none" stroke="#F4B942" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-brand-strong)"/>
+<path d="M795 902.2 L829 902.2" fill="none" stroke="#F4B942" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-brand-strong)"/>
+<rect x="32" y="137.8" width="310.8" height="69" rx="10" fill="#2A1F14" stroke="#D6A26B" stroke-width="1.4"/>
+<rect x="32" y="145.8" width="4" height="53" rx="2" fill="#D6A26B"/>
+<rect x="402.8" y="137.8" width="310.8" height="69" rx="10" fill="#2A1F14" stroke="#D6A26B" stroke-width="1.4"/>
+<rect x="402.8" y="145.8" width="4" height="53" rx="2" fill="#D6A26B"/>
+<rect x="48" y="291.8" width="172.3" height="126" rx="10" fill="#151C26" stroke="#3A4657" stroke-width="1"/>
+<rect x="48" y="299.8" width="4" height="110" rx="2" fill="#4ADE80"/>
+<rect x="234.3" y="291.8" width="172.3" height="126" rx="10" fill="#151C26" stroke="#3A4657" stroke-width="1"/>
+<rect x="234.3" y="299.8" width="4" height="110" rx="2" fill="#4ADE80"/>
+<rect x="420.7" y="291.8" width="172.3" height="126" rx="10" fill="#151C26" stroke="#3A4657" stroke-width="1"/>
+<rect x="420.7" y="299.8" width="4" height="110" rx="2" fill="#4ADE80"/>
+<rect x="607" y="291.8" width="172.3" height="126" rx="10" fill="#151C26" stroke="#3A4657" stroke-width="1"/>
+<rect x="607" y="299.8" width="4" height="110" rx="2" fill="#4ADE80"/>
+<rect x="793.3" y="291.8" width="172.3" height="126" rx="10" fill="#151C26" stroke="#3A4657" stroke-width="1"/>
+<rect x="793.3" y="299.8" width="4" height="110" rx="2" fill="#4ADE80"/>
+<rect x="979.7" y="291.8" width="172.3" height="126" rx="10" fill="#151C26" stroke="#3A4657" stroke-width="1"/>
+<rect x="979.7" y="299.8" width="4" height="110" rx="2" fill="#4ADE80"/>
+<rect x="48" y="532.2" width="265.5" height="88" rx="10" fill="#151C26" stroke="#3A4657" stroke-width="1"/>
+<rect x="48" y="540.2" width="4" height="72" rx="2" fill="#60A5FA"/>
+<rect x="327.5" y="532.2" width="265.5" height="88" rx="10" fill="#151C26" stroke="#3A4657" stroke-width="1"/>
+<rect x="327.5" y="540.2" width="4" height="72" rx="2" fill="#60A5FA"/>
+<rect x="607" y="532.2" width="265.5" height="88" rx="10" fill="#151C26" stroke="#3A4657" stroke-width="1"/>
+<rect x="607" y="540.2" width="4" height="72" rx="2" fill="#60A5FA"/>
+<rect x="886.5" y="532.2" width="265.5" height="88" rx="10" fill="#151C26" stroke="#3A4657" stroke-width="1"/>
+<rect x="886.5" y="540.2" width="4" height="72" rx="2" fill="#60A5FA"/>
+<rect x="48" y="717.2" width="1104" height="69" rx="10" fill="#151C26" stroke="#3A4657" stroke-width="1" stroke-dasharray="6 4"/>
+<rect x="32" y="858.2" width="240" height="88" rx="10" fill="#2A2113" stroke="#F4B942" stroke-width="1.4"/>
+<rect x="32" y="866.2" width="4" height="72" rx="2" fill="#F4B942"/>
+<rect x="312" y="858.2" width="480" height="88" rx="10" fill="#2A2113" stroke="#F4B942" stroke-width="1.4"/>
+<rect x="312" y="866.2" width="4" height="72" rx="2" fill="#F4B942"/>
+<rect x="832" y="858.2" width="336" height="88" rx="10" fill="#2A2113" stroke="#F4B942" stroke-width="1.4"/>
+<rect x="832" y="866.2" width="4" height="72" rx="2" fill="#F4B942"/>
+<text x="52" y="164.6" font-size="15" font-weight="700" fill="#F1D5B5">tools/preflight.sh</text>
+<text x="52" y="189.4" font-size="13" fill="#D2DAE4">local, before every push</text>
+<text x="422.8" y="164.6" font-size="15" font-weight="700" fill="#F1D5B5">Pull request or push</text>
+<text x="48" y="275.8" font-size="13" font-weight="700" fill="#BBF7D0">ALWAYS, ON EVERY PULL REQUEST</text>
+<text x="68" y="318.6" font-size="15" font-weight="700" fill="#E8EDF3">Repository</text>
+<text x="68" y="338.1" font-size="15" font-weight="700" fill="#E8EDF3">checks</text>
+<text x="68" y="362.9" font-size="13" fill="#D2DAE4">DCO, lint, handbook,</text>
+<text x="68" y="381.8" font-size="13" fill="#D2DAE4">drift</text>
+<text x="254.3" y="318.6" font-size="15" font-weight="700" fill="#E8EDF3">Layering</text>
+<text x="254.3" y="343.4" font-size="13" fill="#D2DAE4">include checker,</text>
+<text x="254.3" y="362.2" font-size="13" fill="#D2DAE4">CMake DAG, poison</text>
+<text x="254.3" y="381.1" font-size="13" fill="#D2DAE4">build, symbol lint</text>
+<text x="440.7" y="318.6" font-size="15" font-weight="700" fill="#E8EDF3">Layout and</text>
+<text x="440.7" y="338.1" font-size="15" font-weight="700" fill="#E8EDF3">examples</text>
+<text x="440.7" y="362.9" font-size="13" fill="#D2DAE4">root allowlist, retired</text>
+<text x="440.7" y="381.8" font-size="13" fill="#D2DAE4">locations, example</text>
+<text x="440.7" y="400.6" font-size="13" fill="#D2DAE4">index</text>
+<text x="627" y="318.6" font-size="15" font-weight="700" fill="#E8EDF3">Own parts</text>
+<text x="627" y="343.4" font-size="13" fill="#D2DAE4">host build and tests</text>
+<text x="627" y="362.2" font-size="13" fill="#D2DAE4">on GCC and Clang,</text>
+<text x="627" y="381.1" font-size="13" fill="#D2DAE4">clang-tidy, cppcheck</text>
+<text x="813.3" y="318.6" font-size="15" font-weight="700" fill="#E8EDF3">MISRA, level high</text>
+<text x="813.3" y="343.4" font-size="13" fill="#D2DAE4">CodeQL pack plus</text>
+<text x="813.3" y="362.2" font-size="13" fill="#D2DAE4">kokeb-cpp20, host</text>
+<text x="813.3" y="381.1" font-size="13" fill="#D2DAE4">and Cortex-M</text>
+<text x="999.7" y="318.6" font-size="15" font-weight="700" fill="#E8EDF3">Pin hygiene</text>
+<text x="999.7" y="343.4" font-size="13" fill="#D2DAE4">gitlink = lock =</text>
+<text x="999.7" y="362.2" font-size="13" fill="#D2DAE4">release or rc tag with</text>
+<text x="999.7" y="381.1" font-size="13" fill="#D2DAE4">a green gate; never</text>
+<text x="999.7" y="400" font-size="13" fill="#D2DAE4">a branch</text>
+<text x="48" y="498.8" font-size="13" font-weight="700" fill="#BFDBFE">PATH-GATED, AND ON MAIN AND TAGS</text>
+<text x="48" y="516.2" font-size="12" fill="#BFDBFE">components/drivers, handlers, interfaces, ports and cmake</text>
+<text x="68" y="559" font-size="15" font-weight="700" fill="#E8EDF3">Quality</text>
+<text x="68" y="583.8" font-size="13" fill="#D2DAE4">coverage, sanitizers, fuzz,</text>
+<text x="68" y="602.7" font-size="13" fill="#D2DAE4">mutation kill-rate gate</text>
+<text x="347.5" y="559" font-size="15" font-weight="700" fill="#E8EDF3">Integration</text>
+<text x="347.5" y="583.8" font-size="13" fill="#D2DAE4">binding x port x MCU and RTOS</text>
+<text x="347.5" y="602.7" font-size="13" fill="#D2DAE4">matrix from catalog/compat.yml</text>
+<text x="627" y="559" font-size="15" font-weight="700" fill="#E8EDF3">Port job</text>
+<text x="627" y="583.8" font-size="13" fill="#D2DAE4">ESP-IDF v5.5 build of</text>
+<text x="627" y="602.7" font-size="13" fill="#D2DAE4">components/ports/esp32</text>
+<text x="906.5" y="559" font-size="15" font-weight="700" fill="#E8EDF3">Catalogue</text>
+<text x="906.5" y="583.8" font-size="13" fill="#D2DAE4">regenerate compat.yml, fail on drift</text>
+<text x="48" y="701.2" font-size="13" font-weight="700" fill="#E2E8F0">NEVER RE-RUN FOR COMPONENTS/DRIVERS</text>
+<text x="68" y="744" font-size="15" font-weight="700" fill="#E8EDF3">Driver tests, fuzz, mutation, MISRA, tidy, docs</text>
+<text x="68" y="768.8" font-size="13" fill="#D2DAE4">trusted through pin hygiene: each driver runs them in its own repository</text>
+<rect x="538.7" y="218.8" width="39.1" height="20" rx="10" fill="#0E131A"/>
+<text x="558.2" y="233.1" font-size="12" font-weight="500" text-anchor="middle" fill="#9AA6B5">runs</text>
+<text x="52" y="885" font-size="15" font-weight="700" fill="#F8D27A">ru-ci-gate</text>
+<text x="52" y="909.8" font-size="13" fill="#D2DAE4">the single required check</text>
+<text x="332" y="885" font-size="15" font-weight="700" fill="#F8D27A">Tag vX.Y.Z</text>
+<text x="332" y="909.8" font-size="13" fill="#D2DAE4">per-part packages, SHA256SUMS, compat.yml, release lock, SBOM,</text>
+<text x="332" y="928.7" font-size="13" fill="#D2DAE4">CVE scan, licence report, provenance</text>
+<text x="852" y="885" font-size="15" font-weight="700" fill="#F8D27A">Scheduled</text>
+<text x="852" y="909.8" font-size="13" fill="#D2DAE4">CVE re-scan of releases, the tested version</text>
+<text x="852" y="928.7" font-size="13" fill="#D2DAE4">set kb YYYY.N</text>
+<rect x="106.3" y="820.2" width="91.3" height="20" rx="10" fill="#0E131A"/>
+<text x="152" y="834.5" font-size="12" font-weight="500" text-anchor="middle" fill="#9AA6B5">all must pass</text>
+<rect x="32" y="961.6" width="14" height="14" rx="4" fill="#2A1F14" stroke="#D6A26B" stroke-width="1.4"/>
+<text x="54" y="973.2" font-size="12.5" fill="#9AA6B5">start</text>
+<rect x="106.1" y="961.6" width="14" height="14" rx="4" fill="#11281A" stroke="#4ADE80" stroke-width="1.4"/>
+<text x="128.1" y="973.2" font-size="12.5" fill="#9AA6B5">always</text>
+<rect x="195.5" y="961.6" width="14" height="14" rx="4" fill="#13233A" stroke="#60A5FA" stroke-width="1.4"/>
+<text x="217.5" y="973.2" font-size="12.5" fill="#9AA6B5">path-gated</text>
+<rect x="311" y="961.6" width="14" height="14" rx="4" fill="#1B232E" stroke="#94A3B8" stroke-width="1.4"/>
+<text x="333" y="973.2" font-size="12.5" fill="#9AA6B5">never re-run</text>
+<rect x="435.9" y="961.6" width="14" height="14" rx="4" fill="#2A2113" stroke="#F4B942" stroke-width="1.4"/>
+<text x="457.9" y="973.2" font-size="12.5" fill="#9AA6B5">gate and release</text>
+</svg>

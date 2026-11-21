@@ -1,0 +1,2022 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Utilities, RTOS wrapper, bus and pin interfaces and driver handlers between the Kokeb Labs drivers and a board HAL.">
+      
+      
+      
+        <link rel="canonical" href="https://kokeb-labs.github.io/kb-core/latest/design/handlers/">
+      
+      
+        <link rel="prev" href="../plan/">
+      
+      
+        <link rel="next" href="../bus-access/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/kokeb/favicon.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+    
+    
+      
+        <title>Handlers - kb-core</title>
+      
+    
+    
+  
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+  
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+  
+  <style>:root{--md-admonition-icon--note:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M0%208a8%208%200%201%201%2016%200A8%208%200%200%201%200%208m8-6.5a6.5%206.5%200%201%200%200%2013%206.5%206.5%200%200%200%200-13M6.5%207.75A.75.75%200%200%201%207.25%207h1a.75.75%200%200%201%20.75.75v2.75h.25a.75.75%200%200%201%200%201.5h-2a.75.75%200%200%201%200-1.5h.25v-2h-.25a.75.75%200%200%201-.75-.75M8%206a1%201%200%201%201%200-2%201%201%200%200%201%200%202%22/%3E%3C/svg%3E');--md-admonition-icon--tip:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M8%201.5c-2.363%200-4%201.69-4%203.75%200%20.984.424%201.625.984%202.304l.214.253c.223.264.47.556.673.848.284.411.537.896.621%201.49a.75.75%200%200%201-1.484.211c-.04-.282-.163-.547-.37-.847a9%209%200%200%200-.542-.68q-.126-.149-.268-.32C3.201%207.75%202.5%206.766%202.5%205.25%202.5%202.31%204.863%200%208%200s5.5%202.31%205.5%205.25c0%201.516-.701%202.5-1.328%203.259q-.142.172-.268.319c-.207.245-.383.453-.541.681-.208.3-.33.565-.37.847a.751.751%200%200%201-1.485-.212c.084-.593.337-1.078.621-1.489.203-.292.45-.584.673-.848q.113-.133.213-.253c.561-.679.985-1.32.985-2.304%200-2.06-1.637-3.75-4-3.75M5.75%2012h4.5a.75.75%200%200%201%200%201.5h-4.5a.75.75%200%200%201%200-1.5M6%2015.25a.75.75%200%200%201%20.75-.75h2.5a.75.75%200%200%201%200%201.5h-2.5a.75.75%200%200%201-.75-.75%22/%3E%3C/svg%3E');--md-admonition-icon--warning:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M6.457%201.047c.659-1.234%202.427-1.234%203.086%200l6.082%2011.378A1.75%201.75%200%200%201%2014.082%2015H1.918a1.75%201.75%200%200%201-1.543-2.575Zm1.763.707a.25.25%200%200%200-.44%200L1.698%2013.132a.25.25%200%200%200%20.22.368h12.164a.25.25%200%200%200%20.22-.368Zm.53%203.996v2.5a.75.75%200%200%201-1.5%200v-2.5a.75.75%200%200%201%201.5%200M9%2011a1%201%200%201%201-2%200%201%201%200%200%201%202%200%22/%3E%3C/svg%3E');--md-admonition-icon--danger:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M9.504.43a1.516%201.516%200%200%201%202.437%201.713L10.415%205.5h2.123c1.57%200%202.346%201.909%201.22%203.004l-7.34%207.142a1.25%201.25%200%200%201-.871.354h-.302a1.25%201.25%200%200%201-1.157-1.723L5.633%2010.5H3.462c-1.57%200-2.346-1.909-1.22-3.004zm1.047%201.074L3.286%208.571A.25.25%200%200%200%203.462%209H6.75a.75.75%200%200%201%20.694%201.034l-1.713%204.188%206.982-6.793A.25.25%200%200%200%2012.538%207H9.25a.75.75%200%200%201-.683-1.06l2.008-4.418.003-.006-.004-.009-.006-.006-.008-.001q-.005%200-.009.004%22/%3E%3C/svg%3E');--md-admonition-icon--example:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M5%205.782V2.5h-.25a.75.75%200%200%201%200-1.5h6.5a.75.75%200%200%201%200%201.5H11v3.282l3.666%205.76C15.619%2013.04%2014.543%2015%2012.767%2015H3.233c-1.776%200-2.852-1.96-1.899-3.458Zm-2.4%206.565a.75.75%200%200%200%20.633%201.153h9.534a.75.75%200%200%200%20.633-1.153L12.225%2010.5h-8.45ZM9.5%202.5h-3V6c0%20.143-.04.283-.117.403L4.73%209h6.54L9.617%206.403A.75.75%200%200%201%209.5%206Z%22/%3E%3C/svg%3E');--md-admonition-icon--quote:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M1.75%202.5h10.5a.75.75%200%200%201%200%201.5H1.75a.75.75%200%200%201%200-1.5m4%205h8.5a.75.75%200%200%201%200%201.5h-8.5a.75.75%200%200%201%200-1.5m0%205h8.5a.75.75%200%200%201%200%201.5h-8.5a.75.75%200%200%201%200-1.5M2.5%207.75v6a.75.75%200%200%201-1.5%200v-6a.75.75%200%200%201%201.5%200%22/%3E%3C/svg%3E');}</style>
+
+
+
+    
+  <link rel="stylesheet" href="../../assets/kokeb/kokeb.css">
+
+    
+      
+    
+    <link rel="stylesheet" media="print" onload="this.media='all'" href="../../assets/kokeb/fonts.css">
+  <noscript><link rel="stylesheet" href="../../assets/kokeb/fonts.css"></noscript>
+
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  
+  
+  
+  <meta name="theme-color" content="#0e1726" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#1b2140" media="(prefers-color-scheme: dark)">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Kokeb Labs">
+  <meta property="og:title" content="Handlers - kb-core">
+  <meta property="og:description" content="Utilities, RTOS wrapper, bus and pin interfaces and driver handlers between the Kokeb Labs drivers and a board HAL.">
+  <meta property="og:url" content="https://kokeb-labs.github.io/kb-core/latest/design/handlers/">
+  <meta name="twitter:card" content="summary">
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#handlers" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+          <aside class="md-banner md-banner--warning">
+            <div class="md-banner__inner md-grid md-typeset">
+              
+  You are reading the documentation of an older version.
+  <a href="https://kokeb-labs.github.io/kb-core/"><strong>Go to the latest version.</strong></a>
+
+            </div>
+            <script>var el=document.querySelector("[data-md-component=outdated]"),base=new URL("../.."),outdated=__md_get("__outdated",sessionStorage,base);!0===outdated&&el&&(el.hidden=!1)</script>
+          </aside>
+        
+      </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="kb-core" class="md-header__button md-logo" aria-label="kb-core" data-md-component="logo">
+      
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" aria-hidden="true" focusable="false" class="kb-mark">
+    <g transform="translate(1.28 1.28) scale(0.12000)"><path d="M232,66 Q265.29,246.71 446,280 Q265.29,313.29 232,494 Q198.71,313.29 18,280 Q198.71,246.71 232,66 Z" fill="#F4B942"/><path d="M386,38 Q399.69,112.31 474,126 Q399.69,139.69 386,214 Q372.31,139.69 298,126 Q372.31,112.31 386,38 Z" fill="#0E1726" stroke="#0E1726" stroke-width="24" stroke-linejoin="round"/><path d="M386,38 Q399.69,112.31 474,126 Q399.69,139.69 386,214 Q372.31,139.69 298,126 Q372.31,112.31 386,38 Z" fill="#D9773B"/></g>
+  </svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          
+          <a class="kb-org" href="https://kokeb-labs.github.io/" title="All Kokeb Labs documentation">Kokeb Labs</a>
+          <span class="kb-org__sep" aria-hidden="true">/</span>
+          <span class="md-ellipsis">
+            kb-core
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Handlers
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="Follow the system theme"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Follow the system theme" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m14.3 16-.7-2h-3.2l-.7 2H7.8L11 7h2l3.2 9zM20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12zm-9.15 3.96h2.3L12 9z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/kokeb-labs/kb-core" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    kokeb-labs/kb-core
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../architecture/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Concepts
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../parts/utils/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Parts
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../examples/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Examples
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../configurator/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Configurator
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../handlers/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Handlers
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../plan/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Design
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../testing/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Quality
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../versioning/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Project
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="kb-core" class="md-nav__button md-logo" aria-label="kb-core" data-md-component="logo">
+      
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" aria-hidden="true" focusable="false" class="kb-mark">
+    <g transform="translate(1.28 1.28) scale(0.12000)"><path d="M232,66 Q265.29,246.71 446,280 Q265.29,313.29 232,494 Q198.71,313.29 18,280 Q198.71,246.71 232,66 Z" fill="#F4B942"/><path d="M386,38 Q399.69,112.31 474,126 Q399.69,139.69 386,214 Q372.31,139.69 298,126 Q372.31,112.31 386,38 Z" fill="#0E1726" stroke="#0E1726" stroke-width="24" stroke-linejoin="round"/><path d="M386,38 Q399.69,112.31 474,126 Q399.69,139.69 386,214 Q372.31,139.69 298,126 Q372.31,112.31 386,38 Z" fill="#D9773B"/></g>
+  </svg>
+
+    </a>
+    kb-core
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/kokeb-labs/kb-core" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    kokeb-labs/kb-core
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../architecture/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concepts
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../parts/utils/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Parts
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Examples
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../configurator/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configurator
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../handlers/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Handlers
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../diagrams/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_7" id="__nav_7_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Design
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Handlers
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Handlers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-a-handler-is" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What a handler is
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#start-up-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Start-up pipeline
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Start-up pipeline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-plans" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The plans
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lifecycle-and-health" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lifecycle and health
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#thread-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Thread models
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#uniform-api-across-driver-shapes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Uniform API across driver shapes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-applications-use-kb-core" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How applications use kb-core
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bus-access/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bus access
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fault-journal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fault evidence
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ports/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MCU ports and repositories
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../assurance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Assurance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../configurator/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configurator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../assembler/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Assembler and resolver
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kb-tool/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The kb tool
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design rules
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../testing/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quality
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+    <a href="../../versioning/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Project
+  
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-a-handler-is" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What a handler is
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#start-up-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Start-up pipeline
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Start-up pipeline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-plans" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The plans
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lifecycle-and-health" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lifecycle and health
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#thread-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Thread models
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#uniform-api-across-driver-shapes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Uniform API across driver shapes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-applications-use-kb-core" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How applications use kb-core
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/kokeb-labs/kb-core/edit/main/docs/design/handlers.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="handlers">Handlers<a class="headerlink" href="#handlers" title="Permanent link">&para;</a></h1>
+<p>What a handler is, how it starts, how it stays healthy, and how several tasks use it. Decisions:
+<a href="../../adr/ADR-0009-handler-thread-models/">ADR-0009</a> (thread models) and
+<a href="../../adr/ADR-0010-handler-startup-pipeline/">ADR-0010</a> (start-up pipeline). Status: implemented in
+<code>components/lib/handlers/</code> (the core in <code>common/</code>, one binding per driver in <code>bindings/</code>); every handler has its page
+under
+<a href="../../handlers/">Handlers</a>.</p>
+<h2 id="what-a-handler-is">What a handler is<a class="headerlink" href="#what-a-handler-is" title="Permanent link">&para;</a></h2>
+<p>A handler binds <strong>one driver instance</strong> to <strong>one device on a bus domain</strong>, <strong>one configuration</strong> and <strong>a health
+record</strong>, and exposes a typed API that returns <code>kb::Result</code>. It is the only object a HAL manager talks to for that
+chip.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Handler&lt;Chip&gt;   (kb::handlers::HandlerCore&lt;Derived, Driver&gt;, CRTP, ADR-0006)
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>├── Binding          satisfies the driver's port over kb contracts (hook bases or hand-written)
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>├── std::optional&lt;Driver&gt;   emplaced by the start-up pipeline, destroyed on failure or Deinitialize()
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>├── StartupPlan      constexpr list of declared stages (ADR-0010)
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>├── Config           driver config + handler config (address, deadlines, retry policy, health thresholds)
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>├── Health           state, consecutive failures, last error + detail + time, counters (seqlock snapshot)
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>└── Diagnostics      common header first, then chip counters
+</span></code></pre></div>
+<p>The core is <strong>single-threaded</strong>: it holds no lock. Thread safety comes from the access facade its bus declares
+(<a href="#thread-models">thread models</a>).</p>
+<p>Rules:</p>
+<ul>
+<li>Construction stores references, does no I/O, touches no RTOS object and cannot fail; a handler works as a
+  static object.</li>
+<li><code>EnsureInitialized()</code> is the one start (handbook ADR-0021). Reads and writes never start or restart the chip:
+  before the start has succeeded they return <code>NotInitialized</code> and send nothing.</li>
+<li>No board value inside kb-core: addresses, pins, deadlines and thresholds arrive in <code>Config</code> from the HAL.</li>
+<li>A driver is never changed to suit a handler; the binding adapts.</li>
+</ul>
+<h2 id="start-up-pipeline">Start-up pipeline<a class="headerlink" href="#start-up-pipeline" title="Permanent link">&para;</a></h2>
+<p><code>EnsureInitialized()</code> runs the chip's start-up plan: a <code>constexpr</code> list of declared stages, executed by one runner
+in <code>HandlerCore</code>. A plan lists only the stage kinds its chip needs, in a fixed order; one driver call may cover
+several kinds.</p>
+<figure class="kb-figure">
+<img src="../../diagrams/handler-startup.svg#only-light" alt="Pipeline of eight start-up stages in order, Power, HostReset, Boot, Link, Identify, Secure, Configure and Verify, ending in Ready; beside it the plans of most drivers, the bno08x and the se05x, each using only some of the stages." width="1200" height="1049"><img src="../../diagrams/handler-startup.dark.svg#only-dark" alt="Pipeline of eight start-up stages in order, Power, HostReset, Boot, Link, Identify, Secure, Configure and Verify, ending in Ready; beside it the plans of most drivers, the bno08x and the se05x, each using only some of the stages." width="1200" height="1049">
+<figcaption>The handler start-up pipeline</figcaption>
+</figure>
+
+<details class="kb-figure-desc">
+<summary>Figure description and sources</summary>
+<p>One runner and a declared plan of stages per chip, in a fixed order: Power, HostReset, Boot, Link, Identify, Secure, Configure, Verify, then Ready. A plan lists only the stages its chip needs; an optional stage is skipped when the HAL supplies no pin, rail or key for it. Every stage is synchronous or polled, and bounded by a deadline. Most drivers declare one step that calls the driver's EnsureInitialized. The bno08x resets and boots with polled steps; the se05x sets platform keys, opens the secure link and optionally checks the lifecycle state.</p>
+</details>
+<table>
+<thead>
+<tr>
+<th>Kind</th>
+<th>Does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Power</code></td>
+<td>Enable a rail or an enable pin, wait its settle time</td>
+</tr>
+<tr>
+<td><code>HostReset</code></td>
+<td>Host-driven reset: pulse, hold, release</td>
+</tr>
+<tr>
+<td><code>Boot</code></td>
+<td>Wait the boot time or a ready condition (ready pin, advertisement)</td>
+</tr>
+<tr>
+<td><code>Link</code></td>
+<td>Bring up a transport session (T=1, SHTP)</td>
+</tr>
+<tr>
+<td><code>Identify</code></td>
+<td>Read the ID, select an applet, probe capabilities</td>
+</tr>
+<tr>
+<td><code>Secure</code></td>
+<td>Open a secure channel needed for normal use (platform SCP03)</td>
+</tr>
+<tr>
+<td><code>Configure</code></td>
+<td>Apply the configuration</td>
+</tr>
+<tr>
+<td><code>Verify</code></td>
+<td>Read back, check the lifecycle state</td>
+</tr>
+</tbody>
+</table>
+<p>Each stage declares the driver call, <strong>sync</strong> (one call) or <strong>polled</strong> (repeated until done), its deadline (a
+<code>Config</code> field), and whether it is optional (skipped when the HAL supplies no pin, rail or key for it). The runner
+keeps a <code>StartupReport</code>: the stage reached, the <code>kb::Status</code>, the driver's own error in <code>detail</code>, and the time
+each stage took. On a failure it runs the plan's abort call, destroys the driver and stays <code>Constructed</code>, so the
+next <code>EnsureInitialized()</code> starts from the first stage again.</p>
+<p><code>StartStep(now)</code> runs at most one step of the current stage and returns <code>Pending</code>, <code>Ok</code> or the failure; an owner
+task calls it from <code>Service(now)</code> and never blocks. <code>EnsureInitialized()</code> is the loop over <code>StartStep()</code>, waiting
+with <code>kb::rtos::SleepFor</code> between polls and bounded by the sum of the stage deadlines.</p>
+<h3 id="the-plans">The plans<a class="headerlink" href="#the-plans" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Chip</th>
+<th>Stages</th>
+<th>Calls</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Most drivers (21)</td>
+<td><code>Identify + Configure</code>; optional <code>Power</code>, <code>HostReset</code></td>
+<td><code>driver.EnsureInitialized()</code> (sync); the optional stages only when the HAL supplies the pin and the driver does not drive it itself</td>
+</tr>
+<tr>
+<td>bno08x</td>
+<td><code>HostReset</code></td>
+<td><code>Begin(cfg)</code> (sync): validates, brings the port up, pulses NRST when the port has <code>SetReset</code></td>
+</tr>
+<tr>
+<td></td>
+<td><code>Boot + Link</code></td>
+<td><code>Poll(now)</code> until <code>Ready()</code> (polled): reset wait, advertisement, initialise handshake; deadline from <code>startup_timeout_ms</code>; fails when the driver enters <code>Faulted</code></td>
+</tr>
+<tr>
+<td></td>
+<td><code>Configure</code></td>
+<td>one <code>SetFeature</code> per configured sensor, polled until each <code>OpDone</code>; deadline from <code>op_timeout_ms</code></td>
+</tr>
+<tr>
+<td>se05x</td>
+<td><code>Link + Identify + Secure</code></td>
+<td><code>SetPlatformKeys()</code> first when the HAL supplies key handles (no I/O, never keys), then <code>Open()</code> (sync, every wait bounded by the link): link, card data, applet select, feature bits, capability probes, lifecycle state, platform SCP03 when required; skipped when <code>IsOpen()</code></td>
+</tr>
+<tr>
+<td></td>
+<td><code>Verify</code> (optional)</td>
+<td>lifecycle state against what the HAL expects</td>
+</tr>
+</tbody>
+</table>
+<p>A plan lists each kind once, in kind order (checked at compile time), so two calls that serve kinds of one stage
+are one stage: se05x sets its key handles at the start of its <code>Open()</code> stage, and bno08x without NRST declares
+<code>Link</code> = <code>Begin(cfg)</code>, then <code>Identify</code> = <code>Poll(now)</code> until <code>Ready()</code>, then <code>Configure</code>.</p>
+<p>What stays outside the pipeline, and the two driver-level waivers to handbook ADR-0021 (W-01 bno08x
+<code>Begin</code>/<code>Poll</code>, W-02 se05x <code>Open</code>/<code>Close</code>), are in <a href="../../adr/ADR-0010-handler-startup-pipeline/">ADR-0010</a>. No
+handler-level waiver is needed. se05x applet sessions (UserID, AESKey, ECKey) are per transaction, opened by
+handler calls inside a held bus transaction.</p>
+<h2 id="lifecycle-and-health">Lifecycle and health<a class="headerlink" href="#lifecycle-and-health" title="Permanent link">&para;</a></h2>
+<figure class="kb-figure">
+<img src="../../diagrams/handler-health.svg#only-light" alt="State machine: Unknown to Starting to Ready; Ready and Degraded swap on a failing and a passing call; Starting, Degraded and Ready can go to Faulted; Faulted goes to Recovering and back to Ready or Faulted; Deinitialize returns Ready or Faulted to Unknown." width="1200" height="782" loading="lazy"><img src="../../diagrams/handler-health.dark.svg#only-dark" alt="State machine: Unknown to Starting to Ready; Ready and Degraded swap on a failing and a passing call; Starting, Degraded and Ready can go to Faulted; Faulted goes to Recovering and back to Ready or Faulted; Deinitialize returns Ready or Faulted to Unknown." width="1200" height="782" loading="lazy">
+<figcaption>Handler lifecycle and health</figcaption>
+</figure>
+
+<details class="kb-figure-desc">
+<summary>Figure description and sources</summary>
+<p>Seven states. A handler starts Unknown (constructed, no I/O). EnsureInitialized or StartStep moves it to Starting, which walks the declared stages, each bounded by its deadline; the last stage makes it Ready. A failing call makes a Ready handler Degraded until the next call succeeds; fault_after failures in a row, or one fatal error (the chip reset or lost its state), make it Faulted. Recover() moves Faulted to Recovering with a backoff that doubles on each failure and is refused after max_attempts. Deinitialize() returns Ready or Faulted to Unknown. Only EnsureInitialized, StartStep, Deinitialize and Recover change the lifecycle: calls never start or restart the chip.</p>
+</details>
+<ul>
+<li>Health states: <code>Unknown</code> (not started); <code>Starting</code>; <code>Ready</code>; <code>Degraded</code> (failures below <code>fault_after</code>); <code>Faulted</code>
+  (threshold reached, a start failed, or the binding calls the error fatal: the chip reset or lost its state);
+  <code>Recovering</code>. When <code>max_attempts</code> recoveries in a row failed, <code>Recover()</code> refuses with <code>Fault</code> and the handler
+  stays <code>Faulted</code>: the HAL decides on its safe state. A caller's own mistake (<code>InvalidArgument</code>) is recorded but
+  not counted against the chip.</li>
+<li><code>Recover()</code> is explicit and never triggered by a read. It runs on the owner task (model O) or under the guarded
+  locks (model G), at the HAL's chosen time, with backoff: bus recovery when the failure was a bus failure, then
+  the plan's recovery (generic: <code>Deinitialize()</code> and the plan; se05x: the driver's <code>Recover()</code> ladder before
+  <code>Close()</code> and the plan; bno08x: a hub restart is a <code>Reset</code> event and health <code>Degraded</code>, the plan runs again only
+  after <code>Faulted</code>).</li>
+<li><code>Health()</code> is lock-free to read (a seqlock snapshot), so a supervisor can poll every handler without contending
+  with its users.</li>
+<li>A handler is not a safety function: a safety layer must reach its safe state without a handler call succeeding
+  (<a href="../../adr/ADR-0011-assurance-level-high/">ADR-0011</a>).</li>
+</ul>
+<h2 id="thread-models">Thread models<a class="headerlink" href="#thread-models" title="Permanent link">&para;</a></h2>
+<p>Each bus declares one model; the handler's access facade must match it (compile error otherwise).</p>
+<figure class="kb-figure">
+<img src="../../diagrams/handler-threading.svg#only-light" alt="Two side by side models. Owner task: other tasks read a lock-free snapshot or post requests to a queue that the owner task publishes to and drains, and the owner task steps the handlers on an unlocked bus domain. Guarded facade: tasks call a guarded handler that takes the handler lock then a bounded bus lock." width="1200" height="951" loading="lazy"><img src="../../diagrams/handler-threading.dark.svg#only-dark" alt="Two side by side models. Owner task: other tasks read a lock-free snapshot or post requests to a queue that the owner task publishes to and drains, and the owner task steps the handlers on an unlocked bus domain. Guarded facade: tasks call a guarded handler that takes the handler lock then a bounded bus lock." width="1200" height="951" loading="lazy">
+<figcaption>Handler thread models</figcaption>
+</figure>
+
+<details class="kb-figure-desc">
+<summary>Figure description and sources</summary>
+<p>Two models, declared per bus; callers on other tasks use one access API in both. In the owner-task model, one real-time task calls Service(now) at a fixed rate, steps the single-threaded handlers on a bus domain without a mutex, publishes each step to a lock-free seqlock snapshot and drains a bounded command queue. Other tasks read the latest snapshot (a lock-free copy) or post a request and wait with a timeout. In the guarded model, each calling task takes the handler lock and then, within a bounded wait, the bus lock of a mutex-protected bus domain. An interrupt service routine only sets event flags or notifies the owner task.</p>
+</details>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Model O, owner task</th>
+<th>Model G, guarded facade</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>For</td>
+<td>High-rate or timing-critical devices; buses whose devices one loop serves; chips that need continuous servicing (bno08x)</td>
+<td>Slow, sporadic devices used from several tasks (EEPROM, expander, power IC)</td>
+</tr>
+<tr>
+<td>Default</td>
+<td>Yes, for real-time buses</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Bus type</td>
+<td><code>BusDomain&lt;Bus, ThreadModel::Owner&gt;</code>: no mutex; debug-build owner check</td>
+<td><code>BusDomain&lt;Bus, ThreadModel::Guarded&gt;</code>: mutex, recovery, statistics</td>
+</tr>
+<tr>
+<td>Who touches the handler</td>
+<td>Only the owner task, through <code>Service(now)</code></td>
+<td>Only <code>Guarded&lt;H&gt;</code>, which owns it</td>
+</tr>
+<tr>
+<td>Other tasks</td>
+<td><code>OwnerAccess&lt;H&gt;</code>: <code>Latest()</code> (lock-free snapshot with sequence and age), <code>Request(cmd, timeout)</code> (bounded queue, waits for the owner's completion)</td>
+<td><code>Guarded&lt;H&gt;::Call(timeout, op, args...)</code>: handler lock, then bus lock, both bounded <code>TryLockFor</code>; <code>Timeout</code> and nothing sent if either is not had in time</td>
+</tr>
+<tr>
+<td>Locks</td>
+<td>None on the bus</td>
+<td>Fixed order handler then bus; never held across another handler or a user callback</td>
+</tr>
+<tr>
+<td>Start-up</td>
+<td><code>StartStep(now)</code> from <code>Service</code></td>
+<td><code>EnsureInitialized()</code> under the guarded locks, bounded</td>
+</tr>
+</tbody>
+</table>
+<p>Both facades offer the same typed operations to callers, so HAL managers and applications do not change when a bus
+changes model. Interrupts never call handlers: an ISR sets an event flag or notifies the owner task. A chip that
+must be serviced continuously declares <code>kRequiresOwner</code> in its binding and cannot be wrapped in <code>Guarded&lt;H&gt;</code>.</p>
+<p>A sequence of calls that must not be interleaved (an EEPROM range of several chunks, a pair of reads) runs held:
+<code>Guarded&lt;H&gt;::Hold(timeout)</code> keeps both locks in the same order, and on an owner bus the owner task takes
+<code>BusDomain::Hold()</code> between passes and calls through <code>OwnerAccess&lt;H&gt;::Held(hold)</code>. A hot-path read that must not
+wait at all uses the asynchronous contract through <code>AsyncPoller</code>. Both are on <a href="../bus-access/">Bus access</a>
+(ADR-0015); the liveness verdict and the fault journal are on <a href="../fault-journal/">Fault evidence</a>.</p>
+<h2 id="uniform-api-across-driver-shapes">Uniform API across driver shapes<a class="headerlink" href="#uniform-api-across-driver-shapes" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Driver shape</th>
+<th>Handler mapping</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>EnsureInitialized()</code> / <code>Deinitialize()</code> (21 drivers)</td>
+<td>direct, through the generic plan</td>
+</tr>
+<tr>
+<td>bno08x <code>Begin(config)</code>, <code>Poll(now)</code>, events, asynchronous <code>OpId</code></td>
+<td>the plan above; <code>Service(now)</code> calls <code>Poll</code> and drains events into a bounded queue; typed calls complete when the <code>OpDone</code> arrives or the timeout expires</td>
+</tr>
+<tr>
+<td>se05x <code>Open()</code> / <code>Close()</code> / <code>Recover()</code>, transactions</td>
+<td>the plan above; <code>Deinitialize()</code> = <code>Close()</code>; <code>Recover()</code> drives the driver's ladder first; transactions run inside a <code>BusHold</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="how-applications-use-kb-core">How applications use kb-core<a class="headerlink" href="#how-applications-use-kb-core" title="Permanent link">&para;</a></h2>
+<div class="language-cpp highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1">// Application code: only the HAL facade, kb::utils and kb::rtos.</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">class</span><span class="w"> </span><span class="nc">PressureLoop</span><span class="w"> </span><span class="k">final</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">kb</span><span class="o">::</span><span class="n">rtos</span><span class="o">::</span><span class="n">Thread</span><span class="o">&lt;</span><span class="n">PressureLoop</span><span class="p">,</span><span class="w"> </span><span class="mi">4096U</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w"> </span><span class="k">public</span><span class="o">:</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="k">explicit</span><span class="w"> </span><span class="n">PressureLoop</span><span class="p">(</span><span class="n">board</span><span class="o">::</span><span class="n">Hal</span><span class="o">&amp;</span><span class="w"> </span><span class="n">hal</span><span class="p">)</span><span class="w"> </span><span class="k">noexcept</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">hal_</span><span class="p">(</span><span class="n">hal</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span><span class="n">kb</span><span class="o">::</span><span class="n">Status</span><span class="w"> </span><span class="n">Setup</span><span class="p">()</span><span class="w"> </span><span class="k">noexcept</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">hal_</span><span class="p">.</span><span class="n">Pressure</span><span class="p">().</span><span class="n">EnsureStarted</span><span class="p">();</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="n">Step</span><span class="p">()</span><span class="w"> </span><span class="k">noexcept</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">kb</span><span class="o">::</span><span class="n">Result</span><span class="o">&lt;</span><span class="n">kb</span><span class="o">::</span><span class="n">Pascal</span><span class="o">&gt;</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hal_</span><span class="p">.</span><span class="n">Pressure</span><span class="p">().</span><span class="n">Latest</span><span class="p">();</span><span class="w">  </span><span class="c1">// manager -&gt; owner snapshot</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">p</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">filter_</span><span class="p">.</span><span class="n">Push</span><span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">value</span><span class="p">);</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w"> </span><span class="k">private</span><span class="o">:</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">  </span><span class="n">board</span><span class="o">::</span><span class="n">Hal</span><span class="o">&amp;</span><span class="w"> </span><span class="n">hal_</span><span class="p">;</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">  </span><span class="n">kb</span><span class="o">::</span><span class="n">utils</span><span class="o">::</span><span class="n">MovingAverage</span><span class="o">&lt;</span><span class="n">kb</span><span class="o">::</span><span class="n">Pascal</span><span class="p">,</span><span class="w"> </span><span class="mi">8U</span><span class="o">&gt;</span><span class="w"> </span><span class="n">filter_</span><span class="p">{};</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="p">};</span>
+</span></code></pre></div>
+<ul>
+<li>The composition root (the board facade) is one object, built statically, started explicitly from the first task
+  in a fixed order; applications receive it by reference, never through a global <code>Instance()</code>.</li>
+<li>Applications use <code>kb::utils</code> and <code>kb::rtos</code> directly; they never include <code>kb/interfaces</code> or <code>kb/handlers</code>
+  (include checker and symbol lint).</li>
+<li>HAL-free application logic (control laws, protocol state machines) lives in libraries that link only
+  <code>kb::utils</code> and are tested on the host with recorded-data replay.</li>
+</ul>
+<p>The sketch is illustrative; the compiled version arrives in <code>tests/docs/</code> with the first handler.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../plan/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Plan">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Plan
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../bus-access/" class="md-footer__link md-footer__link--next" aria-label="Next: Bus access">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Bus access
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      
+<div class="md-copyright kb-footer">
+  <nav class="kb-footer__links" aria-label="Kokeb Labs">
+    <a href="https://kokeb-labs.github.io/">Kokeb Labs docs</a>
+    <a href="https://github.com/kokeb-labs">GitHub organisation</a>
+    
+      <a href="https://github.com/kokeb-labs/kb-core">Source</a>
+      <a href="https://github.com/kokeb-labs/kb-core/issues">Report an issue</a>
+      <a href="https://github.com/kokeb-labs/kb-core/blob/main/LICENSE">License</a>
+    
+  </nav>
+  
+    <div class="md-copyright__highlight">Copyright (c) 2026 The kb-core authors</div>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://github.com/kokeb-labs" target="_blank" rel="noopener" title="Kokeb Labs on GitHub" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "navigation.tracking", "navigation.instant", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.action.edit", "content.tabs.link", "toc.follow"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"alias": true, "default": "latest", "provider": "mike"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
+      
+        <script src="../../search/main.js"></script>
+      
+    
+  </body>
+</html>
