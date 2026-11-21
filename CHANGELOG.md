@@ -35,8 +35,6 @@ lists its changes per part, the ESP32 port and its driver pins. The format follo
 - ADR numbers: the asynchronous bus and held transactions record is ADR-0016 (it shared 0015 with the ThreadX
   backend); every reference follows.
 - `components/lib/handlers/tests/test_threads.cpp`: a comment line over the 100-column limit.
-- Docs: the site used MkDocs' own search script next to the theme's, which threw on every page (a console error,
-  Lighthouse best practices); it now uses the theme's search only.
 
 ## [0.1.0-rc.1] - 2026-11-21
 

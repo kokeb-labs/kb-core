@@ -1,0 +1,149 @@
+---
+# Configurator exports, end to end (docs/configurator-checks.md, "Exports"): the selections marked `ci` in
+# configurator/tools/export-matrix.json are exported through the page (in headless Chrome, every Download button,
+# the ZIP and the offline copy, compared byte for byte with the page code run in Node), validated with the official
+# SPDX and CycloneDX tools and kb's schemas, and the starter projects are built as their README says: kb-fetch.sh,
+# then the host build (app, every header and each driver binding, run), the Cortex-M cross build and the ESP-IDF
+# v5.5 build. kb-core inside each project is moved to this commit, so the generator and the libraries are built
+# before they are released. CI runs it when the configurator, the kb tool, the libraries or the build files change.
+name: Configurator exports
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  export:
+    name: Export and validate
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1  # v7.1.0
+        with:
+          node-version: "22"
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0  # v7.1.0
+        with:
+          python-version: "3.12"
+      - name: Validators (SPDX and CycloneDX project libraries, pinned)
+        run: |
+          python3 -m pip install --disable-pip-version-check -q "PyYAML==6.0.3" "jsonschema==4.26.0" \
+            "spdx-tools==0.8.3" "cyclonedx-python-lib[json-validation]==9.1.0"
+      - name: Export through the page (Node and headless Chrome)
+        run: |
+          set -euo pipefail
+          chrome=""
+          for c in google-chrome chromium chromium-browser; do
+            if command -v "$c" >/dev/null; then chrome=$(command -v "$c"); break; fi
+          done
+          if [ -n "$chrome" ]; then
+            node configurator/tools/export_matrix.mjs "$RUNNER_TEMP/exports" --ci --chrome "$chrome"
+          else
+            echo "::notice::no Chrome on this runner; exported through the page code in Node only"
+            node configurator/tools/export_matrix.mjs "$RUNNER_TEMP/exports" --ci
+          fi
+      - name: Validate the SBOMs, the image, the lock and the licence report
+        run: python3 configurator/tools/validate_exports.py "$RUNNER_TEMP/exports"
+      - name: Keep the exports
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9  # v7.0.2
+        with:
+          name: configurator-exports
+          path: ${{ runner.temp }}/exports
+          retention-days: 7
+
+  host:
+    name: Build (host)
+    needs: export
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333  # v8.0.2
+        with:
+          name: configurator-exports
+          path: ${{ runner.temp }}/exports
+      - name: kb-fetch.sh, build and run each host project
+        env:
+          CMAKE_BUILD_PARALLEL_LEVEL: "4"
+        run: |
+          set -euo pipefail
+          for row in host-only host-shared-i2c; do
+            echo "::group::$row"
+            bash configurator/tools/export_build.sh "$RUNNER_TEMP/exports/$row/project" host "$GITHUB_WORKSPACE"
+            echo "::endgroup::"
+          done
+
+  cortex-m:
+    name: Build (Cortex-M)
+    needs: export
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333  # v8.0.2
+        with:
+          name: configurator-exports
+          path: ${{ runner.temp }}/exports
+      - name: Install the Arm GNU toolchain 14.3.rel1 (pinned, hash-checked)
+        env:
+          VERSION: "14.3.rel1"
+          SHA256: "8f6903f8ceb084d9227b9ef991490413014d991874a1e34074443c2a72b14dbd"
+        run: |
+          set -euo pipefail
+          file="arm-gnu-toolchain-${VERSION}-x86_64-arm-none-eabi.tar.xz"
+          curl -fsSL --retry 6 --retry-all-errors --retry-delay 10 --connect-timeout 30 --max-time 600 \
+            "https://developer.arm.com/-/media/Files/downloads/gnu/${VERSION}/binrel/${file}" -o "$RUNNER_TEMP/$file"
+          echo "${SHA256}  $RUNNER_TEMP/$file" | sha256sum -c -
+          mkdir -p "$RUNNER_TEMP/arm"
+          tar -xJf "$RUNNER_TEMP/$file" -C "$RUNNER_TEMP/arm" --strip-components=1
+          rm "$RUNNER_TEMP/$file"
+          echo "$RUNNER_TEMP/arm/bin" >> "$GITHUB_PATH"
+          command -v ninja >/dev/null || { sudo apt-get update -q && sudo apt-get install -y -q ninja-build; }
+      - name: kb-fetch.sh and the Cortex-M4 cross build
+        env:
+          CMAKE_BUILD_PARALLEL_LEVEL: "4"
+        run: |
+          bash configurator/tools/export_build.sh "$RUNNER_TEMP/exports/cortexm-few/project" cortex-m \
+            "$GITHUB_WORKSPACE"
+
+  esp-idf:
+    name: Build (ESP-IDF v5.5, ESP32-C6)
+    needs: export
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    container:
+      image: espressif/idf:v5.5.6@sha256:bf72fe7a15c22849a9a94147301165a545fb8905d97c176cf748e3e4614cac84
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333  # v8.0.2
+        with:
+          name: configurator-exports
+          path: ${{ runner.temp }}/exports
+      - name: kb-fetch.sh and idf.py build
+        shell: bash
+        env:
+          CMAKE_BUILD_PARALLEL_LEVEL: "4"
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory '*'
+          . "$IDF_PATH/export.sh" >/dev/null
+          bash configurator/tools/export_build.sh "$RUNNER_TEMP/exports/esp32c6-freertos/project" esp-idf \
+            "$GITHUB_WORKSPACE"

@@ -20,15 +20,17 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
-  # MISRA and mutation are the long, billed jobs (kb-core is private). A pull request that only touches docs, the
-  # configurator site or Markdown cannot change their result, so they are skipped there; the gate below allows
-  # exactly those two to be skipped. Pushes to main, release branches and tags always run everything.
+  # MISRA and mutation are the long, billed jobs. A pull request that only touches docs, the configurator site or
+  # Markdown cannot change their result, so they are skipped there; the configurator exports run only when the
+  # configurator, the kb tool, the libraries or the build files change. The gate below allows exactly those three
+  # to be skipped. Pushes to main, release branches and tags always run everything.
   changes:
     name: Changed files
     runs-on: ubuntu-latest
     timeout-minutes: 5
     outputs:
       native: ${{ steps.diff.outputs.native }}
+      exports: ${{ steps.diff.outputs.exports }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
         with:
@@ -40,16 +42,24 @@ jobs:
           HEAD: ${{ github.event.pull_request.head.sha }}
         run: |
           native=true
+          exports=true
           if [ "$EVENT" = "pull_request" ]; then
             native=false
+            exports=false
             while IFS= read -r f; do
               case "$f" in
                 docs/*|configurator/*|tools/docs/*|*.md|mkdocs.yml) ;;
                 *) native=true ;;
               esac
+              # The configurator exports build what the generator writes against these libraries and build files.
+              case "$f" in
+                configurator/*|tools/kb/*|components/*|cmake/*|CMakeLists.txt|kb.yml|catalog/schemas/*|\
+                .github/workflows/ci-exports.yml) exports=true ;;
+              esac
             done < <(git diff --name-only "$BASE...$HEAD")
           fi
           echo "native=$native" >> "$GITHUB_OUTPUT"
+          echo "exports=$exports" >> "$GITHUB_OUTPUT"
 
   host:
     name: Host build and tests
@@ -85,6 +95,14 @@ jobs:
   configurator:
     name: Configurator
     uses: ./.github/workflows/ci-configurator.yml
+    permissions:
+      contents: read
+
+  exports:
+    name: Configurator exports
+    needs: changes
+    if: needs.changes.outputs.exports == 'true'
+    uses: ./.github/workflows/ci-exports.yml
     permissions:
       contents: read
 
@@ -129,12 +147,12 @@ jobs:
   ci-gate:
     name: CI gate
     needs:
-      [changes, host, quality, misra, cross, esp32, docs, configurator, checks, standalone, integration, mutation, pins,
-       layering, catalog, layout]
+      [changes, host, quality, misra, cross, esp32, docs, configurator, exports, checks, standalone, integration,
+       mutation, pins, layering, catalog, layout]
     if: always()
     uses: kokeb-labs/ci-tools/.github/workflows/ru-ci-gate.yml@v1
     permissions:
       contents: read
     with:
       needs_json: ${{ toJSON(needs) }}
-      allow_skipped: misra, mutation
+      allow_skipped: misra, mutation, exports

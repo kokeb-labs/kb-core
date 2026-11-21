@@ -96,3 +96,35 @@ One JSON file per case (schema `configurator/schemas-draft/resolver-vector.schem
 `configurator/tests/vectors/catalog-fixture.json`. The configurator's tests also run every shared vector of
 `tests/resolver/vectors/` through `configurator/resolver.mjs`, and check on every site vector that the site never
 accepts a selection the shared rules refuse.
+
+## Exports
+
+The downloads are tested end to end, as a user gets them. `configurator/tools/export-matrix.json` lists the
+selections:
+
+| Row | Platform | Drivers | Build |
+| --- | --- | --- | --- |
+| `host-only` | host, no RTOS | none | host: app, every header, run |
+| `host-shared-i2c` | host, `std::thread` | five on one guarded I2C bus, three on an owner SPI bus | host |
+| `esp32c6-freertos` | ESP32-C6, FreeRTOS | bmp581 and pcal9555 on one I2C bus | ESP-IDF v5.5 |
+| `esp32s3-freertos` | ESP32-S3, FreeRTOS | bno08x (SPI, owner), ws2812_rmt (RMT), tmc9660 (UART) | ESP-IDF v5.5 |
+| `stm32-few` | STM32H7, FreeRTOS | three | refused: the family has no port yet (`KB-RES-004`) |
+| `cortexm-few` | host family, cross-compiled | the same three | Cortex-M4 with arm-none-eabi-g++ |
+| `esp32s3-every-driver` | ESP32-S3, FreeRTOS | every driver of the catalogue | ESP-IDF v5.5 |
+| `host-every-driver` | host, `std::thread` | every driver that runs off ESP32 | host |
+
+1. `node configurator/tools/export_matrix.mjs OUT --chrome` makes each selection with the page's own code and, in
+   headless Chrome, clicks every **Download** button of the Files panel, the ZIP button and the offline copy; each
+   download must equal the Node result byte for byte. A refused row must fail with its code.
+2. `python3 configurator/tools/validate_exports.py OUT` validates the SPDX 2.3 SBOM with the SPDX project's
+   `spdx-tools` and the CycloneDX 1.6 SBOM against the official schema (CycloneDX's `cyclonedx-python-lib`, strict),
+   `kb-image.yml` and the lock against kb's schemas, the licence report against the lock and both SBOMs, and checks
+   that `kb resolve` writes the same lock and build files as the page.
+3. `configurator/tools/export_build.sh OUT/<row>/project host|cortex-m|esp-idf [KB_CORE_DIR]` runs the project's
+   `kb-fetch.sh` (every submodule at its locked tag and commit) and builds it as its README says. The board file
+   includes the handler binding of every selected driver, so the build compiles each one. With `KB_CORE_DIR`,
+   kb-core inside the project is moved to that checkout first.
+
+CI (`.github/workflows/ci-exports.yml`) runs the rows marked `ci` on every change to the configurator, the kb
+tool, the libraries or the build files, with kb-core at the commit under test: export through Chrome, validate, then
+the host, Cortex-M and ESP-IDF builds.
