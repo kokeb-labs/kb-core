@@ -32,3 +32,17 @@ test('hostile or foreign hashes are refused or cleaned', () => {
   assert.equal(d.mcu.family, '');
   assert.deepEqual(JSON.parse(JSON.stringify(d.drivers.map((x) => x.name))), ['x', 'ok']);
 });
+
+test('the view parameters are optional, versioned (w=1) and leave the selection alone', () => {
+  const plain = (v) => JSON.parse(JSON.stringify(v));
+  const base = KB.state.encode(image);
+  assert.ok(!/[&#]w=/.test(base), 'defaults add nothing');
+  const view = { ...KB.picker.defaults(), q: 'imu', tag: ['imu'], view: 'list', sort: 'bus', desc: true };
+  const hash = KB.state.encode(image, { view, rc: true });
+  assert.ok(hash.startsWith(base));
+  assert.match(hash, /&c=1&w=1&q=imu&ft=imu&vw=l&so=-b$/);
+  assert.deepEqual(plain(KB.state.decode(hash)), image);
+  assert.deepEqual(plain(KB.state.viewState(hash)), plain(view));
+  assert.equal(KB.state.flags(hash).rc, true);
+  assert.equal(KB.state.viewState(base), null);
+});
