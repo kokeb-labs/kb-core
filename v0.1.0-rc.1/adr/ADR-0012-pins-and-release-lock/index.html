@@ -1988,7 +1988,7 @@ evidence (<a href="../ADR-0013-hosted-configurator/">ADR-0013</a>). A tag name a
 </span></code></pre></div>
 <p>The lock cannot live in the tagged commit (it would change the SHA it records); it is a release file, and the
    tag's commit is the source of truth it points at.
-5. The pin hygiene checks stay and grow: PIN-001 to PIN-010 (<a href="https://github.com/kokeb-labs/kb-core/blob/593c482020c550d11080c21fa41c8f67c88e9aa1/tools/pins/README.md">tools/pins</a>),
+5. The pin hygiene checks stay and grow: PIN-001 to PIN-010 (<a href="https://github.com/kokeb-labs/kb-core/blob/b0ddc2f19612aab8bff249688a833a507b3034fb/tools/pins/README.md">tools/pins</a>),
    plus PIN-011 (no <code>branch =</code> in <code>.gitmodules</code>; the tag matches <code>^v\d+\.\d+\.\d+(-rc\.\d+)?$</code>; <code>kind</code> agrees with
    the tag) and PIN-012 (at release: the lock is complete and every commit in it equals the tree being released).</p>
 <h2 id="consequences">Consequences<a class="headerlink" href="#consequences" title="Permanent link">&para;</a></h2>
