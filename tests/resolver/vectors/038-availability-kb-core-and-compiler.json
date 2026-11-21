@@ -1,0 +1,40 @@
+{
+  "catalog": "catalogs/site-availability.json",
+  "description": "kb-core 0.3.0 is older than the driver's kb_core_min; gcc 12 is older than the gcc 13 floor.",
+  "expect": {
+    "available": [
+      "bmp581",
+      "mcp9700",
+      "rtos_chip",
+      "uart_chip",
+      "ws2812_rmt"
+    ],
+    "unavailable": [
+      {
+        "code": "KB-RES-025",
+        "name": "gcc_chip",
+        "reason": "needs gcc 13 or newer, project is gcc 12"
+      },
+      {
+        "code": "KB-RES-024",
+        "name": "modern_chip",
+        "reason": "needs C++23, project is C++20"
+      },
+      {
+        "code": "KB-RES-014",
+        "name": "new_core_chip",
+        "reason": "needs kb-core 0.4.0 or newer, not 0.3.0"
+      }
+    ]
+  },
+  "selection": {
+    "family": "esp32",
+    "kb_core": "0.3.0",
+    "language": {
+      "compilers": {
+        "gcc": "12"
+      },
+      "standard": 20
+    }
+  }
+}

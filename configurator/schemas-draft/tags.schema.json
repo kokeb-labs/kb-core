@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "kb configurator tag rules, schema 1",
+  "description": "configurator/data/tags.json: how GitHub topics of a driver repository become search tags and a category.",
+  "type": "object",
+  "required": ["schema", "categories", "drop", "allow", "alias", "category_of", "fallback"],
+  "additionalProperties": false,
+  "properties": {
+    "_comment": {"type": "string"},
+    "schema": {"const": 1},
+    "categories": {
+      "type": "array", "minItems": 1, "uniqueItems": true,
+      "description": "Every category, in the order that breaks a tie between categories with the same number of tags",
+      "items": {"type": "string", "pattern": "^[a-z][a-z-]*$"}
+    },
+    "drop": {
+      "type": "array", "uniqueItems": true,
+      "description": "Topics every driver carries (and the bus names): never tags",
+      "items": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$"}
+    },
+    "allow": {
+      "type": "array", "minItems": 1, "uniqueItems": true,
+      "description": "The tags the page offers as chips",
+      "items": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$"}
+    },
+    "alias": {
+      "type": "object",
+      "description": "A topic spelled another way, to the allowed tag it means",
+      "additionalProperties": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$"}
+    },
+    "category_of": {
+      "type": "object",
+      "description": "Allowed tag to category",
+      "additionalProperties": {"type": "string", "pattern": "^[a-z][a-z-]*$"}
+    },
+    "fallback": {
+      "type": "object",
+      "required": ["keywords", "bus_category"],
+      "additionalProperties": false,
+      "properties": {
+        "_comment": {"type": "string"},
+        "keywords": {
+          "type": "object",
+          "description": "A word of driver.yml description (or the README summary), lower case, to the allowed tag it implies",
+          "additionalProperties": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$"}
+        },
+        "bus_category": {
+          "type": "object",
+          "description": "Bus to category, the last resort before other",
+          "additionalProperties": {"type": "string", "pattern": "^[a-z][a-z-]*$"}
+        }
+      }
+    }
+  }
+}

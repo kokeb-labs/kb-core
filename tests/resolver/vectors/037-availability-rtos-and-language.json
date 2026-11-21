@@ -1,0 +1,36 @@
+{
+  "catalog": "catalogs/site-availability.json",
+  "description": "An RTOS the driver does not work with, a project language raised to C++23 and a compiler floor met by gcc 14.",
+  "expect": {
+    "available": [
+      "bmp581",
+      "gcc_chip",
+      "mcp9700",
+      "modern_chip",
+      "new_core_chip",
+      "uart_chip"
+    ],
+    "unavailable": [
+      {
+        "code": "KB-RES-033",
+        "name": "rtos_chip",
+        "reason": "needs freertos, project uses host"
+      },
+      {
+        "code": "KB-RES-013",
+        "name": "ws2812_rmt",
+        "reason": "needs MCU family esp32, not host"
+      }
+    ]
+  },
+  "selection": {
+    "family": "host",
+    "language": {
+      "compilers": {
+        "gcc": "14"
+      },
+      "standard": 23
+    },
+    "rtos": "host"
+  }
+}

@@ -491,3 +491,116 @@ def _key(entry):
 def _result(c, lock):
     return {"ok": not c.errors, "errors": sorted(c.errors, key=_key), "warnings": sorted(c.warnings, key=_key),
             "lock": lock}
+
+
+AVAILABILITY_CODES = {
+    "KB-RES-001": "the selection is malformed",
+    "KB-RES-003": "unknown MCU family",
+    "KB-RES-004": "no port for the MCU family yet",
+    "KB-RES-005": "unknown target",
+    "KB-RES-006": "unknown RTOS",
+    "KB-RES-007": "the RTOS backend is not implemented yet",
+    "KB-RES-008": "the RTOS is not available on the MCU family",
+    "KB-RES-013": "the driver needs another MCU family",
+    "KB-RES-014": "the driver needs a newer kb-core",
+    "KB-RES-024": "the driver needs a newer C++ standard",
+    "KB-RES-025": "the driver needs a newer compiler",
+    "KB-RES-031": "the driver needs a peripheral the target does not offer",
+    "KB-RES-032": "the driver needs a bus the target does not offer",
+    "KB-RES-033": "the driver needs another RTOS",
+}
+# Codes availability() can return: the resolver's own where one exists, KB-RES-031 to 033 for the gates only it has.
+
+
+def _requires_of(drv):
+    """What a driver needs of a build: its `requires` block, else read from its newest version (older catalogues)."""
+    if _is_obj(drv.get("requires")):
+        return drv["requires"]
+    versions = drv.get("versions") or []
+    v = versions[0] if versions else {}
+    return {"bus": v.get("bus") or [], "mcus": v.get("mcus") or ["any"], "peripheral": v.get("peripheral") or None,
+            "rtos": [], "kb_core_min": v.get("kb_core_min") or None, "language": v.get("language")}
+
+
+def availability(catalog, selection):
+    """Which drivers a build with this selection can use, from the site catalogue alone (families, targets, rtos,
+    drivers' ``requires``): ``{"available": [names], "unavailable": [{name, code, reason}]}``, both sorted by name.
+
+    ``selection`` is ``{family, target?, rtos?, language?: {standard, compilers?}, kb_core?}``; a missing target, rtos
+    or language is the family's first target, its default_rtos and its default_language. A selection that cannot
+    build at all (unknown family, no port, unknown target or RTOS) makes every driver unavailable for that one
+    reason. A driver that fails several gates reports the first of: MCU family, peripheral, bus, RTOS, kb-core,
+    language. Same answer as availability() in configurator/resolver.mjs (shared vectors, ADR-0014).
+    """
+    drivers = sorted(catalog["drivers"], key=lambda d: d["name"])
+
+    def block_all(code, reason):
+        return {"available": [], "unavailable": [{"name": d["name"], "code": code, "reason": reason} for d in drivers]}
+
+    sel = selection if _is_obj(selection) else {}
+    fam = _find(catalog.get("families") or [], "id", sel.get("family"))
+    if fam is None:
+        return block_all("KB-RES-003", f"MCU family '{sel.get('family')}' is not in the catalogue")
+    if fam["status"] != "supported" or fam.get("port") is None:
+        return block_all("KB-RES-004", f"no port for {fam['label']} yet")
+    target_id = sel.get("target")
+    if target_id is None:
+        target_id = fam["targets"][0]["id"]
+    target = _find(fam["targets"], "id", target_id)
+    if target is None:
+        return block_all("KB-RES-005", f"'{target_id}' is not a target of {fam['id']}")
+    rtos_id = sel.get("rtos")
+    if rtos_id is None:
+        rtos_id = fam["default_rtos"]
+    rtos = _find(catalog.get("rtos") or [], "id", rtos_id)
+    if rtos is None:
+        return block_all("KB-RES-006", f"RTOS '{rtos_id}' is not in the catalogue")
+    if rtos["status"] != "supported":
+        return block_all("KB-RES-007", f"the {rtos_id} backend is not implemented yet")
+    if rtos_id not in fam["rtos"]:
+        return block_all("KB-RES-008", f"{fam['label']} supports {', '.join(fam['rtos'])}, not {rtos_id}")
+    lang = sel["language"] if _is_obj(sel.get("language")) else (
+        fam["default_language"] if _is_obj(fam.get("default_language")) else DEFAULT_LANGUAGE)
+    if lang.get("standard") not in STANDARDS or isinstance(lang.get("standard"), bool):
+        return block_all("KB-RES-001", f"language.standard must be one of {', '.join(str(s) for s in STANDARDS)}")
+    want = {"standard": lang["standard"], "compilers": dict(lang.get("compilers") or {})}
+    kinds = catalog.get("bus_kinds") or {}
+
+    def offers(kind):
+        if kind not in kinds:
+            return True  # a bus kind the catalogue does not describe cannot be refused
+        buses = target.get("buses") or {}
+        instance = kinds[kind]["instance"]
+        if instance not in buses:
+            return False
+        return buses[instance] is None or buses[instance] > 0
+
+    available, unavailable = [], []
+    for drv in drivers:
+        req = _requires_of(drv)
+
+        def fail(code, reason, name=drv["name"]):
+            unavailable.append({"name": name, "code": code, "reason": reason})
+
+        mcus = req.get("mcus") or ["any"]
+        periph = req.get("peripheral")
+        buses = req.get("bus") or []
+        rtos_need = req.get("rtos") or []
+        kmin = req.get("kb_core_min")
+        bad = misfit({"language": req.get("language")}, want)
+        if "any" not in mcus and fam["id"] not in mcus:
+            fail("KB-RES-013", f"needs MCU family {' or '.join(mcus)}, not {fam['id']}")
+        elif periph and periph not in (target.get("peripherals") or []):
+            fail("KB-RES-031", f"needs the {periph.upper()} peripheral, which {target['label']} does not offer")
+        elif buses and not any(offers(b) for b in buses):
+            labels = [kinds[b]["label"] if b in kinds else b for b in buses]
+            fail("KB-RES-032", f"needs {' or '.join(labels)}, which {target['label']} does not offer")
+        elif rtos_need and rtos_id not in rtos_need:
+            fail("KB-RES-033", f"needs {' or '.join(rtos_need)}, project uses {rtos_id}")
+        elif kmin and sel.get("kb_core") and semver.compare(kmin, sel["kb_core"]) > 0:
+            fail("KB-RES-014", f"needs kb-core {kmin} or newer, not {sel['kb_core']}")
+        elif bad is not None:
+            fail(bad[0], f"needs {bad[1]}, project is {bad[2]}")
+        else:
+            available.append(drv["name"])
+    return {"available": available, "unavailable": unavailable}

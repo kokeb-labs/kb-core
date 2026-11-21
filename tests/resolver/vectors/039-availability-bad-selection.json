@@ -1,0 +1,53 @@
+{
+  "catalog": "catalogs/site-availability.json",
+  "description": "An RTOS the family does not offer blocks every driver with KB-RES-008.",
+  "expect": {
+    "available": [],
+    "unavailable": [
+      {
+        "code": "KB-RES-008",
+        "name": "bmp581",
+        "reason": "ESP32 (ESP-IDF) supports freertos, not none"
+      },
+      {
+        "code": "KB-RES-008",
+        "name": "gcc_chip",
+        "reason": "ESP32 (ESP-IDF) supports freertos, not none"
+      },
+      {
+        "code": "KB-RES-008",
+        "name": "mcp9700",
+        "reason": "ESP32 (ESP-IDF) supports freertos, not none"
+      },
+      {
+        "code": "KB-RES-008",
+        "name": "modern_chip",
+        "reason": "ESP32 (ESP-IDF) supports freertos, not none"
+      },
+      {
+        "code": "KB-RES-008",
+        "name": "new_core_chip",
+        "reason": "ESP32 (ESP-IDF) supports freertos, not none"
+      },
+      {
+        "code": "KB-RES-008",
+        "name": "rtos_chip",
+        "reason": "ESP32 (ESP-IDF) supports freertos, not none"
+      },
+      {
+        "code": "KB-RES-008",
+        "name": "uart_chip",
+        "reason": "ESP32 (ESP-IDF) supports freertos, not none"
+      },
+      {
+        "code": "KB-RES-008",
+        "name": "ws2812_rmt",
+        "reason": "ESP32 (ESP-IDF) supports freertos, not none"
+      }
+    ]
+  },
+  "selection": {
+    "family": "esp32",
+    "rtos": "none"
+  }
+}

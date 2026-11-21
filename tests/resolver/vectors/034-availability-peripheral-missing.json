@@ -1,0 +1,34 @@
+{
+  "catalog": "catalogs/site-availability.json",
+  "description": "A target without the RMT peripheral refuses the RMT driver with the peripheral code; the UART-only driver is refused for a missing bus.",
+  "expect": {
+    "available": [
+      "bmp581",
+      "gcc_chip",
+      "mcp9700",
+      "new_core_chip",
+      "rtos_chip"
+    ],
+    "unavailable": [
+      {
+        "code": "KB-RES-024",
+        "name": "modern_chip",
+        "reason": "needs C++23, project is C++20"
+      },
+      {
+        "code": "KB-RES-032",
+        "name": "uart_chip",
+        "reason": "needs UART or Modbus RTU, which ESP32-C6 does not offer"
+      },
+      {
+        "code": "KB-RES-031",
+        "name": "ws2812_rmt",
+        "reason": "needs the RMT peripheral, which ESP32-C6 does not offer"
+      }
+    ]
+  },
+  "selection": {
+    "family": "esp32",
+    "target": "esp32c6"
+  }
+}

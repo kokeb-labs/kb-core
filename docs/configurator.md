@@ -108,4 +108,37 @@ tree. A tag whose commit differs between a local clone and GitHub stops the buil
 come from the scan in CI (osv-scanner); a component without a scan shows *not scanned*. Bus counts and free pins
 of targets and boards are approximate where the catalogue says so; check the board's schematic.
 
+## Tags and availability
+
+Each driver carries search tags and one category, so the page only filters. They come from the GitHub topics of the
+driver repository, read by `build_catalog.py --online` with `gh api repos/<org>/<repo>/topics` and mapped by the rules
+in `configurator/data/tags.json` (schema `configurator/schemas-draft/tags.schema.json`):
+
+| Rule | Meaning |
+|---|---|
+| `drop` | Topics every driver has (`cpp20`, `driver`, `embedded`, `header-only`, `kokeb-labs`, `misra-cpp`, `kb-driver`) and the bus names (`spi`, `i2c`, `uart`, `can`, `modbus`); never tags. `adc` is not a bus here and stays a tag |
+| `alias` | A variant spelling to the allowed tag it means (`motor-drive` and `gate-driver` to `motor-driver`, `ntc` to `temperature-sensor`) |
+| `allow` | The tags the page offers as chips; a topic that is none of the above (chip and vendor names, anything unknown) is not a tag and stays searchable through the card's own text |
+| `category_of` | Each allowed tag to one category: sensor, motor, memory, io, radio, secure-element or other. A driver's category is the one most of its tags have; a tie goes to the category listed first in `categories` |
+| `fallback` | A driver left with no allowed tag takes `category` from `driver.yml`, else tags from keywords of its description or README summary, else a category from its bus, else `other`; the category is never empty |
+
+The catalogue stores `tags` (sorted) and `category` per driver and a `tag_index` with the number of drivers per tag and
+per category, for the chip counts. The raw topics are not stored. Without `--online` the topics are not fetched and
+nothing is reused from an earlier build: the builder says so, tags come from the fallback only, and `--check` skips
+them; CI runs `--check --online`, which compares them. Commit a catalogue only after an online build.
+
+To add a tag: add it to `allow` and `category_of` in `tags.json` (and an `alias` for each spelling that should map to
+it), put the topic on the driver repositories, rebuild with `--online`, and commit the catalogue. `load_rules` refuses
+an alias that names a tag not in `allow`, a tag without a category and a tag that is also dropped.
+
+Availability is data too. Each driver has `requires` (bus kinds, MCU families, peripheral, RTOS backends, kb-core
+minimum and language floor of its newest version), each family has `default_language`, `rtos` and `default_rtos`, and
+each target has `peripherals`. `availability(catalog, selection)` in `configurator/resolver.mjs` and
+`tools/kb/resolver.py` returns `{available, unavailable: [{name, code, reason}]}` for a family, target, RTOS and
+language standard, with no rule in the page; both give the same answer (shared vectors 033 and up). A driver that fails
+several
+gates reports the first of: MCU family (`KB-RES-013`), peripheral (`KB-RES-031`), bus (`KB-RES-032`), RTOS
+(`KB-RES-033`), kb-core (`KB-RES-014`), language (`KB-RES-024`, `KB-RES-025`); a selection that cannot build at all
+(`KB-RES-003` to `KB-RES-008`, for example no port yet) blocks every driver with that one reason.
+
 Contact: <kokeblabs@gmail.com>

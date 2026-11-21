@@ -1,0 +1,25 @@
+{
+  "catalog": "catalogs/site-availability.json",
+  "description": "The family defaults (first target, FreeRTOS, C++20): the RMT driver is available, the C++23 and gcc 13 drivers are not.",
+  "expect": {
+    "available": [
+      "bmp581",
+      "gcc_chip",
+      "mcp9700",
+      "new_core_chip",
+      "rtos_chip",
+      "uart_chip",
+      "ws2812_rmt"
+    ],
+    "unavailable": [
+      {
+        "code": "KB-RES-024",
+        "name": "modern_chip",
+        "reason": "needs C++23, project is C++20"
+      }
+    ]
+  },
+  "selection": {
+    "family": "esp32"
+  }
+}

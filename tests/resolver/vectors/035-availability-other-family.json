@@ -1,0 +1,29 @@
+{
+  "catalog": "catalogs/site-availability.json",
+  "description": "On the host family the ESP32-only driver fails the MCU gate; the host default is C++23, so the C++23 driver is available.",
+  "expect": {
+    "available": [
+      "bmp581",
+      "gcc_chip",
+      "mcp9700",
+      "modern_chip",
+      "new_core_chip",
+      "uart_chip"
+    ],
+    "unavailable": [
+      {
+        "code": "KB-RES-033",
+        "name": "rtos_chip",
+        "reason": "needs freertos, project uses none"
+      },
+      {
+        "code": "KB-RES-013",
+        "name": "ws2812_rmt",
+        "reason": "needs MCU family esp32, not host"
+      }
+    ]
+  },
+  "selection": {
+    "family": "host"
+  }
+}

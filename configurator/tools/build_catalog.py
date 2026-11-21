@@ -8,8 +8,11 @@ Inputs:
   * the local driver clones (<drivers-root>/driver-<chip>): tags and their commits, and at each tag the
     driver.yml, README.md (summary, "At a glance" rows, I2C addresses), LICENSE, docs/hardware.yml (control
     pins) and the chip figures in docs/diagrams/;
-  * with --online and the gh tool signed in: the tags of every public repository (drivers, ports, kb-core) and
-    the files of a tag the local clone does not have; a private repository contributes no online tags.
+  * configurator/data/tags.json: which GitHub topics of a driver repository become search tags, and the category;
+  * with --online and the gh tool signed in: the tags of every public repository (drivers, ports, kb-core), the
+    files of a tag the local clone does not have, and the topics of every driver repository; a private repository
+    contributes no online tags. Without --online the topics are not fetched (nothing is reused from an earlier
+    build): the build says so, and each driver's tags come from the driver.yml fallback only.
 
 Every value is read at the commit of a tag, never from a working tree, so the catalogue describes releases only
 (ADR-0012). A tag whose commit differs between the clone and GitHub is an error (a moved tag). Output is
@@ -41,6 +44,7 @@ from jsonschema_lite import validate  # noqa: E402
 
 sys.path.insert(0, str(CONF.parent / "tools"))
 from kb import language, repolayout  # noqa: E402
+import tags as kb_tags  # noqa: E402
 
 sys.path.insert(0, str(CONF.parent / "tools" / "examples"))
 import examples as kb_examples  # noqa: E402
@@ -183,6 +187,13 @@ def online_tags(repo: str) -> dict[str, str] | None:
     return {n: s for n, s in (line.split() for line in out.splitlines() if line.strip()) if TAG_RE.match(n)}
 
 
+def online_topics(repo: str) -> list[str]:
+    out = run(["gh", "api", f"repos/{repo}/topics", "--jq", ".names[]"])
+    if out is None:
+        raise BuildError(f"{repo}: cannot read the repository topics with gh; sign in or build without --online")
+    return sorted(line.strip() for line in out.splitlines() if line.strip())
+
+
 def merged_tags(repo: str, clone: Path | None, online: bool) -> dict[str, str]:
     tags = local_tags(clone)
     if online:
@@ -268,7 +279,19 @@ def svg_alt(svg: str) -> str:
     return parts[0] if parts else "Chip figure"
 
 
-def build_driver(clone: Path, online: bool, figures: bool, platforms: dict) -> tuple[dict, list[str]]:
+def driver_requires(versions: list[dict], meta: dict, binding: dict) -> dict:
+    """What the newest version needs from a build, as data the page filters on (availability() in resolver.mjs)."""
+    if versions:
+        v = versions[0]
+        lang = {k: v["language"][k] for k in ("standard", "compilers") if k in v["language"]}
+        return {"bus": list(v["bus"]), "mcus": list(v["mcus"]), "peripheral": v["peripheral"],
+                "rtos": list(binding.get("rtos", [])), "kb_core_min": v["kb_core_min"], "language": lang}
+    return {"bus": list(meta.get("bus") or []), "mcus": list(meta.get("mcus") or ["any"]),
+            "peripheral": meta.get("peripheral"), "rtos": list(binding.get("rtos", [])),
+            "kb_core_min": meta.get("kb_core_min"), "language": {"standard": meta.get("language_standard", 20)}}
+
+
+def build_driver(clone: Path, online: bool, figures: bool, platforms: dict, rules: dict) -> tuple[dict, list[str]]:
     worktree = parse_flat_yaml((clone / "driver.yml").read_text())
     name = worktree["name"]
     repo = f"{DRIVER_ORG}/{clone.name}"
@@ -340,6 +363,8 @@ def build_driver(clone: Path, online: bool, figures: bool, platforms: dict) -> t
                 "dark": f"assets/figures/{name}/{dark}",
                 "alt": svg_alt(light_svg.decode("utf-8")),
             })
+    topics = online_topics(repo) if online else None
+    classified = kb_tags.driver_tags(topics, worktree, summary, list(versions[0]["bus"] if versions else worktree.get("bus") or []), rules)
     driver = {
         "name": name,
         "repo": repo,
@@ -356,6 +381,9 @@ def build_driver(clone: Path, online: bool, figures: bool, platforms: dict) -> t
         "figures": figs,
         "optional_pins": optional,
         "i2c_addresses": addresses if "i2c" in (versions[0]["bus"] if versions else worktree.get("bus") or []) else None,
+        "tags": classified["tags"],
+        "category": classified["category"],
+        "requires": driver_requires(versions, worktree, binding),
         "versions": versions,
     }
     return driver, dates
@@ -428,6 +456,13 @@ def build_releases(repo: str, clone: Path | None, online: bool, extra: dict | No
 
 def build(drivers_root: Path, online: bool, figures: bool, include_head: bool = False) -> dict:
     platforms = json.loads((CONF / "data" / "platforms.json").read_text())
+    try:
+        rules = kb_tags.load_rules()
+    except kb_tags.RulesError as exc:
+        raise BuildError(str(exc)) from exc
+    if not online:
+        print("build_catalog: topics not fetched (no --online): tags come from the driver.yml fallback only; "
+              "rerun with --online before committing the catalogue", file=sys.stderr)
     clones = sorted(p for p in drivers_root.glob("driver-*")
                     if p.is_dir() and (p / "driver.yml").exists() and not p.name.startswith("driver-template"))
     if not clones:
@@ -436,7 +471,7 @@ def build(drivers_root: Path, online: bool, figures: bool, include_head: bool = 
         shutil.rmtree(CONF / "assets" / "figures", ignore_errors=True)
     drivers, dates = [], []
     for clone in clones:
-        driver, d = build_driver(clone, online, figures, platforms)
+        driver, d = build_driver(clone, online, figures, platforms, rules)
         drivers.append(driver)
         dates += d
     names = [d["name"] for d in drivers]
@@ -475,6 +510,7 @@ def build(drivers_root: Path, online: bool, figures: bool, include_head: bool = 
         "bus_kinds": platforms["bus_kinds"],
         "families": families,
         "drivers": sorted(drivers, key=lambda x: x["name"]),
+        "tag_index": kb_tags.tag_index(drivers, rules),
         "examples": kb_examples.catalog_form(kb_examples.load(str(CONF.parent)), str(CONF.parent)),
         "tested_sets": [],
     }
@@ -493,12 +529,17 @@ def render(catalog: dict) -> tuple[str, str]:
     return text, js
 
 
-def _released(obj):
-    """`obj` without development revisions (dicts with kind "dev") and without the source date they move."""
+TOPIC_KEYS = ("tags", "category", "tag_index")
+
+
+def _released(obj, topics: bool = True):
+    """`obj` without development revisions (dicts with kind "dev") and without the source date they move; without
+    the topic-derived fields too when `topics` is false (an offline check cannot fetch them)."""
     if isinstance(obj, dict):
-        return {k: _released(v) for k, v in obj.items() if k != "source_date"}
+        return {k: _released(v, topics) for k, v in obj.items()
+                if k != "source_date" and (topics or k not in TOPIC_KEYS)}
     if isinstance(obj, list):
-        return [_released(v) for v in obj if not (isinstance(v, dict) and v.get("kind") == "dev")]
+        return [_released(v, topics) for v in obj if not (isinstance(v, dict) and v.get("kind") == "dev")]
     return obj
 
 
@@ -546,7 +587,10 @@ def main(argv: list[str] | None = None) -> int:
         # preview keeps --include-head; CI checks without it. A kb-core tag on the checked commit or a later one is
         # left out of the fresh build, since that commit's catalogue was written before the tag existed.
         committed = json.loads(out_json.read_text()) if out_json.exists() else None
-        same = committed is not None and _released(committed) == _released(_without_own_future(json.loads(text)))
+        if not args.online:
+            print("build_catalog: topics not compared (no --online); CI checks them with --check --online")
+        same = committed is not None and (_released(committed, args.online)
+                                          == _released(_without_own_future(json.loads(text)), args.online))
         print("build_catalog: up to date" if same else "build_catalog: catalogue differs; rerun the builder")
         return 0 if same else 1
     out_json.write_text(text)

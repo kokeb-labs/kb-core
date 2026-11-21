@@ -8,6 +8,13 @@ lists its changes per part, the ESP32 port and its driver pins. The format follo
 
 ### Added
 
+- Configurator catalogue: search `tags` and a `category` per driver from the GitHub topics of its repository
+  (rules in `configurator/data/tags.json`: drop, alias, allow, category per tag), a `tag_index` with counts, and the
+  facts for availability as data (`requires` per driver, `default_language` per family, `peripherals` per target).
+  `availability(catalog, selection)` in `configurator/resolver.mjs` and `tools/kb/resolver.py` lists the drivers a
+  target, RTOS and language standard can use and the reason for each that it cannot; shared vectors 033 to 040.
+  `build_catalog.py` fetches topics only with `--online` and says so when it does not.
+
 ### Changed
 
 - Configurator: while kb-core has only release candidates the page starts on the newest one (the release-candidate

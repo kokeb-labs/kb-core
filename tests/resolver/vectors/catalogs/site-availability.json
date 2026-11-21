@@ -1,0 +1,296 @@
+{
+ "bus_kinds": {
+  "adc": {
+   "instance": "adc",
+   "label": "ADC channel"
+  },
+  "i2c": {
+   "instance": "i2c",
+   "label": "I2C"
+  },
+  "modbus": {
+   "instance": "uart",
+   "label": "Modbus RTU"
+  },
+  "pio": {
+   "instance": "pio",
+   "label": "Timed pulse output"
+  },
+  "spi": {
+   "instance": "spi",
+   "label": "SPI"
+  },
+  "uart": {
+   "instance": "uart",
+   "label": "UART"
+  }
+ },
+ "drivers": [
+  {
+   "name": "bmp581",
+   "requires": {
+    "bus": [
+     "i2c",
+     "spi"
+    ],
+    "kb_core_min": null,
+    "language": {
+     "standard": 20
+    },
+    "mcus": [
+     "any"
+    ],
+    "peripheral": null,
+    "rtos": []
+   }
+  },
+  {
+   "name": "mcp9700",
+   "requires": {
+    "bus": [
+     "adc"
+    ],
+    "kb_core_min": null,
+    "language": {
+     "standard": 20
+    },
+    "mcus": [
+     "any"
+    ],
+    "peripheral": null,
+    "rtos": []
+   }
+  },
+  {
+   "name": "ws2812_rmt",
+   "requires": {
+    "bus": [
+     "pio"
+    ],
+    "kb_core_min": null,
+    "language": {
+     "standard": 20
+    },
+    "mcus": [
+     "esp32"
+    ],
+    "peripheral": "rmt",
+    "rtos": []
+   }
+  },
+  {
+   "name": "modern_chip",
+   "requires": {
+    "bus": [
+     "spi"
+    ],
+    "kb_core_min": null,
+    "language": {
+     "standard": 23
+    },
+    "mcus": [
+     "any"
+    ],
+    "peripheral": null,
+    "rtos": []
+   }
+  },
+  {
+   "name": "gcc_chip",
+   "requires": {
+    "bus": [
+     "spi"
+    ],
+    "kb_core_min": null,
+    "language": {
+     "compilers": {
+      "gcc": "13"
+     },
+     "standard": 20
+    },
+    "mcus": [
+     "any"
+    ],
+    "peripheral": null,
+    "rtos": []
+   }
+  },
+  {
+   "name": "rtos_chip",
+   "requires": {
+    "bus": [
+     "spi"
+    ],
+    "kb_core_min": null,
+    "language": {
+     "standard": 20
+    },
+    "mcus": [
+     "any"
+    ],
+    "peripheral": null,
+    "rtos": [
+     "freertos"
+    ]
+   }
+  },
+  {
+   "name": "new_core_chip",
+   "requires": {
+    "bus": [
+     "spi"
+    ],
+    "kb_core_min": "0.4.0",
+    "language": {
+     "standard": 20
+    },
+    "mcus": [
+     "any"
+    ],
+    "peripheral": null,
+    "rtos": []
+   }
+  },
+  {
+   "name": "uart_chip",
+   "requires": {
+    "bus": [
+     "uart",
+     "modbus"
+    ],
+    "kb_core_min": null,
+    "language": {
+     "standard": 20
+    },
+    "mcus": [
+     "any"
+    ],
+    "peripheral": null,
+    "rtos": []
+   }
+  }
+ ],
+ "families": [
+  {
+   "default_language": {
+    "standard": 20
+   },
+   "default_rtos": "freertos",
+   "id": "esp32",
+   "label": "ESP32 (ESP-IDF)",
+   "port": {
+    "name": "esp32"
+   },
+   "rtos": [
+    "freertos"
+   ],
+   "status": "supported",
+   "targets": [
+    {
+     "buses": {
+      "adc": 18,
+      "i2c": 2,
+      "pio": 8,
+      "spi": 2,
+      "uart": 3
+     },
+     "id": "esp32",
+     "label": "ESP32",
+     "peripherals": [
+      "rmt"
+     ]
+    },
+    {
+     "buses": {
+      "adc": 7,
+      "i2c": 1,
+      "pio": 2,
+      "spi": 1,
+      "uart": 0
+     },
+     "id": "esp32c6",
+     "label": "ESP32-C6",
+     "peripherals": []
+    }
+   ]
+  },
+  {
+   "default_language": {
+    "standard": 23
+   },
+   "default_rtos": "none",
+   "id": "host",
+   "label": "Host",
+   "port": {
+    "name": "host"
+   },
+   "rtos": [
+    "host",
+    "none"
+   ],
+   "status": "supported",
+   "targets": [
+    {
+     "buses": {
+      "adc": 64,
+      "i2c": 8,
+      "pio": 8,
+      "spi": 8,
+      "uart": 8
+     },
+     "id": "host",
+     "label": "Host computer",
+     "peripherals": []
+    }
+   ]
+  },
+  {
+   "default_language": {
+    "standard": 20
+   },
+   "default_rtos": "freertos",
+   "id": "stm32",
+   "label": "STM32 (STM32Cube)",
+   "port": null,
+   "rtos": [
+    "freertos",
+    "none",
+    "threadx"
+   ],
+   "status": "planned",
+   "targets": [
+    {
+     "buses": {
+      "adc": 16,
+      "i2c": 3,
+      "pio": 0,
+      "spi": 4,
+      "uart": 6
+     },
+     "id": "stm32f4",
+     "label": "STM32F4",
+     "peripherals": []
+    }
+   ]
+  }
+ ],
+ "rtos": [
+  {
+   "id": "freertos",
+   "status": "supported"
+  },
+  {
+   "id": "host",
+   "status": "supported"
+  },
+  {
+   "id": "none",
+   "status": "supported"
+  },
+  {
+   "id": "threadx",
+   "status": "planned"
+  }
+ ],
+ "schema": 1
+}

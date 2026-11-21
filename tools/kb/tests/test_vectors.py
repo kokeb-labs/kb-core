@@ -44,6 +44,21 @@ class VectorTest(unittest.TestCase):
             self.assertTrue(vec["description"], name)
 
 
+class AvailabilityVectorTest(unittest.TestCase):
+    def test_there_are_vectors(self):
+        self.assertGreaterEqual(len(common.availability_vectors()), 6)
+
+    def test_every_vector(self):
+        for name, vec, cat in common.availability_vectors():
+            with self.subTest(vector=name):
+                got = resolver.availability(cat, vec["selection"])
+                self.assertEqual(emit.canonical_json(got), emit.canonical_json(vec["expect"]))
+                for entry in got["unavailable"]:
+                    self.assertIn(entry["code"], resolver.AVAILABILITY_CODES)
+                    self.assertTrue(entry["reason"])
+                self.assertTrue(vec["description"])
+
+
 class SchemaTest(unittest.TestCase):
     def test_catalogues_match_the_schema(self):
         sch = common.schema("catalog.schema.json")

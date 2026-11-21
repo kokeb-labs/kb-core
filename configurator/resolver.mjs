@@ -673,6 +673,104 @@ export function files(lock) {
   };
 }
 
+// --- availability (tools/kb/resolver.py availability) ----------------------------------------------------------------
+
+/** Codes availability() can return: the resolver's own where one exists, KB-RES-031 to 033 for the gates only it has. */
+export const AVAILABILITY_CODES = {
+  "KB-RES-001": "the selection is malformed",
+  "KB-RES-003": "unknown MCU family",
+  "KB-RES-004": "no port for the MCU family yet",
+  "KB-RES-005": "unknown target",
+  "KB-RES-006": "unknown RTOS",
+  "KB-RES-007": "the RTOS backend is not implemented yet",
+  "KB-RES-008": "the RTOS is not available on the MCU family",
+  "KB-RES-013": "the driver needs another MCU family",
+  "KB-RES-014": "the driver needs a newer kb-core",
+  "KB-RES-024": "the driver needs a newer C++ standard",
+  "KB-RES-025": "the driver needs a newer compiler",
+  "KB-RES-031": "the driver needs a peripheral the target does not offer",
+  "KB-RES-032": "the driver needs a bus the target does not offer",
+  "KB-RES-033": "the driver needs another RTOS",
+};
+
+/** What a driver needs of a build: its `requires` block, else read from its newest version (older catalogues). */
+function requiresOf(drv) {
+  if (isObj(drv.requires)) return drv.requires;
+  const v = Array.isArray(drv.versions) && drv.versions.length ? drv.versions[0] : {};
+  return {
+    bus: v.bus || [], mcus: v.mcus || ["any"], peripheral: v.peripheral || null, rtos: [],
+    kb_core_min: v.kb_core_min || null, language: v.language || null,
+  };
+}
+
+/**
+ * Which drivers a build with this selection can use, computed from the site catalogue alone (families, targets,
+ * rtos, drivers' `requires`): {available: [names], unavailable: [{name, code, reason}]}, both sorted by name. The
+ * selection is {family, target?, rtos?, language?: {standard, compilers?}, kb_core?}; a missing target, rtos or
+ * language is the family's first target, its default_rtos and its default_language. A selection that cannot build at
+ * all (unknown family, no port, unknown target or RTOS) makes every driver unavailable for that one reason. A
+ * driver that fails several gates reports the first of: MCU family, peripheral, bus, RTOS, kb-core, language.
+ */
+export function availability(catalog, selection) {
+  const sorted = [...catalog.drivers].sort((a, b) => cmpStr(a.name, b.name));
+  const blockAll = (code, reason) => ({ available: [], unavailable: sorted.map((d) => ({ name: d.name, code, reason })) });
+  const sel = isObj(selection) ? selection : {};
+  const fam = find(catalog.families || [], "id", sel.family);
+  if (fam === null) return blockAll("KB-RES-003", `MCU family '${sel.family}' is not in the catalogue`);
+  if (fam.status !== "supported" || fam.port === null || fam.port === undefined) {
+    return blockAll("KB-RES-004", `no port for ${fam.label} yet`);
+  }
+  const targetId = has(sel, "target") && sel.target !== null ? sel.target : fam.targets[0].id;
+  const target = find(fam.targets, "id", targetId);
+  if (target === null) return blockAll("KB-RES-005", `'${targetId}' is not a target of ${fam.id}`);
+  const rtosId = has(sel, "rtos") && sel.rtos !== null ? sel.rtos : fam.default_rtos;
+  const rtos = find(catalog.rtos || [], "id", rtosId);
+  if (rtos === null) return blockAll("KB-RES-006", `RTOS '${rtosId}' is not in the catalogue`);
+  if (rtos.status !== "supported") return blockAll("KB-RES-007", `the ${rtosId} backend is not implemented yet`);
+  if (!fam.rtos.includes(rtosId)) return blockAll("KB-RES-008", `${fam.label} supports ${fam.rtos.join(", ")}, not ${rtosId}`);
+  const lang = isObj(sel.language) ? sel.language : (isObj(fam.default_language) ? fam.default_language : DEFAULT_LANGUAGE);
+  if (!STANDARDS.includes(lang.standard)) {
+    return blockAll("KB-RES-001", `language.standard must be one of ${STANDARDS.join(", ")}`);
+  }
+  const want = { standard: lang.standard, compilers: { ...(lang.compilers || {}) } };
+  const kinds = catalog.bus_kinds || {};
+  const offers = (kind) => {
+    if (!has(kinds, kind)) return true; // a bus kind the catalogue does not describe cannot be refused
+    const count = target.buses[kinds[kind].instance];
+    return count === null || (count !== undefined && count > 0);
+  };
+
+  const available = [];
+  const unavailable = [];
+  for (const drv of sorted) {
+    const req = requiresOf(drv);
+    const fail = (code, reason) => unavailable.push({ name: drv.name, code, reason });
+    const mcus = req.mcus || ["any"];
+    const periph = req.peripheral;
+    const buses = req.bus || [];
+    const rtosNeed = req.rtos || [];
+    const kmin = req.kb_core_min;
+    const bad = languageMisfit({ language: req.language }, want);
+    if (!mcus.includes("any") && !mcus.includes(fam.id)) {
+      fail("KB-RES-013", `needs MCU family ${mcus.join(" or ")}, not ${fam.id}`);
+    } else if (periph && !(target.peripherals || []).includes(periph)) {
+      fail("KB-RES-031", `needs the ${periph.toUpperCase()} peripheral, which ${target.label} does not offer`);
+    } else if (buses.length && !buses.some(offers)) {
+      const labels = buses.map((b) => (has(kinds, b) ? kinds[b].label : b));
+      fail("KB-RES-032", `needs ${labels.join(" or ")}, which ${target.label} does not offer`);
+    } else if (rtosNeed.length && !rtosNeed.includes(rtosId)) {
+      fail("KB-RES-033", `needs ${rtosNeed.join(" or ")}, project uses ${rtosId}`);
+    } else if (kmin && sel.kb_core && compareVersions(kmin, sel.kb_core) > 0) {
+      fail("KB-RES-014", `needs kb-core ${kmin} or newer, not ${sel.kb_core}`);
+    } else if (bad !== null) {
+      fail(bad[0], `needs ${bad[1]}, project is ${bad[2]}`);
+    } else {
+      available.push(drv.name);
+    }
+  }
+  return { available, unavailable };
+}
+
 // --- upgrades (tools/kb/upgrade.py) -----------------------------------------------------------------------------
 
 export const IMAGE_FILE = "kb-image.yml";
