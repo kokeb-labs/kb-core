@@ -1,0 +1,26 @@
+var searchData=
+[
+  ['takefor_0',['TakeFor',['../classkb_1_1rtos_1_1Semaphore.html#a29ef623f55818a29709d2da4dbce35d0',1,'kb::rtos::Semaphore']]],
+  ['threadcreate_1',['ThreadCreate',['../namespacekb_1_1rtos_1_1backend.html#a29791a716a6c4f3acb679eddc66a0cdc',1,'kb::rtos::backend']]],
+  ['threadexit_2',['ThreadExit',['../namespacekb_1_1rtos_1_1backend.html#a36f9e6abbadb02e46b4be933e4c67338',1,'kb::rtos::backend']]],
+  ['threadrelease_3',['ThreadRelease',['../namespacekb_1_1rtos_1_1backend.html#aa71ae468f2134df35841ed6f9c4ab4f2',1,'kb::rtos::backend']]],
+  ['threadstackfree_4',['ThreadStackFree',['../namespacekb_1_1rtos_1_1backend.html#af3c43d3decffc3d23c1d12a45895b9ae',1,'kb::rtos::backend']]],
+  ['tickcount_5',['TickCount',['../namespacekb_1_1rtos_1_1backend.html#a46bbf8524472c7d1361648d44290db5f',1,'kb::rtos::backend']]],
+  ['tickratehz_6',['tickratehz',['../rtos_2inc_2kb_2rtos_2time_8hpp.html#a5f30f8bcb9407aae22a908c470e1bedd',1,'kb::rtos::TickRateHz()'],['../namespacekb_1_1rtos_1_1backend.html#a36d98867895f340795bb09b27f56b7db',1,'kb::rtos::backend::TickRateHz() noexcept']]],
+  ['timercreate_7',['TimerCreate',['../namespacekb_1_1rtos_1_1backend.html#a0c01a56443bf6002c6b4328c45e60f12',1,'kb::rtos::backend']]],
+  ['timerstart_8',['TimerStart',['../namespacekb_1_1rtos_1_1backend.html#a85c08beaec381892516313d4d0a17552',1,'kb::rtos::backend']]],
+  ['timerstop_9',['TimerStop',['../namespacekb_1_1rtos_1_1backend.html#ab1fcc49750abd17c85a4c55403ec25b6',1,'kb::rtos::backend']]],
+  ['toggle_10',['Toggle',['../classkb_1_1iface_1_1GpioOutputRef.html#a43d3a1d44f51ce3b1a599862fe15de83',1,'kb::iface::GpioOutputRef']]],
+  ['tostatus_11',['ToStatus',['../result_8hpp.html#a2e2e38dd3e7f7351e019db5feb295a1c',1,'kb']]],
+  ['tostring_12',['ToString',['../status_8hpp.html#ae99a8b54e2ba4c483ba1ae347af6f6fa',1,'kb']]],
+  ['toticksatleast_13',['ToTicksAtLeast',['../rtos_2inc_2kb_2rtos_2time_8hpp.html#a8f6e4b0114ce5bbf4cafa06697d28bb4',1,'kb::rtos']]],
+  ['transfer_14',['transfer',['../classkb_1_1iface_1_1SpiDeviceRef.html#a51328bc18a7178709265369fe94d4774',1,'kb::iface::SpiDeviceRef::Transfer()'],['../classkb_1_1iface_1_1AsyncFromSync.html#a2e81c748115dfd285c0b7121fd63c336',1,'kb::iface::AsyncFromSync::Transfer()']]],
+  ['truncated_15',['Truncated',['../classkb_1_1utils_1_1FixedString.html#a46b9c2f0a063278ad2e7530acbb7c46f',1,'kb::utils::FixedString']]],
+  ['trylock_16',['trylock',['../classkb_1_1rtos_1_1RecursiveMutex.html#a8c6ad42c0271f9babbcf91d197ca2c29',1,'kb::rtos::RecursiveMutex::TryLock()'],['../classkb_1_1rtos_1_1Mutex.html#a94f85a3b9917de1ec009afed490fb788',1,'kb::rtos::Mutex::TryLock()']]],
+  ['trylockfor_17',['trylockfor',['../classkb_1_1rtos_1_1RecursiveMutex.html#a3d847c330f68a87fe8488a908c4526d0',1,'kb::rtos::RecursiveMutex::TryLockFor()'],['../classkb_1_1rtos_1_1Mutex.html#a455a77b2afbcbeeccdcacdf083e714e5',1,'kb::rtos::Mutex::TryLockFor()']]],
+  ['trypop_18',['TryPop',['../classkb_1_1utils_1_1SpscRing.html#a23189223a967bc7074fb2e25df8150b9',1,'kb::utils::SpscRing']]],
+  ['trypush_19',['TryPush',['../classkb_1_1utils_1_1SpscRing.html#ab7fe9007afe791370c1964b520069720',1,'kb::utils::SpscRing']]],
+  ['tryreceive_20',['TryReceive',['../classkb_1_1rtos_1_1Queue.html#a576259615a28f6e41f945a1069632c14',1,'kb::rtos::Queue']]],
+  ['trysend_21',['TrySend',['../classkb_1_1rtos_1_1Queue.html#a0ee78e4c437cdf051ea335ddbe017c1c',1,'kb::rtos::Queue']]],
+  ['trytake_22',['TryTake',['../classkb_1_1rtos_1_1Semaphore.html#a601e69c445a330879c7b34d3d2a794d6',1,'kb::rtos::Semaphore']]]
+];
