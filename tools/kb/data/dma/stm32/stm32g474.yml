@@ -1,0 +1,161 @@
+# DMA routing and reach of the STM32G474: DMA1 and DMA2 with 8 channels each, DMAMUX1 with 16 channels (DMA1 channels
+# 1-8 are DMAMUX channels 0-7, DMA2 channels 1-8 are 8-15). Every request can use any channel. Field meanings:
+# ../README.md.
+# Request lines: STM32Cube HAL stm32g4xx_hal_dma.h (DMA_REQUEST_*) at the commit pinned by the STM32 port
+# (stm32g4xx-hal-driver v1.2.7, f5929f431f9effe45fbe18f5337e4753ced9ac92), the RM0440 DMAMUX request table. A few
+# lines belong to peripherals that other G4 parts have and the G474 lacks (AES_IN and AES_OUT: G483 and G484 only).
+# The reference manual itself could not be fetched.
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 The kb-core authors
+device: STM32G474
+family: g4
+source:
+  document: RM0440
+  revision: "unchecked"
+  sections: ["12 DMA", "13 DMAMUX", "2 Memory and bus architecture"]
+  requests_from: stm32g4xx_hal_dma.h v1.2.7 (f5929f431f9effe45fbe18f5337e4753ced9ac92)
+  memory_geometry_from: cmsis-device-g4 v1.2.6 (25664ddc3a7624ae9627ae8c4c672073dc5b2539) stm32g474xx.h
+verified:
+  mux: hal-header
+  memories: unverified      # base and size agree with the CMSIS device header; the reach is from knowledge of RM0440
+  errata: unverified        # ES0430 section numbers not checked
+cores: [cm4]
+nvic_priority_bits: 4
+engines:
+  dma1: {id: 1, master_bit: 0, units: channels, first: 1, count: 8, mux: dmamux1, mux_channel_base: 0}
+  dma2: {id: 2, master_bit: 1, units: channels, first: 1, count: 8, mux: dmamux1, mux_channel_base: 8}
+routing: mux
+mux_groups:
+  dmamux1: {channels: 16, engines: [dma1, dma2], max_request: 115, generators: 4}
+mux:
+  dmamux1:
+    GENERATOR0: 1
+    GENERATOR1: 2
+    GENERATOR2: 3
+    GENERATOR3: 4
+    ADC1: 5
+    DAC1_CH1: 6
+    DAC1_CH2: 7
+    TIM6_UP: 8
+    TIM7_UP: 9
+    SPI1_RX: 10
+    SPI1_TX: 11
+    SPI2_RX: 12
+    SPI2_TX: 13
+    SPI3_RX: 14
+    SPI3_TX: 15
+    I2C1_RX: 16
+    I2C1_TX: 17
+    I2C2_RX: 18
+    I2C2_TX: 19
+    I2C3_RX: 20
+    I2C3_TX: 21
+    I2C4_RX: 22
+    I2C4_TX: 23
+    USART1_RX: 24
+    USART1_TX: 25
+    USART2_RX: 26
+    USART2_TX: 27
+    USART3_RX: 28
+    USART3_TX: 29
+    UART4_RX: 30
+    UART4_TX: 31
+    UART5_RX: 32
+    UART5_TX: 33
+    LPUART1_RX: 34
+    LPUART1_TX: 35
+    ADC2: 36
+    ADC3: 37
+    ADC4: 38
+    ADC5: 39
+    QUADSPI: 40
+    DAC2_CH1: 41
+    TIM1_CH1: 42
+    TIM1_CH2: 43
+    TIM1_CH3: 44
+    TIM1_CH4: 45
+    TIM1_UP: 46
+    TIM1_TRIG: 47
+    TIM1_COM: 48
+    TIM8_CH1: 49
+    TIM8_CH2: 50
+    TIM8_CH3: 51
+    TIM8_CH4: 52
+    TIM8_UP: 53
+    TIM8_TRIG: 54
+    TIM8_COM: 55
+    TIM2_CH1: 56
+    TIM2_CH2: 57
+    TIM2_CH3: 58
+    TIM2_CH4: 59
+    TIM2_UP: 60
+    TIM3_CH1: 61
+    TIM3_CH2: 62
+    TIM3_CH3: 63
+    TIM3_CH4: 64
+    TIM3_UP: 65
+    TIM3_TRIG: 66
+    TIM4_CH1: 67
+    TIM4_CH2: 68
+    TIM4_CH3: 69
+    TIM4_CH4: 70
+    TIM4_UP: 71
+    TIM5_CH1: 72
+    TIM5_CH2: 73
+    TIM5_CH3: 74
+    TIM5_CH4: 75
+    TIM5_UP: 76
+    TIM5_TRIG: 77
+    TIM15_CH1: 78
+    TIM15_UP: 79
+    TIM15_TRIG: 80
+    TIM15_COM: 81
+    TIM16_CH1: 82
+    TIM16_UP: 83
+    TIM17_CH1: 84
+    TIM17_UP: 85
+    TIM20_CH1: 86
+    TIM20_CH2: 87
+    TIM20_CH3: 88
+    TIM20_CH4: 89
+    TIM20_UP: 90
+    AES_IN: 91
+    AES_OUT: 92
+    TIM20_TRIG: 93
+    TIM20_COM: 94
+    HRTIM1_M: 95
+    HRTIM1_A: 96
+    HRTIM1_B: 97
+    HRTIM1_C: 98
+    HRTIM1_D: 99
+    HRTIM1_E: 100
+    HRTIM1_F: 101
+    DAC3_CH1: 102
+    DAC3_CH2: 103
+    DAC4_CH1: 104
+    DAC4_CH2: 105
+    SPI4_RX: 106
+    SPI4_TX: 107
+    SAI1_A: 108
+    SAI1_B: 109
+    FMAC_READ: 110
+    FMAC_WRITE: 111
+    CORDIC_READ: 112
+    CORDIC_WRITE: 113
+    UCPD1_RX: 114
+    UCPD1_TX: 115
+memories:
+  sram1: {base: "0x20000000", size: "0x14000", masters: [dma1, dma2], cached: false}
+  sram2: {base: "0x20014000", size: "0x4000", masters: [dma1, dma2], cached: false}
+  ccm_sram: {base: "0x10000000", size: "0x8000", masters: [], cached: false}   # DMA reach not verified
+mpu: {regions: 8, min_size: 32}
+dcache_line: 0
+errata:
+  - id: ES0430-DMAMUX
+    rule: no_dmamux_sync
+    applies_to: [dmamux1]
+    verified: unverified
+    text: >-
+      DMAMUX: the synchronisation overrun and request generator overrun flags (SOFx, OFx) may not be asserted in some
+      register write coincidences. Synchronisation and request generators are refused until a port feature handles
+      the erratum. The section number in ES0430 is to be filled in at the next check.

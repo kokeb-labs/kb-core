@@ -1,0 +1,124 @@
+# DMA routing and reach of the STM32F407: DMA1 and DMA2, 8 streams each, 8 channel selections per stream. A
+# request is reachable on the listed streams only (RM0090 Tables 42 and 43). `unit` is the stream, `select` the channel
+# (CHSEL in DMA_SxCR). Field meanings: ../README.md.
+# The reference manual itself could not be fetched. The tables were written from memory of RM0090 Tables 42/43 and
+# agree with two independent transcriptions: the ChibiOS STM32F4xx registry (stm32_registry.h, Apache-2.0,
+# commit fd2e59c34878b1ef93ef5358f11fb5cc830027ff) and the stm32f4xx-hal Rust crate (src/dma/traits/f4.rs, 0BSD,
+# commit 0eb673dd2fc657a052e824f2693dcbd4e1a1b83d); neither was copied. Requests that neither covers are in
+# `not_cross_checked`. Parts of the F4 line that lack CRYP and HASH (F405, F407) have no such lines here.
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 The kb-core authors
+device: STM32F407
+family: f4
+source:
+  document: RM0090
+  revision: "unchecked"
+  sections: ["10 DMA controller", "Table 42 DMA1 request mapping", "Table 43 DMA2 request mapping"]
+  memory_geometry_from: cmsis-device-f4 v2.6.11 (0fa0e489e053fa1ca7790bb40b4d76458f64c55d) stm32f407xx.h
+verified:
+  fixed: unverified         # needs a check against RM0090 Tables 42 and 43
+  memories: unverified      # base and size agree with the CMSIS device header
+  errata: unverified        # ES0182 section number not checked
+cross_checked_with: [chibios-stm32f4xx-registry, stm32f4xx-hal-traits]
+not_cross_checked: [I2S2_EXT_RX, I2S2_EXT_TX, I2S3_EXT_RX, I2S3_EXT_TX, TIM1_COM, TIM8_TRIG]
+cores: [cm4]
+nvic_priority_bits: 4
+engines:
+  dma1: {id: 1, master_bit: 0, units: streams, first: 0, count: 8, mux: none, memory_to_memory: false}
+  dma2: {id: 2, master_bit: 1, units: streams, first: 0, count: 8, mux: none, memory_to_memory: true}
+routing: fixed
+fixed:
+  ADC1: [{engine: dma2, unit: 0, select: 0}, {engine: dma2, unit: 4, select: 0}]
+  ADC2: [{engine: dma2, unit: 2, select: 1}, {engine: dma2, unit: 3, select: 1}]
+  ADC3: [{engine: dma2, unit: 0, select: 2}, {engine: dma2, unit: 1, select: 2}]
+  DAC1_CH1: [{engine: dma1, unit: 5, select: 7}]
+  DAC1_CH2: [{engine: dma1, unit: 6, select: 7}]
+  DCMI: [{engine: dma2, unit: 1, select: 1}, {engine: dma2, unit: 7, select: 1}]
+  I2C1_RX: [{engine: dma1, unit: 0, select: 1}, {engine: dma1, unit: 5, select: 1}]
+  I2C1_TX: [{engine: dma1, unit: 6, select: 1}, {engine: dma1, unit: 7, select: 1}]
+  I2C2_RX: [{engine: dma1, unit: 2, select: 7}, {engine: dma1, unit: 3, select: 7}]
+  I2C2_TX: [{engine: dma1, unit: 7, select: 7}]
+  I2C3_RX: [{engine: dma1, unit: 2, select: 3}]
+  I2C3_TX: [{engine: dma1, unit: 4, select: 3}]
+  I2S2_EXT_RX: [{engine: dma1, unit: 3, select: 3}]
+  I2S2_EXT_TX: [{engine: dma1, unit: 4, select: 2}]
+  I2S3_EXT_RX: [{engine: dma1, unit: 0, select: 3}, {engine: dma1, unit: 2, select: 2}]
+  I2S3_EXT_TX: [{engine: dma1, unit: 5, select: 2}]
+  SDIO: [{engine: dma2, unit: 3, select: 4}, {engine: dma2, unit: 6, select: 4}]
+  SPI1_RX: [{engine: dma2, unit: 0, select: 3}, {engine: dma2, unit: 2, select: 3}]
+  SPI1_TX: [{engine: dma2, unit: 3, select: 3}, {engine: dma2, unit: 5, select: 3}]
+  SPI2_RX: [{engine: dma1, unit: 3, select: 0}]
+  SPI2_TX: [{engine: dma1, unit: 4, select: 0}]
+  SPI3_RX: [{engine: dma1, unit: 0, select: 0}, {engine: dma1, unit: 2, select: 0}]
+  SPI3_TX: [{engine: dma1, unit: 5, select: 0}, {engine: dma1, unit: 7, select: 0}]
+  TIM1_CH1:
+    - {engine: dma2, unit: 1, select: 6}
+    - {engine: dma2, unit: 3, select: 6}
+    - {engine: dma2, unit: 6, select: 0}
+  TIM1_CH2: [{engine: dma2, unit: 2, select: 6}, {engine: dma2, unit: 6, select: 0}]
+  TIM1_CH3: [{engine: dma2, unit: 6, select: 0}, {engine: dma2, unit: 6, select: 6}]
+  TIM1_CH4: [{engine: dma2, unit: 4, select: 6}]
+  TIM1_COM: [{engine: dma2, unit: 4, select: 6}]
+  TIM1_TRIG: [{engine: dma2, unit: 0, select: 6}, {engine: dma2, unit: 4, select: 6}]
+  TIM1_UP: [{engine: dma2, unit: 5, select: 6}]
+  TIM2_CH1: [{engine: dma1, unit: 5, select: 3}]
+  TIM2_CH2: [{engine: dma1, unit: 6, select: 3}]
+  TIM2_CH3: [{engine: dma1, unit: 1, select: 3}]
+  TIM2_CH4: [{engine: dma1, unit: 6, select: 3}, {engine: dma1, unit: 7, select: 3}]
+  TIM2_UP: [{engine: dma1, unit: 1, select: 3}, {engine: dma1, unit: 7, select: 3}]
+  TIM3_CH1: [{engine: dma1, unit: 4, select: 5}]
+  TIM3_CH2: [{engine: dma1, unit: 5, select: 5}]
+  TIM3_CH3: [{engine: dma1, unit: 7, select: 5}]
+  TIM3_CH4: [{engine: dma1, unit: 2, select: 5}]
+  TIM3_TRIG: [{engine: dma1, unit: 4, select: 5}]
+  TIM3_UP: [{engine: dma1, unit: 2, select: 5}]
+  TIM4_CH1: [{engine: dma1, unit: 0, select: 2}]
+  TIM4_CH2: [{engine: dma1, unit: 3, select: 2}]
+  TIM4_CH3: [{engine: dma1, unit: 7, select: 2}]
+  TIM4_UP: [{engine: dma1, unit: 6, select: 2}]
+  TIM5_CH1: [{engine: dma1, unit: 2, select: 6}]
+  TIM5_CH2: [{engine: dma1, unit: 4, select: 6}]
+  TIM5_CH3: [{engine: dma1, unit: 0, select: 6}]
+  TIM5_CH4: [{engine: dma1, unit: 1, select: 6}, {engine: dma1, unit: 3, select: 6}]
+  TIM5_TRIG: [{engine: dma1, unit: 1, select: 6}, {engine: dma1, unit: 3, select: 6}]
+  TIM5_UP: [{engine: dma1, unit: 0, select: 6}, {engine: dma1, unit: 6, select: 6}]
+  TIM6_UP: [{engine: dma1, unit: 1, select: 7}]
+  TIM7_UP: [{engine: dma1, unit: 2, select: 1}, {engine: dma1, unit: 4, select: 1}]
+  TIM8_CH1: [{engine: dma2, unit: 2, select: 0}, {engine: dma2, unit: 2, select: 7}]
+  TIM8_CH2: [{engine: dma2, unit: 2, select: 0}, {engine: dma2, unit: 3, select: 7}]
+  TIM8_CH3: [{engine: dma2, unit: 2, select: 0}, {engine: dma2, unit: 4, select: 7}]
+  TIM8_CH4: [{engine: dma2, unit: 7, select: 7}]
+  TIM8_COM: [{engine: dma2, unit: 7, select: 7}]
+  TIM8_TRIG: [{engine: dma2, unit: 7, select: 7}]
+  TIM8_UP: [{engine: dma2, unit: 1, select: 7}]
+  UART4_RX: [{engine: dma1, unit: 2, select: 4}]
+  UART4_TX: [{engine: dma1, unit: 4, select: 4}]
+  UART5_RX: [{engine: dma1, unit: 0, select: 4}]
+  UART5_TX: [{engine: dma1, unit: 7, select: 4}]
+  USART1_RX: [{engine: dma2, unit: 2, select: 4}, {engine: dma2, unit: 5, select: 4}]
+  USART1_TX: [{engine: dma2, unit: 7, select: 4}]
+  USART2_RX: [{engine: dma1, unit: 5, select: 4}]
+  USART2_TX: [{engine: dma1, unit: 6, select: 4}]
+  USART3_RX: [{engine: dma1, unit: 1, select: 4}]
+  USART3_TX: [{engine: dma1, unit: 3, select: 4}, {engine: dma1, unit: 4, select: 7}]
+  USART6_RX: [{engine: dma2, unit: 1, select: 5}, {engine: dma2, unit: 2, select: 5}]
+  USART6_TX: [{engine: dma2, unit: 6, select: 5}, {engine: dma2, unit: 7, select: 5}]
+memories:
+  sram1: {base: "0x20000000", size: "0x1C000", masters: [dma1, dma2], cached: false}
+  sram2: {base: "0x2001C000", size: "0x4000", masters: [dma1, dma2], cached: false}
+  ccm_ram: {base: "0x10000000", size: "0x10000", masters: [], cached: false}   # CPU only: no DMA access
+mpu: {regions: 8, min_size: 32}
+dcache_line: 0
+errata:
+  - id: ES0182-DMA2
+    rule: f4_dma2_ahb_apb2
+    applies_to: [dma2]
+    verified: unverified
+    ahb_requests: [DCMI]
+    apb2_requests: [ADC1, ADC2, ADC3, SDIO, SPI1_RX, SPI1_TX, USART1_RX, USART1_TX, USART6_RX, USART6_TX,
+                    TIM1_CH1, TIM1_CH2, TIM1_CH3, TIM1_CH4, TIM1_COM, TIM1_TRIG, TIM1_UP,
+                    TIM8_CH1, TIM8_CH2, TIM8_CH3, TIM8_CH4, TIM8_COM, TIM8_TRIG, TIM8_UP]
+    text: >-
+      DMA2 can corrupt data when it serves a peripheral on the AHB (DCMI here; CRYP and HASH on the F417) and a
+      peripheral on APB2 at the same time. Serve only one of the two kinds from DMA2 at a time, or record the
+      workaround of the erratum. The section number in ES0182 is to be filled in at the next check.

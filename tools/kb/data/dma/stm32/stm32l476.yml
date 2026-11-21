@@ -1,0 +1,67 @@
+# DMA routing and reach of the STM32L476: DMA1 and DMA2, 7 channels each; the request of a channel is chosen by its
+# 4-bit field in DMA_CSELR (`select`, 0-7; `unit` is the channel, 1-7). A request is reachable only on the listed
+# channels with the listed CSELR value (RM0351 Tables 41 and 42). Field meanings: ../README.md.
+# THIS TABLE IS NOT COMPLETE (`complete: false`). The reference manual itself could not be fetched, and only the
+# requests that an independent transcription confirms are listed: the ChibiOS STM32L4xx registry (stm32_registry.h,
+# Apache-2.0, commit fd2e59c34878b1ef93ef5358f11fb5cc830027ff), which agrees with what was written from memory of the
+# tables; nothing was copied. A request that is not listed is "not in the table", not "not routable": the board
+# checker must say so. Families still to be written from RM0351: see `omitted`.
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 The kb-core authors
+device: STM32L476
+family: l4
+source:
+  document: RM0351
+  revision: "unchecked"
+  sections: ["11 DMA controller", "Table 41 DMA1 requests", "Table 42 DMA2 requests"]
+  memory_geometry_from: cmsis-device-l4 v1.7.5 (dc04e41afbd7c204cd09f2fa5dd29658efbaff6c) stm32l476xx.h
+verified:
+  fixed: unverified         # needs a check against RM0351 Tables 41 and 42
+  memories: unverified      # base and size of SRAM1 and SRAM2 agree with the CMSIS device header; reach is not checked
+  errata: unverified        # none recorded
+complete: false
+omitted: [TIM1, TIM2, TIM3, TIM4, TIM5, TIM6, TIM7, TIM8, TIM15, TIM16, TIM17, SAI1, SAI2, DFSDM1, SWPMI1, LPUART1]
+cross_checked_with: [chibios-stm32l4xx-registry]
+cores: [cm4]
+nvic_priority_bits: 4
+engines:
+  dma1: {id: 1, master_bit: 0, units: channels, first: 1, count: 7, mux: none, memory_to_memory: true}
+  dma2: {id: 2, master_bit: 1, units: channels, first: 1, count: 7, mux: none, memory_to_memory: true}
+routing: fixed
+fixed:
+  ADC1: [{engine: dma1, unit: 1, select: 0}, {engine: dma2, unit: 3, select: 0}]
+  ADC2: [{engine: dma1, unit: 2, select: 0}, {engine: dma2, unit: 4, select: 0}]
+  ADC3: [{engine: dma1, unit: 3, select: 0}, {engine: dma2, unit: 5, select: 0}]
+  DAC1_CH1: [{engine: dma1, unit: 3, select: 6}, {engine: dma2, unit: 4, select: 3}]
+  DAC1_CH2: [{engine: dma1, unit: 4, select: 5}, {engine: dma2, unit: 5, select: 3}]
+  I2C1_RX: [{engine: dma1, unit: 7, select: 3}, {engine: dma2, unit: 6, select: 5}]
+  I2C1_TX: [{engine: dma1, unit: 6, select: 3}, {engine: dma2, unit: 7, select: 5}]
+  I2C2_RX: [{engine: dma1, unit: 5, select: 3}]
+  I2C2_TX: [{engine: dma1, unit: 4, select: 3}]
+  I2C3_RX: [{engine: dma1, unit: 3, select: 3}]
+  I2C3_TX: [{engine: dma1, unit: 2, select: 3}]
+  QUADSPI: [{engine: dma1, unit: 5, select: 5}, {engine: dma2, unit: 7, select: 3}]
+  SDMMC1: [{engine: dma2, unit: 4, select: 7}, {engine: dma2, unit: 5, select: 7}]
+  SPI1_RX: [{engine: dma1, unit: 2, select: 1}, {engine: dma2, unit: 3, select: 4}]
+  SPI1_TX: [{engine: dma1, unit: 3, select: 1}, {engine: dma2, unit: 4, select: 4}]
+  SPI2_RX: [{engine: dma1, unit: 4, select: 1}]
+  SPI2_TX: [{engine: dma1, unit: 5, select: 1}]
+  SPI3_RX: [{engine: dma2, unit: 1, select: 3}]
+  SPI3_TX: [{engine: dma2, unit: 2, select: 3}]
+  UART4_RX: [{engine: dma2, unit: 5, select: 2}]
+  UART4_TX: [{engine: dma2, unit: 3, select: 2}]
+  UART5_RX: [{engine: dma2, unit: 2, select: 2}]
+  UART5_TX: [{engine: dma2, unit: 1, select: 2}]
+  USART1_RX: [{engine: dma1, unit: 5, select: 2}, {engine: dma2, unit: 7, select: 2}]
+  USART1_TX: [{engine: dma1, unit: 4, select: 2}, {engine: dma2, unit: 6, select: 2}]
+  USART2_RX: [{engine: dma1, unit: 6, select: 2}]
+  USART2_TX: [{engine: dma1, unit: 7, select: 2}]
+  USART3_RX: [{engine: dma1, unit: 3, select: 2}]
+  USART3_TX: [{engine: dma1, unit: 2, select: 2}]
+memories:
+  sram1: {base: "0x20000000", size: "0x18000", masters: [dma1, dma2], cached: false}
+  sram2: {base: "0x10000000", size: "0x8000", masters: [], cached: false}          # code bus address: CPU only
+  sram2_alias: {base: "0x20018000", size: "0x8000", masters: [dma1, dma2], cached: false}   # DMA reach not verified
+mpu: {regions: 8, min_size: 32}
+dcache_line: 0
+errata: []
