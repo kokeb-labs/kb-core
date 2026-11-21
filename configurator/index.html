@@ -10,13 +10,13 @@
 <title>kb configurator</title>
 <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
 <link rel="modulepreload" href="resolver.mjs" integrity="sha384-7f5arwgT2QqIAkl3N7+Z4wqW5wbDSuRXqAPAqChpCmv1dZKMeSeNO5xAOckFxCL/">
-<link rel="stylesheet" href="css/app.css" integrity="sha384-Lq0xihy27CCJldmy39VZuAk2eQJVkD/2lSv0A/lUsR/LlmI+nLjZkfR3J+FCLLJb">
+<link rel="stylesheet" href="css/app.css" integrity="sha384-zl4XmetqNcaB8/6jepykIgEKZrPqFqk6tE5e8ATSZTu0/EhFOf+IXeAxYK33K0ny">
 </head>
 <body class="booting">
 <a class="skip" href="#main">Skip to the configurator</a>
 <header class="top">
   <div class="brand">
-    <img src="assets/icon.svg" alt="" width="32" height="32">
+    <img src="assets/icon.svg" alt="kb" width="32" height="32">
     <div>
       <h1>kb configurator</h1>
       <p>Pick a platform and drivers; get a pinned, repeatable project with its evidence.</p>
@@ -40,9 +40,15 @@
 catalogue it reads is <a href="data/catalog.json">data/catalog.json</a>.</p></noscript>
 
 <main id="main" class="layout" tabindex="-1">
+  <nav class="result-bar" aria-label="Result">
+    <span id="bar-status" class="bar-status" role="status"></span>
+    <a href="#h-check">Check and files</a>
+    <button type="button" class="primary" id="bar-zip">Download .zip</button>
+  </nav>
   <div class="steps">
-    <section class="panel" id="step-open" aria-labelledby="h-open">
-      <h2 id="h-open">Open an existing project</h2>
+    <details class="panel open-project" id="step-open">
+      <summary><h2 id="h-open">Open an existing project</h2>
+        <span class="hint">Already have a <code>kb-image.yml</code>? Check it for upgrades.</span></summary>
       <p class="lead">Pick your project's <code>kb-image.yml</code> and, if it has one, its <code>kb-image.lock.yml</code>
         (both at once). They are read in this browser only: nothing is uploaded or stored, and the address bar gets only
         catalogue identifiers (not the project's name or drivers this catalogue lacks). The page then shows the
@@ -69,7 +75,7 @@ catalogue it reads is <a href="data/catalog.json">data/catalog.json</a>.</p></no
         <p class="note">The same files, byte for byte, as <code>kb upgrade kb-image.yml --catalog data/catalog.json -o .</code>
           run on this page's catalogue (<a href="data/catalog.json">data/catalog.json</a>).</p>
       </div>
-    </section>
+    </details>
 
     <section class="panel" id="step-platform" aria-labelledby="h-platform">
       <h2 id="h-platform"><span class="num" aria-hidden="true">1</span> Platform</h2>
@@ -124,6 +130,14 @@ catalogue it reads is <a href="data/catalog.json">data/catalog.json</a>.</p></no
       <div class="buses" id="buses"></div>
       <div class="pins" id="pins"></div>
     </section>
+
+    <section class="panel" id="explore" aria-labelledby="h-explore">
+      <h2 id="h-explore"><span class="num" aria-hidden="true">5</span> Inside and tested: <span id="explore-version"></span></h2>
+      <p class="lead">What the image is made of, and what CI tested for this kb-core release: the protocol, the results and
+        every version so far. Read from the release's CI artifacts and assets; nothing is fetched.</p>
+      <div class="tabs" role="tablist" id="explore-tabs" aria-labelledby="h-explore"></div>
+      <div id="explore-panel" class="explore-panel" role="tabpanel"></div>
+    </section>
   </div>
 
   <aside class="side" aria-label="Result">
@@ -167,7 +181,9 @@ catalogue it reads is <a href="data/catalog.json">data/catalog.json</a>.</p></no
 <script src="js/state.js" integrity="sha384-iN1OFQR3VgUxSVKtkedzAFiwGNQkSBdyRYI+knasQLKQqtdtdEmmzco88ev7dyYE"></script>
 <script src="js/shared.js" integrity="sha384-sxG0W6iIUu6e63T9ZAXKwPKFfmBoZDSfmk40xj5dyWgUXp/OuTwwl3czIAWmSTdE"></script>
 <script src="js/project.js" integrity="sha384-+uMc6JUk/0hp4cuVCeoitLGWgX4s13C72rZ8NUi+4CmGhJZh0PVxUkfd+lSqNDHV"></script>
-<script src="js/ui.js" integrity="sha384-jLSrtqnClLIiQUF1VUpDQFkG6mRs6VREXkUIZ9yDUeBQmRv8b1rZtZUgS/IWri4B"></script>
+<script src="data/evidence.js" integrity="sha384-SmnfmRJc3yNFT3Y0CbNeDB+ZZmrIF7Koz6PvMQVKkfLegbqPdW/BQ5Wfh2hx3Jfa"></script>
+<script src="js/views.js" integrity="sha384-LjXAswiFFdNgOuoKLXju0t88GNR6P2vb4HmLgsUK0tpTAMwD+USxNhSKthvU2UM4"></script>
+<script src="js/ui.js" integrity="sha384-gBAyARpjcXlNOGU5I5IBPSJUdCYpt5DS2gCyvVYKR4fXnc5ybk/yeqdD5feDQYCr"></script>
 <script type="module" src="js/boot.mjs" integrity="sha384-xQwFO3CxtutDfQdOosbkKnYCNCVSi2sjJpWJF5ljlTVnCe2dQ1N7O1Edt9a/rzZY"></script>
 </body>
 </html>

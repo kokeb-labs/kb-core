@@ -3,9 +3,13 @@
 The configurator is a page that turns a few choices into a pinned, repeatable kb-core project with its evidence
 ([ADR-0013](adr/ADR-0013-hosted-configurator.md), [ADR-0014](adr/ADR-0014-kb-core-is-the-assembler.md)). It runs
 entirely in the browser: nothing is sent anywhere, no cookie is set, and the selection lives in the address bar,
-so a copied link reproduces it exactly. To use it without a network, open `configurator/offline.html` from disk.
+so a copied link reproduces it exactly. To use it without a network, take the offline copy (the link in its footer,
+or `configurator/offline.html` in the repository) and open it from disk.
 
-## The four steps
+**[Open the configurator](app/index.html)**: pick a platform, add drivers, download the project. The defaults
+already resolve, so a first project takes four choices and one click.
+
+## The steps
 
 1. **Platform.** Pick the MCU family (ESP32, STM32, host), the target and the board. The target fixes how many
    I2C, SPI, UART, CAN and RMT instances exist; a named development board also gives the number of free pins.
@@ -18,22 +22,28 @@ so a copied link reproduces it exactly. To use it without a network, open `confi
    a part that needs a newer standard is then refused with the newest version that fits, and a driver added
    afterwards gets that version ([Language floor](language-floor.md)). Left at *Not declared*, nothing is checked.
 3. **Drivers.** Search the catalogue by chip, bus or capability, or filter by bus. Each card shows the chip, its
-   package, the buses it speaks, its capabilities, its licence, its status and a pinout or block diagram (click it
-   for every figure). Each driver has a version selector with its published releases; the default is kb-core's pin,
-   else the newest release. Release candidates (marked *rc*) are **hidden by default**: turn on *Show release
-   candidates* to list them and to add a driver that has only release candidates. The switch is kept in the link
-   (`c=1`) and turns on by itself when a link or an opened project already uses an rc. A search with no match offers
-   **request it**: a link to the driver request form of `kokeb-labs-drivers/driver-requests`, prefilled with the
-   search text reduced to letters, digits, `.`, `_` and `-`; the footer links to the request forms for a driver and
-   for a port or target. The page itself sends nothing.
+   package, the buses it speaks, its capabilities, its licence, its status and a pinout or block diagram (click it for
+   every figure). Each driver has a version selector with its published releases; the default is kb-core's pin, else the
+   newest release. Release candidates (marked *rc*) are **hidden by default**: turn on *Show release candidates* to list
+   them and to add a driver that has only release candidates. The switch is kept in the link (`c=1`) and turns on by
+   itself when a link or an opened project already uses an rc, and while kb-core itself has only release candidates (the
+   page then starts on the newest one instead of an empty selection). A search with no match offers **request it**: a
+   link to the driver request form of `kokeb-labs-drivers/driver-requests`, prefilled with the search text reduced to
+   letters, digits, `.`, `_` and `-`; the footer links to the request forms for a driver and for a port or target. The
+   page itself sends nothing.
 4. **Buses and thread models.** Each driver goes on a bus (`i2c0`, `spi1`, `uart1`, `pio0`, ...). Give each bus one
    thread model ([ADR-0009](adr/ADR-0009-handler-thread-models.md)): an **owner task** that serves every device
    on it, or a **guarded facade** that locks around each call. Chips that must be serviced continuously (bno08x)
    need an owner task. The pin meter adds up the bus pins and the optional control pins.
 
+5. **Inside and tested.** For the kb-core version of the selection: the *Architecture* map (the parts, the port
+   and your drivers; pick one for what it holds, needs and how it was tested), the *Evidence* of that release (the
+   test protocol and its results, read from the release's CI artifacts, each chart with its table; also on
+   [Test evidence](assurance/evidence.md)) and *Versions* (every kb-core version with its headline evidence).
+
 ## Open an existing project
 
-*Open an existing project*, above step 1, takes your project's `kb-image.yml` and its `kb-image.lock.yml` (pick
+*Open an existing project*, folded above step 1, takes your project's `kb-image.yml` and its `kb-image.lock.yml` (pick
 both at once; a lock alone also works). The page reads them in the browser with the file picker: nothing is
 uploaded or stored. The address bar gets only catalogue identifiers: the project's own image name stays out of it
 while the project is open, and drivers this catalogue does not list are left out of the selection (and named under

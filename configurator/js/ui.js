@@ -89,13 +89,24 @@
     return pool.slice().sort((a, b) => KB.core.compareVersions(b.version, a.version))[0].version;
   }
 
+  // The version a new selection starts from, whatever the release-candidate switch says: the newest release, else
+  // the newest release candidate (the switch then turns on by itself), else a development revision. Before kb-core
+  // has a final release the page would otherwise open with an error and nothing to build on.
+  function startVersion(all) {
+    for (const kind of ['release', 'rc', 'dev']) {
+      const pool = (all || []).filter((r) => r.kind === kind);
+      if (pool.length) return pool.slice().sort((a, b) => KB.core.compareVersions(b.version, a.version))[0].version;
+    }
+    return null;
+  }
+
   function defaults() {
     const fam = families.get('esp32') || catalog.families[0];
     const board = fam.boards.find((b) => b.usable_gpio !== null) || fam.boards[0];
     return {
       image: 'my-image',
-      kb_core: newestVersion(catalog.kb_core.releases),
-      port: fam.port ? newestVersion(fam.port.releases) : null,
+      kb_core: startVersion(catalog.kb_core.releases),
+      port: fam.port ? startVersion(fam.port.releases) : null,
       mcu: { family: fam.id, target: board.target, board: board.id },
       rtos: fam.default_rtos,
       cxx: null,
@@ -480,6 +491,9 @@
   function renderFindings() {
     const n = { error: 0, warning: 0, info: 0 };
     for (const f of result.findings) n[f.severity]++;
+    // The small-screen bar: where the result stands, a jump to it and the download, without scrolling past the steps.
+    $('bar-status').textContent = n.error ? `${n.error} error${n.error === 1 ? '' : 's'} to fix` : `Ready, ${n.warning} warning${n.warning === 1 ? '' : 's'}`;
+    $('bar-status').className = n.error ? 'bar-status err' : 'bar-status ok';
     $('summary').replaceChildren(
       n.error ? h('span', { class: 'badge err', text: `${n.error} error${n.error === 1 ? '' : 's'}` }) : h('span', { class: 'badge ok', text: 'No errors' }),
       h('span', { class: 'badge warn', text: `${n.warning} warning${n.warning === 1 ? '' : 's'}` }),
@@ -548,6 +562,7 @@
       h('pre', { class: 'code', tabindex: '0', 'aria-label': `Contents of ${f.path}` }, h('code', { text: f.text }))));
     const zip = $('zip');
     zip.disabled = !output.ready;
+    $('bar-zip').disabled = !output.ready;
     $('zip-note').textContent = output.ready
       ? `Holds every file above plus a ${image.mcu.family === 'esp32' ? 'ESP-IDF' : 'CMake'} project skeleton; built in your browser, repeatable byte for byte.`
       : 'Fix the errors first: the archive is only offered for a selection that resolves.';
@@ -753,6 +768,7 @@
       renderFindings();
       renderOutputs();
       renderUpgrade();
+      if (KB.views) KB.views.render(catalog, image, result.shared && result.shared.ok ? result.shared.lock : null);
     });
     // While an opened project is shown, its own image name stays out of the address bar (and the share link).
     const hash = encode(image, { rc: showRc, omitName: opened !== null });
@@ -806,6 +822,7 @@
       download(`${KB.core.safeName(image.image)}.zip`, bytes, 'application/zip');
       announce('Starter project downloaded.');
     });
+    $('bar-zip').addEventListener('click', () => $('zip').click());
     $('share').addEventListener('click', () => copy(g.location.href, 'Share link'));
     $('reset').addEventListener('click', () => {
       opened = null;
@@ -815,6 +832,7 @@
       $('open-files').value = '';
       $('open-status').textContent = '';
       image = defaults();
+      if (hasRc(image)) setShowRc(true, false);
       update();
       announce('Selection cleared.');
     });

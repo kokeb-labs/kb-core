@@ -20,6 +20,10 @@ repositories ([MCU ports and repositories](design/ports.md)).
 
 ## In 30 seconds
 
+**[Configure a project](app/index.html)** in the browser: pick an MCU, an RTOS and chip drivers, and download a
+pinned project with its SBOMs, licence report and build files ([how it works](configurator.md)). Or build kb-core
+itself:
+
 ```bash
 cmake -S . -B build                     # host: every part, no driver
 cmake -S . -B build -DKB_PARTS=utils    # one part alone

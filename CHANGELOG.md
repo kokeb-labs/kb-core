@@ -8,24 +8,19 @@ lists its changes per part, the ESP32 port and its driver pins. The format follo
 
 ### Added
 
-- Language floor ([Language floor](docs/language-floor.md)): kb-core declares its own floor once in `kb.yml`
-  (C++20, GCC 10, Clang 13, for every library and in-tree port); CMake reads it (`cmake/kb_language.cmake`):
-  `KB_CPP_STANDARD` defaults to the floor, may be 20, 23 or 26 and is refused below it (CTest `kb_language_floor`).
-- Catalogue: every driver and kb-core version records its `language` block (`standard`, `profile`, `compilers`,
-  `tested`, `source`) from `driver.yml` or `kb.yml` at its tag, the registry default when the tag has none; both
-  catalogue builders and the schemas carry it.
-- Resolver (both implementations, shared vectors 027 to 032): an image may declare `language: {standard,
-  compilers}`. A part above it is `KB-RES-024` (standard) or `KB-RES-025` (compiler), naming the newest version that
-  fits as `alternative`; a driver named without a version takes that version with `KB-RES-W04`. The upgrade planner
-  holds back versions above the floor. With the block, the lock records it and `cmake` gains `KB_CPP_STANDARD`.
-- Configurator: a **C++ standard** choice in step 2 (in the share link as `x=`), each version shows the standard it
-  needs, and an opened `kb-image.yml` keeps its `language` block.
+### Changed
+
+- Configurator: while kb-core has only release candidates the page starts on the newest one (the release-candidate
+  switch turns on) instead of opening with an error; *Open an existing project* is folded; on small screens a bar
+  at the bottom shows whether the selection resolves and offers the ZIP.
 
 ### Fixed
 
 - ADR numbers: the asynchronous bus and held transactions record is ADR-0016 (it shared 0015 with the ThreadX
   backend); every reference follows.
 - `components/lib/handlers/tests/test_threads.cpp`: a comment line over the 100-column limit.
+- Docs: the site used MkDocs' own search script next to the theme's, which threw on every page (a console error,
+  Lighthouse best practices); it now uses the theme's search only.
 
 ## [0.1.0-rc.1] - 2026-11-21
 

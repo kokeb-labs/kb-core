@@ -168,16 +168,23 @@ try {
   await open('');
   check('page loads, catalogue rendered', await evaluate('document.querySelectorAll("#catalogue .card").length') > 20);
   check('default hash written', (await evaluate('location.hash')).startsWith('#v=1'));
+  // Release candidates are hidden by default once kb-core has a final release; before that the page starts on the
+  // newest release candidate with the switch on (it would otherwise open with nothing to build on).
   const rcState = await evaluate(`(() => {
     const rcOnly = KB_CATALOG.drivers.find((d) => d.versions.length && d.versions.every((v) => v.kind === 'rc'));
-    const before = { toggle: document.getElementById('show-rc').checked, add: rcOnly ? document.getElementById('add-' + rcOnly.name).disabled : true };
+    const addOff = () => (rcOnly ? document.getElementById('add-' + rcOnly.name).disabled : null);
+    const released = KB_CATALOG.kb_core.releases.some((r) => r.kind === 'release');
+    const before = { released, toggle: document.getElementById('show-rc').checked, add: addOff(), kb: document.getElementById('kb-version').value,
+      errors: document.querySelectorAll('.finding.error').length };
     document.getElementById('show-rc').click();
-    const after = { add: rcOnly ? document.getElementById('add-' + rcOnly.name).disabled : false, hash: location.hash.includes('c=1') };
+    const after = { toggle: document.getElementById('show-rc').checked, add: addOff(), hash: location.hash.includes('c=1') };
     document.getElementById('show-rc').click();
-    return { before, after, off: !location.hash.includes('c=1') };
+    return { before, after, back: document.getElementById('show-rc').checked === before.toggle };
   })()`);
-  check('release candidates hidden by default, shown by the switch', !rcState.before.toggle && rcState.before.add
-    && !rcState.after.add && rcState.after.hash && rcState.off, rcState);
+  check('release-candidate switch: off once kb-core has a release, else on with no error; it shows and hides rc-only drivers',
+    rcState.before.toggle === !rcState.before.released && rcState.before.kb !== '' && rcState.before.errors === 0
+    && rcState.after.toggle === !rcState.before.toggle && rcState.after.add === !rcState.before.add
+    && rcState.after.hash === rcState.after.toggle && rcState.back, rcState);
   await evaluate(`document.getElementById('search').value = 'zz-no-such-chip 9'; document.getElementById('search').dispatchEvent(new Event('input'))`);
   const ask = await evaluate(`(() => { const p = document.getElementById('request-chip'); const a = p.querySelector('a');
     return { shown: !p.hidden, href: a ? a.href : '' }; })()`);
@@ -192,7 +199,7 @@ try {
     errors: [...document.querySelectorAll('.finding.error code')].map(e => e.textContent),
     warnings: [...document.querySelectorAll('.finding.warning code')].map(e => e.textContent),
     buses: [...document.querySelectorAll('.bus h3')].map(e => e.id),
-    tabs: document.querySelectorAll('[role=tab]').length,
+    tabs: document.querySelectorAll('#tabs [role=tab]').length,
     zip: !document.getElementById('zip').disabled,
   })`);
   check('shared link restores four drivers', state.selected === 4, state);

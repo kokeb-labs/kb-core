@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha384-a/E4mQqPXYUt4yLRP4KcIi6VphMnu6jAMQ9JOoRY4gWzvCdW1f8KivDVRUN0H/Bc' 'sha384-DT0Ls0mO7JmjTnT+oBuMhEJzYJO1zUqzuuMXNdnOmOQRIpN2BgSjvBV/j50NngIT' 'sha384-z7ugIwGcnlLVOtMREhHPQOIOMG4Vi07wTKXZx7CsgHjmGbJFLZ7VON2ZZ5/ZlyAO' 'sha384-w90ycptWLHSy39vTbREpkFzJL/XHhRYhRUMOJiuptwKUQVWagUynVy4NblwC3TFy' 'sha384-IXgZ1EoqJZ55co37pFfSWfK3u3XsbWS5pkz9lxQx2tl05Pe7rlLfVQVvg3fckQ7v' 'sha384-rm0v2IHNBwA7rpkx5rKCjIkzLqBJV7hwzLnVIcw+2GJjzCFUJ/vZyYNCdaFBrjee' 'sha384-iN1OFQR3VgUxSVKtkedzAFiwGNQkSBdyRYI+knasQLKQqtdtdEmmzco88ev7dyYE' 'sha384-sxG0W6iIUu6e63T9ZAXKwPKFfmBoZDSfmk40xj5dyWgUXp/OuTwwl3czIAWmSTdE' 'sha384-+uMc6JUk/0hp4cuVCeoitLGWgX4s13C72rZ8NUi+4CmGhJZh0PVxUkfd+lSqNDHV' 'sha384-jLSrtqnClLIiQUF1VUpDQFkG6mRs6VREXkUIZ9yDUeBQmRv8b1rZtZUgS/IWri4B'; style-src 'sha384-Lq0xihy27CCJldmy39VZuAk2eQJVkD/2lSv0A/lUsR/LlmI+nLjZkfR3J+FCLLJb'; img-src 'self'; connect-src 'none'; font-src 'none'; object-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha384-a/E4mQqPXYUt4yLRP4KcIi6VphMnu6jAMQ9JOoRY4gWzvCdW1f8KivDVRUN0H/Bc' 'sha384-DT0Ls0mO7JmjTnT+oBuMhEJzYJO1zUqzuuMXNdnOmOQRIpN2BgSjvBV/j50NngIT' 'sha384-z7ugIwGcnlLVOtMREhHPQOIOMG4Vi07wTKXZx7CsgHjmGbJFLZ7VON2ZZ5/ZlyAO' 'sha384-w90ycptWLHSy39vTbREpkFzJL/XHhRYhRUMOJiuptwKUQVWagUynVy4NblwC3TFy' 'sha384-IXgZ1EoqJZ55co37pFfSWfK3u3XsbWS5pkz9lxQx2tl05Pe7rlLfVQVvg3fckQ7v' 'sha384-rm0v2IHNBwA7rpkx5rKCjIkzLqBJV7hwzLnVIcw+2GJjzCFUJ/vZyYNCdaFBrjee' 'sha384-iN1OFQR3VgUxSVKtkedzAFiwGNQkSBdyRYI+knasQLKQqtdtdEmmzco88ev7dyYE' 'sha384-sxG0W6iIUu6e63T9ZAXKwPKFfmBoZDSfmk40xj5dyWgUXp/OuTwwl3czIAWmSTdE' 'sha384-+uMc6JUk/0hp4cuVCeoitLGWgX4s13C72rZ8NUi+4CmGhJZh0PVxUkfd+lSqNDHV' 'sha384-SmnfmRJc3yNFT3Y0CbNeDB+ZZmrIF7Koz6PvMQVKkfLegbqPdW/BQ5Wfh2hx3Jfa' 'sha384-LjXAswiFFdNgOuoKLXju0t88GNR6P2vb4HmLgsUK0tpTAMwD+USxNhSKthvU2UM4' 'sha384-gBAyARpjcXlNOGU5I5IBPSJUdCYpt5DS2gCyvVYKR4fXnc5ybk/yeqdD5feDQYCr'; style-src 'sha384-zl4XmetqNcaB8/6jepykIgEKZrPqFqk6tE5e8ATSZTu0/EhFOf+IXeAxYK33K0ny'; img-src 'self'; connect-src 'none'; font-src 'none'; object-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="description" content="Pick an MCU, an RTOS and chip drivers, and download a pinned, repeatable kb-core project with its SBOM and evidence.">
 <meta name="color-scheme" content="light dark">
@@ -340,18 +340,83 @@ footer.foot { max-width: 1480px; margin: 0 auto; padding: 8px 24px 40px; color: 
 footer.foot p { margin: 4px 0; }
 
 .file-notice { display: none; }
+details.open-project > summary { cursor: pointer; list-style: none; display: flex; flex-wrap: wrap; align-items: baseline;
+  gap: 4px 12px; }
+details.open-project > summary::-webkit-details-marker { display: none; }
+details.open-project > summary h2 { margin: 0; }
+details.open-project > summary h2::before { content: "\25B8"; color: var(--muted); font-size: 0.9em; }
+details.open-project[open] > summary h2::before { content: "\25BE"; }
+details.open-project[open] > summary { margin-bottom: 12px; }
+details.open-project:not([open]) { padding-top: 14px; padding-bottom: 14px; }
+/* Small screens: the result is below every step, so a bar at the bottom says where it stands and offers the ZIP. */
+.result-bar { display: none; }
+.bar-status { font-weight: 600; }
+.bar-status.ok { color: var(--ok); }
+.bar-status.err { color: var(--err); }
 /* Until the first render, the steps stay hidden so filling them in does not shift the layout; if the scripts never
    run, they appear after three seconds anyway. */
 .booting main, .booting footer { visibility: hidden; animation: kb-reveal 0s 3s forwards; }
 @keyframes kb-reveal { to { visibility: visible; } }
 noscript p { max-width: 720px; margin: 40px auto; padding: 16px; }
 
+/* -- step 5: architecture, evidence, versions ----------------------------------------------------------------- */
+.explore-panel { margin-top: 12px; }
+#h-explore { flex-wrap: wrap; }
+#explore-version { color: var(--muted); font-weight: 600; }
+.arch { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 16px; align-items: start; }
+.arch-map { display: flex; flex-direction: column; gap: 8px; }
+.lane { border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; background: var(--surface-2); }
+.lane-title { display: block; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 6px; font-weight: 600; }
+.lane-items { display: flex; flex-wrap: wrap; gap: 8px; }
+.node { display: flex; flex-direction: column; align-items: flex-start; text-align: left; gap: 2px; border-left-width: 4px; min-width: 9rem; max-width: 100%; }
+.node span { font-size: 0.8rem; color: var(--muted); }
+.node.open, .node[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); }
+.node.unused { opacity: 0.7; border-style: dashed; }
+.tone-product { border-left-color: #a2337a; } .tone-handler { border-left-color: #6a3fb5; } .tone-contract { border-left-color: #1f5fbf; }
+.tone-rtos { border-left-color: #9a5b00; } .tone-core { border-left-color: #a5520f; } .tone-port { border-left-color: #0f766e; }
+.tone-driver { border-left-color: #237a35; }
+.arch-detail { border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; background: var(--surface); min-height: 8rem; }
+.arch-detail h4 { margin: 0 0 6px; }
+dl.facts { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 4px 12px; margin: 8px 0; font-size: 0.9rem; }
+dl.facts dt { color: var(--muted); }
+dl.facts dd { margin: 0; }
+details.twin { margin-top: 12px; }
+table.data { width: 100%; border-collapse: collapse; font-size: 0.88rem; margin: 8px 0 16px; }
+table.data caption { text-align: left; font-weight: 600; padding: 4px 0; color: var(--muted); }
+table.data th, table.data td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+table.data thead th { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
+.tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr)); gap: 8px; margin: 8px 0 16px; }
+.tile { border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; display: flex; flex-direction: column; gap: 2px; background: var(--surface-2); }
+.tile strong { font-size: 1.2rem; }
+.tile-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); font-weight: 600; }
+.tile-sub { font-size: 0.8rem; color: var(--muted); }
+.tile.ok { border-left: 4px solid var(--ok); } .tile.bad { border-left: 4px solid var(--err); }
+.charts { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 16px; }
+.charts figure { margin: 0; }
+.charts figcaption { font-size: 0.82rem; color: var(--muted); }
+svg.chart { width: 100%; height: auto; max-width: 420px; }
+.chart-label, .chart-value { font-size: 11px; fill: var(--fg); }
+.chart-track { fill: var(--surface-2); stroke: var(--line); }
+.chart-bar.good { fill: var(--ok); } .chart-bar.bad { fill: var(--err); }
+.chart-floor { stroke: var(--fg); stroke-dasharray: 3 3; }
+.explore-panel .badge { margin-left: 6px; }
+
 /* -- responsive ---------------------------------------------------------------------------------------------- */
 @media (max-width: 1080px) {
-  .layout { grid-template-columns: minmax(0, 1fr); }
+  .layout { grid-template-columns: minmax(0, 1fr); padding-bottom: 88px; }
+  .result-bar {
+    display: flex; align-items: center; gap: 12px; position: fixed; left: 0; right: 0; bottom: 0; z-index: 6;
+    padding: 10px 16px; background: var(--surface); border-top: 1px solid var(--line); box-shadow: var(--shadow);
+  }
+  .result-bar .bar-status { flex: 1 1 auto; }
+  .result-bar a { color: var(--accent); white-space: nowrap; }
   .side { position: static; max-height: none; }
   pre.code { max-height: 60vh; }
   .findings { max-height: none; }
+}
+@media (max-width: 760px) {
+  .arch { grid-template-columns: minmax(0, 1fr); }
+  table.data { display: block; overflow-x: auto; }
 }
 @media (max-width: 640px) {
   .top { padding: 8px 16px; position: static; backdrop-filter: none; background: var(--surface); }
@@ -373,7 +438,7 @@ noscript p { max-width: 720px; margin: 40px auto; padding: 16px; }
 <a class="skip" href="#main">Skip to the configurator</a>
 <header class="top">
   <div class="brand">
-    <img src="assets/icon.svg" alt="" width="32" height="32">
+    <img src="assets/icon.svg" alt="kb" width="32" height="32">
     <div>
       <h1>kb configurator</h1>
       <p>Pick a platform and drivers; get a pinned, repeatable project with its evidence.</p>
@@ -394,9 +459,15 @@ noscript p { max-width: 720px; margin: 40px auto; padding: 16px; }
 catalogue it reads is <a href="data/catalog.json">data/catalog.json</a>.</p></noscript>
 
 <main id="main" class="layout" tabindex="-1">
+  <nav class="result-bar" aria-label="Result">
+    <span id="bar-status" class="bar-status" role="status"></span>
+    <a href="#h-check">Check and files</a>
+    <button type="button" class="primary" id="bar-zip">Download .zip</button>
+  </nav>
   <div class="steps">
-    <section class="panel" id="step-open" aria-labelledby="h-open">
-      <h2 id="h-open">Open an existing project</h2>
+    <details class="panel open-project" id="step-open">
+      <summary><h2 id="h-open">Open an existing project</h2>
+        <span class="hint">Already have a <code>kb-image.yml</code>? Check it for upgrades.</span></summary>
       <p class="lead">Pick your project's <code>kb-image.yml</code> and, if it has one, its <code>kb-image.lock.yml</code>
         (both at once). They are read in this browser only: nothing is uploaded or stored, and the address bar gets only
         catalogue identifiers (not the project's name or drivers this catalogue lacks). The page then shows the
@@ -423,7 +494,7 @@ catalogue it reads is <a href="data/catalog.json">data/catalog.json</a>.</p></no
         <p class="note">The same files, byte for byte, as <code>kb upgrade kb-image.yml --catalog data/catalog.json -o .</code>
           run on this page's catalogue (<a href="data/catalog.json">data/catalog.json</a>).</p>
       </div>
-    </section>
+    </details>
 
     <section class="panel" id="step-platform" aria-labelledby="h-platform">
       <h2 id="h-platform"><span class="num" aria-hidden="true">1</span> Platform</h2>
@@ -477,6 +548,14 @@ catalogue it reads is <a href="data/catalog.json">data/catalog.json</a>.</p></no
       <div id="assign"></div>
       <div class="buses" id="buses"></div>
       <div class="pins" id="pins"></div>
+    </section>
+
+    <section class="panel" id="explore" aria-labelledby="h-explore">
+      <h2 id="h-explore"><span class="num" aria-hidden="true">5</span> Inside and tested: <span id="explore-version"></span></h2>
+      <p class="lead">What the image is made of, and what CI tested for this kb-core release: the protocol, the results and
+        every version so far. Read from the release's CI artifacts and assets; nothing is fetched.</p>
+      <div class="tabs" role="tablist" id="explore-tabs" aria-labelledby="h-explore"></div>
+      <div id="explore-panel" class="explore-panel" role="tabpanel"></div>
     </section>
   </div>
 
@@ -4823,6 +4902,854 @@ globalThis.KB_CATALOG = {
 </script>
 <script>// SPDX-License-Identifier: MIT
 // Copyright (c) 2026 The kb-core authors
+// GENERATED by tools/evidence/collect.py --site: do not edit. Every data/evidence/<version>.json, keyed by
+// version, as a script so the page also works from a file.
+globalThis.KB_EVIDENCE = {
+ "0.1.0-rc.1": {
+  "coverage": {
+   "below_full": [
+    {
+     "branch": 50.0,
+     "condition": 50.0,
+     "file": "components/lib/dma/inc/kb/dma/region.hpp",
+     "line": 100.0
+    },
+    {
+     "branch": 71.4,
+     "condition": 100.0,
+     "file": "components/lib/utils/inc/kb/utils/result.hpp",
+     "line": 100.0
+    },
+    {
+     "branch": 92.2,
+     "condition": 97.8,
+     "file": "components/lib/dma/inc/kb/dma/buffer.hpp",
+     "line": 100.0
+    },
+    {
+     "branch": 94.0,
+     "condition": 91.7,
+     "file": "components/lib/handlers/inc/kb/handlers/common/request_channel.hpp",
+     "line": 100.0
+    },
+    {
+     "branch": 95.0,
+     "condition": 95.0,
+     "file": "components/lib/rtos/inc/kb/rtos/mutex.hpp",
+     "line": 100.0
+    },
+    {
+     "branch": 97.5,
+     "condition": 97.3,
+     "file": "components/lib/dma/inc/kb/dma/stream.hpp",
+     "line": 100.0
+    },
+    {
+     "branch": 97.6,
+     "condition": 97.6,
+     "file": "components/lib/rtos/backends/freertos/freertos_boundary.cpp",
+     "line": 100.0
+    },
+    {
+     "branch": 99.0,
+     "condition": 99.0,
+     "file": "components/lib/handlers/inc/kb/handlers/common/hooks.hpp",
+     "line": 100.0
+    },
+    {
+     "branch": 99.2,
+     "condition": 99.2,
+     "file": "components/lib/handlers/inc/kb/handlers/common/handler_core.hpp",
+     "line": 100.0
+    }
+   ],
+   "branch": {
+    "covered": 1371,
+    "percent": 98.7,
+    "total": 1389
+   },
+   "condition": {
+    "covered": 1350,
+    "percent": 99.1,
+    "total": 1362
+   },
+   "condition_kind": "MC/DC (GCC -fcondition-coverage)",
+   "files": 48,
+   "floors": {
+    "branch": 75,
+    "condition": "report",
+    "line": 85
+   },
+   "function": {
+    "covered": 2329,
+    "percent": 94.4,
+    "total": 2466
+   },
+   "line": {
+    "covered": 3653,
+    "percent": 100.0,
+    "total": 3653
+   },
+   "parts": [
+    {
+     "branch": 98.8,
+     "condition": 100.0,
+     "files": 11,
+     "function": 97.0,
+     "line": 100.0,
+     "part": "utils"
+    },
+    {
+     "branch": 99.4,
+     "condition": 99.4,
+     "files": 14,
+     "function": 96.5,
+     "line": 100.0,
+     "part": "rtos"
+    },
+    {
+     "branch": 94.9,
+     "condition": 96.8,
+     "files": 5,
+     "function": 98.7,
+     "line": 100.0,
+     "part": "dma"
+    },
+    {
+     "branch": 100.0,
+     "condition": 100.0,
+     "files": 4,
+     "function": 99.2,
+     "line": 100.0,
+     "part": "interfaces"
+    },
+    {
+     "branch": 99.1,
+     "condition": 98.9,
+     "files": 14,
+     "function": 90.6,
+     "line": 100.0,
+     "part": "handlers"
+    }
+   ],
+   "source": "host-quality-reports-coverage/coverage-summary.json (gcovr, GCC 14, library code only)"
+  },
+  "fuzz": {
+   "engine": "libFuzzer with AddressSanitizer and UndefinedBehaviorSanitizer (clang 18)",
+   "planned_seconds": 720,
+   "result": "pass",
+   "seconds_per_target": 120,
+   "source": "run.json (job fuzz, step Fuzz) and layering-report (the fuzz targets CMake defines)",
+   "step_seconds": 727,
+   "targets": [
+    "fuzz_dma_stream",
+    "fuzz_handlers_channel",
+    "fuzz_utils_bytes",
+    "fuzz_utils_crc",
+    "fuzz_utils_journal",
+    "fuzz_utils_ring"
+   ]
+  },
+  "lighthouse": {
+   "budgets": {
+    "accessibility": 0.95,
+    "best_practices": 0.9,
+    "performance": 0.8,
+    "seo": 0.9
+   },
+   "pages": [
+    {
+     "accessibility": 1,
+     "best_practices": 0.96,
+     "page": "/",
+     "pass": true,
+     "performance": 0.98,
+     "runs": 3,
+     "seo": 1
+    },
+    {
+     "accessibility": 1,
+     "best_practices": 0.96,
+     "page": "/architecture/",
+     "pass": true,
+     "performance": 0.99,
+     "runs": 3,
+     "seo": 1
+    },
+    {
+     "accessibility": 1,
+     "best_practices": 0.96,
+     "page": "/parts/utils/",
+     "pass": true,
+     "performance": 0.98,
+     "runs": 3,
+     "seo": 1
+    }
+   ],
+   "source": "lighthouse-report/*.report.json (mobile emulation, median of three runs per page)"
+  },
+  "links": {
+   "result": "pass",
+   "source": "run.json (job Docs, step Check links on the built site)",
+   "tool": "lychee, offline"
+  },
+  "misra": {
+   "advisory_with_findings": [
+    "Rule 0.0.2",
+    "Rule 0.2.3",
+    "Rule 0.2.4",
+    "Rule 4.1.2",
+    "Rule 10.1.1",
+    "Rule 15.1.4"
+   ],
+   "configurations": [
+    {
+     "complete": true,
+     "name": "host",
+     "source_files": 65,
+     "translation_units": 272
+    },
+    {
+     "complete": true,
+     "name": "cortex-m",
+     "source_files": 65,
+     "translation_units": 265
+    }
+   ],
+   "deviation_records": [
+    "DEV-KBC-001",
+    "DEV-KBC-002",
+    "DEV-KBC-003",
+    "DEV-KBC-004",
+    "MD-CPP-001",
+    "MD-CPP-002",
+    "MD-CPP-003",
+    "MD-CPP-004",
+    "MD-CPP-005",
+    "MD-CPP-006",
+    "MD-CPP-007",
+    "MD-CPP-008",
+    "MD-CPP-009"
+   ],
+   "edition": "MISRA C++:2023",
+   "failing_guidelines": [],
+   "findings": {
+    "deviated": 29,
+    "review": 862,
+    "violations": 33
+   },
+   "guidelines": {
+    "by_category": {
+     "advisory": 50,
+     "mandatory": 5,
+     "required": 124
+    },
+    "checked": 179,
+    "clean": 148,
+    "deviated": 3,
+    "with_findings": 6
+   },
+   "level": "high",
+   "passed": true,
+   "source": "misra-report/misra-summary.json (CodeQL MISRA C++:2023 queries, cppcheck, clang-tidy)"
+  },
+  "mutation": {
+   "equivalent": 124,
+   "killed": 1125,
+   "not_compiled": 157,
+   "parts": [
+    {
+     "equivalent": 50,
+     "killed": 447,
+     "part": "utils",
+     "score": 100.0,
+     "survived": 0
+    },
+    {
+     "equivalent": 55,
+     "killed": 309,
+     "part": "rtos",
+     "score": 100.0,
+     "survived": 0
+    },
+    {
+     "equivalent": 16,
+     "killed": 267,
+     "part": "dma",
+     "score": 100.0,
+     "survived": 0
+    },
+    {
+     "equivalent": 2,
+     "killed": 46,
+     "part": "interfaces",
+     "score": 100.0,
+     "survived": 0
+    },
+    {
+     "equivalent": 1,
+     "killed": 56,
+     "part": "handlers",
+     "score": 100.0,
+     "survived": 0
+    }
+   ],
+   "score": 100.0,
+   "source": "mutation-report/mutation-results.json (kb-core's mutation tool, four shards)",
+   "statuses": {
+    "compile_error": 157,
+    "equivalent": 124,
+    "killed": 1125
+   },
+   "survived": 0,
+   "threshold": 100.0
+  },
+  "passed": true,
+  "protocol": [
+   {
+    "check": "Unit tests",
+    "gate": "every test passes",
+    "id": "unit-tests",
+    "result": "193 tests, 0 failed",
+    "scope": "every part built and tested alone, GCC",
+    "status": "pass",
+    "tool": "CTest"
+   },
+   {
+    "check": "Coverage",
+    "gate": "line 85 %, branch 75 %, MC/DC reported",
+    "id": "coverage",
+    "result": "line 100.0 %, branch 98.7 %, MC/DC 99.1 %",
+    "scope": "library code, line, branch and MC/DC",
+    "status": "pass",
+    "tool": "gcovr, GCC 14"
+   },
+   {
+    "check": "Mutation testing",
+    "gate": "kill rate 100 %",
+    "id": "mutation",
+    "result": "100.0 % (1125 killed, 0 survived, 124 equivalent)",
+    "scope": "every mutant of the library code",
+    "status": "pass",
+    "tool": "kb-core mutation tool"
+   },
+   {
+    "check": "MISRA C++:2023",
+    "gate": "level high: no required finding outside a deviation",
+    "id": "misra",
+    "result": "179 guidelines; 33 findings in 6 advisory guidelines, 29 deviated",
+    "scope": "host and Cortex-M configurations",
+    "status": "pass",
+    "tool": "CodeQL, cppcheck, clang-tidy"
+   },
+   {
+    "check": "Fuzzing",
+    "gate": "120 s per target, no crash",
+    "id": "fuzz",
+    "result": "720 s planned, step ran 727 s",
+    "scope": "6 targets",
+    "status": "pass",
+    "tool": "libFuzzer, ASan, UBSan"
+   },
+   {
+    "check": "Sanitizers",
+    "gate": "every test passes",
+    "id": "sanitizers",
+    "result": "pass",
+    "scope": "the unit tests",
+    "status": "pass",
+    "tool": "ASan, UBSan (clang)"
+   },
+   {
+    "check": "Docs: Lighthouse",
+    "gate": "performance 0.8, accessibility 0.95, best practices 0.9, SEO 0.9",
+    "id": "lighthouse",
+    "result": "/ 0.98/1.00, /architecture/ 0.99/1.00, /parts/utils/ 0.98/1.00",
+    "scope": "3 pages, mobile",
+    "status": "pass",
+    "tool": "Lighthouse CI"
+   },
+   {
+    "check": "Docs: links",
+    "gate": "no broken link",
+    "id": "links",
+    "result": "pass",
+    "scope": "the built site, offline",
+    "status": "pass",
+    "tool": "lychee"
+   },
+   {
+    "check": "Driver pins",
+    "gate": "release or rc tags only, CI passed",
+    "id": "pins",
+    "result": "23 of 23 pins valid",
+    "scope": "every submodule",
+    "status": "pass",
+    "tool": "ru-pin-hygiene"
+   },
+   {
+    "check": "Known vulnerabilities",
+    "gate": "reported",
+    "id": "vulnerabilities",
+    "result": "0 known",
+    "scope": "kb-core and its pinned parts",
+    "status": "pass",
+    "tool": "OSV scanner"
+   }
+  ],
+  "release": {
+   "commit": "b0ddc2f19612aab8bff249688a833a507b3034fb",
+   "kind": "rc",
+   "tag": "v0.1.0-rc.1",
+   "version": "0.1.0-rc.1"
+  },
+  "sanitizers": {
+   "compiler": "clang",
+   "kinds": [
+    "AddressSanitizer",
+    "UndefinedBehaviorSanitizer"
+   ],
+   "result": "pass",
+   "source": "run.json (job complexity, coverage, sanitizers, step Test under the sanitizers)"
+  },
+  "schema": "kb-evidence/1",
+  "source": {
+   "artifacts": [
+    "catalog",
+    "cmake-matrix-17d9a666-dma",
+    "cmake-matrix-17d9a666-handlers",
+    "cmake-matrix-17d9a666-interfaces",
+    "cmake-matrix-17d9a666-rtos",
+    "cmake-matrix-17d9a666-utils",
+    "cppcheck-report",
+    "host-ci-reports",
+    "host-quality-reports-complexity",
+    "host-quality-reports-coverage",
+    "layering-report",
+    "lighthouse-report",
+    "misra-report",
+    "misra-report-cortex-m",
+    "misra-report-host",
+    "mutation-report",
+    "mutation-report-mutants",
+    "pin-hygiene-report",
+    "release"
+   ],
+   "conclusion": "success",
+   "date": "2026-11-21T05:36:25Z",
+   "run_id": 44871665969,
+   "run_url": "https://github.com/kokeb-labs/kb-core/actions/runs/44871665969"
+  },
+  "static_analysis": {
+   "complexity": {
+    "limits": {
+     "ccn": 15,
+     "length": 60,
+     "params": 6
+    },
+    "over_limit": 0
+   },
+   "cppcheck": {
+    "by_severity": {
+     "information": 143
+    },
+    "findings": 143
+   },
+   "layering": {
+    "findings": 0
+   }
+  },
+  "supply": {
+   "pins": {
+    "drivers": 23,
+    "kinds": {
+     "rc": 23
+    },
+    "ok": 23
+   },
+   "release_assets": [
+    {
+     "name": "kb-core-0.1.0-rc.1.spdx.json",
+     "sha256": "26aeb3a3e88bd038eee5eaf2cb678affe73b365c0a176f9fbb0d264eaefcf1a9"
+    },
+    {
+     "name": "kb-core-0.1.0-rc.1.tar.gz",
+     "sha256": "9f5ecf72d296c3ed7ff74bc6a6b8694244580832a061452937a5b7316b36fc4a"
+    }
+   ],
+   "sbom": {
+    "file": "kb-core-0.1.0-rc.1.spdx.json",
+    "format": "SPDX 2.3",
+    "packages": 25
+   },
+   "vulnerabilities": {
+    "findings": 0,
+    "scanner": "osv-scanner (Catalogue job)"
+   }
+  },
+  "tests": {
+   "failures": 0,
+   "parts": [
+    {
+     "failures": 0,
+     "part": "utils",
+     "seconds": 8.5,
+     "skipped": 0,
+     "status": "passed",
+     "tests": 24,
+     "toolchain": "host-gcc"
+    },
+    {
+     "failures": 0,
+     "part": "rtos",
+     "seconds": 17.7,
+     "skipped": 0,
+     "status": "passed",
+     "tests": 33,
+     "toolchain": "host-gcc"
+    },
+    {
+     "failures": 0,
+     "part": "dma",
+     "seconds": 14.1,
+     "skipped": 0,
+     "status": "passed",
+     "tests": 43,
+     "toolchain": "host-gcc"
+    },
+    {
+     "failures": 0,
+     "part": "interfaces",
+     "seconds": 12.0,
+     "skipped": 0,
+     "status": "passed",
+     "tests": 39,
+     "toolchain": "host-gcc"
+    },
+    {
+     "failures": 0,
+     "part": "handlers",
+     "seconds": 22.0,
+     "skipped": 0,
+     "status": "passed",
+     "tests": 54,
+     "toolchain": "host-gcc"
+    }
+   ],
+   "skipped": 0,
+   "source": "cmake-matrix-*/result.json (Standalone parts: each part built and tested alone)",
+   "total": 193
+  }
+ }
+};
+</script>
+<script>// SPDX-License-Identifier: MIT
+// Copyright (c) 2026 The kb-core authors
+//
+// Step 5 of the page, "Inside and tested": three views of the kb-core version the selection uses.
+//   Architecture  the parts, the port and the selected drivers as a layered map; Enter or a click opens a part's
+//                 details (what it holds, what it needs, its tests, coverage, mutants, MISRA scope, docs links)
+//   Evidence      what CI tested for that release and what it found (data/evidence.js, kb-evidence/1, built from the
+//                 CI artifacts and release assets alone by tools/evidence/collect.py), every chart with its table
+//   Versions      every kb-core version of the catalogue with its headline evidence, and the change from the one
+//                 before
+// No library, no network, no inline style: DOM calls, classes and SVG; the model functions are pure (KB.views.model)
+// so node --test checks them.
+(function (g) {
+  'use strict';
+  const KB = (g.KB = g.KB || {});
+  const DOCS = 'https://kokeb-labs.github.io/kb-core/latest/';
+
+  // kb-core's parts and what each needs: the dependency closure of cmake/kb_build_settings.cmake (_KB_DEPS_*),
+  // which a test compares with this table.
+  const PARTS = [
+    { id: 'handlers', label: 'kb::handlers', layer: 0, needs: ['interfaces', 'rtos', 'utils'], tone: 'handler',
+      holds: 'Driver bindings, the handler core, the start-up pipeline and the two thread models (owner task, guarded facade).',
+      docs: 'parts/handlers/' },
+    { id: 'interfaces', label: 'kb::interfaces', layer: 1, needs: ['rtos', 'utils'], tone: 'contract',
+      holds: 'Bus and pin contracts as C++20 concepts (I2C, SPI, UART, GPIO, ADC, PWM, CAN, time, async) and the host test port.',
+      docs: 'parts/interfaces/' },
+    { id: 'rtos', label: 'kb::rtos', layer: 2, needs: ['utils'], tone: 'rtos',
+      holds: 'Sleeps, locks, queues, threads and timers over FreeRTOS, ThreadX, none or std::thread.',
+      docs: 'parts/rtos/' },
+    { id: 'dma', label: 'kb::dma', layer: 2, needs: ['utils'], tone: 'contract',
+      holds: 'DMA buffers, leases, cache-policy regions and copy-out streams.',
+      docs: 'parts/dma/' },
+    { id: 'utils', label: 'kb::utils', layer: 3, needs: [], tone: 'core',
+      holds: 'The error model, time units, containers, CRCs and byte helpers that every part uses.',
+      docs: 'parts/utils/' },
+  ];
+
+  const pct = (v) => (typeof v === 'number' ? `${v.toFixed(1)} %` : '-');
+
+  // -- the model (pure) ---------------------------------------------------------------------------------------
+  function evidenceFor(version) {
+    const all = g.KB_EVIDENCE || {};
+    return version && all[version] ? all[version] : null;
+  }
+
+  // The parts the selection builds, with their evidence; the port; the selected drivers.
+  function architecture(catalog, image, lock) {
+    const ev = evidenceFor(image.kb_core);
+    const used = new Set(lock ? lock.parts : catalog.kb_core.parts);
+    const by = (list, part) => (list || []).find((x) => x.part === part) || null;
+    const parts = PARTS.map((p) => {
+      const cov = ev ? by(ev.coverage.parts, p.id) : null;
+      const mut = ev ? by(ev.mutation.parts, p.id) : null;
+      const tests = ev ? by(ev.tests.parts, p.id) : null;
+      return { ...p, used: used.has(p.id), neededBy: PARTS.filter((q) => q.needs.includes(p.id)).map((q) => q.id),
+        tests: tests ? tests.tests : null, coverage: cov, mutation: mut };
+    });
+    const fam = catalog.families.find((f) => f.id === image.mcu.family);
+    const port = fam && fam.port ? { id: 'port', label: `port ${fam.port.name}`, layer: 1,
+      where: fam.port.releases && fam.port.releases.length ? fam.port.repo : `inside kb-core (${fam.port.path})`,
+      version: image.port || (fam.port.releases && fam.port.releases.length ? null : image.kb_core) } : null;
+    const drivers = (image.drivers || []).map((d) => {
+      const c = catalog.drivers.find((x) => x.name === d.name);
+      const v = c && c.versions.find((x) => x.version === d.version);
+      return { id: 'driver-' + d.name, name: d.name, chip: c ? c.chip : d.name, version: d.version, bus: d.bus,
+        model: image.buses && image.buses[d.bus] ? image.buses[d.bus].model : null,
+        cxx: v && v.language ? v.language.standard : 20, repo: c ? c.repo : null };
+    });
+    return { evidence: ev, parts, port, drivers, rtos: image.rtos };
+  }
+
+  // Every kb-core version of the catalogue, newest first, with its headline evidence and the change from the
+  // version before it (null when either has no evidence).
+  function versions(catalog) {
+    const rel = (catalog.kb_core.releases || []).slice()
+      .sort((a, b) => KB.core.compareVersions(b.version, a.version));
+    const head = (ev) => (ev ? { tests: ev.tests.total, line: ev.coverage.line.percent, branch: ev.coverage.branch.percent,
+      mcdc: ev.coverage.condition.percent, mutation: ev.mutation.score, misra: ev.misra.findings.violations,
+      deviated: ev.misra.findings.deviated, fuzz: ev.fuzz.planned_seconds, passed: ev.passed } : null);
+    const rows = rel.map((r) => ({ version: r.version, kind: r.kind, date: r.date || null, commit: r.commit,
+      bindings: (r.bindings || []).length, cxx: r.language ? r.language.standard : 20, evidence: head(evidenceFor(r.version)) }));
+    rows.forEach((row, i) => {
+      const prev = rows[i + 1];
+      row.delta = row.evidence && prev && prev.evidence
+        ? Object.fromEntries(['tests', 'line', 'branch', 'mcdc', 'mutation', 'misra'].map((k) => [k, +(row.evidence[k] - prev.evidence[k]).toFixed(1)]))
+        : null;
+    });
+    return rows;
+  }
+
+  // -- rendering ---------------------------------------------------------------------------------------------
+  const doc = g.document;
+  function h(tag, attrs, ...children) {
+    const el = doc.createElement(tag);
+    for (const [k, v] of Object.entries(attrs || {})) {
+      if (v === null || v === undefined || v === false) continue;
+      if (k === 'class') el.className = v;
+      else if (k === 'text') el.textContent = v;
+      else if (k.startsWith('on')) el.addEventListener(k.slice(2), v);
+      else el.setAttribute(k, v === true ? '' : String(v));
+    }
+    for (const c of children.flat()) if (c !== null && c !== undefined && c !== false) el.append(c.nodeType ? c : doc.createTextNode(String(c)));
+    return el;
+  }
+  const SVG = 'http://www.w3.org/2000/svg';
+  function s(tag, attrs, ...children) {
+    const el = doc.createElementNS(SVG, tag);
+    for (const [k, v] of Object.entries(attrs || {})) if (v !== null && v !== undefined) el.setAttribute(k, String(v));
+    for (const c of children.flat()) if (c) el.append(c.nodeType ? c : doc.createTextNode(String(c)));
+    return el;
+  }
+  const table = (caption, head, rows) => h('table', { class: 'data' }, h('caption', { text: caption }),
+    h('thead', {}, h('tr', {}, head.map((x) => h('th', { scope: 'col', text: x })))),
+    h('tbody', {}, rows.map((r) => h('tr', {}, r.map((c, i) => (i === 0 ? h('th', { scope: 'row' }, c) : h('td', {}, c)))))));
+  const link = (href, text) => h('a', { href, target: '_blank', rel: 'noopener noreferrer', text });
+
+  // A horizontal bar chart (0 to 100): one row per item, the value written at the end of its bar, a dashed floor
+  // line when there is one. Its table twin is built from the same rows by the caller.
+  function bars(title, rows, floor) {
+    const W = 320; const L = 92; const RH = 24; const H = rows.length * RH + 28;
+    const x = (v) => L + ((W - L - 44) * Math.max(0, Math.min(100, v))) / 100;
+    const svg = s('svg', { viewBox: `0 0 ${W} ${H}`, class: 'chart', role: 'img', 'aria-label': title });
+    svg.append(s('title', {}, title));
+    rows.forEach((r, i) => {
+      const y = 8 + i * RH;
+      svg.append(s('text', { x: L - 6, y: y + 14, class: 'chart-label', 'text-anchor': 'end' }, r.label));
+      svg.append(s('rect', { x: L, y: y + 3, width: x(100) - L, height: 14, rx: 3, class: 'chart-track' }));
+      svg.append(s('rect', { x: L, y: y + 3, width: Math.max(1, x(r.value) - L), height: 14, rx: 3, class: 'chart-bar ' + (r.ok === false ? 'bad' : 'good') }));
+      svg.append(s('text', { x: x(100) + 4, y: y + 14, class: 'chart-value' }, `${r.value.toFixed(1)}`));
+    });
+    if (typeof floor === 'number') {
+      svg.append(s('line', { x1: x(floor), x2: x(floor), y1: 4, y2: H - 18, class: 'chart-floor' }));
+      svg.append(s('text', { x: x(floor), y: H - 4, class: 'chart-label', 'text-anchor': 'middle' }, `floor ${floor} %`));
+    }
+    return svg;
+  }
+
+  function tile(label, value, sub, status) {
+    return h('div', { class: 'tile ' + (status || '') }, h('span', { class: 'tile-label', text: label }),
+      h('strong', { text: value }), sub ? h('span', { class: 'tile-sub', text: sub }) : null);
+  }
+
+  // -- Architecture ------------------------------------------------------------------------------------------
+  function renderArchitecture(box, model, state) {
+    const nodes = [];
+    const node = (n, cls, text, sub) => {
+      const b = h('button', { type: 'button', class: `node ${cls}${state.open === n.id ? ' open' : ''}`, 'data-node': n.id,
+        'aria-pressed': String(state.open === n.id), 'aria-controls': 'arch-detail', onclick: () => { state.open = n.id; KB.views.render(); g.requestAnimationFrame(() => { const el = doc.querySelector(`[data-node="${n.id}"]`); if (el) el.focus(); }); } },
+      h('strong', { text }), sub ? h('span', { text: sub }) : null);
+      nodes.push(b);
+      return b;
+    };
+    const ev = model.evidence;
+    const partSub = (p) => (!p.used ? 'not built in this image' : ev && p.coverage ? `${p.tests} tests, branch ${pct(p.coverage.branch)}` : 'part of the image');
+    const lanes = [
+      ['Board and application', h('div', { class: 'lane-items' }, node({ id: 'board' }, 'tone-product', 'Board layer', 'your code: buses, handlers'))],
+      ['Handlers and drivers', h('div', { class: 'lane-items' }, node(model.parts[0], 'tone-handler' + (model.parts[0].used ? '' : ' unused'), model.parts[0].label, partSub(model.parts[0])),
+        ...model.drivers.map((d) => node(d, 'tone-driver', d.chip, `${d.version} on ${d.bus || 'no bus'}${d.model ? `, ${d.model}` : ''}`)))],
+      ['Contracts and port', h('div', { class: 'lane-items' }, node(model.parts[1], 'tone-contract', model.parts[1].label, partSub(model.parts[1])),
+        model.port ? node(model.port, 'tone-port', model.port.label, model.port.where) : null)],
+      ['RTOS and DMA', h('div', { class: 'lane-items' }, node(model.parts[2], 'tone-rtos', model.parts[2].label, `${partSub(model.parts[2])}; backend ${model.rtos || '-'}`),
+        node(model.parts[3], 'tone-contract' + (model.parts[3].used ? '' : ' unused'), model.parts[3].label, partSub(model.parts[3])))],
+      ['Foundation', h('div', { class: 'lane-items' }, node(model.parts[4], 'tone-core', model.parts[4].label, partSub(model.parts[4])))],
+    ];
+    const map = h('div', { class: 'arch-map', role: 'group', 'aria-label': 'Layers of the image, top calls down' },
+      lanes.map(([title, items]) => h('div', { class: 'lane' }, h('span', { class: 'lane-title', text: title }), items)));
+    // Arrow keys move between the nodes in reading order (the buttons stay in the tab order too).
+    map.addEventListener('keydown', (e) => {
+      const i = nodes.indexOf(doc.activeElement);
+      if (i < 0) return;
+      const next = { ArrowRight: i + 1, ArrowDown: i + 1, ArrowLeft: i - 1, ArrowUp: i - 1 }[e.key];
+      if (next === undefined) return;
+      e.preventDefault();
+      nodes[(next + nodes.length) % nodes.length].focus();
+    });
+    const detail = h('div', { id: 'arch-detail', class: 'arch-detail', role: 'region', 'aria-live': 'polite', 'aria-label': 'Details' });
+    const p = model.parts.find((x) => x.id === state.open);
+    const d = model.drivers.find((x) => x.id === state.open);
+    if (p) {
+      detail.append(h('h4', { text: p.label }), h('p', { text: p.holds }),
+        h('dl', { class: 'facts' },
+          h('dt', { text: 'Needs' }), h('dd', { text: p.needs.length ? p.needs.map((x) => `kb::${x}`).join(', ') : 'nothing (the foundation)' }),
+          h('dt', { text: 'Needed by' }), h('dd', { text: p.neededBy.length ? p.neededBy.map((x) => `kb::${x}`).join(', ') : 'the board layer' }),
+          h('dt', { text: 'In this image' }), h('dd', { text: p.used ? 'built' : 'not built (no driver needs it)' }),
+          ...(ev && p.coverage ? [
+            h('dt', { text: 'Unit tests' }), h('dd', { text: String(p.tests) }),
+            h('dt', { text: 'Coverage' }), h('dd', { text: `line ${pct(p.coverage.line)}, branch ${pct(p.coverage.branch)}, MC/DC ${pct(p.coverage.condition)}` }),
+            h('dt', { text: 'Mutants' }), h('dd', { text: p.mutation ? `${p.mutation.killed} killed, ${p.mutation.survived} survived (${pct(p.mutation.score)})` : '-' }),
+            h('dt', { text: 'MISRA C++:2023' }), h('dd', { text: `in the scan of ${ev.release.version} (level ${ev.misra.level}, ${ev.misra.passed ? 'passed' : 'failed'})` }),
+          ] : [h('dt', { text: 'Evidence' }), h('dd', { text: `none recorded for kb-core ${state.version || '-'}` })])),
+        h('p', {}, link(DOCS + p.docs, `${p.label} in the docs`), ' · ', link(`${DOCS}api-reference/`, 'API reference')));
+    } else if (d) {
+      detail.append(h('h4', { text: `${d.chip} (driver-${d.name.replace(/_/g, '-')})` }),
+        h('dl', { class: 'facts' }, h('dt', { text: 'Version' }), h('dd', { text: d.version }), h('dt', { text: 'Bus' }),
+          h('dd', { text: `${d.bus || '-'}${d.model ? `, ${d.model}` : ''}` }), h('dt', { text: 'C++ floor' }), h('dd', { text: `C++${d.cxx}` }),
+          h('dt', { text: 'Bound by' }), h('dd', { text: `kb/handlers/bindings/${d.name}.hpp` })),
+        d.repo ? h('p', {}, link(`https://github.com/${d.repo}`, 'Repository and its own CI evidence')) : null);
+    } else if (state.open === 'port' && model.port) {
+      detail.append(h('h4', { text: model.port.label }), h('p', { text: `The MCU port: kb::interfaces contracts over the vendor SDK. ${model.port.where}.` }));
+    } else if (state.open === 'board') {
+      detail.append(h('h4', { text: 'Board layer' }), h('p', { text: 'Your code: it declares each bus with its thread model and binds a handler to each driver. The starter project carries it (board.cpp) with every selected binding included.' }));
+    } else {
+      detail.append(h('p', { class: 'hint', text: 'Pick a part, the port or a driver to see what it holds, what it needs and how it was tested.' }));
+    }
+    const twin = h('details', { class: 'twin' }, h('summary', { text: 'As a table' }),
+      table('Parts of the image', ['Part', 'Needs', 'Built', 'Tests', 'Line', 'Branch', 'MC/DC', 'Mutation'],
+        model.parts.map((x) => [x.label, x.needs.join(', ') || '-', x.used ? 'yes' : 'no', x.tests ?? '-',
+          pct(x.coverage && x.coverage.line), pct(x.coverage && x.coverage.branch), pct(x.coverage && x.coverage.condition),
+          pct(x.mutation && x.mutation.score)])));
+    box.replaceChildren(h('div', { class: 'arch' }, map, detail), twin);
+  }
+
+  // -- Evidence -----------------------------------------------------------------------------------------------
+  function renderEvidence(box, version) {
+    const ev = evidenceFor(version);
+    if (!ev) {
+      box.replaceChildren(h('p', { class: 'hint', text: `No evidence is recorded for kb-core ${version || '(none selected)'}: only released versions have it (a development revision is tested by every pull request, but not recorded here).` }));
+      return;
+    }
+    const c = ev.coverage; const m = ev.mutation; const mi = ev.misra;
+    const st = (ok) => (ok ? 'ok' : 'bad');
+    const tiles = h('div', { class: 'tiles' },
+      tile('Unit tests', String(ev.tests.total), `${ev.tests.failures} failed`, st(ev.tests.failures === 0)),
+      tile('Line coverage', pct(c.line.percent), `floor ${c.floors.line} %`, st(c.line.percent >= c.floors.line)),
+      tile('Branch coverage', pct(c.branch.percent), `floor ${c.floors.branch} %`, st(c.branch.percent >= c.floors.branch)),
+      tile('MC/DC', pct(c.condition.percent), 'GCC condition coverage', 'ok'),
+      tile('Mutation score', pct(m.score), `${m.killed} killed, ${m.survived} survived`, st(m.threshold === null || m.score >= m.threshold)),
+      tile('MISRA C++:2023', mi.passed ? 'Passed' : 'Failed', `${mi.findings.violations} advisory, ${mi.findings.deviated} deviated`, st(mi.passed)),
+      tile('Fuzzing', `${ev.fuzz.planned_seconds} s`, `${ev.fuzz.targets.length} targets, ${ev.fuzz.result}`, st(ev.fuzz.result === 'pass')),
+      tile('Sanitizers', ev.sanitizers.result === 'pass' ? 'Clean' : ev.sanitizers.result, ev.sanitizers.kinds.join(', '), st(ev.sanitizers.result === 'pass')));
+    const covRows = c.parts.map((p) => ({ label: p.part, value: p.branch, ok: p.branch >= c.floors.branch }));
+    const mutRows = (m.parts || []).map((p) => ({ label: p.part, value: p.score, ok: m.threshold === null || p.score >= m.threshold }));
+    box.replaceChildren(
+      h('p', { class: 'lead' }, `kb-core ${ev.release.version} (tag ${ev.release.tag}, ${(ev.release.commit || '').slice(0, 12)}): `,
+        h('strong', { text: ev.passed ? 'every check passed.' : 'not every check passed.' }), ' From the CI run ',
+        link(ev.source.run_url, String(ev.source.run_id)), ' of the release tag and its release assets; ',
+        link(`${DOCS}assurance/evidence/`, 'the same on the docs site'), '.'),
+      tiles,
+      h('h4', { text: 'Test protocol and results' }),
+      table('What CI checks for every release, its gate and this release\'s result', ['Check', 'Scope', 'Tool', 'Gate', 'Result', 'Status'],
+        ev.protocol.map((p) => [p.check, p.scope, p.tool, p.gate, p.result, h('span', { class: 'badge ' + (p.status === 'pass' ? 'ok' : 'err'), text: p.status })])),
+      h('div', { class: 'charts' },
+        h('figure', {}, bars('Branch coverage by part, percent', covRows, c.floors.branch),
+          h('figcaption', { text: 'Branch coverage by part (the table below has line, branch and MC/DC).' })),
+        h('figure', {}, bars('Mutation score by part, percent', mutRows, m.threshold),
+          h('figcaption', { text: 'Mutants killed by the tests, by part.' }))),
+      table('Coverage, tests and mutants by part', ['Part', 'Tests', 'Line', 'Branch', 'MC/DC', 'Killed', 'Survived', 'Score'],
+        c.parts.map((p) => {
+          const mm = (m.parts || []).find((x) => x.part === p.part) || {};
+          const tt = ev.tests.parts.find((x) => x.part === p.part) || {};
+          return [p.part, tt.tests ?? '-', pct(p.line), pct(p.branch), pct(p.condition), mm.killed ?? '-', mm.survived ?? '-', pct(mm.score)];
+        })),
+      h('h4', { text: 'MISRA C++:2023' }),
+      h('p', { text: `${mi.guidelines.checked} guidelines checked in ${mi.configurations.map((x) => `${x.name} (${x.translation_units} units)`).join(' and ')}: ${mi.guidelines.clean} clean, ${mi.guidelines.with_findings} with advisory findings (${mi.advisory_with_findings.join(', ') || 'none'}), ${mi.guidelines.deviated} under a deviation (${mi.findings.deviated} findings). Deviation records: ${mi.deviation_records.join(', ')}.` }),
+      h('h4', { text: 'Documentation site' }),
+      table('Lighthouse, mobile, median of three runs', ['Page', 'Performance', 'Accessibility', 'Best practices', 'SEO'],
+        ev.lighthouse.pages.map((p) => [p.page, p.performance.toFixed(2), p.accessibility.toFixed(2), p.best_practices.toFixed(2), p.seo.toFixed(2)])),
+      h('p', { class: 'note', text: `Links: ${ev.links.tool}, ${ev.links.result}. Fuzz targets: ${ev.fuzz.targets.join(', ')}. These are results of checks, not a safety claim.` }));
+  }
+
+  // -- Versions -----------------------------------------------------------------------------------------------
+  function renderVersions(box, catalog, current) {
+    const rows = versions(catalog);
+    const fmt = (e, k, unit) => (e && typeof e[k] === 'number' ? `${e[k]}${unit || ''}` : '-');
+    const dl = (row, k) => (row.delta && row.delta[k] ? ` (${row.delta[k] > 0 ? '+' : ''}${row.delta[k]})` : '');
+    box.replaceChildren(
+      h('p', { class: 'lead', text: rows.length > 1 ? 'Every kb-core version in the catalogue, newest first; a change from the version before is in brackets.' : 'The catalogue has one kb-core version so far: nothing to compare yet. The next release adds a row and the change from this one.' }),
+      table('kb-core versions with their headline evidence', ['Version', 'Kind', 'Date', 'C++', 'Bindings', 'Tests', 'Branch', 'MC/DC', 'Mutation', 'All checks'],
+        rows.map((r) => [h('span', {}, r.version, r.version === current ? h('span', { class: 'badge muted', text: 'selected' }) : null), r.kind,
+          (r.date || '').slice(0, 10) || '-', `C++${r.cxx}`, String(r.bindings),
+          fmt(r.evidence, 'tests') + dl(r, 'tests'), fmt(r.evidence, 'branch', ' %') + dl(r, 'branch'),
+          fmt(r.evidence, 'mcdc', ' %') + dl(r, 'mcdc'), fmt(r.evidence, 'mutation', ' %') + dl(r, 'mutation'),
+          r.evidence ? (r.evidence.passed ? 'passed' : 'failed') : 'not recorded'])));
+  }
+
+  // -- the step ----------------------------------------------------------------------------------------------
+  const state = { tab: 'architecture', open: null, version: null };
+  let last = null;
+  function render(catalog, image, lock) {
+    if (catalog) last = { catalog, image, lock };
+    if (!last || !doc) return;
+    const root = doc.getElementById('explore');
+    if (!root) return;
+    state.version = last.image.kb_core;
+    doc.getElementById('explore-version').textContent = last.image.kb_core ? `kb-core ${last.image.kb_core}` : 'no kb-core version';
+    const tabs = [['architecture', 'Architecture'], ['evidence', 'Evidence'], ['versions', 'Versions']];
+    const list = doc.getElementById('explore-tabs');
+    list.replaceChildren(...tabs.map(([id, label]) => h('button', { type: 'button', role: 'tab', id: 'xtab-' + id, 'aria-controls': 'explore-panel',
+      'aria-selected': String(state.tab === id), tabindex: state.tab === id ? '0' : '-1', text: label,
+      onclick: () => { state.tab = id; render(); doc.getElementById('xtab-' + id).focus(); },
+      onkeydown: (e) => {
+        const i = tabs.findIndex((t) => t[0] === state.tab);
+        const j = e.key === 'ArrowRight' ? i + 1 : e.key === 'ArrowLeft' ? i - 1 : null;
+        if (j === null) return;
+        state.tab = tabs[(j + tabs.length) % tabs.length][0]; render(); doc.getElementById('xtab-' + state.tab).focus();
+      } })));
+    const panel = doc.getElementById('explore-panel');
+    panel.setAttribute('aria-labelledby', 'xtab-' + state.tab);
+    if (state.tab === 'architecture') renderArchitecture(panel, architecture(last.catalog, last.image, last.lock), state);
+    else if (state.tab === 'evidence') renderEvidence(panel, last.image.kb_core);
+    else renderVersions(panel, last.catalog, last.image.kb_core);
+  }
+  KB.views = { render, model: { PARTS, architecture, versions, evidenceFor } };
+})(typeof globalThis !== 'undefined' ? globalThis : this);
+</script>
+<script>// SPDX-License-Identifier: MIT
+// Copyright (c) 2026 The kb-core authors
 //
 // The page: reads the catalogue (data/catalog.js), keeps the selection in the URL hash, runs the resolver on every
 // change and shows the findings and the files; opens an existing project's kb-image.yml and lock (read locally)
@@ -4912,13 +5839,24 @@ globalThis.KB_CATALOG = {
     return pool.slice().sort((a, b) => KB.core.compareVersions(b.version, a.version))[0].version;
   }
 
+  // The version a new selection starts from, whatever the release-candidate switch says: the newest release, else
+  // the newest release candidate (the switch then turns on by itself), else a development revision. Before kb-core
+  // has a final release the page would otherwise open with an error and nothing to build on.
+  function startVersion(all) {
+    for (const kind of ['release', 'rc', 'dev']) {
+      const pool = (all || []).filter((r) => r.kind === kind);
+      if (pool.length) return pool.slice().sort((a, b) => KB.core.compareVersions(b.version, a.version))[0].version;
+    }
+    return null;
+  }
+
   function defaults() {
     const fam = families.get('esp32') || catalog.families[0];
     const board = fam.boards.find((b) => b.usable_gpio !== null) || fam.boards[0];
     return {
       image: 'my-image',
-      kb_core: newestVersion(catalog.kb_core.releases),
-      port: fam.port ? newestVersion(fam.port.releases) : null,
+      kb_core: startVersion(catalog.kb_core.releases),
+      port: fam.port ? startVersion(fam.port.releases) : null,
       mcu: { family: fam.id, target: board.target, board: board.id },
       rtos: fam.default_rtos,
       cxx: null,
@@ -5303,6 +6241,9 @@ globalThis.KB_CATALOG = {
   function renderFindings() {
     const n = { error: 0, warning: 0, info: 0 };
     for (const f of result.findings) n[f.severity]++;
+    // The small-screen bar: where the result stands, a jump to it and the download, without scrolling past the steps.
+    $('bar-status').textContent = n.error ? `${n.error} error${n.error === 1 ? '' : 's'} to fix` : `Ready, ${n.warning} warning${n.warning === 1 ? '' : 's'}`;
+    $('bar-status').className = n.error ? 'bar-status err' : 'bar-status ok';
     $('summary').replaceChildren(
       n.error ? h('span', { class: 'badge err', text: `${n.error} error${n.error === 1 ? '' : 's'}` }) : h('span', { class: 'badge ok', text: 'No errors' }),
       h('span', { class: 'badge warn', text: `${n.warning} warning${n.warning === 1 ? '' : 's'}` }),
@@ -5371,6 +6312,7 @@ globalThis.KB_CATALOG = {
       h('pre', { class: 'code', tabindex: '0', 'aria-label': `Contents of ${f.path}` }, h('code', { text: f.text }))));
     const zip = $('zip');
     zip.disabled = !output.ready;
+    $('bar-zip').disabled = !output.ready;
     $('zip-note').textContent = output.ready
       ? `Holds every file above plus a ${image.mcu.family === 'esp32' ? 'ESP-IDF' : 'CMake'} project skeleton; built in your browser, repeatable byte for byte.`
       : 'Fix the errors first: the archive is only offered for a selection that resolves.';
@@ -5576,6 +6518,7 @@ globalThis.KB_CATALOG = {
       renderFindings();
       renderOutputs();
       renderUpgrade();
+      if (KB.views) KB.views.render(catalog, image, result.shared && result.shared.ok ? result.shared.lock : null);
     });
     // While an opened project is shown, its own image name stays out of the address bar (and the share link).
     const hash = encode(image, { rc: showRc, omitName: opened !== null });
@@ -5629,6 +6572,7 @@ globalThis.KB_CATALOG = {
       download(`${KB.core.safeName(image.image)}.zip`, bytes, 'application/zip');
       announce('Starter project downloaded.');
     });
+    $('bar-zip').addEventListener('click', () => $('zip').click());
     $('share').addEventListener('click', () => copy(g.location.href, 'Share link'));
     $('reset').addEventListener('click', () => {
       opened = null;
@@ -5638,6 +6582,7 @@ globalThis.KB_CATALOG = {
       $('open-files').value = '';
       $('open-status').textContent = '';
       image = defaults();
+      if (hasRc(image)) setShowRc(true, false);
       update();
       announce('Selection cleared.');
     });
