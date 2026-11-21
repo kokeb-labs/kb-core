@@ -29,7 +29,13 @@ public:
   Semaphore& operator=(const Semaphore&) = delete;
   Semaphore(Semaphore&&) = delete;
   Semaphore& operator=(Semaphore&&) = delete;
-  ~Semaphore() = default;
+  /// Deletes the RTOS object (ADR-0017); nothing may hold, wait on or use it any more.
+  ~Semaphore() {
+    if (created_) {
+      backend::SemaphoreDelete(storage_);
+      created_ = false;
+    }
+  }
 
   /**
    * @brief Creates the semaphore with `max_count` (at least 1) and `initial` (at most `max_count`).

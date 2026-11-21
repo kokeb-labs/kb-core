@@ -57,6 +57,8 @@ struct Kernel {
   std::array<FakeTimer*, 16> timers{};
   std::size_t timer_count{0U};
   uint32_t deletes{0U};
+  uint32_t queue_deletes{0U};
+  uint32_t group_deletes{0U};
   uint32_t yields{0U};
   uint32_t isr_yields{0U};
   int critical{0};
@@ -150,6 +152,12 @@ void RunTask(std::size_t index) {
 }
 uint32_t TaskDeletes() {
   return K().deletes;
+}
+uint32_t QueueDeletes() {
+  return K().queue_deletes;
+}
+uint32_t GroupDeletes() {
+  return K().group_deletes;
 }
 uint32_t Yields() {
   return K().yields;
@@ -259,6 +267,10 @@ BaseType_t xQueueReceive(QueueHandle_t queue, void* item, TickType_t ticks) {
 UBaseType_t uxQueueMessagesWaiting(QueueHandle_t queue) {
   return queue->count;
 }
+void vQueueDelete(QueueHandle_t queue) {
+  queue->~FakeQueue();
+  ++K().queue_deletes;
+}
 
 SemaphoreHandle_t xSemaphoreCreateMutexStatic(StaticSemaphore_t* buffer) {
   FakeQueue* q = MakeQueue(buffer, nullptr, 0U, 1U, true);
@@ -331,6 +343,10 @@ EventBits_t xEventGroupClearBits(EventGroupHandle_t group, EventBits_t bits) {
 }
 EventBits_t xEventGroupGetBits(EventGroupHandle_t group) {
   return group->bits;
+}
+void vEventGroupDelete(EventGroupHandle_t group) {
+  group->~FakeGroup();
+  ++K().group_deletes;
 }
 EventBits_t xEventGroupWaitBits(EventGroupHandle_t group, EventBits_t bits,
                                 BaseType_t clear_on_exit, BaseType_t wait_all, TickType_t ticks) {

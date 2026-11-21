@@ -28,7 +28,7 @@ if(TARGET kb_rtos_backend_threadx_linux)
   set_tests_properties(kb_rtos_tests_threadx_linux PROPERTIES TIMEOUT 120 RUN_SERIAL TRUE)
 endif()
 if(TARGET kb_rtos_backend_host)
-  kb_add_unit_test(kb_rtos_tests_host SOURCES test_rtos_host.cpp LIBS kb_rtos_backend_host)
+  kb_add_unit_test(kb_rtos_tests_host SOURCES test_rtos_host.cpp test_host_lifetime.cpp LIBS kb_rtos_backend_host)
   # Coverage builds: several threads run the same instrumented code, so the counters are updated atomically; plain
   # counters lose counts and gcov then derives negative ones (a failed report).
   if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND "${CMAKE_CXX_FLAGS}" MATCHES "--coverage|-fprofile-arcs")

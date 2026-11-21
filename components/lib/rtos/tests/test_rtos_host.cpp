@@ -2,8 +2,13 @@
 // std::thread host backend (also run under ThreadSanitizer in the sanitizer job) and on the real
 // ThreadX kernel's Linux port (KB_THREADX_HOST_TESTS). SPDX-License-Identifier: MIT Copyright (c)
 // 2026 The kb-core authors
+#include <algorithm>
+#include <array>
 #include <atomic>
+#include <cstddef>
 #include <cstdint>
+#include <new>
+#include <type_traits>
 
 #include "counting_thread.hpp"
 #include "kb/rtos/rtos.hpp"
@@ -93,7 +98,101 @@ public:
   std::atomic<bool> held{false};
 };
 
+// One side of a contention round: waits on its bit with short timeouts and sets the other side's,
+// on a group or a semaphore that later rounds build again in the same bytes.
+class Contender : public r::Thread<Contender, 4096U> {
+public:
+  [[nodiscard]] bool Setup() const noexcept {
+    return (flags != nullptr) || (semaphore != nullptr);
+  }
+  bool Step() noexcept {
+    if (flags != nullptr) {
+      flags->Clear(mine);
+      static_cast<void>(flags->WaitAny(mine, Milliseconds{(steps % 2U) == 0U ? 0U : 1U}));
+      flags->Set(other);
+    } else {
+      static_cast<void>(semaphore->TakeFor(Milliseconds{(steps % 2U) == 0U ? 0U : 1U}));
+      static_cast<void>(semaphore->Give());
+    }
+    ++steps;
+    return steps < kSteps;
+  }
+  static void Cleanup() noexcept {}
+  static constexpr uint32_t kSteps = 300U;
+  r::EventFlags* flags{nullptr};
+  r::Semaphore* semaphore{nullptr};
+  uint32_t mine{0U};
+  uint32_t other{0U};
+  uint32_t steps{0U};
+};
+
+// Bytes that every round builds its group or its semaphore in.
+using SharedBytes = std::array<std::byte, std::max(sizeof(r::EventFlags), sizeof(r::Semaphore))>;
+SharedBytes& Shared() noexcept {
+  alignas(std::max(alignof(r::EventFlags), alignof(r::Semaphore))) static SharedBytes bytes{};
+  return bytes;
+}
+
+// One round: two contenders on a new object in Shared(), joined, then the object's end.
+template <typename T>
+bool ContendInShared() noexcept {
+  // NOLINTNEXTLINE(cppcoreguidelines-owning-memory): placement into the shared bytes
+  T* const object = ::new (static_cast<void*>(Shared().data())) T{};
+  bool ok = false;
+  if constexpr (std::is_same_v<T, r::EventFlags>) {
+    ok = object->Create().IsOk();
+  } else {
+    ok = object->Create(1U, 1U).IsOk();
+  }
+  {
+    std::array<Contender, 2> sides{};
+    for (uint32_t i = 0U; i < 2U; ++i) {
+      if constexpr (std::is_same_v<T, r::EventFlags>) {
+        sides[i].flags = object;
+      } else {
+        sides[i].semaphore = object;
+      }
+      sides[i].mine = 1U << i;
+      sides[i].other = 1U << (1U - i);
+    }
+    ok = ok && sides[0].Start(r::ThreadConfig{}).IsOk() && sides[1].Start(r::ThreadConfig{}).IsOk();
+    ok = sides[0].Join(Milliseconds{20000U}) && sides[1].Join(Milliseconds{20000U}) && ok;
+  }
+  object->~T();
+  return ok;
+}
+
 } // namespace
+
+KB_TEST("host: groups and semaphores built again and again in the same bytes under contention "
+        "keep working (each end deletes the native object, ADR-0017)") {
+  bool ok = true;
+  for (uint32_t round = 0U; round < 60U; ++round) {
+    ok = (((round % 2U) == 0U) ? ContendInShared<r::EventFlags>()
+                               : ContendInShared<r::Semaphore>()) &&
+         ok;
+  }
+  KB_CHECK(ok);
+}
+
+KB_TEST("host: a timer's callback never runs after the timer has ended") {
+  static std::atomic<uint32_t> fired{0U};
+  {
+    r::Timer t{};
+    KB_REQUIRE(
+        t.Create([](void* c) noexcept { static_cast<std::atomic<uint32_t>*>(c)->fetch_add(1U); },
+                 &fired, Milliseconds{1U}, true)
+            .IsOk());
+    KB_CHECK(t.Start());
+    for (uint32_t waited = 0U; (fired.load() < 2U) && (waited < 2000U); ++waited) {
+      r::SleepFor(Milliseconds{1U});
+    }
+    KB_CHECK(fired.load() >= 2U);
+  } // the destructor deletes the timer while it runs
+  const uint32_t at_end = fired.load();
+  r::SleepFor(Milliseconds{30U});
+  KB_CHECK_EQ(fired.load(), at_end);
+}
 
 KB_TEST("host: sleeps wait at least the time asked") {
   const kb::Instant t0 = r::Now();

@@ -21,6 +21,7 @@ that supersedes or amends the old one; the old record stays. Handbook decisions 
 | [ADR-0014](ADR-0014-kb-core-is-the-assembler.md) | kb-core is the assembler: own libraries plus a manifest and lock of pinned parts, one resolver | Accepted |
 | [ADR-0015](ADR-0015-threadx-backend.md) | Eclipse ThreadX is a supported kb::rtos backend, its kernel a pinned SOUP submodule | Accepted |
 | [ADR-0016](ADR-0016-async-bus-and-held-transactions.md) | Non-blocking bus access (`Start`/`Poll`) and held bus transactions (`BusHold`) | Proposed |
+| [ADR-0017](ADR-0017-native-object-lifetime.md) | A `kb::rtos` object's destructor deletes its native object (one delete call per kind in the backend seam) | Accepted |
 | [ADR-0030](ADR-0030-dma-buffers-and-leases.md) | DMA buffers are owned by the CPU or the device and move by a lease; a cancel that cannot be confirmed quarantines (number provisional) | Accepted |
 | [ADR-0031](ADR-0031-dma-stream-copy-out.md) | Streams copy frames out of the DMA ring and say what they lost (number provisional) | Accepted |
 | [ADR-0032](ADR-0032-dma-region-policy.md) | A region states its cache policy; the default is non-cacheable (number provisional) | Accepted |

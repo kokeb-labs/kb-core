@@ -8,6 +8,7 @@ EventBits_t xEventGroupSetBits(EventGroupHandle_t group, EventBits_t bits);
 BaseType_t xEventGroupSetBitsFromISR(EventGroupHandle_t group, EventBits_t bits, BaseType_t* woken);
 EventBits_t xEventGroupClearBits(EventGroupHandle_t group, EventBits_t bits);
 EventBits_t xEventGroupGetBits(EventGroupHandle_t group);
+void vEventGroupDelete(EventGroupHandle_t group);
 EventBits_t xEventGroupWaitBits(EventGroupHandle_t group, EventBits_t bits, BaseType_t clear_on_exit,
                                 BaseType_t wait_all, TickType_t ticks);
 #endif

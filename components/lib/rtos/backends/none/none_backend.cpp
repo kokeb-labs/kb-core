@@ -198,6 +198,10 @@ void MutexUnlock(const detail::MutexStorage& storage) noexcept {
   As<NoneMutex>(storage).locked = false;
 }
 
+void MutexDelete(detail::MutexStorage& storage) noexcept {
+  storage.handle = nullptr; // a plain flag in the storage: nothing to end
+}
+
 kb::Status RecursiveMutexCreate(detail::MutexStorage& storage) noexcept {
   static_cast<void>(Construct<NoneMutex>(storage));
   return kb::Status::Ok;
@@ -213,6 +217,10 @@ bool RecursiveMutexLock(const detail::MutexStorage& storage, uint32_t timeout_ti
 
 void RecursiveMutexUnlock(const detail::MutexStorage& storage) noexcept {
   static_cast<void>(storage);
+}
+
+void RecursiveMutexDelete(detail::MutexStorage& storage) noexcept {
+  storage.handle = nullptr;
 }
 
 kb::Status SemaphoreCreate(detail::SemaphoreStorage& storage, uint32_t max_count,
@@ -249,6 +257,10 @@ bool SemaphoreGiveFromIsr(const detail::SemaphoreStorage& storage) noexcept {
 
 uint32_t SemaphoreCount(const detail::SemaphoreStorage& storage) noexcept {
   return As<NoneSemaphore>(storage).count;
+}
+
+void SemaphoreDelete(detail::SemaphoreStorage& storage) noexcept {
+  storage.handle = nullptr;
 }
 
 kb::Status QueueCreate(detail::QueueStorage& storage, std::byte* buffer, std::size_t item_bytes,
@@ -302,6 +314,10 @@ std::size_t QueueSize(const detail::QueueStorage& storage) noexcept {
   return As<NoneQueue>(storage).count;
 }
 
+void QueueDelete(detail::QueueStorage& storage) noexcept {
+  storage.handle = nullptr;
+}
+
 kb::Status EventFlagsCreate(detail::EventFlagsStorage& storage) noexcept {
   static_cast<void>(Construct<NoneFlags>(storage));
   return kb::Status::Ok;
@@ -339,6 +355,10 @@ uint32_t EventFlagsWait(const detail::EventFlagsStorage& storage, uint32_t bits,
   return met ? seen : f.bits;
 }
 
+void EventFlagsDelete(detail::EventFlagsStorage& storage) noexcept {
+  storage.handle = nullptr;
+}
+
 kb::Status TimerCreate(detail::TimerStorage& storage, const detail::TimerParams& params) noexcept {
   Clock& c = State();
   kb::Status status = kb::Status::Full;
@@ -362,6 +382,24 @@ bool TimerStart(const detail::TimerStorage& storage) noexcept {
 bool TimerStop(const detail::TimerStorage& storage) noexcept {
   As<NoneTimer>(storage).active = false;
   return true;
+}
+
+void TimerDelete(detail::TimerStorage& storage) noexcept {
+  // Out of the table, so the fake clock never runs the callback of a timer that has ended.
+  Clock& c = State();
+  const NoneTimer* const gone = &As<NoneTimer>(storage);
+  std::size_t kept = 0U;
+  for (std::size_t i = 0U; i < c.timer_count; ++i) {
+    if (c.timers[i] != gone) {
+      c.timers[kept] = c.timers[i];
+      ++kept;
+    }
+  }
+  for (std::size_t i = kept; i < c.timer_count; ++i) {
+    c.timers[i] = nullptr;
+  }
+  c.timer_count = kept;
+  storage.handle = nullptr;
 }
 
 kb::Status ThreadCreate(detail::ThreadStorage& storage,

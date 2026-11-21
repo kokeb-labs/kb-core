@@ -274,3 +274,26 @@ KB_TEST("freertos seam: the stack high-water mark in bytes, timer periods in tic
   KB_CHECK_EQ(m.Create().Error(), Status::Fault);
   KB_CHECK(m.Create().IsOk());
 }
+
+KB_TEST("freertos seam: each destructor deletes its kernel object; a timer's delete is a no-op") {
+  f::Reset();
+  {
+    r::Mutex m{};
+    r::RecursiveMutex rm{};
+    r::Semaphore s{};
+    r::Queue<uint32_t, 2> q{};
+    r::EventFlags g{};
+    r::Timer t{};
+    r::Mutex never{}; // not created: nothing to delete
+    KB_REQUIRE(m.Create().IsOk() && rm.Create().IsOk() && s.Create(1U, 0U).IsOk());
+    KB_REQUIRE(q.Create().IsOk() && g.Create().IsOk());
+    KB_REQUIRE(t.Create(&Nothing, nullptr, Milliseconds{5U}, false).IsOk());
+    KB_CHECK_EQ(f::QueueDeletes(), 0U);
+  }
+  KB_CHECK_EQ(f::QueueDeletes(), 4U); // the two mutexes, the semaphore and the queue
+  KB_CHECK_EQ(f::GroupDeletes(), 1U);
+  r::detail::TimerStorage storage{};
+  storage.handle = &storage;
+  r::backend::TimerDelete(storage); // xTimerDelete is asynchronous (ADR-0017): only the handle goes
+  KB_CHECK(storage.handle == nullptr);
+}

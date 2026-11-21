@@ -68,11 +68,11 @@ directories and defines, so they always agree. With a product kernel, pass the s
 
 ## Differences from FreeRTOS that a user can see
 
-- **Object lifetime.** ThreadX keeps every created object on a kernel list, and kb objects are never deleted, so
-  every `kb::rtos` object needs static storage (a global, a `static` local or a member of one), never a stack
-  frame: a stack object would leave a dangling entry on the kernel's list when its frame ends. The rule is the same
-  for every backend; on FreeRTOS a forgotten stack mutex or queue happens to be harmless, on ThreadX it is not.
-  Nothing checks it yet (with `TX_DISABLE_ERROR_CHECKING` not even the kernel notices a re-created address).
+- **Object lifetime.** ThreadX keeps every created object on a kernel list. A kb object's destructor deletes its
+  kernel object (`tx_*_delete`, [ADR-0017](../adr/ADR-0017-native-object-lifetime.md)), and a deleted timer frees
+  its slot of the backend's timer table, so a kb object on a stack frame leaves no dangling entry. Static storage is
+  still the rule for objects that live for the whole program; an object must not be ended while a thread holds or
+  waits on it.
 - **A holder's unbounded retake.** `Mutex::TryLockFor(kb::kMaxMilliseconds)` by the thread that holds the mutex
   fails at once on ThreadX; on FreeRTOS it never returns. Both are a bug in the caller.
 - **Mutexes from an interrupt** are not allowed on any backend. On ThreadX `tx_thread_identify()` in an interrupt

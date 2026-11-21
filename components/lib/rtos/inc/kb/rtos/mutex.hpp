@@ -45,7 +45,13 @@ public:
   Mutex& operator=(const Mutex&) = delete;
   Mutex(Mutex&&) = delete;
   Mutex& operator=(Mutex&&) = delete;
-  ~Mutex() = default;
+  /// Deletes the RTOS object (ADR-0017); nothing may hold, wait on or use it any more.
+  ~Mutex() {
+    if (created_) {
+      backend::MutexDelete(storage_);
+      created_ = false;
+    }
+  }
 
   /** @brief Creates the RTOS object. `AlreadyStarted` on a second call. */
   [[nodiscard]] kb::Result<void> Create() noexcept {
@@ -132,7 +138,13 @@ public:
   RecursiveMutex& operator=(const RecursiveMutex&) = delete;
   RecursiveMutex(RecursiveMutex&&) = delete;
   RecursiveMutex& operator=(RecursiveMutex&&) = delete;
-  ~RecursiveMutex() = default;
+  /// Deletes the RTOS object (ADR-0017); nothing may hold, wait on or use it any more.
+  ~RecursiveMutex() {
+    if (created_) {
+      backend::RecursiveMutexDelete(storage_);
+      created_ = false;
+    }
+  }
 
   /** @brief Creates the RTOS object. `AlreadyStarted` on a second call. */
   [[nodiscard]] kb::Result<void> Create() noexcept {

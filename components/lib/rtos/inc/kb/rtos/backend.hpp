@@ -148,6 +148,12 @@ void ExitCritical() noexcept;
 [[nodiscard]] bool MutexLock(const detail::MutexStorage& storage, uint32_t timeout_ticks) noexcept;
 /** @brief Gives the mutex back; only its holder may call this. */
 void MutexUnlock(const detail::MutexStorage& storage) noexcept;
+/**
+ * @brief Deletes the mutex that MutexCreate made (ADR-0017): called once, by the kb object's
+ * destructor, after a successful create, when nothing holds, waits on or uses it any more. Clears
+ * `storage.handle`. A no-op where the RTOS has no synchronous delete.
+ */
+void MutexDelete(detail::MutexStorage& storage) noexcept;
 
 // --- Recursive mutex
 // ------------------------------------------------------------------------------------------
@@ -160,6 +166,12 @@ void MutexUnlock(const detail::MutexStorage& storage) noexcept;
                                       uint32_t timeout_ticks) noexcept;
 /** @brief Gives one level of the recursive mutex back; only its holder may call this. */
 void RecursiveMutexUnlock(const detail::MutexStorage& storage) noexcept;
+/**
+ * @brief Deletes the recursive mutex that RecursiveMutexCreate made (ADR-0017): called once, by the
+ * kb object's destructor, after a successful create, when nothing holds, waits on or uses it any
+ * more. Clears `storage.handle`. A no-op where the RTOS has no synchronous delete.
+ */
+void RecursiveMutexDelete(detail::MutexStorage& storage) noexcept;
 
 // --- Semaphore
 // ------------------------------------------------------------------------------------------------
@@ -176,6 +188,12 @@ void RecursiveMutexUnlock(const detail::MutexStorage& storage) noexcept;
 [[nodiscard]] bool SemaphoreGiveFromIsr(const detail::SemaphoreStorage& storage) noexcept;
 /** @brief The current count. */
 [[nodiscard]] uint32_t SemaphoreCount(const detail::SemaphoreStorage& storage) noexcept;
+/**
+ * @brief Deletes the semaphore that SemaphoreCreate made (ADR-0017): called once, by the kb
+ * object's destructor, after a successful create, when nothing holds, waits on or uses it any more.
+ * Clears `storage.handle`. A no-op where the RTOS has no synchronous delete.
+ */
+void SemaphoreDelete(detail::SemaphoreStorage& storage) noexcept;
 
 // --- Queue
 // ----------------------------------------------------------------------------------------------------
@@ -194,6 +212,12 @@ void RecursiveMutexUnlock(const detail::MutexStorage& storage) noexcept;
                                 uint32_t timeout_ticks) noexcept;
 /** @brief Items waiting. */
 [[nodiscard]] std::size_t QueueSize(const detail::QueueStorage& storage) noexcept;
+/**
+ * @brief Deletes the queue that QueueCreate made (ADR-0017): called once, by the kb object's
+ * destructor, after a successful create, when nothing holds, waits on or uses it any more. Clears
+ * `storage.handle`. A no-op where the RTOS has no synchronous delete.
+ */
+void QueueDelete(detail::QueueStorage& storage) noexcept;
 
 // --- Event flags
 // ----------------------------------------------------------------------------------------------
@@ -216,6 +240,12 @@ void EventFlagsClear(const detail::EventFlagsStorage& storage, uint32_t bits) no
 [[nodiscard]] uint32_t EventFlagsWait(const detail::EventFlagsStorage& storage, uint32_t bits,
                                       bool wait_all, bool clear_on_exit,
                                       uint32_t timeout_ticks) noexcept;
+/**
+ * @brief Deletes the event-flag group that EventFlagsCreate made (ADR-0017): called once, by the kb
+ * object's destructor, after a successful create, when nothing holds, waits on or uses it any more.
+ * Clears `storage.handle`. A no-op where the RTOS has no synchronous delete.
+ */
+void EventFlagsDelete(detail::EventFlagsStorage& storage) noexcept;
 
 // --- Timer
 // ----------------------------------------------------------------------------------------------------
@@ -226,6 +256,13 @@ void EventFlagsClear(const detail::EventFlagsStorage& storage, uint32_t bits) no
 [[nodiscard]] bool TimerStart(const detail::TimerStorage& storage) noexcept;
 /** @brief Stops the timer; its callback does not run again until a start. */
 [[nodiscard]] bool TimerStop(const detail::TimerStorage& storage) noexcept;
+/**
+ * @brief Deletes the timer that TimerCreate made (ADR-0017): called once, by the kb object's
+ * destructor, after a successful create, when nothing holds, waits on or uses it any more. Clears
+ * `storage.handle`; the callback does not run again. A no-op where the RTOS has no synchronous
+ * delete.
+ */
+void TimerDelete(detail::TimerStorage& storage) noexcept;
 
 // --- Thread
 // ---------------------------------------------------------------------------------------------------
