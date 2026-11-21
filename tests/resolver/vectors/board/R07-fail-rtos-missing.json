@@ -1,0 +1,152 @@
+{
+  "description": "streams notify a task but the board declares no RTOS limit",
+  "board": {
+    "board": "example-h743",
+    "mcu": {
+      "family": "stm32",
+      "device": "STM32H743",
+      "core": "cm7"
+    },
+    "memory": {
+      "regions": {
+        "d2_dma": {
+          "base": "0x30000000",
+          "size": "0x8000",
+          "cache": "none",
+          "mpu_region": 0,
+          "masters": [
+            "dma1",
+            "dma2"
+          ]
+        },
+        "axi_dma": {
+          "base": "0x24060000",
+          "size": "0x10000",
+          "cache": "maintained",
+          "line": 32,
+          "masters": [
+            "dma1",
+            "dma2",
+            "mdma"
+          ]
+        }
+      }
+    },
+    "dma": {
+      "buffers": {
+        "spi1_stage_tx": {
+          "region": "d2_dma",
+          "bytes": 1028
+        },
+        "spi1_stage_rx": {
+          "region": "d2_dma",
+          "bytes": 1028
+        },
+        "adc1_scan": {
+          "region": "d2_dma",
+          "bytes": 24
+        },
+        "frame_axi": {
+          "region": "axi_dma",
+          "bytes": 4096
+        }
+      },
+      "streams": {
+        "spi1_rx": {
+          "engine": "dma1",
+          "stream": 0,
+          "request": "SPI1_RX",
+          "priority": "high",
+          "irq_priority": 5,
+          "notify": "task",
+          "buffer": "spi1_stage_rx"
+        },
+        "spi1_tx": {
+          "engine": "dma1",
+          "stream": 1,
+          "request": "SPI1_TX",
+          "priority": "high",
+          "irq_priority": 5,
+          "notify": "task",
+          "irq": "errors_only",
+          "buffer": "spi1_stage_tx"
+        },
+        "adc1": {
+          "engine": "dma1",
+          "stream": 2,
+          "request": "ADC1",
+          "mode": "circular",
+          "frames": 2,
+          "element_bytes": 2,
+          "elements": 6,
+          "priority": "medium",
+          "irq_priority": 4,
+          "notify": "none",
+          "buffer": "adc1_scan",
+          "trigger": "tim6_trgo",
+          "rate_hz": 1000,
+          "stall_periods": 10,
+          "fallback": {
+            "kind": "oneshot",
+            "cpu_percent": 2
+          }
+        }
+      }
+    },
+    "buses": {
+      "spi1": {
+        "kind": "spi",
+        "model": "owner",
+        "dma": [
+          "spi1_rx",
+          "spi1_tx"
+        ],
+        "devices": [
+          {
+            "driver": "bno08x",
+            "max_frame_bytes": 1024
+          }
+        ]
+      }
+    },
+    "handlers": {
+      "adc1_scan": {
+        "stream": "adc1",
+        "frame_bytes": 12,
+        "frames": 2,
+        "conversions": 6
+      }
+    },
+    "budget": {
+      "fallback_cpu_percent": 10
+    },
+    "linker": {
+      "fixed_sections": [
+        {
+          "name": ".axi_bss",
+          "base": "0x24000000",
+          "size": "0x40000"
+        }
+      ],
+      "noload_list": "__board_dma"
+    }
+  },
+  "expect": {
+    "ok": false,
+    "exit": 1,
+    "findings": [
+      {
+        "rule": "R7",
+        "code": "dma.rtos_missing",
+        "severity": "error",
+        "subject": "stream:spi1_rx"
+      },
+      {
+        "rule": "R7",
+        "code": "dma.rtos_missing",
+        "severity": "error",
+        "subject": "stream:spi1_tx"
+      }
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+// A translation unit that includes the generated board_dma.hpp and uses its checks: the
+// static_asserts of the header run when this compiles (ctest kb_board_gen_host, CI job board-dma).
+// SPDX-License-Identifier: MIT
+// Copyright (c) 2026 The kb-core authors
+#include "board_dma.hpp"
+
+static_assert(board::dma::kChecksPass, "the generated board checks must hold");
+
+int main() {
+  return board::dma::kChecksPass ? 0 : 1;
+}

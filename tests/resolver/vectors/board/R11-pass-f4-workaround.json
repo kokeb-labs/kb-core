@@ -1,0 +1,99 @@
+{
+  "description": "the same plan with the erratum's workaround recorded in the board",
+  "board": {
+    "board": "vector-f4",
+    "mcu": {
+      "family": "stm32",
+      "device": "STM32F407VG"
+    },
+    "rtos": {
+      "name": "freertos",
+      "max_syscall_priority": 5,
+      "priority_bits": 4
+    },
+    "memory": {
+      "regions": {
+        "sram": {
+          "base": "0x20000000",
+          "size": "0x4000",
+          "cache": "none",
+          "masters": [
+            "dma1",
+            "dma2"
+          ]
+        }
+      }
+    },
+    "dma": {
+      "buffers": {
+        "spi1_rx_buf": {
+          "region": "sram",
+          "bytes": 256
+        },
+        "spi1_tx_buf": {
+          "region": "sram",
+          "bytes": 256
+        },
+        "dcmi_buf": {
+          "region": "sram",
+          "bytes": 256
+        }
+      },
+      "streams": {
+        "spi1_rx": {
+          "engine": "dma2",
+          "stream": 0,
+          "request": "SPI1_RX",
+          "priority": "high",
+          "irq_priority": 5,
+          "notify": "task",
+          "buffer": "spi1_rx_buf"
+        },
+        "spi1_tx": {
+          "engine": "dma2",
+          "stream": 3,
+          "request": "SPI1_TX",
+          "priority": "high",
+          "irq_priority": 5,
+          "notify": "task",
+          "buffer": "spi1_tx_buf"
+        },
+        "dcmi": {
+          "engine": "dma2",
+          "stream": 1,
+          "request": "DCMI",
+          "priority": "medium",
+          "irq_priority": 5,
+          "notify": "task",
+          "buffer": "dcmi_buf"
+        }
+      }
+    },
+    "buses": {
+      "spi1": {
+        "kind": "spi",
+        "model": "owner",
+        "dma": [
+          "spi1_rx",
+          "spi1_tx"
+        ],
+        "devices": [
+          {
+            "driver": "bno08x",
+            "max_frame_bytes": 256
+          }
+        ]
+      }
+    },
+    "errata": {
+      "workarounds": [
+        "f4_dma2_ahb_apb2"
+      ]
+    }
+  },
+  "expect": {
+    "ok": true,
+    "exit": 0,
+    "findings": []
+  }
+}

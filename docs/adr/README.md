@@ -25,5 +25,6 @@ that supersedes or amends the old one; the old record stays. Handbook decisions 
 | [ADR-0030](ADR-0030-dma-buffers-and-leases.md) | DMA buffers are owned by the CPU or the device and move by a lease; a cancel that cannot be confirmed quarantines (number provisional) | Accepted |
 | [ADR-0031](ADR-0031-dma-stream-copy-out.md) | Streams copy frames out of the DMA ring and say what they lost (number provisional) | Accepted |
 | [ADR-0032](ADR-0032-dma-region-policy.md) | A region states its cache policy; the default is non-cacheable (number provisional) | Accepted |
+| [ADR-0033](ADR-0033-dma-resources-declared-once.md) | DMA resources are declared once in `board.yml` and checked before hardware (number provisional) | Accepted |
 
 Format: Status, Context, Decision, Consequences, Alternatives considered.

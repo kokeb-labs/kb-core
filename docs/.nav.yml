@@ -56,6 +56,7 @@ nav:
       - MCU ports and repositories: design/ports.md
       - Assurance: design/assurance.md
       - Configurator: design/configurator.md
+      - Board DMA: design/board-dma.md
       - Assembler and resolver: design/assembler.md
       - The kb tool: kb-tool.md
       - Design rules: design/rules.md
@@ -92,3 +93,4 @@ nav:
           - "ADR-0030 DMA buffers and leases": adr/ADR-0030-dma-buffers-and-leases.md
           - "ADR-0031 DMA stream copy-out": adr/ADR-0031-dma-stream-copy-out.md
           - "ADR-0032 DMA region policy": adr/ADR-0032-dma-region-policy.md
+          - "ADR-0033 DMA resources declared once": adr/ADR-0033-dma-resources-declared-once.md

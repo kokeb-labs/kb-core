@@ -113,6 +113,26 @@ requires one, otherwise uses `1970-01-01T00:00:00Z`. The SDK and RTOS (ESP-IDF, 
 are listed as SOUP. Every top-level component carries a `kb:osv` property (CycloneDX) or comment (SPDX) with its
 known-vulnerability scan: from `--catalog catalog.json` when its versions carry scans, else `not scanned`.
 
+## Check a board's DMA and generate its files
+
+```bash
+python3 tools/kb/kb.py image check examples/boards/stm32h743-dma/board.yml
+python3 tools/kb/kb.py board gen examples/boards/stm32h743-dma/board.yml -o out/
+python3 tools/kb/kb.py image check --selftest
+```
+
+`image check` runs the rules R1 to R15 of a `board.yml` against the routing data in `tools/kb/data/dma/`;
+`board gen` writes `board_dma.hpp`, `board_dma.cpp`, `kb_dma.ld`, `board_mpu.hpp` and a report. Options: `--sdkconfig
+FILE` (ESP-IDF options, R13), `--drivers FILE` (frame sizes by driver), `--json` (the result for tools), `--strict`
+(warnings fail). `--selftest` runs the board vectors. `python3 tools/kb/dmadata.py --export-json OUT` writes the data
+as one JSON bundle for the configurator. Reference: [Board DMA](design/board-dma.md).
+
+| Exit | Meaning |
+| --- | --- |
+| 0 | The board checks (warnings go to standard error) |
+| 1 | An error finding, or a warning with `--strict`: one line per finding, `error dma.<code> <subject>: <message>` |
+| 2 | Bad arguments, or a file that cannot be read or parsed |
+
 ## Tests
 
 ```bash

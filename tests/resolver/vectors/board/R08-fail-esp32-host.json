@@ -1,0 +1,59 @@
+{
+  "description": "ESP32: SPI1 is the flash host and has no DMA channel for the application",
+  "board": {
+    "board": "example-c6",
+    "mcu": {
+      "family": "esp32",
+      "target": "esp32"
+    },
+    "memory": {
+      "regions": {
+        "internal": {
+          "cache": "none",
+          "align": 4
+        }
+      }
+    },
+    "dma": {
+      "streams": {
+        "spi2": {
+          "driver": "spi_master",
+          "host": "SPI2"
+        },
+        "spi1": {
+          "driver": "spi_master",
+          "host": "SPI1"
+        }
+      }
+    },
+    "buses": {
+      "spi2": {
+        "kind": "spi",
+        "model": "owner",
+        "dma": true,
+        "staging_bytes": 1028,
+        "devices": [
+          {
+            "driver": "bno08x",
+            "max_frame_bytes": 1024
+          }
+        ]
+      }
+    }
+  },
+  "sdkconfig": {
+    "CONFIG_ADC_CONTINUOUS_ISR_IRAM_SAFE": "y"
+  },
+  "expect": {
+    "ok": false,
+    "exit": 1,
+    "findings": [
+      {
+        "rule": "R8",
+        "code": "dma.driver_without_dma",
+        "severity": "error",
+        "subject": "stream:spi1"
+      }
+    ]
+  }
+}

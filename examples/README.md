@@ -24,6 +24,13 @@ and only through the public `kb/<part>/` headers.
 
 The table is generated from `examples.yml` (`python3 tools/examples/examples.py write`); do not edit it by hand.
 
+## Boards
+
+`boards/<name>/board.yml` are example board files for `kb image check` and `kb board gen`
+([Board DMA](../docs/design/board-dma.md)); they are not programs, so they are not listed in `examples.yml`. Their
+checks run in the unit tests (`kb_cli_unit`) and the generated files are compiled by ctest `kb_board_gen_host` and
+the CI job `board-dma`.
+
 ## Kinds
 
 | Kind | Where | Built and run by |

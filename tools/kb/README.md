@@ -16,6 +16,7 @@ the rules it implements: [docs/design/assembler.md](../../docs/design/assembler.
 | `sbom.py` | CycloneDX 1.6 and SPDX 2.3 JSON from a lock |
 | `semver.py` | `vX.Y.Z` and `vX.Y.Z-rc.N` tags and their order |
 | `platforms.py` | MCU families, RTOS backends and parts; checked against `cmake/kb_build_settings.cmake` |
+| `board.py`, `dmadata.py`, `dmacheck.py`, `dmagen.py`, `boardvectors.py` | `board.yml`; the DMA routing data (`data/dma/`); rules R1 to R15; the generator of `kb board gen`; the board vectors ([Board DMA](../../docs/design/board-dma.md)) |
 | `yamlio.py` | YAML or JSON input (a lock reads without PyYAML), with a clear message when PyYAML is missing |
 | `tests/` | Unit tests, the shared resolver and upgrade vectors, seeded property tests and Python-JavaScript agreement tests |
 

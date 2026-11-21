@@ -1,4 +1,5 @@
-# The kb command line: `kb catalog build`, `kb resolve`, `kb outdated`, `kb upgrade`, `kb sbom`.
+# The kb command line: `kb catalog build`, `kb resolve`, `kb outdated`, `kb upgrade`, `kb sbom`, `kb image check`,
+# `kb board gen`.
 # Usage: tools/kb/README.md.
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2026 The kb-core authors
@@ -8,7 +9,7 @@ import argparse
 import os
 import sys
 
-from . import __version__, catalog, emit, resolver, sbom, upgrade, yamlio
+from . import __version__, board, boardvectors, catalog, dmacheck, dmadata, dmagen, emit, resolver, sbom, upgrade, yamlio
 
 EXIT_OK = 0
 EXIT_RESOLVE = 1   # the selection does not resolve, or the catalogue has problems
@@ -179,6 +180,62 @@ def cmd_sbom(args):
     return EXIT_OK
 
 
+def _board_result(args):
+    """Check args.board against the routing data; (board document, result)."""
+    doc = board.load(args.board)
+    data = dmadata.load_dir(args.data_dir)
+    sdkconfig = None
+    if args.sdkconfig:
+        try:
+            with open(args.sdkconfig, encoding="utf-8") as fh:
+                sdkconfig = dmacheck.parse_sdkconfig(fh.read())
+        except OSError as exc:
+            raise yamlio.InputError(f"{args.sdkconfig}: {exc.strerror}") from None
+    drivers = yamlio.load(args.drivers) if args.drivers else None
+    return doc, dmacheck.check(doc, data, sdkconfig=sdkconfig, drivers=drivers)
+
+
+def _report_findings(result):
+    for f in result["findings"]:
+        print(f"{f['severity']} {f['code']} {f['subject']}: {f['message']}", file=sys.stderr)
+
+
+def cmd_image_check(args):
+    if args.selftest:
+        return boardvectors.selftest(dmadata.load_dir(args.data_dir))
+    if not args.board:
+        raise yamlio.InputError("kb image check: name a board file, or use --selftest")
+    _, result = _board_result(args)
+    if args.json:
+        sys.stdout.write(emit.canonical_json(result))
+    else:
+        _report_findings(result)
+    errors = sum(1 for f in result["findings"] if f["severity"] == "error")
+    if not result["ok"]:
+        print(f"kb: {args.board} does not check ({errors} error(s))", file=sys.stderr)
+        return EXIT_RESOLVE
+    warnings = len(result["findings"])
+    if args.strict and warnings:
+        print(f"kb: {args.board} has {warnings} warning(s) and --strict is set", file=sys.stderr)
+        return EXIT_RESOLVE
+    if not args.json:
+        print(f"kb: {args.board} checks ok" + (f" ({warnings} warning(s))" if warnings else ""))
+    return EXIT_OK
+
+
+def cmd_board_gen(args):
+    doc, result = _board_result(args)
+    _report_findings(result)
+    if not result["ok"]:
+        print(f"kb: {args.board} does not check: nothing generated", file=sys.stderr)
+        return EXIT_RESOLVE
+    files = dmagen.generate(doc, result)
+    for name in sorted(files):
+        _write(os.path.join(args.output_dir, name), files[name])
+    print(f"kb: generated {', '.join(sorted(files))} in {args.output_dir}")
+    return EXIT_OK
+
+
 def parser():
     p = argparse.ArgumentParser(prog="kb",
                                 description="Catalogue, resolver, upgrades and SBOMs of kb-core images (ADR-0014).")
@@ -235,6 +292,29 @@ def parser():
     sb.add_argument("--catalog", help="catalog.json whose versions carry known-vulnerability scans (osv)")
     sb.add_argument("-o", "--output", help="output file, - for stdout")
     sb.set_defaults(func=cmd_sbom)
+
+    img = sub.add_parser("image", help="checks on an image's board (DMA resources: rules R1 to R15, ADR-0033)")
+    img_sub = img.add_subparsers(dest="image_command", required=True)
+    chk = img_sub.add_parser("check", help="check a board.yml against the DMA routing data of its part")
+    chk.add_argument("board", nargs="?", help="board.yml (or .json)")
+    chk.add_argument("--sdkconfig", metavar="FILE", help="the image's sdkconfig (rule R13)")
+    chk.add_argument("--drivers", metavar="FILE", help="YAML or JSON {driver: {max_frame_bytes: N}} (rule R9)")
+    chk.add_argument("--data-dir", metavar="DIR", help="routing data folder (default: tools/kb/data/dma)")
+    chk.add_argument("--json", action="store_true", help="the result (ok, findings, resolved) as JSON on stdout")
+    chk.add_argument("--strict", action="store_true", help="a warning fails the check too (exit 1)")
+    chk.add_argument("--selftest", action="store_true",
+                     help="run every board vector (tests/resolver/vectors/board/); exit 0 only if all hold")
+    chk.set_defaults(func=cmd_image_check)
+
+    brd = sub.add_parser("board", help="files generated from a board (ADR-0033)")
+    brd_sub = brd.add_subparsers(dest="board_command", required=True)
+    gen = brd_sub.add_parser("gen", help="write board_dma.hpp/.cpp, kb_dma.ld, board_mpu.hpp and the DMA report")
+    gen.add_argument("board", help="board.yml (or .json); it must check ok")
+    gen.add_argument("-o", "--output-dir", required=True, help="write the files here")
+    gen.add_argument("--sdkconfig", metavar="FILE", help="the image's sdkconfig (rule R13)")
+    gen.add_argument("--drivers", metavar="FILE", help="YAML or JSON {driver: {max_frame_bytes: N}} (rule R9)")
+    gen.add_argument("--data-dir", metavar="DIR", help="routing data folder (default: tools/kb/data/dma)")
+    gen.set_defaults(func=cmd_board_gen)
     return p
 
 

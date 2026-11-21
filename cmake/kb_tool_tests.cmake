@@ -6,6 +6,7 @@
 #   kb_layout_stale         no tracked file names a retired location
 #   kb_examples_unit        tools/examples: the checks on throwaway trees
 #   kb_examples_index       examples/examples.yml, the folders, the README, the doc snippets and the catalogue agree
+#   kb_board_gen_host       kb board gen on both example boards; the generated files compile against kb::dma (needs the dma part)
 #   kb_language_floor       configuring with KB_CPP_STANDARD below the floor in kb.yml fails with its message
 # Included from the root CMakeLists.txt; adds nothing unless KB_BUILD_TESTS is ON.
 # SPDX-License-Identifier: MIT
@@ -41,6 +42,17 @@ if(Python3_Interpreter_FOUND)
   set_tests_properties(kb_vuln_unit PROPERTIES LABELS tools)
   add_test(NAME kb_examples_index COMMAND ${Python3_EXECUTABLE} ${KB_TOOLS_DIR}/examples/examples.py check)
   set_tests_properties(kb_examples_index PROPERTIES LABELS tools)
+endif()
+
+# The generated board files (kb board gen, docs/design/board-dma.md) compile against kb::dma with the host compiler.
+if(Python3_Interpreter_FOUND AND TARGET kb_dma)
+  add_test(NAME kb_board_gen_host
+    COMMAND bash ${KB_TOOLS_DIR}/preflight/board_gen_host.sh ${Python3_EXECUTABLE} ${CMAKE_CXX_COMPILER}
+            ${KB_CPP_STANDARD} ${CMAKE_BINARY_DIR}/kb_board_gen
+            $<TARGET_PROPERTY:kb_dma,INTERFACE_INCLUDE_DIRECTORIES>
+            $<TARGET_PROPERTY:kb_utils,INTERFACE_INCLUDE_DIRECTORIES>
+    COMMAND_EXPAND_LISTS)
+  set_tests_properties(kb_board_gen_host PROPERTIES SKIP_RETURN_CODE 77 LABELS tools)
 endif()
 
 # The language floor (cmake/kb_language.cmake): a standard below kb.yml's is refused at configure time.
