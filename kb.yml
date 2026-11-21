@@ -1,0 +1,22 @@
+---
+# kb-core's own declarations, read by CMake (cmake/kb_language.cmake), the catalogue builders (tools/kb/catalog.py,
+# configurator/tools/build_catalog.py) and the language-floor test. One file, so the number is written once.
+# Keep this file to `key: value` lines and one nested `compilers:` block: CMake reads it with a small parser.
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 The kb-core authors
+
+# The language floor of every library (utils, rtos, dma, interfaces, handlers) and every in-tree port (host, esp32):
+# a project needs at least this C++ standard and these compilers to build kb-core (docs/language-floor.md). Raising it
+# is a breaking change. The same block as a driver's driver.yml `language:` (the organisation's standards registry).
+language:
+  standard: 20              # the minimum ISO C++ standard; CMake: KB_CPP_STANDARD defaults to it and may not go lower
+  profile: KB-CPP20         # the handbook profile of that standard
+  profile_version: "1.0"    # the handbook release that defines it
+  misra: "MISRA C++:2023"   # the MISRA edition kb-core is analysed against
+  compilers:                # the oldest compiler versions kb-core promises to build with
+    gcc: "10"
+    clang: "13"
+    arm_gcc: "10"
+    esp_idf: "5.0"
+  tested: [20]              # every standard CI compiles kb-core under
+  applies_to: [utils, rtos, dma, interfaces, handlers, port-host, port-esp32]

@@ -1,0 +1,28 @@
+{
+  "catalog": "catalogs/language.json",
+  "description": "A kb-core version that needs C++23 in a C++20 project: rejected, with the newest kb-core that builds with C++20.",
+  "expect": {
+    "errors": [
+      {
+        "alternative": "0.4.0",
+        "code": "KB-RES-024",
+        "subject": "kb-core"
+      }
+    ],
+    "ok": false,
+    "warnings": []
+  },
+  "image": {
+    "image": "lang-kb",
+    "kb_core": {
+      "version": "0.5.0"
+    },
+    "language": {
+      "standard": 20
+    },
+    "mcu": {
+      "family": "host"
+    },
+    "schema": 1
+  }
+}

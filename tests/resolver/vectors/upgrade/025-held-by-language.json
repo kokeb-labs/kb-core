@@ -1,0 +1,174 @@
+{
+  "catalog": "../catalogs/language.json",
+  "description": "A C++20 project upgrades tmc9660 from 0.5.0: 0.6.0 needs C++23 and is held back (KB-RES-024), 0.5.2 is taken; kb-core 0.5.0 (C++23) is held back the same way. The new image keeps its language block.",
+  "expect": {
+    "errors": [],
+    "files": {
+      "CMakePresets.json": "{\n  \"configurePresets\": [\n    {\n      \"binaryDir\": \"${sourceDir}/build/lang-up\",\n      \"cacheVariables\": {\n        \"KB_CPP_STANDARD\": \"20\",\n        \"KB_DRIVER_TMC9660_DIR\": \"${sourceDir}/external/drivers/driver-tmc9660\",\n        \"KB_ENABLE_TMC9660\": \"ON\",\n        \"KB_MCU\": \"HOST\",\n        \"KB_PARTS\": \"utils;rtos;interfaces;handlers\",\n        \"KB_RTOS\": \"NONE\"\n      },\n      \"displayName\": \"kb image lang-up\",\n      \"name\": \"lang-up\"\n    }\n  ],\n  \"version\": 6\n}\n",
+      "kb-fetch.sh": "#!/bin/sh\n# kb-fetch.sh: adds kb-core, the MCU port and the drivers of the image \"lang-up\" to this git repository as\n# submodules under external/, each checked out at its tag (a kb-core development revision: at its commit) and\n# verified against the commit in kb-image.lock.yml (ADR-0012, ADR-0014). A tag that moved is refused. No branch\n# is recorded in .gitmodules and nothing is fetched recursively. Rerunning it is safe. Written by kb resolve.\n#\n#   sh kb-fetch.sh            add or update every pin\n#   sh kb-fetch.sh --verify   only check that every submodule is at its pinned commit\nset -eu\n\nmode=add\nif [ \"${1:-}\" = \"--verify\" ]; then mode=verify; fi\ntop=$(git rev-parse --show-toplevel 2>/dev/null) || { echo \"kb-fetch: run this inside a git repository\" >&2; exit 1; }\ncd \"$top\"\n\ndie() {\n  printf 'kb-fetch: error: %s\\n' \"$*\" >&2\n  exit 1\n}\n\n# pin <path> <url> <tag, empty for a commit pin> <commit>\npin() {\n  path=$1 url=$2 tag=$3 want=$4\n  if [ \"$mode\" = verify ]; then\n    [ -e \"$path/.git\" ] || die \"$path is missing; run without --verify\"\n  else\n    if [ ! -e \"$path/.git\" ]; then\n      git submodule add --quiet \"$url\" \"$path\" || die \"cannot add $url\"\n    fi\n    if [ -n \"$tag\" ]; then\n      git -C \"$path\" fetch --quiet origin \"+refs/tags/$tag:refs/tags/$tag\" || die \"cannot fetch $tag of $url\"\n      got=$(git -C \"$path\" rev-parse \"refs/tags/$tag^{commit}\")\n      [ \"$got\" = \"$want\" ] || die \"$path: tag $tag points at $got, expected $want (the tag moved; it is not used)\"\n    else\n      git -C \"$path\" fetch --quiet origin \"$want\" || die \"cannot fetch commit $want of $url\"\n    fi\n    git -C \"$path\" -c advice.detachedHead=false checkout --quiet \"$want\"\n    git config -f .gitmodules --unset \"submodule.$path.branch\" 2>/dev/null || true\n    git add .gitmodules \"$path\"\n  fi\n  head=$(git -C \"$path\" rev-parse HEAD)\n  [ \"$head\" = \"$want\" ] || die \"$path is at $head, expected $want\"\n  printf 'kb-fetch: %s at %s (%s)\\n' \"$path\" \"${tag:-commit}\" \"$want\"\n}\n\n# kb-core 0.4.0\npin 'external/kb-core' 'https://github.com/kokeb-labs/kb-core.git' 'v0.4.0' '080f7cfe7e98e006ac3b7c6695b3a9599a39f64d'\n# driver tmc9660 0.5.2\npin 'external/drivers/driver-tmc9660' 'https://github.com/kokeb-labs-drivers/driver-tmc9660.git' 'v0.5.2' '5252525252525252525252525252525252525252'\n\nif [ \"$mode\" = add ]; then\n  echo \"kb-fetch: done; review with git status and commit the submodules\"\nfi\n",
+      "kb-image.lock.yml": "# kb image lock (schema 1), written by kb resolve: do not edit.\n{\n  \"buses\": [],\n  \"cmake\": {\n    \"KB_CPP_STANDARD\": \"20\",\n    \"KB_ENABLE_TMC9660\": \"ON\",\n    \"KB_MCU\": \"HOST\",\n    \"KB_PARTS\": \"utils;rtos;interfaces;handlers\",\n    \"KB_RTOS\": \"NONE\"\n  },\n  \"drivers\": [\n    {\n      \"authors\": [\n        \"The driver-tmc9660 authors\"\n      ],\n      \"commit\": \"5252525252525252525252525252525252525252\",\n      \"folder\": \"driver-tmc9660\",\n      \"kind\": \"release\",\n      \"license\": \"MIT\",\n      \"name\": \"tmc9660\",\n      \"repo\": \"kokeb-labs-drivers/driver-tmc9660\",\n      \"tag\": \"v0.5.2\",\n      \"version\": \"0.5.2\"\n    }\n  ],\n  \"image\": \"lang-up\",\n  \"kb_core\": {\n    \"authors\": [\n      \"The kb-core authors\"\n    ],\n    \"commit\": \"080f7cfe7e98e006ac3b7c6695b3a9599a39f64d\",\n    \"kind\": \"release\",\n    \"license\": \"MIT\",\n    \"repo\": \"kokeb-labs/kb-core\",\n    \"tag\": \"v0.4.0\",\n    \"version\": \"0.4.0\"\n  },\n  \"language\": {\n    \"compilers\": {},\n    \"standard\": 20\n  },\n  \"mcu\": {\n    \"family\": \"host\",\n    \"target\": \"host\"\n  },\n  \"parts\": [\n    \"utils\",\n    \"rtos\",\n    \"interfaces\",\n    \"handlers\"\n  ],\n  \"ports\": [\n    {\n      \"commit\": \"080f7cfe7e98e006ac3b7c6695b3a9599a39f64d\",\n      \"in_tree\": true,\n      \"name\": \"host\",\n      \"path\": \"components/lib/interfaces/host\"\n    }\n  ],\n  \"rtos\": \"none\",\n  \"schema\": 1\n}\n",
+      "kb-image.yml": "# kb-image.yml: the selection of one firmware build (schema 1, docs/design/assembler.md).\n# Written by an upgrade (kb upgrade or the configurator); resolve it with: kb resolve kb-image.yml\nschema: 1\nimage: \"lang-up\"\nkb_core: {version: \"0.4.0\"}\nmcu: {family: \"host\"}\nlanguage: {standard: 20}\ndrivers:\n  - {name: \"tmc9660\", version: \"0.5.2\"}\n",
+      "kb-upgrade.md": "# Upgrade report: lang-up\n\nkb-core 0.4.0 to 0.4.0, MCU host/host, RTOS none. Release candidates not picked unless named.\n\n1 of 2 component(s) change.\n\n| Component | From | To | Change | Breaking | Newest release | Newer rc | Known vulnerabilities |\n| --- | --- | --- | --- | --- | --- | --- | --- |\n| kb-core | 0.4.0 | 0.4.0 | none | no | 0.5.0 | - | not scanned |\n| tmc9660 | 0.5.0 | 0.5.2 | patch | no | 0.6.0 | - | not scanned -> not scanned |\n\n## Breaking changes\n\nNone by version number. Read each changed component's release notes all the same.\n\n## Held back\n\n- kb-core 0.5.0: needs a newer C++ standard than the image's language block (KB-RES-024)\n- tmc9660 0.6.0: needs a newer C++ standard than the image's language block (KB-RES-024)\n\n## Known vulnerabilities\n\n- none known in the scanned components\n- not scanned: kb-core, tmc9660\n\n## Warnings\n\n- KB-UPG-W02 kb-core: newer version held back\n- KB-UPG-W02 tmc9660: newer version held back\n\n## Next steps\n\n1. Review the changes to `kb-image.yml` and `kb-image.lock.yml` with `git diff`.\n2. Run `sh kb-fetch.sh` to move every submodule to its new tag, then build and run your tests.\n3. Check the compatibility of the new set: a tested version set, or an untested combination.\n",
+      "kb_image.cmake": "# kb image lang-up: written by kb resolve from kb-image.yml (schema 1); do not edit.\n# kb-core 0.4.0 at 080f7cfe7e98e006ac3b7c6695b3a9599a39f64d, MCU host/host, RTOS none.\nset(KB_MCU \"HOST\")\nset(KB_RTOS \"NONE\")\nset(KB_PARTS \"utils;rtos;interfaces;handlers\")\nset(KB_CPP_STANDARD \"20\")\nset(KB_ENABLE_TMC9660 ON)\nset(KB_DRIVER_TMC9660_DIR \"${CMAKE_CURRENT_LIST_DIR}/external/drivers/driver-tmc9660\")\n"
+    },
+    "image": {
+      "drivers": [
+        {
+          "name": "tmc9660",
+          "version": "0.5.2"
+        }
+      ],
+      "image": "lang-up",
+      "kb_core": {
+        "version": "0.4.0"
+      },
+      "language": {
+        "standard": 20
+      },
+      "mcu": {
+        "family": "host"
+      },
+      "schema": 1
+    },
+    "lock": {
+      "buses": [],
+      "cmake": {
+        "KB_CPP_STANDARD": "20",
+        "KB_ENABLE_TMC9660": "ON",
+        "KB_MCU": "HOST",
+        "KB_PARTS": "utils;rtos;interfaces;handlers",
+        "KB_RTOS": "NONE"
+      },
+      "drivers": [
+        {
+          "authors": [
+            "The driver-tmc9660 authors"
+          ],
+          "commit": "5252525252525252525252525252525252525252",
+          "folder": "driver-tmc9660",
+          "kind": "release",
+          "license": "MIT",
+          "name": "tmc9660",
+          "repo": "kokeb-labs-drivers/driver-tmc9660",
+          "tag": "v0.5.2",
+          "version": "0.5.2"
+        }
+      ],
+      "image": "lang-up",
+      "kb_core": {
+        "authors": [
+          "The kb-core authors"
+        ],
+        "commit": "080f7cfe7e98e006ac3b7c6695b3a9599a39f64d",
+        "kind": "release",
+        "license": "MIT",
+        "repo": "kokeb-labs/kb-core",
+        "tag": "v0.4.0",
+        "version": "0.4.0"
+      },
+      "language": {
+        "compilers": {},
+        "standard": 20
+      },
+      "mcu": {
+        "family": "host",
+        "target": "host"
+      },
+      "parts": [
+        "utils",
+        "rtos",
+        "interfaces",
+        "handlers"
+      ],
+      "ports": [
+        {
+          "commit": "080f7cfe7e98e006ac3b7c6695b3a9599a39f64d",
+          "in_tree": true,
+          "name": "host",
+          "path": "components/lib/interfaces/host"
+        }
+      ],
+      "rtos": "none",
+      "schema": 1
+    },
+    "ok": true,
+    "rows": [
+      {
+        "breaking": false,
+        "change": "none",
+        "fixed": [],
+        "from": "0.4.0",
+        "from_kind": "release",
+        "held": [
+          {
+            "code": "KB-RES-024",
+            "version": "0.5.0"
+          }
+        ],
+        "kind": "kb-core",
+        "lock_differs": false,
+        "name": "kb-core",
+        "newest_rc": null,
+        "newest_release": "0.5.0",
+        "notes": null,
+        "osv_from": null,
+        "osv_to": null,
+        "to": "0.4.0",
+        "to_kind": "release"
+      },
+      {
+        "breaking": false,
+        "change": "patch",
+        "fixed": [],
+        "from": "0.5.0",
+        "from_kind": "release",
+        "held": [
+          {
+            "code": "KB-RES-024",
+            "version": "0.6.0"
+          }
+        ],
+        "kind": "driver",
+        "lock_differs": false,
+        "name": "tmc9660",
+        "newest_rc": null,
+        "newest_release": "0.6.0",
+        "notes": "https://github.com/kokeb-labs-drivers/driver-tmc9660/releases/tag/v0.5.2",
+        "osv_from": null,
+        "osv_to": null,
+        "to": "0.5.2",
+        "to_kind": "release"
+      }
+    ],
+    "warnings": [
+      {
+        "code": "KB-UPG-W02",
+        "subject": "kb-core"
+      },
+      {
+        "code": "KB-UPG-W02",
+        "subject": "tmc9660"
+      }
+    ]
+  },
+  "image": {
+    "drivers": [
+      {
+        "name": "tmc9660",
+        "version": "0.5.0"
+      }
+    ],
+    "image": "lang-up",
+    "kb_core": {
+      "version": "0.4.0"
+    },
+    "language": {
+      "standard": 20
+    },
+    "mcu": {
+      "family": "host"
+    },
+    "schema": 1
+  },
+  "options": {}
+}

@@ -397,6 +397,7 @@
       port: VERSION_ID.test(port || '') ? port : null,
       mcu: { family: str(mcu.family), target: str(mcu.target), board: null },
       rtos: str(image.rtos),
+      cxx: isObj(image.language) && [17, 20, 23, 26].includes(image.language.standard) ? image.language.standard : null,
       drivers: [],
       buses: {},
     };

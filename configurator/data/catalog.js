@@ -138,6 +138,21 @@ globalThis.KB_CATALOG = {
      "date": "2026-11-11T16:20:30Z",
      "kb_core_min": null,
      "kind": "rc",
+     "language": {
+      "compilers": {
+       "arm_gcc": "10",
+       "clang": "13",
+       "esp_idf": "5.0",
+       "gcc": "10",
+       "msvc": "19.30"
+      },
+      "profile": "KB-CPP20",
+      "source": "default",
+      "standard": 20,
+      "tested": [
+       20
+      ]
+     },
      "mcus": [
       "any"
      ],
@@ -218,6 +233,21 @@ globalThis.KB_CATALOG = {
      "date": "2026-11-12T16:15:51Z",
      "kb_core_min": null,
      "kind": "rc",
+     "language": {
+      "compilers": {
+       "arm_gcc": "10",
+       "clang": "13",
+       "esp_idf": "5.0",
+       "gcc": "10",
+       "msvc": "19.30"
+      },
+      "profile": "KB-CPP20",
+      "source": "default",
+      "standard": 20,
+      "tested": [
+       20
+      ]
+     },
      "mcus": [
       "any"
      ],
@@ -295,6 +325,21 @@ globalThis.KB_CATALOG = {
      "date": "2026-11-13T21:59:53Z",
      "kb_core_min": null,
      "kind": "rc",
+     "language": {
+      "compilers": {
+       "arm_gcc": "10",
+       "clang": "13",
+       "esp_idf": "5.0",
+       "gcc": "10",
+       "msvc": "19.30"
+      },
+      "profile": "KB-CPP20",
+      "source": "default",
+      "standard": 20,
+      "tested": [
+       20
+      ]
+     },
      "mcus": [
       "any"
      ],
@@ -365,6 +410,21 @@ globalThis.KB_CATALOG = {
      "date": "2026-11-11T16:20:30Z",
      "kb_core_min": null,
      "kind": "rc",
+     "language": {
+      "compilers": {
+       "arm_gcc": "10",
+       "clang": "13",
+       "esp_idf": "5.0",
+       "gcc": "10",
+       "msvc": "19.30"
+      },
+      "profile": "KB-CPP20",
+      "source": "default",
+      "standard": 20,
+      "tested": [
+       20
+      ]
+     },
      "mcus": [
       "any"
      ],
@@ -435,6 +495,21 @@ globalThis.KB_CATALOG = {
      "date": "2026-11-11T16:20:30Z",
      "kb_core_min": null,
      "kind": "rc",
+     "language": {
+      "compilers": {
+       "arm_gcc": "10",
+       "clang": "13",
+       "esp_idf": "5.0",
+       "gcc": "10",
+       "msvc": "19.30"
+      },
+      "profile": "KB-CPP20",
+      "source": "default",
+      "standard": 20,
+      "tested": [
+       20
+      ]
+     },
      "mcus": [
       "any"
      ],
@@ -509,6 +584,21 @@ globalThis.KB_CATALOG = {
      "date": "2026-11-11T16:20:32Z",
      "kb_core_min": null,
      "kind": "rc",
+     "language": {
+      "compilers": {
+       "arm_gcc": "10",
+       "clang": "13",
+       "esp_idf": "5.0",
+       "gcc": "10",
+       "msvc": "19.30"
+      },
+      "profile": "KB-CPP20",
+      "source": "default",
+      "standard": 20,
+      "tested": [
+       20
+      ]
+     },
      "mcus": [
       "any"
      ],
@@ -590,6 +680,21 @@ globalThis.KB_CATALOG = {
      "date": "2026-11-14T01:43:17Z",
      "kb_core_min": null,
      "kind": "rc",
+     "language": {
+      "compilers": {
+       "arm_gcc": "10",
+       "clang": "13",
+       "esp_idf": "5.0",
+       "gcc": "10",
+       "msvc": "19.30"
+      },
+      "profile": "KB-CPP20",
+      "source": "default",
+      "standard": 20,
+      "tested": [
+       20
+      ]
+     },
      "mcus": [
       "any"
      ],
@@ -662,6 +767,21 @@ globalThis.KB_CATALOG = {
      "date": "2026-11-12T22:45:54Z",
      "kb_core_min": null,
      "kind": "rc",
+     "language": {
+      "compilers": {
+       "arm_gcc": "10",
+       "clang": "13",
+       "esp_idf": "5.0",
+       "gcc": "10",
+       "msvc": "19.30"
+      },
+      "profile": "KB-CPP20",
+      "source": "default",
+      "standard": 20,
+      "tested": [
+       20
+      ]
+     },
      "mcus": [
       "any"
      ],
@@ -734,6 +854,21 @@ globalThis.KB_CATALOG = {
      "date": "2026-11-13T01:26:56Z",
      "kb_core_min": null,
      "kind": "rc",
+     "language": {
+      "compilers": {
+       "arm_gcc": "10",
+       "clang": "13",
+       "esp_idf": "5.0",
+       "gcc": "10",
+       "msvc": "19.30"
+      },
+      "profile": "KB-CPP20",
+      "source": "default",
+      "standard": 20,
+      "tested": [
+       20
+      ]
+     },
      "mcus": [
       "any"
      ],
@@ -810,6 +945,21 @@ globalThis.KB_CATALOG = {
      "date": "2026-11-12T15:39:51Z",
      "kb_core_min": null,
      "kind": "rc",
+     "language": {
+      "compilers": {
+       "arm_gcc": "10",
+       "clang": "13",
+       "esp_idf": "5.0",
+       "gcc": "10",
+       "msvc": "19.30"
+      },
+      "profile": "KB-CPP20",
+      "source": "default",
+      "standard": 20,
+      "tested": [
+       20
+      ]
+     },
      "mcus": [
       "any"
      ],
@@ -890,6 +1040,21 @@ globalThis.KB_CATALOG = {
      "date": "2026-11-13T06:35:23Z",
      "kb_core_min": null,
      "kind": "rc",
+     "language": {
+      "compilers": {
+       "arm_gcc": "10",
+       "clang": "13",
+       "esp_idf": "5.0",
+       "gcc": "10",
+       "msvc": "19.30"
+      },
+      "profile": "KB-CPP20",
+      "source": "default",
+      "standard": 20,
+      "tested": [
+       20
+      ]
+     },
      "mcus": [
       "any"
      ],
@@ -960,6 +1125,21 @@ globalThis.KB_CATALOG = {
      "date": "2026-11-11T16:20:31Z",
      "kb_core_min": null,
      "kind": "rc",
+     "language": {
+      "compilers": {
+       "arm_gcc": "10",
+       "clang": "13",
+       "esp_idf": "5.0",
+       "gcc": "10",
+       "msvc": "19.30"
+      },
+      "profile": "KB-CPP20",
+      "source": "default",
+      "standard": 20,
+      "tested": [
+       20
+      ]
+     },
      "mcus": [
       "any"
      ],
@@ -1044,6 +1224,21 @@ globalThis.KB_CATALOG = {
      "date": "2026-11-12T10:36:56Z",
      "kb_core_min": null,
      "kind": "rc",
+     "language": {
+      "compilers": {
+       "arm_gcc": "10",
+       "clang": "13",
+       "esp_idf": "5.0",
+       "gcc": "10",
+       "msvc": "19.30"
+      },
+      "profile": "KB-CPP20",
+      "source": "default",
+      "standard": 20,
+      "tested": [
+       20
+      ]
+     },
      "mcus": [
       "any"
      ],
@@ -1120,6 +1315,21 @@ globalThis.KB_CATALOG = {
      "date": "2026-11-12T10:48:53Z",
      "kb_core_min": null,
      "kind": "rc",
+     "language": {
+      "compilers": {
+       "arm_gcc": "10",
+       "clang": "13",
+       "esp_idf": "5.0",
+       "gcc": "10",
+       "msvc": "19.30"
+      },
+      "profile": "KB-CPP20",
+      "source": "default",
+      "standard": 20,
+      "tested": [
+       20
+      ]
+     },
      "mcus": [
       "any"
      ],
@@ -1255,6 +1465,21 @@ globalThis.KB_CATALOG = {
      "date": "2026-11-11T16:20:31Z",
      "kb_core_min": null,
      "kind": "rc",
+     "language": {
+      "compilers": {
+       "arm_gcc": "10",
+       "clang": "13",
+       "esp_idf": "5.0",
+       "gcc": "10",
+       "msvc": "19.30"
+      },
+      "profile": "KB-CPP20",
+      "source": "default",
+      "standard": 20,
+      "tested": [
+       20
+      ]
+     },
      "mcus": [
       "any"
      ],
@@ -1338,6 +1563,21 @@ globalThis.KB_CATALOG = {
      "date": "2026-11-11T16:20:31Z",
      "kb_core_min": null,
      "kind": "rc",
+     "language": {
+      "compilers": {
+       "arm_gcc": "10",
+       "clang": "13",
+       "esp_idf": "5.0",
+       "gcc": "10",
+       "msvc": "19.30"
+      },
+      "profile": "KB-CPP20",
+      "source": "default",
+      "standard": 20,
+      "tested": [
+       20
+      ]
+     },
      "mcus": [
       "any"
      ],
@@ -1427,6 +1667,21 @@ globalThis.KB_CATALOG = {
      "date": "2026-11-13T07:13:26Z",
      "kb_core_min": null,
      "kind": "rc",
+     "language": {
+      "compilers": {
+       "arm_gcc": "10",
+       "clang": "13",
+       "esp_idf": "5.0",
+       "gcc": "10",
+       "msvc": "19.30"
+      },
+      "profile": "KB-CPP20",
+      "source": "default",
+      "standard": 20,
+      "tested": [
+       20
+      ]
+     },
      "mcus": [
       "any"
      ],
@@ -1486,6 +1741,18 @@ globalThis.KB_CATALOG = {
      "date": "2026-11-20T11:29:26Z",
      "kb_core_min": null,
      "kind": "rc",
+     "language": {
+      "compilers": {
+       "clang": "13",
+       "gcc": "10"
+      },
+      "profile": "KB-CPP20",
+      "source": "driver.yml",
+      "standard": 20,
+      "tested": [
+       20
+      ]
+     },
      "mcus": [
       "any"
      ],
@@ -1504,6 +1771,21 @@ globalThis.KB_CATALOG = {
      "date": "2026-11-19T05:04:38Z",
      "kb_core_min": null,
      "kind": "rc",
+     "language": {
+      "compilers": {
+       "arm_gcc": "10",
+       "clang": "13",
+       "esp_idf": "5.0",
+       "gcc": "10",
+       "msvc": "19.30"
+      },
+      "profile": "KB-CPP20",
+      "source": "default",
+      "standard": 20,
+      "tested": [
+       20
+      ]
+     },
      "mcus": [
       "any"
      ],
@@ -1580,6 +1862,21 @@ globalThis.KB_CATALOG = {
      "date": "2026-11-12T13:22:33Z",
      "kb_core_min": null,
      "kind": "rc",
+     "language": {
+      "compilers": {
+       "arm_gcc": "10",
+       "clang": "13",
+       "esp_idf": "5.0",
+       "gcc": "10",
+       "msvc": "19.30"
+      },
+      "profile": "KB-CPP20",
+      "source": "default",
+      "standard": 20,
+      "tested": [
+       20
+      ]
+     },
      "mcus": [
       "any"
      ],
@@ -1654,6 +1951,21 @@ globalThis.KB_CATALOG = {
      "date": "2026-11-11T16:20:31Z",
      "kb_core_min": null,
      "kind": "rc",
+     "language": {
+      "compilers": {
+       "arm_gcc": "10",
+       "clang": "13",
+       "esp_idf": "5.0",
+       "gcc": "10",
+       "msvc": "19.30"
+      },
+      "profile": "KB-CPP20",
+      "source": "default",
+      "standard": 20,
+      "tested": [
+       20
+      ]
+     },
      "mcus": [
       "any"
      ],
@@ -1727,6 +2039,21 @@ globalThis.KB_CATALOG = {
      "date": "2026-11-13T15:36:13Z",
      "kb_core_min": null,
      "kind": "rc",
+     "language": {
+      "compilers": {
+       "arm_gcc": "10",
+       "clang": "13",
+       "esp_idf": "5.0",
+       "gcc": "10",
+       "msvc": "19.30"
+      },
+      "profile": "KB-CPP20",
+      "source": "default",
+      "standard": 20,
+      "tested": [
+       20
+      ]
+     },
      "mcus": [
       "any"
      ],
@@ -1804,6 +2131,21 @@ globalThis.KB_CATALOG = {
      "date": "2026-11-13T16:46:41Z",
      "kb_core_min": null,
      "kind": "rc",
+     "language": {
+      "compilers": {
+       "arm_gcc": "10",
+       "clang": "13",
+       "esp_idf": "5.0",
+       "gcc": "10",
+       "msvc": "19.30"
+      },
+      "profile": "KB-CPP20",
+      "source": "default",
+      "standard": 20,
+      "tested": [
+       20
+      ]
+     },
      "mcus": [
       "any"
      ],
@@ -1888,6 +2230,21 @@ globalThis.KB_CATALOG = {
      "date": "2026-11-13T08:03:24Z",
      "kb_core_min": null,
      "kind": "rc",
+     "language": {
+      "compilers": {
+       "arm_gcc": "10",
+       "clang": "13",
+       "esp_idf": "5.0",
+       "gcc": "10",
+       "msvc": "19.30"
+      },
+      "profile": "KB-CPP20",
+      "source": "default",
+      "standard": 20,
+      "tested": [
+       20
+      ]
+     },
      "mcus": [
       "esp32"
      ],
@@ -2364,6 +2721,21 @@ globalThis.KB_CATALOG = {
     "commit": "b0ddc2f19612aab8bff249688a833a507b3034fb",
     "date": "2026-11-21T04:51:38Z",
     "kind": "rc",
+    "language": {
+     "compilers": {
+      "arm_gcc": "10",
+      "clang": "13",
+      "esp_idf": "5.0",
+      "gcc": "10",
+      "msvc": "19.30"
+     },
+     "profile": "KB-CPP20",
+     "source": "default",
+     "standard": 20,
+     "tested": [
+      20
+     ]
+    },
     "osv": null,
     "tag": "v0.1.0-rc.1",
     "version": "0.1.0-rc.1"

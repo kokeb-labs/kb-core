@@ -34,12 +34,15 @@ CODES = {
     "KB-RES-021": "unsupported image schema",
     "KB-RES-022": "unknown field",
     "KB-RES-023": "unknown bus kind",
+    "KB-RES-024": "the part needs a newer C++ standard than the project's language.standard",
+    "KB-RES-025": "the part needs a newer compiler than the project's language.compilers",
     "KB-RES-030": "unsupported catalogue schema",
     "KB-RES-W01": "a release-candidate pin is selected",
     "KB-RES-W03": "kb-core is an unreleased development revision",
+    "KB-RES-W04": "an older driver version is used: the default one needs a newer C++ standard or compiler",
 }
 
-IMAGE_KEYS = ("buses", "drivers", "image", "kb_core", "mcu", "rtos", "schema")
+IMAGE_KEYS = ("buses", "drivers", "image", "kb_core", "language", "mcu", "rtos", "schema")
 NAME_RE = re.compile(r"^[a-z0-9][a-z0-9-]{0,62}$")
 BUS_RE = re.compile(r"^[a-z][a-z0-9_]{0,31}$")
 BUS_KIND_RE = re.compile(r"^(i2c|spi|uart|can|adc|pio|gpio)[0-9]*$")
@@ -47,6 +50,14 @@ BUS_KINDS = ("adc", "can", "canopen", "gpio", "i2c", "modbus", "onewire", "pio",
 MODELS = ("guarded", "owner")
 PART_ORDER = ("utils", "rtos", "dma", "interfaces", "handlers")
 DEFAULT_IMAGE = "kb-image"
+
+# The language floor (docs/language-floor.md). A catalogue entry without a `language` block is read as the registry
+# default, profile KB-CPP20 of the organisation's standards registry (ci-tools tools/standards/standards.yml).
+DEFAULT_LANGUAGE = {"standard": 20, "profile": "KB-CPP20",
+                    "compilers": {"arm_gcc": "10", "clang": "13", "esp_idf": "5.0", "gcc": "10", "msvc": "19.30"}}
+STANDARDS = (17, 20, 23, 26)
+COMPILERS = ("arm_gcc", "clang", "esp_idf", "gcc", "msvc")
+COMPILER_RE = re.compile(r"^(0|[1-9][0-9]*)(\.(0|[1-9][0-9]*)){0,2}$")
 
 
 def _is_obj(v):
@@ -69,11 +80,11 @@ class _Collector:
         self.errors = []
         self.warnings = []
 
-    def error(self, code, subject, message):
-        self.errors.append({"code": code, "subject": subject, "message": message})
+    def error(self, code, subject, message, **extra):
+        self.errors.append({"code": code, "subject": subject, "message": message, **extra})
 
-    def warn(self, code, subject, message):
-        self.warnings.append({"code": code, "subject": subject, "message": message})
+    def warn(self, code, subject, message, **extra):
+        self.warnings.append({"code": code, "subject": subject, "message": message, **extra})
 
 
 def _unknown_keys(c, obj, allowed, prefix):
@@ -123,6 +134,8 @@ def _check_shape(image, c):
                     c.error("KB-RES-001", "mcu.port.version", "mcu.port.version must be a string")
     if "rtos" in image and not _is_str(image["rtos"]):
         c.error("KB-RES-001", "rtos", "rtos must be a string")
+    if "language" in image:
+        _check_language_shape(image["language"], c)
     drivers = []
     if "drivers" in image:
         lst = image["drivers"]
@@ -177,6 +190,79 @@ def _check_shape(image, c):
     return drivers
 
 
+def _check_language_shape(lang, c):
+    if not _is_obj(lang):
+        c.error("KB-RES-001", "language", "language must be a mapping with a standard")
+        return
+    _unknown_keys(c, lang, ("compilers", "standard"), "language.")
+    if not _is_int(lang.get("standard")) or int(lang["standard"]) not in STANDARDS:
+        c.error("KB-RES-001", "language.standard",
+                f"language.standard must be one of {', '.join(str(s) for s in STANDARDS)}")
+    if "compilers" in lang:
+        comps = lang["compilers"]
+        if not _is_obj(comps):
+            c.error("KB-RES-001", "language.compilers", "language.compilers must be a mapping of compiler to version")
+            return
+        _unknown_keys(c, comps, COMPILERS, "language.compilers.")
+        for key in sorted(k for k in comps if k in COMPILERS):
+            if not (_is_str(comps[key]) and COMPILER_RE.match(comps[key])):
+                c.error("KB-RES-001", f"language.compilers.{key}",
+                        f"language.compilers.{key} must be a quoted version such as \"12\" or \"12.2\"")
+
+
+def _language(entry):
+    """The language block of a catalogue entry, or the registry default when it has none."""
+    lang = entry.get("language")
+    if not _is_obj(lang):
+        return DEFAULT_LANGUAGE
+    return {"standard": int(lang.get("standard", 20)), "compilers": dict(lang.get("compilers") or {})}
+
+
+def _numbers(text):
+    return tuple(int(p) for p in text.split("."))
+
+
+def misfit(entry, want):
+    """None when `entry` builds with the project's declared language `want`, else (code, needs, has, raise)."""
+    lang = _language(entry)
+    if lang["standard"] > want["standard"]:
+        return ("KB-RES-024", f"C++{lang['standard']}", f"C++{want['standard']}",
+                f"language.standard to {lang['standard']}")
+    for key in sorted(want.get("compilers", {})):
+        need = lang["compilers"].get(key)
+        have = want["compilers"][key]
+        if need is not None and _numbers(need) > _numbers(have):
+            return ("KB-RES-025", f"{key} {need} or newer", f"{key} {have}", f"language.compilers.{key} to {need}")
+    return None
+
+
+def _newest_fitting(versions, want):
+    """The newest release whose floor the project meets, else the newest release candidate, else None."""
+    fit = [v for v in versions if v.get("kind") != "dev" and misfit(v, want) is None]
+    return _newest(fit, "release") or _newest(fit, "rc")
+
+
+def _language_finding(c, subject, label, entry, want, versions):
+    """Report a part above the project's language floor, naming the nearest version that fits (or none)."""
+    bad = misfit(entry, want)
+    if bad is None:
+        return
+    code, needs, has, lift = bad
+    alt = _newest_fitting(versions, want)
+    hint = (f"{label} {alt['version']} is the newest version that builds with {has}, or raise {lift}"
+            if alt is not None else f"no version of {label} builds with {has}; raise {lift}")
+    c.error(code, subject, f"{label} {entry['version']} needs {needs}; the project builds with {has}. {hint}",
+            alternative=None if alt is None else alt["version"])
+
+
+def wanted_language(image):
+    """The image's declared language ({standard, compilers}), or None when it declares none."""
+    lang = image.get("language") if _is_obj(image) else None
+    if lang is None:
+        return None
+    return {"standard": int(lang["standard"]), "compilers": dict(lang.get("compilers") or {})}
+
+
 def _find(items, key, value):
     for item in items:
         if item.get(key) == value:
@@ -226,6 +312,9 @@ def resolve(catalog, image):
         c.warn("KB-RES-W01", "kb-core", f"kb-core {kb_req} is a release candidate")
     elif kb["kind"] == "dev":
         c.warn("KB-RES-W03", "kb-core", f"kb-core {kb_req} at {kb['commit'][:12]} is not a release")
+    want = wanted_language(image)
+    if kb is not None and want is not None:
+        _language_finding(c, "kb-core", "kb-core", kb, want, catalog["kb_core"]["versions"])
 
     # MCU family, target and port
     fam_req = image["mcu"]["family"]
@@ -298,9 +387,19 @@ def resolve(catalog, image):
         else:
             ver = _find(drv["versions"], "version", ver_req)
         if ver is None:
-            want = ver_req if ver_req is not None else "(any)"
-            c.error("KB-RES-011", name, f"driver '{name}' has no version {want}")
+            missing = ver_req if ver_req is not None else "(any)"
+            c.error("KB-RES-011", name, f"driver '{name}' has no version {missing}")
             continue
+        if want is not None and ver_req is None and misfit(ver, want) is not None:
+            # No version named: use the newest one the project's language can build (docs/language-floor.md).
+            alt = _newest_fitting(drv["versions"], want)
+            if alt is not None:
+                c.warn("KB-RES-W04", name, f"{name} {ver['version']} needs {misfit(ver, want)[1]}; "
+                       f"{alt['version']} is the newest version that builds with {misfit(ver, want)[2]}, so it is used",
+                       alternative=alt["version"])
+                ver = alt
+        if want is not None:
+            _language_finding(c, name, name, ver, want, drv["versions"])
         if ver["kind"] == "rc":
             c.warn("KB-RES-W01", name, f"{name} {ver['version']} is a release candidate")
         if mcu is not None and "any" not in ver["mcus"] and fam_req not in ver["mcus"]:
@@ -378,6 +477,10 @@ def resolve(catalog, image):
         "buses": bus_lock,
         "cmake": cmake,
     }
+    if want is not None:
+        cmake["KB_CPP_STANDARD"] = str(want["standard"])
+        compilers = {k: want["compilers"][k] for k in sorted(want["compilers"])}
+        lock["language"] = {"standard": want["standard"], "compilers": compilers}
     return _result(c, lock)
 
 

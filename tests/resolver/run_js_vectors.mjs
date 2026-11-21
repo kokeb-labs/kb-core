@@ -12,7 +12,8 @@ import { canonicalJson, files, resolve } from "../../configurator/resolver.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const dir = process.argv[2] || join(here, "vectors");
-const pick = (list) => list.map((e) => ({ code: e.code, subject: e.subject }));
+// The code and subject of each finding, and the nearest version that fits when the finding names one (KB-RES-024).
+const pick = (list) => list.map((e) => ({ code: e.code, subject: e.subject, ...("alternative" in e ? { alternative: e.alternative } : {}) }));
 let failed = 0;
 let count = 0;
 for (const name of readdirSync(dir).filter((n) => n.endsWith(".json")).sort()) {

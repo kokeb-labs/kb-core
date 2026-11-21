@@ -5,10 +5,12 @@
 // [a-z0-9-]) go in; nothing about the person using the page. Format (version 1):
 //   #v=1&f=<family>&t=<target>&b=<board>&r=<rtos>&k=<kb-core version or empty>&p=<port version or empty>
 //    &n=<image name>&d=<name>~<version>~<via>~<bus>,...&m=<bus>~<o|g>,...[&c=1 when release candidates are shown]
+//    [&x=<C++ standard> when the image declares its language, docs/language-floor.md]
 (function (g) {
   'use strict';
   const KB = (g.KB = g.KB || {});
   const ID = /^[a-z0-9][a-z0-9_.-]*$/;
+  const STANDARDS = [17, 20, 23, 26]; // resolver.mjs STANDARDS
 
   function clean(v) {
     return typeof v === 'string' && ID.test(v) ? v : '';
@@ -28,6 +30,7 @@
     if (!o.omitName) p.set('n', KB.core.safeName(image.image));
     p.set('d', (image.drivers || []).map((d) => [d.name, d.version, d.via, d.bus].join('~')).join(','));
     p.set('m', Object.keys(image.buses || {}).sort().map((id) => `${id}~${image.buses[id].model === 'owner' ? 'o' : 'g'}`).join(','));
+    if (image.cxx) p.set('x', String(image.cxx));
     if (o.rc) p.set('c', '1');
     return '#' + p.toString().replace(/%7E/g, '~').replace(/%2C/g, ',');
   }
@@ -44,7 +47,7 @@
       const [id, m] = s.split('~');
       if (clean(id)) buses[id] = { model: m === 'o' ? 'owner' : 'guarded' };
     }
-    return {
+    const out = {
       image: KB.core.safeName(p.get('n')),
       kb_core: clean(p.get('k')) || null,
       port: clean(p.get('p')) || null,
@@ -53,6 +56,8 @@
       drivers,
       buses,
     };
+    if (STANDARDS.includes(Number(p.get('x')))) out.cxx = Number(p.get('x')); // only when the link carries one
+    return out;
   }
 
   // Page switches carried in the hash beside the selection.

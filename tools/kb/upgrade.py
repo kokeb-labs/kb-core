@@ -33,11 +33,14 @@ HELD_TEXT = {
     "KB-RES-014": "needs a newer kb-core",
     "KB-RES-018": "requires an owner-task bus",
     "KB-RES-019": "does not support the bus kind in use",
+    "KB-RES-024": "needs a newer C++ standard than the image's language block",
+    "KB-RES-025": "needs a newer compiler than the image's language block",
 }
 
 WARNING_TEXT = {
     "KB-RES-W01": "release candidate",
     "KB-RES-W03": "kb-core development revision",
+    "KB-RES-W04": "older driver version for the language block",
     "KB-UPG-W01": "breaking change",
     "KB-UPG-W02": "newer version held back",
     "KB-UPG-W03": "known vulnerabilities remain",
@@ -312,7 +315,13 @@ def plan(catalog, image, lock=None, to=None, allow_rc=False):
     # kb-core first: the drivers' kb_core_min gates are checked against its target.
     kb_versions = catalog["kb_core"]["versions"]
     kb_cur, kb_relock = current_of("kb-core", cur["kb_core"])
-    kb_new, kb_held = _pick(kb_versions, kb_cur, allow_rc, to.get("kb-core"), lambda v: None, "kb-core", c)
+    want = resolver.wanted_language(current)
+
+    def lang_gate(v):
+        bad = None if want is None else resolver.misfit(v, want)
+        return None if bad is None else bad[0]
+
+    kb_new, kb_held = _pick(kb_versions, kb_cur, allow_rc, to.get("kb-core"), lang_gate, "kb-core", c)
     rows = []
     if kb_new is not None:
         rows.append(_row("kb-core", "kb-core", catalog["kb_core"]["repo"], kb_versions, kb_cur, kb_new, kb_held,
@@ -347,7 +356,7 @@ def plan(catalog, image, lock=None, to=None, allow_rc=False):
             for bus in buses_of.get(name, []):
                 if bus["kind"] is not None and bus["kind"] not in v["bus"]:
                     return "KB-RES-019"
-            return None
+            return lang_gate(v)
 
         d_cur, d_relock = current_of(name, d)
         new, held = _pick(entry["versions"], d_cur, allow_rc, to.get(name), gate, name, c)
@@ -413,6 +422,12 @@ def image_text(image):
     lines.append(f"mcu: {_flow(pairs)}")
     if "rtos" in image:
         lines.append(f"rtos: {_q(image['rtos'])}")
+    if "language" in image:
+        lang = image["language"]
+        pairs = [("standard", str(int(lang["standard"])))]
+        if "compilers" in lang:
+            pairs.append(("compilers", _flow([(k, _q(lang["compilers"][k])) for k in sorted(lang["compilers"])])))
+        lines.append(f"language: {_flow(pairs)}")
     if "drivers" in image:
         if not image["drivers"]:
             lines.append("drivers: []")

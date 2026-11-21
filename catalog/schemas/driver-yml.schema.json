@@ -81,6 +81,74 @@
         "type": "string"
       },
       "description": "Optional. The kb-core handler bindings that serve this driver (header names under kb/handlers/bindings/); informative, carried into the catalogue"
+    },
+    "language": {
+      "type": "object",
+      "description": "The C++ language declaration (driver-template tools/check_language.py); kb catalog build copies standard, profile, compilers and tested into each catalogued version",
+      "required": [
+        "standard",
+        "profile"
+      ],
+      "properties": {
+        "standard": {
+          "enum": [
+            17,
+            20,
+            23,
+            26
+          ]
+        },
+        "profile": {
+          "type": "string"
+        },
+        "profile_version": {
+          "type": "string"
+        },
+        "misra": {
+          "type": "string"
+        },
+        "compilers": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "arm_gcc": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)(\\.(0|[1-9][0-9]*)){0,2}$"
+            },
+            "clang": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)(\\.(0|[1-9][0-9]*)){0,2}$"
+            },
+            "esp_idf": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)(\\.(0|[1-9][0-9]*)){0,2}$"
+            },
+            "gcc": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)(\\.(0|[1-9][0-9]*)){0,2}$"
+            },
+            "msvc": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)(\\.(0|[1-9][0-9]*)){0,2}$"
+            }
+          },
+          "description": "The oldest version of each compiler (quoted strings)"
+        },
+        "tested": {
+          "type": "array",
+          "items": {
+            "enum": [
+              17,
+              20,
+              23,
+              26
+            ]
+          }
+        },
+        "effective_from": {
+          "type": "string"
+        }
+      }
     }
   }
 }

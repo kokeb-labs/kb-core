@@ -20,6 +20,13 @@
         "board": {"type": ["string", "null"]}
       }
     },
+    "language": {
+      "type": "object",
+      "required": ["standard"],
+      "additionalProperties": false,
+      "description": "The project's language: the C++ standard it builds with and, optionally, its compiler versions. A part above it is rejected (KB-RES-024, KB-RES-025); a driver named without a version takes the newest one that fits (KB-RES-W04)",
+      "properties": {"standard": {"enum": [17, 20, 23, 26]}, "compilers": {"type": "object", "additionalProperties": false, "properties": {"arm_gcc": {"type": "string", "pattern": "^(0|[1-9][0-9]*)(\\.(0|[1-9][0-9]*)){0,2}$"}, "clang": {"type": "string", "pattern": "^(0|[1-9][0-9]*)(\\.(0|[1-9][0-9]*)){0,2}$"}, "esp_idf": {"type": "string", "pattern": "^(0|[1-9][0-9]*)(\\.(0|[1-9][0-9]*)){0,2}$"}, "gcc": {"type": "string", "pattern": "^(0|[1-9][0-9]*)(\\.(0|[1-9][0-9]*)){0,2}$"}, "msvc": {"type": "string", "pattern": "^(0|[1-9][0-9]*)(\\.(0|[1-9][0-9]*)){0,2}$"}}, "description": "The oldest version of each compiler (quoted strings)"}}
+    },
     "rtos": {"type": "string"},
     "drivers": {"type": "array", "items": {
       "type": "object",

@@ -19,6 +19,11 @@
     return v && v.osv ? v.osv : null;
   }
 
+  // The version's language floor when the catalogue records one (tools/kb/catalog.py from_site does the same).
+  function langOf(v) {
+    return v && v.language && typeof v.language === 'object' ? { language: v.language } : {};
+  }
+
   // kb-core's catalogue: the subset of the site catalogue the shared rules (resolver and upgrade planner) read. The
   // kb tool derives the same document from the same file (tools/kb/catalog.py from_site), field for field, so the
   // site and `kb upgrade --catalog data/catalog.json` plan the same thing.
@@ -29,7 +34,7 @@
         repo: site.kb_core.repo,
         license: 'MIT',
         authors: ['The kb-core authors'],
-        versions: site.kb_core.releases.map((r) => ({ version: r.version, tag: r.tag, commit: r.commit, kind: r.kind, osv: osvOf(r) })),
+        versions: site.kb_core.releases.map((r) => ({ version: r.version, tag: r.tag, commit: r.commit, kind: r.kind, osv: osvOf(r), ...langOf(r) })),
       },
       parts: site.kb_core.parts.slice(),
       rtos: site.rtos.map((r) => ({ name: r.id, status: r.status })),
@@ -41,7 +46,7 @@
         default_rtos: f.default_rtos,
         port: f.port ? {
           name: f.port.name, repo: f.port.repo, path: f.port.path,
-          versions: f.port.releases.map((r) => ({ version: r.version, tag: r.tag, commit: r.commit, kind: r.kind, osv: osvOf(r) })),
+          versions: f.port.releases.map((r) => ({ version: r.version, tag: r.tag, commit: r.commit, kind: r.kind, osv: osvOf(r), ...langOf(r) })),
         } : null,
       })),
       drivers: site.drivers.map((d) => ({
@@ -53,7 +58,7 @@
           version: v.version, tag: v.tag, commit: v.commit, kind: v.kind, bus: v.bus.slice(), mcus: v.mcus.slice(),
           peripheral: v.peripheral, kb_core_min: v.kb_core_min,
           requires_owner: typeof v.requires_owner === 'boolean' ? v.requires_owner : d.requires_owner,
-          license: d.licence.spdx, authors: holders(d.licence.copyright), osv: osvOf(v),
+          license: d.licence.spdx, authors: holders(d.licence.copyright), osv: osvOf(v), ...langOf(v),
         })),
       })),
     };
@@ -71,6 +76,7 @@
     if (image.mcu.target) out.mcu.target = image.mcu.target;
     if (image.port) out.mcu.port = { version: image.port };
     if (image.rtos) out.rtos = image.rtos;
+    if (image.cxx) out.language = { standard: image.cxx };
     out.drivers = (image.drivers || []).map((d) => ({ name: d.name, version: d.version }));
     const buses = {};
     for (const d of image.drivers || []) {

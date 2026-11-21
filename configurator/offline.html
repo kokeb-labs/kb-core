@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha384-FFdKy4/2+gXlIZ+ZI52wEPrtnPhrFllAAiT9l/gl1B8Jj7qE3oGdOW6okeSwfeWi' 'sha384-DT0Ls0mO7JmjTnT+oBuMhEJzYJO1zUqzuuMXNdnOmOQRIpN2BgSjvBV/j50NngIT' 'sha384-Ongg1x38BBMBh1eDhdsuvJiQltBAsuWrgFJNGh3/H5dbwgaVWJUHN7sSC4mSsBNS' 'sha384-w90ycptWLHSy39vTbREpkFzJL/XHhRYhRUMOJiuptwKUQVWagUynVy4NblwC3TFy' 'sha384-IXgZ1EoqJZ55co37pFfSWfK3u3XsbWS5pkz9lxQx2tl05Pe7rlLfVQVvg3fckQ7v' 'sha384-6oPM4UYVZCfPrZl6cSgvovoRbzI2zOcNl78rr71ykvL1UIFppFCVpoxFUQaP3poA' 'sha384-y5SRO7FFt7NaqmZEjHVyROPO5P1LbLfgYlezpqB8pf7B2Zciv5O+LmluGtji+/UY' 'sha384-NpkslvNQIkHmXOUghQySGQHi9YktdFKprBfqkT/oQPjpWuekZKyAdlVFLDos4hDT' 'sha384-biBwrhj0QTlQZXmkDLTixR84d97x30XLKvky8NRrR7KwVgZASRzFIw2VUTQ5NSsR' 'sha384-5Zx22ZuJe6IsUclHZWbs3/jAoPjGGUVeRgsaRqeIfsG7Jsfui9iCtBWfQrp9Q+Kp'; style-src 'sha384-Lq0xihy27CCJldmy39VZuAk2eQJVkD/2lSv0A/lUsR/LlmI+nLjZkfR3J+FCLLJb'; img-src 'self'; connect-src 'none'; font-src 'none'; object-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha384-a/E4mQqPXYUt4yLRP4KcIi6VphMnu6jAMQ9JOoRY4gWzvCdW1f8KivDVRUN0H/Bc' 'sha384-DT0Ls0mO7JmjTnT+oBuMhEJzYJO1zUqzuuMXNdnOmOQRIpN2BgSjvBV/j50NngIT' 'sha384-z7ugIwGcnlLVOtMREhHPQOIOMG4Vi07wTKXZx7CsgHjmGbJFLZ7VON2ZZ5/ZlyAO' 'sha384-w90ycptWLHSy39vTbREpkFzJL/XHhRYhRUMOJiuptwKUQVWagUynVy4NblwC3TFy' 'sha384-IXgZ1EoqJZ55co37pFfSWfK3u3XsbWS5pkz9lxQx2tl05Pe7rlLfVQVvg3fckQ7v' 'sha384-rm0v2IHNBwA7rpkx5rKCjIkzLqBJV7hwzLnVIcw+2GJjzCFUJ/vZyYNCdaFBrjee' 'sha384-iN1OFQR3VgUxSVKtkedzAFiwGNQkSBdyRYI+knasQLKQqtdtdEmmzco88ev7dyYE' 'sha384-sxG0W6iIUu6e63T9ZAXKwPKFfmBoZDSfmk40xj5dyWgUXp/OuTwwl3czIAWmSTdE' 'sha384-+uMc6JUk/0hp4cuVCeoitLGWgX4s13C72rZ8NUi+4CmGhJZh0PVxUkfd+lSqNDHV' 'sha384-jLSrtqnClLIiQUF1VUpDQFkG6mRs6VREXkUIZ9yDUeBQmRv8b1rZtZUgS/IWri4B'; style-src 'sha384-Lq0xihy27CCJldmy39VZuAk2eQJVkD/2lSv0A/lUsR/LlmI+nLjZkfR3J+FCLLJb'; img-src 'self'; connect-src 'none'; font-src 'none'; object-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="description" content="Pick an MCU, an RTOS and chip drivers, and download a pinned, repeatable kb-core project with its SBOM and evidence.">
 <meta name="color-scheme" content="light dark">
@@ -446,6 +446,9 @@ catalogue it reads is <a href="data/catalog.json">data/catalog.json</a>.</p></no
         <div class="field"><label for="image-name">Image name</label>
           <input type="text" id="image-name" autocomplete="off" spellcheck="false" maxlength="40" aria-describedby="image-hint">
           <span class="hint" id="image-hint">Lower-case letters, digits and dashes; names the folder and the preset.</span></div>
+        <div class="field"><label for="cxx">C++ standard</label><select id="cxx" aria-describedby="cxx-hint"></select>
+          <span class="hint" id="cxx-hint">What your toolchain builds with. A part that needs a newer standard is refused,
+            with the newest version that fits (<a href="https://kokeb-labs.github.io/kb-core/latest/language-floor/">language floor</a>).</span></div>
       </div>
     </section>
 
@@ -651,6 +654,21 @@ globalThis.KB_CATALOG = {
      "date": "2026-11-11T16:20:30Z",
      "kb_core_min": null,
      "kind": "rc",
+     "language": {
+      "compilers": {
+       "arm_gcc": "10",
+       "clang": "13",
+       "esp_idf": "5.0",
+       "gcc": "10",
+       "msvc": "19.30"
+      },
+      "profile": "KB-CPP20",
+      "source": "default",
+      "standard": 20,
+      "tested": [
+       20
+      ]
+     },
      "mcus": [
       "any"
      ],
@@ -731,6 +749,21 @@ globalThis.KB_CATALOG = {
      "date": "2026-11-12T16:15:51Z",
      "kb_core_min": null,
      "kind": "rc",
+     "language": {
+      "compilers": {
+       "arm_gcc": "10",
+       "clang": "13",
+       "esp_idf": "5.0",
+       "gcc": "10",
+       "msvc": "19.30"
+      },
+      "profile": "KB-CPP20",
+      "source": "default",
+      "standard": 20,
+      "tested": [
+       20
+      ]
+     },
      "mcus": [
       "any"
      ],
@@ -808,6 +841,21 @@ globalThis.KB_CATALOG = {
      "date": "2026-11-13T21:59:53Z",
      "kb_core_min": null,
      "kind": "rc",
+     "language": {
+      "compilers": {
+       "arm_gcc": "10",
+       "clang": "13",
+       "esp_idf": "5.0",
+       "gcc": "10",
+       "msvc": "19.30"
+      },
+      "profile": "KB-CPP20",
+      "source": "default",
+      "standard": 20,
+      "tested": [
+       20
+      ]
+     },
      "mcus": [
       "any"
      ],
@@ -878,6 +926,21 @@ globalThis.KB_CATALOG = {
      "date": "2026-11-11T16:20:30Z",
      "kb_core_min": null,
      "kind": "rc",
+     "language": {
+      "compilers": {
+       "arm_gcc": "10",
+       "clang": "13",
+       "esp_idf": "5.0",
+       "gcc": "10",
+       "msvc": "19.30"
+      },
+      "profile": "KB-CPP20",
+      "source": "default",
+      "standard": 20,
+      "tested": [
+       20
+      ]
+     },
      "mcus": [
       "any"
      ],
@@ -948,6 +1011,21 @@ globalThis.KB_CATALOG = {
      "date": "2026-11-11T16:20:30Z",
      "kb_core_min": null,
      "kind": "rc",
+     "language": {
+      "compilers": {
+       "arm_gcc": "10",
+       "clang": "13",
+       "esp_idf": "5.0",
+       "gcc": "10",
+       "msvc": "19.30"
+      },
+      "profile": "KB-CPP20",
+      "source": "default",
+      "standard": 20,
+      "tested": [
+       20
+      ]
+     },
      "mcus": [
       "any"
      ],
@@ -1022,6 +1100,21 @@ globalThis.KB_CATALOG = {
      "date": "2026-11-11T16:20:32Z",
      "kb_core_min": null,
      "kind": "rc",
+     "language": {
+      "compilers": {
+       "arm_gcc": "10",
+       "clang": "13",
+       "esp_idf": "5.0",
+       "gcc": "10",
+       "msvc": "19.30"
+      },
+      "profile": "KB-CPP20",
+      "source": "default",
+      "standard": 20,
+      "tested": [
+       20
+      ]
+     },
      "mcus": [
       "any"
      ],
@@ -1103,6 +1196,21 @@ globalThis.KB_CATALOG = {
      "date": "2026-11-14T01:43:17Z",
      "kb_core_min": null,
      "kind": "rc",
+     "language": {
+      "compilers": {
+       "arm_gcc": "10",
+       "clang": "13",
+       "esp_idf": "5.0",
+       "gcc": "10",
+       "msvc": "19.30"
+      },
+      "profile": "KB-CPP20",
+      "source": "default",
+      "standard": 20,
+      "tested": [
+       20
+      ]
+     },
      "mcus": [
       "any"
      ],
@@ -1175,6 +1283,21 @@ globalThis.KB_CATALOG = {
      "date": "2026-11-12T22:45:54Z",
      "kb_core_min": null,
      "kind": "rc",
+     "language": {
+      "compilers": {
+       "arm_gcc": "10",
+       "clang": "13",
+       "esp_idf": "5.0",
+       "gcc": "10",
+       "msvc": "19.30"
+      },
+      "profile": "KB-CPP20",
+      "source": "default",
+      "standard": 20,
+      "tested": [
+       20
+      ]
+     },
      "mcus": [
       "any"
      ],
@@ -1247,6 +1370,21 @@ globalThis.KB_CATALOG = {
      "date": "2026-11-13T01:26:56Z",
      "kb_core_min": null,
      "kind": "rc",
+     "language": {
+      "compilers": {
+       "arm_gcc": "10",
+       "clang": "13",
+       "esp_idf": "5.0",
+       "gcc": "10",
+       "msvc": "19.30"
+      },
+      "profile": "KB-CPP20",
+      "source": "default",
+      "standard": 20,
+      "tested": [
+       20
+      ]
+     },
      "mcus": [
       "any"
      ],
@@ -1323,6 +1461,21 @@ globalThis.KB_CATALOG = {
      "date": "2026-11-12T15:39:51Z",
      "kb_core_min": null,
      "kind": "rc",
+     "language": {
+      "compilers": {
+       "arm_gcc": "10",
+       "clang": "13",
+       "esp_idf": "5.0",
+       "gcc": "10",
+       "msvc": "19.30"
+      },
+      "profile": "KB-CPP20",
+      "source": "default",
+      "standard": 20,
+      "tested": [
+       20
+      ]
+     },
      "mcus": [
       "any"
      ],
@@ -1403,6 +1556,21 @@ globalThis.KB_CATALOG = {
      "date": "2026-11-13T06:35:23Z",
      "kb_core_min": null,
      "kind": "rc",
+     "language": {
+      "compilers": {
+       "arm_gcc": "10",
+       "clang": "13",
+       "esp_idf": "5.0",
+       "gcc": "10",
+       "msvc": "19.30"
+      },
+      "profile": "KB-CPP20",
+      "source": "default",
+      "standard": 20,
+      "tested": [
+       20
+      ]
+     },
      "mcus": [
       "any"
      ],
@@ -1473,6 +1641,21 @@ globalThis.KB_CATALOG = {
      "date": "2026-11-11T16:20:31Z",
      "kb_core_min": null,
      "kind": "rc",
+     "language": {
+      "compilers": {
+       "arm_gcc": "10",
+       "clang": "13",
+       "esp_idf": "5.0",
+       "gcc": "10",
+       "msvc": "19.30"
+      },
+      "profile": "KB-CPP20",
+      "source": "default",
+      "standard": 20,
+      "tested": [
+       20
+      ]
+     },
      "mcus": [
       "any"
      ],
@@ -1557,6 +1740,21 @@ globalThis.KB_CATALOG = {
      "date": "2026-11-12T10:36:56Z",
      "kb_core_min": null,
      "kind": "rc",
+     "language": {
+      "compilers": {
+       "arm_gcc": "10",
+       "clang": "13",
+       "esp_idf": "5.0",
+       "gcc": "10",
+       "msvc": "19.30"
+      },
+      "profile": "KB-CPP20",
+      "source": "default",
+      "standard": 20,
+      "tested": [
+       20
+      ]
+     },
      "mcus": [
       "any"
      ],
@@ -1633,6 +1831,21 @@ globalThis.KB_CATALOG = {
      "date": "2026-11-12T10:48:53Z",
      "kb_core_min": null,
      "kind": "rc",
+     "language": {
+      "compilers": {
+       "arm_gcc": "10",
+       "clang": "13",
+       "esp_idf": "5.0",
+       "gcc": "10",
+       "msvc": "19.30"
+      },
+      "profile": "KB-CPP20",
+      "source": "default",
+      "standard": 20,
+      "tested": [
+       20
+      ]
+     },
      "mcus": [
       "any"
      ],
@@ -1768,6 +1981,21 @@ globalThis.KB_CATALOG = {
      "date": "2026-11-11T16:20:31Z",
      "kb_core_min": null,
      "kind": "rc",
+     "language": {
+      "compilers": {
+       "arm_gcc": "10",
+       "clang": "13",
+       "esp_idf": "5.0",
+       "gcc": "10",
+       "msvc": "19.30"
+      },
+      "profile": "KB-CPP20",
+      "source": "default",
+      "standard": 20,
+      "tested": [
+       20
+      ]
+     },
      "mcus": [
       "any"
      ],
@@ -1851,6 +2079,21 @@ globalThis.KB_CATALOG = {
      "date": "2026-11-11T16:20:31Z",
      "kb_core_min": null,
      "kind": "rc",
+     "language": {
+      "compilers": {
+       "arm_gcc": "10",
+       "clang": "13",
+       "esp_idf": "5.0",
+       "gcc": "10",
+       "msvc": "19.30"
+      },
+      "profile": "KB-CPP20",
+      "source": "default",
+      "standard": 20,
+      "tested": [
+       20
+      ]
+     },
      "mcus": [
       "any"
      ],
@@ -1940,6 +2183,21 @@ globalThis.KB_CATALOG = {
      "date": "2026-11-13T07:13:26Z",
      "kb_core_min": null,
      "kind": "rc",
+     "language": {
+      "compilers": {
+       "arm_gcc": "10",
+       "clang": "13",
+       "esp_idf": "5.0",
+       "gcc": "10",
+       "msvc": "19.30"
+      },
+      "profile": "KB-CPP20",
+      "source": "default",
+      "standard": 20,
+      "tested": [
+       20
+      ]
+     },
      "mcus": [
       "any"
      ],
@@ -1999,6 +2257,18 @@ globalThis.KB_CATALOG = {
      "date": "2026-11-20T11:29:26Z",
      "kb_core_min": null,
      "kind": "rc",
+     "language": {
+      "compilers": {
+       "clang": "13",
+       "gcc": "10"
+      },
+      "profile": "KB-CPP20",
+      "source": "driver.yml",
+      "standard": 20,
+      "tested": [
+       20
+      ]
+     },
      "mcus": [
       "any"
      ],
@@ -2017,6 +2287,21 @@ globalThis.KB_CATALOG = {
      "date": "2026-11-19T05:04:38Z",
      "kb_core_min": null,
      "kind": "rc",
+     "language": {
+      "compilers": {
+       "arm_gcc": "10",
+       "clang": "13",
+       "esp_idf": "5.0",
+       "gcc": "10",
+       "msvc": "19.30"
+      },
+      "profile": "KB-CPP20",
+      "source": "default",
+      "standard": 20,
+      "tested": [
+       20
+      ]
+     },
      "mcus": [
       "any"
      ],
@@ -2093,6 +2378,21 @@ globalThis.KB_CATALOG = {
      "date": "2026-11-12T13:22:33Z",
      "kb_core_min": null,
      "kind": "rc",
+     "language": {
+      "compilers": {
+       "arm_gcc": "10",
+       "clang": "13",
+       "esp_idf": "5.0",
+       "gcc": "10",
+       "msvc": "19.30"
+      },
+      "profile": "KB-CPP20",
+      "source": "default",
+      "standard": 20,
+      "tested": [
+       20
+      ]
+     },
      "mcus": [
       "any"
      ],
@@ -2167,6 +2467,21 @@ globalThis.KB_CATALOG = {
      "date": "2026-11-11T16:20:31Z",
      "kb_core_min": null,
      "kind": "rc",
+     "language": {
+      "compilers": {
+       "arm_gcc": "10",
+       "clang": "13",
+       "esp_idf": "5.0",
+       "gcc": "10",
+       "msvc": "19.30"
+      },
+      "profile": "KB-CPP20",
+      "source": "default",
+      "standard": 20,
+      "tested": [
+       20
+      ]
+     },
      "mcus": [
       "any"
      ],
@@ -2240,6 +2555,21 @@ globalThis.KB_CATALOG = {
      "date": "2026-11-13T15:36:13Z",
      "kb_core_min": null,
      "kind": "rc",
+     "language": {
+      "compilers": {
+       "arm_gcc": "10",
+       "clang": "13",
+       "esp_idf": "5.0",
+       "gcc": "10",
+       "msvc": "19.30"
+      },
+      "profile": "KB-CPP20",
+      "source": "default",
+      "standard": 20,
+      "tested": [
+       20
+      ]
+     },
      "mcus": [
       "any"
      ],
@@ -2317,6 +2647,21 @@ globalThis.KB_CATALOG = {
      "date": "2026-11-13T16:46:41Z",
      "kb_core_min": null,
      "kind": "rc",
+     "language": {
+      "compilers": {
+       "arm_gcc": "10",
+       "clang": "13",
+       "esp_idf": "5.0",
+       "gcc": "10",
+       "msvc": "19.30"
+      },
+      "profile": "KB-CPP20",
+      "source": "default",
+      "standard": 20,
+      "tested": [
+       20
+      ]
+     },
      "mcus": [
       "any"
      ],
@@ -2401,6 +2746,21 @@ globalThis.KB_CATALOG = {
      "date": "2026-11-13T08:03:24Z",
      "kb_core_min": null,
      "kind": "rc",
+     "language": {
+      "compilers": {
+       "arm_gcc": "10",
+       "clang": "13",
+       "esp_idf": "5.0",
+       "gcc": "10",
+       "msvc": "19.30"
+      },
+      "profile": "KB-CPP20",
+      "source": "default",
+      "standard": 20,
+      "tested": [
+       20
+      ]
+     },
      "mcus": [
       "esp32"
      ],
@@ -2877,6 +3237,21 @@ globalThis.KB_CATALOG = {
     "commit": "b0ddc2f19612aab8bff249688a833a507b3034fb",
     "date": "2026-11-21T04:51:38Z",
     "kind": "rc",
+    "language": {
+     "compilers": {
+      "arm_gcc": "10",
+      "clang": "13",
+      "esp_idf": "5.0",
+      "gcc": "10",
+      "msvc": "19.30"
+     },
+     "profile": "KB-CPP20",
+     "source": "default",
+     "standard": 20,
+     "tested": [
+      20
+     ]
+    },
     "osv": null,
     "tag": "v0.1.0-rc.1",
     "version": "0.1.0-rc.1"
@@ -3531,6 +3906,7 @@ globalThis.KB_CATALOG = {
     if (kbImg.mcu.port) mcuText = mcuText.replace(/\}$/, `, port: ${yamlFlow(kbImg.mcu.port)}}`);
     lines.push(`mcu: ${mcuText}`);
     if (kbImg.rtos) lines.push(`rtos: ${yamlScalar(kbImg.rtos)}`);
+    if (kbImg.language) lines.push(`language: ${yamlFlow(kbImg.language)}`);
     if (!kbImg.drivers.length) lines.push('drivers: []');
     else {
       lines.push('drivers:');
@@ -3820,10 +4196,12 @@ globalThis.KB_CATALOG = {
 // [a-z0-9-]) go in; nothing about the person using the page. Format (version 1):
 //   #v=1&f=<family>&t=<target>&b=<board>&r=<rtos>&k=<kb-core version or empty>&p=<port version or empty>
 //    &n=<image name>&d=<name>~<version>~<via>~<bus>,...&m=<bus>~<o|g>,...[&c=1 when release candidates are shown]
+//    [&x=<C++ standard> when the image declares its language, docs/language-floor.md]
 (function (g) {
   'use strict';
   const KB = (g.KB = g.KB || {});
   const ID = /^[a-z0-9][a-z0-9_.-]*$/;
+  const STANDARDS = [17, 20, 23, 26]; // resolver.mjs STANDARDS
 
   function clean(v) {
     return typeof v === 'string' && ID.test(v) ? v : '';
@@ -3843,6 +4221,7 @@ globalThis.KB_CATALOG = {
     if (!o.omitName) p.set('n', KB.core.safeName(image.image));
     p.set('d', (image.drivers || []).map((d) => [d.name, d.version, d.via, d.bus].join('~')).join(','));
     p.set('m', Object.keys(image.buses || {}).sort().map((id) => `${id}~${image.buses[id].model === 'owner' ? 'o' : 'g'}`).join(','));
+    if (image.cxx) p.set('x', String(image.cxx));
     if (o.rc) p.set('c', '1');
     return '#' + p.toString().replace(/%7E/g, '~').replace(/%2C/g, ',');
   }
@@ -3859,7 +4238,7 @@ globalThis.KB_CATALOG = {
       const [id, m] = s.split('~');
       if (clean(id)) buses[id] = { model: m === 'o' ? 'owner' : 'guarded' };
     }
-    return {
+    const out = {
       image: KB.core.safeName(p.get('n')),
       kb_core: clean(p.get('k')) || null,
       port: clean(p.get('p')) || null,
@@ -3868,6 +4247,8 @@ globalThis.KB_CATALOG = {
       drivers,
       buses,
     };
+    if (STANDARDS.includes(Number(p.get('x')))) out.cxx = Number(p.get('x')); // only when the link carries one
+    return out;
   }
 
   // Page switches carried in the hash beside the selection.
@@ -3900,6 +4281,11 @@ globalThis.KB_CATALOG = {
     return v && v.osv ? v.osv : null;
   }
 
+  // The version's language floor when the catalogue records one (tools/kb/catalog.py from_site does the same).
+  function langOf(v) {
+    return v && v.language && typeof v.language === 'object' ? { language: v.language } : {};
+  }
+
   // kb-core's catalogue: the subset of the site catalogue the shared rules (resolver and upgrade planner) read. The
   // kb tool derives the same document from the same file (tools/kb/catalog.py from_site), field for field, so the
   // site and `kb upgrade --catalog data/catalog.json` plan the same thing.
@@ -3910,7 +4296,7 @@ globalThis.KB_CATALOG = {
         repo: site.kb_core.repo,
         license: 'MIT',
         authors: ['The kb-core authors'],
-        versions: site.kb_core.releases.map((r) => ({ version: r.version, tag: r.tag, commit: r.commit, kind: r.kind, osv: osvOf(r) })),
+        versions: site.kb_core.releases.map((r) => ({ version: r.version, tag: r.tag, commit: r.commit, kind: r.kind, osv: osvOf(r), ...langOf(r) })),
       },
       parts: site.kb_core.parts.slice(),
       rtos: site.rtos.map((r) => ({ name: r.id, status: r.status })),
@@ -3922,7 +4308,7 @@ globalThis.KB_CATALOG = {
         default_rtos: f.default_rtos,
         port: f.port ? {
           name: f.port.name, repo: f.port.repo, path: f.port.path,
-          versions: f.port.releases.map((r) => ({ version: r.version, tag: r.tag, commit: r.commit, kind: r.kind, osv: osvOf(r) })),
+          versions: f.port.releases.map((r) => ({ version: r.version, tag: r.tag, commit: r.commit, kind: r.kind, osv: osvOf(r), ...langOf(r) })),
         } : null,
       })),
       drivers: site.drivers.map((d) => ({
@@ -3934,7 +4320,7 @@ globalThis.KB_CATALOG = {
           version: v.version, tag: v.tag, commit: v.commit, kind: v.kind, bus: v.bus.slice(), mcus: v.mcus.slice(),
           peripheral: v.peripheral, kb_core_min: v.kb_core_min,
           requires_owner: typeof v.requires_owner === 'boolean' ? v.requires_owner : d.requires_owner,
-          license: d.licence.spdx, authors: holders(d.licence.copyright), osv: osvOf(v),
+          license: d.licence.spdx, authors: holders(d.licence.copyright), osv: osvOf(v), ...langOf(v),
         })),
       })),
     };
@@ -3952,6 +4338,7 @@ globalThis.KB_CATALOG = {
     if (image.mcu.target) out.mcu.target = image.mcu.target;
     if (image.port) out.mcu.port = { version: image.port };
     if (image.rtos) out.rtos = image.rtos;
+    if (image.cxx) out.language = { standard: image.cxx };
     out.drivers = (image.drivers || []).map((d) => ({ name: d.name, version: d.version }));
     const buses = {};
     for (const d of image.drivers || []) {
@@ -4407,6 +4794,7 @@ globalThis.KB_CATALOG = {
       port: VERSION_ID.test(port || '') ? port : null,
       mcu: { family: str(mcu.family), target: str(mcu.target), board: null },
       rtos: str(image.rtos),
+      cxx: isObj(image.language) && [17, 20, 23, 26].includes(image.language.standard) ? image.language.standard : null,
       drivers: [],
       buses: {},
     };
@@ -4502,9 +4890,15 @@ globalThis.KB_CATALOG = {
       || sel.drivers.some((d) => drivers.has(d.name) && rcOf(drivers.get(d.name).versions, d.version));
   }
   // The version a driver gets when added: kb-core's pin or the newest release, or with the toggle on also an rc.
+  // With a declared C++ standard, only versions that build with it are offered first (docs/language-floor.md).
   function pickVersion(d) {
-    if (showRc) return latestVersion(d);
-    const rel = d.versions.filter((v) => !isRc(v));
+    const fits = (v) => !image || !image.cxx || cxxOf(v) <= image.cxx;
+    if (showRc) {
+      const best = latestVersion(d);
+      if (!best || fits(best)) return best;
+      return d.versions.filter(fits).sort((a, b) => KB.core.compareVersions(b.version, a.version))[0] || best;
+    }
+    const rel = d.versions.filter((v) => !isRc(v) && fits(v));
     if (d.pinned) { const pinned = rel.find((v) => v.version === d.pinned); if (pinned) return pinned; }
     return rel.slice().sort((a, b) => KB.core.compareVersions(b.version, a.version))[0] || null;
   }
@@ -4527,6 +4921,7 @@ globalThis.KB_CATALOG = {
       port: fam.port ? newestVersion(fam.port.releases) : null,
       mcu: { family: fam.id, target: board.target, board: board.id },
       rtos: fam.default_rtos,
+      cxx: null,
       drivers: [],
       buses: {},
     };
@@ -4647,6 +5042,14 @@ globalThis.KB_CATALOG = {
     $('rtos-note').textContent = fam.rtos_note || 'The RTOS backend of kb::rtos.';
   }
 
+  // The C++ standard a version needs (its catalogue language block, else the registry default C++20).
+  function cxxOf(v) {
+    return v && v.language && typeof v.language.standard === 'number' ? v.language.standard : 20;
+  }
+  function verText(v) {
+    return `${v.version}${v.kind === 'rc' ? ' (rc)' : ''}, C++${cxxOf(v)}`;
+  }
+
   function versionOptions(releases, current, none) {
     const opts = visibleVersions(releases, current).slice().sort((a, b) => KB.core.compareVersions(b.version, a.version))
       .map((r) => h('option', { value: r.version, selected: r.version === current,
@@ -4668,6 +5071,9 @@ globalThis.KB_CATALOG = {
     }
     const name = $('image-name');
     if (doc.activeElement !== name) name.value = image.image;
+    $('cxx').replaceChildren(
+      h('option', { value: '', selected: !image.cxx, text: 'Not declared (no check)' }),
+      ...[20, 23].map((n) => h('option', { value: String(n), selected: image.cxx === n, text: `C++${n}` })));
   }
 
   // -- step 3: the catalogue ---------------------------------------------------------------------------------
@@ -4724,7 +5130,7 @@ globalThis.KB_CATALOG = {
             update();
           }
         } },
-      d.versions.length ? d.versions.map((v) => h('option', { value: v.version, selected: latest && v.version === latest.version, text: `${v.version}${v.kind === 'rc' ? ' (rc)' : ''}` }))
+      d.versions.length ? d.versions.map((v) => h('option', { value: v.version, selected: latest && v.version === latest.version, text: verText(v) }))
         : h('option', { text: 'none published' }));
       const add = h('button', { type: 'button', class: 'add', id: 'add-' + d.name, 'aria-pressed': 'false', disabled: !d.versions.length,
         text: 'Add',
@@ -4800,7 +5206,7 @@ globalThis.KB_CATALOG = {
       const shownVersions = visibleVersions(d.versions, s ? s.version : null);
       const want = s ? s.version : (pickVersion(d) || {}).version;
       versionSel.replaceChildren(...(shownVersions.length
-        ? shownVersions.map((v) => h('option', { value: v.version, selected: v.version === want, text: `${v.version}${v.kind === 'rc' ? ' (rc)' : ''}` }))
+        ? shownVersions.map((v) => h('option', { value: v.version, selected: v.version === want, text: verText(v) }))
         : [h('option', { value: '', text: d.versions.length ? 'release candidates only' : 'none published' })]));
       versionSel.disabled = !shownVersions.length;
       add.disabled = !shownVersions.length && !s;
@@ -5208,6 +5614,7 @@ globalThis.KB_CATALOG = {
     $('kb-version').addEventListener('change', (e) => { image.kb_core = e.target.value || null; update(); });
     $('port-version').addEventListener('change', (e) => { image.port = e.target.value || null; update(); });
     $('image-name').addEventListener('change', (e) => { image.image = e.target.value; update(); });
+    $('cxx').addEventListener('change', (e) => { image.cxx = e.target.value ? Number(e.target.value) : null; update(); });
     $('tabs').addEventListener('keydown', onTabKey);
     $('open-files').addEventListener('change', (e) => { openFiles(e.target.files).catch((err) => { $('open-status').textContent = `Could not read the files: ${err.message}`; }); });
     $('allow-rc').addEventListener('change', (e) => setShowRc(e.target.checked, true));
@@ -5262,7 +5669,7 @@ globalThis.KB_CATALOG = {
 // Copyright (c) 2026 The kb-core authors
 
 const VERSION_RE = /^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(-rc\.(0|[1-9][0-9]*))?$/;
-const IMAGE_KEYS = ["buses", "drivers", "image", "kb_core", "mcu", "rtos", "schema"];
+const IMAGE_KEYS = ["buses", "drivers", "image", "kb_core", "language", "mcu", "rtos", "schema"];
 const NAME_RE = /^[a-z0-9][a-z0-9-]{0,62}$/;
 const BUS_RE = /^[a-z][a-z0-9_]{0,31}$/;
 const BUS_KIND_RE = /^(i2c|spi|uart|can|adc|pio|gpio)[0-9]*$/;
@@ -5270,6 +5677,15 @@ const BUS_KINDS = ["adc", "can", "canopen", "gpio", "i2c", "modbus", "onewire", 
 const MODELS = ["guarded", "owner"];
 const PART_ORDER = ["utils", "rtos", "interfaces", "handlers"];
 const DEFAULT_IMAGE = "kb-image";
+// The language floor (docs/language-floor.md). A catalogue entry without a `language` block is read as the registry
+// default, profile KB-CPP20 of the organisation's standards registry (ci-tools tools/standards/standards.yml).
+const DEFAULT_LANGUAGE = Object.freeze({
+  standard: 20, profile: "KB-CPP20",
+  compilers: Object.freeze({ arm_gcc: "10", clang: "13", esp_idf: "5.0", gcc: "10", msvc: "19.30" }),
+});
+const STANDARDS = [17, 20, 23, 26];
+const COMPILERS = ["arm_gcc", "clang", "esp_idf", "gcc", "msvc"];
+const COMPILER_RE = /^(0|[1-9][0-9]*)(\.(0|[1-9][0-9]*)){0,2}$/;
 
 const LOCK_FILE = "kb-image.lock.yml";
 const PRESETS_FILE = "CMakePresets.json";
@@ -5310,11 +5726,11 @@ class Collector {
     this.errors = [];
     this.warnings = [];
   }
-  error(code, subject, message) {
-    this.errors.push({ code, subject, message });
+  error(code, subject, message, extra = {}) {
+    this.errors.push({ code, subject, message, ...extra });
   }
-  warn(code, subject, message) {
-    this.warnings.push({ code, subject, message });
+  warn(code, subject, message, extra = {}) {
+    this.warnings.push({ code, subject, message, ...extra });
   }
 }
 
@@ -5322,6 +5738,91 @@ function unknownKeys(c, obj, allowed, prefix) {
   for (const key of sortedKeys(obj)) {
     if (!allowed.includes(key)) c.error("KB-RES-022", `${prefix}${key}`, `unknown field '${prefix}${key}'`);
   }
+}
+
+function checkLanguageShape(lang, c) {
+  if (!isObj(lang)) {
+    c.error("KB-RES-001", "language", "language must be a mapping with a standard");
+    return;
+  }
+  unknownKeys(c, lang, ["compilers", "standard"], "language.");
+  if (!isInt(lang.standard) || !STANDARDS.includes(lang.standard)) {
+    c.error("KB-RES-001", "language.standard", `language.standard must be one of ${STANDARDS.join(", ")}`);
+  }
+  if (has(lang, "compilers")) {
+    const comps = lang.compilers;
+    if (!isObj(comps)) {
+      c.error("KB-RES-001", "language.compilers", "language.compilers must be a mapping of compiler to version");
+      return;
+    }
+    unknownKeys(c, comps, COMPILERS, "language.compilers.");
+    for (const key of sortedKeys(comps).filter((k) => COMPILERS.includes(k))) {
+      if (!(isStr(comps[key]) && COMPILER_RE.test(comps[key]))) {
+        c.error("KB-RES-001", `language.compilers.${key}`,
+          `language.compilers.${key} must be a quoted version such as "12" or "12.2"`);
+      }
+    }
+  }
+}
+
+/** The language block of a catalogue entry, or the registry default when it has none. */
+function languageOf(entry) {
+  const lang = entry ? entry.language : undefined;
+  if (!isObj(lang)) return DEFAULT_LANGUAGE;
+  return { standard: has(lang, "standard") ? lang.standard : 20, compilers: { ...(lang.compilers || {}) } };
+}
+
+const numbers = (text) => text.split(".").map(Number);
+function compareNumbers(a, b) {
+  const x = numbers(a);
+  const y = numbers(b);
+  for (let i = 0; i < Math.max(x.length, y.length); i += 1) {
+    const p = i < x.length ? x[i] : null;
+    const q = i < y.length ? y[i] : null;
+    if (p === null) return -1; // Python tuple order: a shorter prefix sorts first
+    if (q === null) return 1;
+    if (p !== q) return p > q ? 1 : -1;
+  }
+  return 0;
+}
+
+/** null when `entry` builds with the project's declared language `want`, else [code, needs, has, raise]. */
+function languageMisfit(entry, want) {
+  const lang = languageOf(entry);
+  if (lang.standard > want.standard) {
+    return ["KB-RES-024", `C++${lang.standard}`, `C++${want.standard}`, `language.standard to ${lang.standard}`];
+  }
+  for (const key of sortedKeys(want.compilers || {})) {
+    const need = lang.compilers[key];
+    const have = want.compilers[key];
+    if (need !== undefined && compareNumbers(need, have) > 0) {
+      return ["KB-RES-025", `${key} ${need} or newer`, `${key} ${have}`, `language.compilers.${key} to ${need}`];
+    }
+  }
+  return null;
+}
+
+/** The newest release whose floor the project meets, else the newest release candidate, else null. */
+function newestFitting(versions, want) {
+  const fit = versions.filter((v) => v.kind !== "dev" && languageMisfit(v, want) === null);
+  return newest(fit, "release") || newest(fit, "rc");
+}
+
+function languageFinding(c, subject, label, entry, want, versions) {
+  const bad = languageMisfit(entry, want);
+  if (bad === null) return;
+  const [code, needs, hasText, lift] = bad;
+  const alt = newestFitting(versions, want);
+  const hint = alt !== null
+    ? `${label} ${alt.version} is the newest version that builds with ${hasText}, or raise ${lift}`
+    : `no version of ${label} builds with ${hasText}; raise ${lift}`;
+  c.error(code, subject, `${label} ${entry.version} needs ${needs}; the project builds with ${hasText}. ${hint}`,
+    { alternative: alt === null ? null : alt.version });
+}
+
+function wantedLanguage(image) {
+  if (!has(image, "language")) return null;
+  return { standard: image.language.standard, compilers: { ...(image.language.compilers || {}) } };
 }
 
 // Phase 1: the image's shape. Returns the normalised driver list [[name, version or null]].
@@ -5366,6 +5867,7 @@ function checkShape(image, c) {
     }
   }
   if (has(image, "rtos") && !isStr(image.rtos)) c.error("KB-RES-001", "rtos", "rtos must be a string");
+  if (has(image, "language")) checkLanguageShape(image.language, c);
   const drivers = [];
   if (has(image, "drivers")) {
     const lst = image.drivers;
@@ -5478,6 +5980,8 @@ function resolve(catalog, image) {
   } else if (kb.kind === "dev") {
     c.warn("KB-RES-W03", "kb-core", `kb-core ${kbReq} at ${kb.commit.slice(0, 12)} is not a release`);
   }
+  const want = wantedLanguage(image);
+  if (kb !== null && want !== null) languageFinding(c, "kb-core", "kb-core", kb, want, catalog.kb_core.versions);
 
   // MCU family, target and port
   const famReq = image.mcu.family;
@@ -5554,11 +6058,22 @@ function resolve(catalog, image) {
       c.error("KB-RES-012", name, `'${verReq}' is not X.Y.Z or X.Y.Z-rc.N`);
       continue;
     }
-    const ver = verReq === null ? defaultVersion(drv.versions, drv.pinned) : find(drv.versions, "version", verReq);
+    let ver = verReq === null ? defaultVersion(drv.versions, drv.pinned) : find(drv.versions, "version", verReq);
     if (ver === null) {
       c.error("KB-RES-011", name, `driver '${name}' has no version ${verReq !== null ? verReq : "(any)"}`);
       continue;
     }
+    if (want !== null && verReq === null && languageMisfit(ver, want) !== null) {
+      // No version named: use the newest one the project's language can build (docs/language-floor.md).
+      const alt = newestFitting(drv.versions, want);
+      if (alt !== null) {
+        const bad = languageMisfit(ver, want);
+        c.warn("KB-RES-W04", name, `${name} ${ver.version} needs ${bad[1]}; ${alt.version} is the newest version that builds with ${bad[2]}, so it is used`,
+          { alternative: alt.version });
+        ver = alt;
+      }
+    }
+    if (want !== null) languageFinding(c, name, name, ver, want, drv.versions);
     if (ver.kind === "rc") c.warn("KB-RES-W01", name, `${name} ${ver.version} is a release candidate`);
     if (mcu !== null && !ver.mcus.includes("any") && !ver.mcus.includes(famReq)) {
       let need = ver.mcus.join(", ");
@@ -5650,6 +6165,12 @@ function resolve(catalog, image) {
     buses: busLock,
     cmake,
   };
+  if (want !== null) {
+    cmake.KB_CPP_STANDARD = String(want.standard);
+    const compilers = {};
+    for (const k of sortedKeys(want.compilers)) compilers[k] = want.compilers[k];
+    lock.language = { standard: want.standard, compilers };
+  }
   return result(c, lock);
 }
 
@@ -5826,11 +6347,14 @@ const HELD_TEXT = {
   "KB-RES-014": "needs a newer kb-core",
   "KB-RES-018": "requires an owner-task bus",
   "KB-RES-019": "does not support the bus kind in use",
+  "KB-RES-024": "needs a newer C++ standard than the image's language block",
+  "KB-RES-025": "needs a newer compiler than the image's language block",
 };
 
 const WARNING_TEXT = {
   "KB-RES-W01": "release candidate",
   "KB-RES-W03": "kb-core development revision",
+  "KB-RES-W04": "older driver version for the language block",
   "KB-UPG-W01": "breaking change",
   "KB-UPG-W02": "newer version held back",
   "KB-UPG-W03": "known vulnerabilities remain",
@@ -6071,7 +6595,12 @@ function plan(catalog, image, options = {}) {
   const [kbCur, kbRelock] = currentOf("kb-core", cur.kb_core);
   const none = () => null;
   const target = (k) => (has(to, k) ? to[k] : undefined);
-  const [kbNew, kbHeld] = pick(kbVersions, kbCur, allowRc, target("kb-core"), none, "kb-core", c);
+  const want = wantedLanguage(current);
+  const langGate = (v) => {
+    const bad = want === null ? null : languageMisfit(v, want);
+    return bad === null ? null : bad[0];
+  };
+  const [kbNew, kbHeld] = pick(kbVersions, kbCur, allowRc, target("kb-core"), langGate, "kb-core", c);
   const rows = [];
   if (kbNew !== null) rows.push(upgradeRow("kb-core", "kb-core", catalog.kb_core.repo, kbVersions, kbCur, kbNew, kbHeld, kbRelock));
 
@@ -6101,7 +6630,7 @@ function plan(catalog, image, options = {}) {
       if (kbNew !== null && kmin !== null && kmin !== undefined && compareVersions(kmin, kbNew.version) > 0) return "KB-RES-014";
       for (const bus of busesOf.get(name) || []) if (v.requires_owner && bus.model === "guarded") return "KB-RES-018";
       for (const bus of busesOf.get(name) || []) if (bus.kind !== null && !v.bus.includes(bus.kind)) return "KB-RES-019";
-      return null;
+      return langGate(v);
     };
     const [dCur, dRelock] = currentOf(name, d);
     const [nv, held] = pick(entry.versions, dCur, allowRc, target(name), gate, name, c);
@@ -6149,6 +6678,12 @@ function imageText(image) {
   if (has(mcu, "port")) pairs.push(["port", has(mcu.port, "version") ? flow([["version", q(mcu.port.version)]]) : "{}"]);
   lines.push(`mcu: ${flow(pairs)}`);
   if (has(image, "rtos")) lines.push(`rtos: ${q(image.rtos)}`);
+  if (has(image, "language")) {
+    const lang = image.language;
+    const p = [["standard", String(lang.standard)]];
+    if (has(lang, "compilers")) p.push(["compilers", flow(sortedKeys(lang.compilers).map((k) => [k, q(lang.compilers[k])]))]);
+    lines.push(`language: ${flow(p)}`);
+  }
   if (has(image, "drivers")) {
     if (!image.drivers.length) lines.push("drivers: []");
     else {
@@ -6239,7 +6774,7 @@ function upgradeFiles(result, allowRc = false) {
   return out;
 }
 
-globalThis.KB.engine = { LOCK_FILE, PRESETS_FILE, CMAKE_FILE, FETCH_FILE, parseVersion, compareVersions, resolve, canonicalJson, lockText, presetsText, cmakeText, layout, fetchText, files, IMAGE_FILE, REPORT_FILE, HELD_TEXT, plan, imageText, upgradeReport, upgradeFiles };
+globalThis.KB.engine = { DEFAULT_LANGUAGE, STANDARDS, LOCK_FILE, PRESETS_FILE, CMAKE_FILE, FETCH_FILE, parseVersion, compareVersions, languageOf, languageMisfit, newestFitting, resolve, canonicalJson, lockText, presetsText, cmakeText, layout, fetchText, files, IMAGE_FILE, REPORT_FILE, HELD_TEXT, plan, imageText, upgradeReport, upgradeFiles };
 })();
 globalThis.KB.ui.refresh();
 </script>

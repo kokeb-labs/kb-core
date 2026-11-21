@@ -14,6 +14,9 @@ so a copied link reproduces it exactly. To use it without a network, open `confi
    families that list it), the kb-core version and, once the port has its own repository, the port version.
    Until kb-core has a release, the catalogue offers its development revision, pinned by commit and flagged with a
    warning.
+   **C++ standard** declares what your toolchain builds with (`language:` in `kb-image.yml`, `x=` in the link);
+   a part that needs a newer standard is then refused with the newest version that fits, and a driver added
+   afterwards gets that version ([Language floor](language-floor.md)). Left at *Not declared*, nothing is checked.
 3. **Drivers.** Search the catalogue by chip, bus or capability, or filter by bus. Each card shows the chip, its
    package, the buses it speaks, its capabilities, its licence, its status and a pinout or block diagram (click it
    for every figure). Each driver has a version selector with its published releases; the default is kb-core's pin,

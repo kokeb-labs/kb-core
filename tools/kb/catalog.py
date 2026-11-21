@@ -11,7 +11,7 @@ import os
 import re
 import subprocess
 
-from . import platforms, repolayout, semver, yamlio
+from . import language, platforms, repolayout, semver, yamlio
 
 BUSES = ("adc", "can", "canopen", "gpio", "i2c", "modbus", "onewire", "pio", "spi", "uart")
 NAME_RE = re.compile(r"^[a-z][a-z0-9_]*$")
@@ -59,6 +59,8 @@ def version_entry(doc, tag, commit, license_text, where):
     authors = doc.get("authors", [])
     if not isinstance(authors, list) or any(not isinstance(a, str) for a in authors):
         problems.append(f"{where}: authors at {tag} must be a list of strings")
+    lang, lang_problems = language.normalise(doc.get("language"), "driver.yml", f"{where} at {tag}")
+    problems += lang_problems
     if problems:
         return None, problems
     lic = doc.get("license") or detect_license(license_text)
@@ -67,6 +69,7 @@ def version_entry(doc, tag, commit, license_text, where):
         "bus": sorted(bus), "mcus": sorted(m.lower() for m in mcus), "peripheral": doc.get("peripheral"),
         "kb_core_min": None if kmin is None else str(kmin), "requires_owner": bool(doc.get("requires_owner", False)),
         "license": lic, "authors": list(authors), **({"bindings": list(bindings)} if bindings else {}),
+        "language": lang,
     }, []
 
 
@@ -193,9 +196,18 @@ def driver_dirs(paths):
     return found
 
 
+def kb_language(text, where):
+    """kb-core's language floor from the text of its kb.yml at a revision (None: the file is missing)."""
+    lang, problems = language.normalise(language.block_from_text(text) if text is not None else None, "kb.yml", where)
+    if problems:
+        raise CatalogError("; ".join(problems))
+    return lang
+
+
 def kb_core_versions(kb_dir, include_head):
     """kb-core's own release and rc tags, plus the working revision as kind dev when asked."""
-    versions = [{"version": tag[1:], "tag": tag, "commit": commit, "kind": semver.tag_kind(tag)}
+    versions = [{"version": tag[1:], "tag": tag, "commit": commit, "kind": semver.tag_kind(tag),
+                 "language": kb_language(_git(kb_dir, "show", f"{commit}:kb.yml"), f"{kb_dir}@{tag}:kb.yml")}
                 for tag, commit in local_tags(kb_dir)]
     if include_head:
         text = open(os.path.join(kb_dir, "cmake", "kb_version.cmake"), encoding="utf-8").read()
@@ -205,7 +217,10 @@ def kb_core_versions(kb_dir, include_head):
         version = ".".join(m.group(1) for m in parts)
         commit = (_git(kb_dir, "rev-parse", "HEAD") or "").strip()
         if not any(v["version"] == version for v in versions):
-            versions.append({"version": version, "tag": None, "commit": commit, "kind": "dev"})
+            kb_yml = os.path.join(kb_dir, "kb.yml")
+            text = open(kb_yml, encoding="utf-8").read() if os.path.isfile(kb_yml) else None
+            versions.append({"version": version, "tag": None, "commit": commit, "kind": "dev",
+                             "language": kb_language(text, f"{kb_dir}/kb.yml")})
     return versions
 
 
@@ -284,16 +299,19 @@ def from_site(site):
     The same derivation as KB.shared.kbCatalog in configurator/js/shared.js, field for field, so `kb outdated` and
     `kb upgrade` given the site's catalogue plan exactly what the site plans (configurator/tests check both agree).
     """
+    def lang(entry):
+        return {"language": entry["language"]} if isinstance(entry.get("language"), dict) else {}
+
     def releases(items):
-        return [{"version": r["version"], "tag": r["tag"], "commit": r["commit"], "kind": r["kind"], "osv": _osv(r)}
-                for r in items]
+        return [{"version": r["version"], "tag": r["tag"], "commit": r["commit"], "kind": r["kind"], "osv": _osv(r),
+                 **lang(r)} for r in items]
 
     def version(d, v):
         req = v["requires_owner"] if isinstance(v.get("requires_owner"), bool) else d["requires_owner"]
         return {"version": v["version"], "tag": v["tag"], "commit": v["commit"], "kind": v["kind"], "bus": list(v["bus"]),
                 "mcus": list(v["mcus"]), "peripheral": v["peripheral"], "kb_core_min": v["kb_core_min"],
                 "requires_owner": req, "license": d["licence"]["spdx"], "authors": _holders(d["licence"]["copyright"]),
-                "osv": _osv(v)}
+                "osv": _osv(v), **lang(v)}
 
     return {
         "schema": 1,

@@ -60,7 +60,7 @@ for (const file of sharedFiles) {
     const catalog = typeof vec.catalog === 'string' ? json(join(dirname(join(shared, file)), vec.catalog)) : vec.catalog;
     const engine = ctx.KB.engine;
     const got = engine.resolve(catalog, vec.image);
-    const pick = (list) => list.map((e) => ({ code: e.code, subject: e.subject }));
+    const pick = (list) => list.map((e) => ({ code: e.code, subject: e.subject, ...("alternative" in e ? { alternative: e.alternative } : {}) }));
     const actual = { ok: got.ok, errors: pick(got.errors), warnings: pick(got.warnings) };
     if (got.ok) {
       actual.lock = got.lock;

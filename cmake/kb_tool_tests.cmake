@@ -6,6 +6,7 @@
 #   kb_layout_stale         no tracked file names a retired location
 #   kb_examples_unit        tools/examples: the checks on throwaway trees
 #   kb_examples_index       examples/examples.yml, the folders, the README, the doc snippets and the catalogue agree
+#   kb_language_floor       configuring with KB_CPP_STANDARD below the floor in kb.yml fails with its message
 # Included from the root CMakeLists.txt; adds nothing unless KB_BUILD_TESTS is ON.
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2026 The kb-core authors
@@ -38,6 +39,12 @@ if(Python3_Interpreter_FOUND)
   add_test(NAME kb_examples_index COMMAND ${Python3_EXECUTABLE} ${KB_TOOLS_DIR}/examples/examples.py check)
   set_tests_properties(kb_examples_index PROPERTIES LABELS tools)
 endif()
+
+# The language floor (cmake/kb_language.cmake): a standard below kb.yml's is refused at configure time.
+add_test(NAME kb_language_floor
+  COMMAND ${CMAKE_COMMAND} -S ${KB_ROOT} -B ${CMAKE_BINARY_DIR}/kb_language_floor -DKB_CPP_STANDARD=17)
+set_tests_properties(kb_language_floor PROPERTIES LABELS tools
+  PASS_REGULAR_EXPRESSION "is below kb-core's language floor C\\+\\+20")
 
 find_program(KB_NODE node)
 if(KB_NODE)

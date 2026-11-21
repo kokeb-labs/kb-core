@@ -14,7 +14,7 @@ kb_add_part(handlers DEPENDS interfaces rtos utils)
 # The headers without a selected RTOS backend and without drivers: what the tests, header checks and the cross build
 # compile against (each test picks its backend).
 add_library(kb_handlers_api INTERFACE)
-target_compile_features(kb_handlers_api INTERFACE cxx_std_20)
+target_compile_features(kb_handlers_api INTERFACE ${KB_CXX_FLOOR_FEATURE})
 target_include_directories(kb_handlers_api INTERFACE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/inc>")
 target_link_libraries(kb_handlers_api INTERFACE kb_interfaces_contracts kb_rtos_api)
 
