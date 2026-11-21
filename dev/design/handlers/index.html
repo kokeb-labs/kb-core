@@ -1846,7 +1846,7 @@ must be serviced continuously declares <code>kRequiresOwner</code> in its bindin
 <code>Guarded&lt;H&gt;::Hold(timeout)</code> keeps both locks in the same order, and on an owner bus the owner task takes
 <code>BusDomain::Hold()</code> between passes and calls through <code>OwnerAccess&lt;H&gt;::Held(hold)</code>. A hot-path read that must not
 wait at all uses the asynchronous contract through <code>AsyncPoller</code>. Both are on <a href="../bus-access/">Bus access</a>
-(ADR-0015); the liveness verdict and the fault journal are on <a href="../fault-journal/">Fault evidence</a>.</p>
+(ADR-0016); the liveness verdict and the fault journal are on <a href="../fault-journal/">Fault evidence</a>.</p>
 <h2 id="uniform-api-across-driver-shapes">Uniform API across driver shapes<a class="headerlink" href="#uniform-api-across-driver-shapes" title="Permanent link">&para;</a></h2>
 <table>
 <thead>

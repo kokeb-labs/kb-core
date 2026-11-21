@@ -10,7 +10,7 @@
       
       
       
-        <link rel="canonical" href="https://kokeb-labs.github.io/kb-core/latest/adr/ADR-0015-async-bus-and-held-transactions/">
+        <link rel="canonical" href="https://kokeb-labs.github.io/kb-core/latest/adr/ADR-0016-async-bus-and-held-transactions/">
       
       
         <link rel="prev" href="../ADR-0015-threadx-backend/">
@@ -27,7 +27,7 @@
     
     
       
-        <title>ADR-0015 Async bus and held transactions - kb-core</title>
+        <title>ADR-0016 Async bus and held transactions - kb-core</title>
       
     
     
@@ -98,9 +98,9 @@
   <meta name="theme-color" content="#1b2140" media="(prefers-color-scheme: dark)">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Kokeb Labs">
-  <meta property="og:title" content="ADR-0015 Async bus and held transactions - kb-core">
+  <meta property="og:title" content="ADR-0016 Async bus and held transactions - kb-core">
   <meta property="og:description" content="Utilities, RTOS wrapper, bus and pin interfaces and driver handlers between the Kokeb Labs drivers and a board HAL.">
-  <meta property="og:url" content="https://kokeb-labs.github.io/kb-core/latest/adr/ADR-0015-async-bus-and-held-transactions/">
+  <meta property="og:url" content="https://kokeb-labs.github.io/kb-core/latest/adr/ADR-0016-async-bus-and-held-transactions/">
   <meta name="twitter:card" content="summary">
 
   </head>
@@ -122,7 +122,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#adr-0015-non-blocking-bus-access-and-held-bus-transactions" class="md-skip">
+        <a href="#adr-0016-non-blocking-bus-access-and-held-bus-transactions" class="md-skip">
           Skip to content
         </a>
       
@@ -174,7 +174,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              ADR-0015 Async bus and held transactions
+              ADR-0016 Async bus and held transactions
             
           </span>
         </div>
@@ -1665,7 +1665,7 @@
   <span class="md-ellipsis">
     
   
-    ADR-0015 Async bus and held transactions
+    ADR-0016 Async bus and held transactions
   
 
     
@@ -1683,7 +1683,7 @@
   <span class="md-ellipsis">
     
   
-    ADR-0015 Async bus and held transactions
+    ADR-0016 Async bus and held transactions
   
 
     
@@ -1969,7 +1969,7 @@
 
 
   
-    <a href="https://github.com/kokeb-labs/kb-core/edit/main/docs/adr/ADR-0015-async-bus-and-held-transactions.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+    <a href="https://github.com/kokeb-labs/kb-core/edit/main/docs/adr/ADR-0016-async-bus-and-held-transactions.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -1977,7 +1977,7 @@
   
 
 
-<h1 id="adr-0015-non-blocking-bus-access-and-held-bus-transactions">ADR-0015: Non-blocking bus access and held bus transactions<a class="headerlink" href="#adr-0015-non-blocking-bus-access-and-held-bus-transactions" title="Permanent link">&para;</a></h1>
+<h1 id="adr-0016-non-blocking-bus-access-and-held-bus-transactions">ADR-0016: Non-blocking bus access and held bus transactions<a class="headerlink" href="#adr-0016-non-blocking-bus-access-and-held-bus-transactions" title="Permanent link">&para;</a></h1>
 <p>Status: Proposed (2026-11-14), for the owner's decision.</p>
 <h2 id="context">Context<a class="headerlink" href="#context" title="Permanent link">&para;</a></h2>
 <p>Every kb contract call is bounded (ADR-0006), but bounded is not the same as cheap or safe to wait on. Three

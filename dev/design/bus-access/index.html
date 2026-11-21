@@ -1571,7 +1571,7 @@
 
 
 <h1 id="bus-access-non-blocking-reads-and-held-transactions">Bus access: non-blocking reads and held transactions<a class="headerlink" href="#bus-access-non-blocking-reads-and-held-transactions" title="Permanent link">&para;</a></h1>
-<p>Decision: <a href="../../adr/ADR-0015-async-bus-and-held-transactions/">ADR-0015</a>. Every contract call is bounded; this page
+<p>Decision: <a href="../../adr/ADR-0016-async-bus-and-held-transactions/">ADR-0016</a>. Every contract call is bounded; this page
 is about the two cases bounded is not enough for: a hot-path read that must not wait at all, and a sequence of
 transfers or calls that must not be interleaved.</p>
 <h2 id="rules">Rules<a class="headerlink" href="#rules" title="Permanent link">&para;</a></h2>
@@ -1640,7 +1640,7 @@ transfers or calls that must not be interleaved.</p>
 </table>
 <p><code>AsyncFromSync&lt;Bus, Clock&gt;</code> serves the contract from a synchronous port (Start() runs the transfer, the deadline
 rules still hold, <code>kNonBlocking</code> is false), so a binding builds on every port today and the remaining wait is
-visible in its type. What each port adds for a native form is listed in ADR-0015.</p>
+visible in its type. What each port adds for a native form is listed in ADR-0016.</p>
 <figure class="kb-figure">
 <img src="../../diagrams/async-poll.svg#only-light" alt="Sequence: the owner task starts a read through the poller and the port in pass n; the poller polls and gets Pending; the interrupt completes the transfer; in pass n+1 the poll returns Done with the byte count and the completion is Ok. Past the deadline the result is Timeout; Cancel releases the buffers." width="1200" height="1003"><img src="../../diagrams/async-poll.dark.svg#only-dark" alt="Sequence: the owner task starts a read through the poller and the port in pass n; the poller polls and gets Pending; the interrupt completes the transfer; in pass n+1 the poll returns Done with the byte count and the completion is Ok. Past the deadline the result is Timeout; Cancel releases the buffers." width="1200" height="1003">
 <figcaption>One asynchronous read</figcaption>

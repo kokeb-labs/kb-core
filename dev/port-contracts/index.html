@@ -1513,7 +1513,7 @@ with the adapters that prove they serve the drivers' ports.</p>
 </tr>
 </tbody>
 </table>
-<p>The asynchronous forms <code>I2cAsync</code> and <code>SpiAsync</code> (<code>async.hpp</code>, ADR-0015) are the sync contracts plus
+<p>The asynchronous forms <code>I2cAsync</code> and <code>SpiAsync</code> (<code>async.hpp</code>, ADR-0016) are the sync contracts plus
 <code>Start...(deadline)</code>, <code>Poll(now)</code> and <code>Cancel()</code>; a port without a native form serves them through
 <code>AsyncFromSync</code>. Planned: <code>PulseTx</code> (ws2812-rmt).</p>
 <h2 id="interface-rules">Interface rules<a class="headerlink" href="#interface-rules" title="Permanent link">&para;</a></h2>
