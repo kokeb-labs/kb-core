@@ -47,7 +47,6 @@ public:
   ~Queue() {
     if (created_) {
       backend::QueueDelete(storage_);
-      created_ = false;
     }
   }
 

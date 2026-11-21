@@ -395,10 +395,7 @@ void TimerDelete(detail::TimerStorage& storage) noexcept {
       ++kept;
     }
   }
-  for (std::size_t i = kept; i < c.timer_count; ++i) {
-    c.timers[i] = nullptr;
-  }
-  c.timer_count = kept;
+  c.timer_count = kept; // entries past the count are never read (a create overwrites them)
   storage.handle = nullptr;
 }
 

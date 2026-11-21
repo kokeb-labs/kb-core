@@ -33,7 +33,6 @@ public:
   ~Semaphore() {
     if (created_) {
       backend::SemaphoreDelete(storage_);
-      created_ = false;
     }
   }
 

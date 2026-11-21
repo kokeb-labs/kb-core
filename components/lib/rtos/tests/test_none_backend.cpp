@@ -107,3 +107,20 @@ KB_TEST("none: a deleted timer leaves the table: no callback after its end, its 
   r::backend::MutexDelete(m);
   KB_CHECK(m.handle == nullptr);
 }
+
+KB_TEST("none: deleting the last timer of a full table frees exactly its slot") {
+  static std::array<r::detail::TimerStorage, 18> slots{};
+  r::detail::TimerParams p{};
+  p.callback = &Nothing;
+  std::size_t made = 0U;
+  while ((made < slots.size()) && (r::backend::TimerCreate(slots[made], p) == kb::Status::Ok)) {
+    ++made;
+  }
+  KB_REQUIRE((made > 0U) && (made < slots.size())); // the table filled before the slots ran out
+  r::backend::TimerDelete(slots[made - 1U]);        // the last entry of a full table
+  KB_CHECK(r::backend::TimerCreate(slots[made - 1U], p) == kb::Status::Ok);
+  KB_CHECK(r::backend::TimerCreate(slots[made], p) == kb::Status::Full); // no second slot came free
+  for (std::size_t i = 0U; i < made; ++i) {
+    r::backend::TimerDelete(slots[i]); // free them for the later cases
+  }
+}

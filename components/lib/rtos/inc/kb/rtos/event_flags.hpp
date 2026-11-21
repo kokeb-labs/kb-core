@@ -37,7 +37,6 @@ public:
   ~EventFlags() {
     if (created_) {
       backend::EventFlagsDelete(storage_);
-      created_ = false;
     }
   }
 

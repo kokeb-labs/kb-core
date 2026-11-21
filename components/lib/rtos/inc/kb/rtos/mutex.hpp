@@ -49,7 +49,6 @@ public:
   ~Mutex() {
     if (created_) {
       backend::MutexDelete(storage_);
-      created_ = false;
     }
   }
 
@@ -142,7 +141,6 @@ public:
   ~RecursiveMutex() {
     if (created_) {
       backend::RecursiveMutexDelete(storage_);
-      created_ = false;
     }
   }
 

@@ -40,8 +40,9 @@ bool InSameStorage(uint32_t rounds, Use use) noexcept {
   alignas(T) static std::array<std::byte, sizeof(T)> bytes{};
   bool ok = true;
   for (uint32_t i = 0U; i < rounds; ++i) {
+    void* const raw = static_cast<void*>(bytes.data());
     // NOLINTNEXTLINE(cppcoreguidelines-owning-memory): placement into the static bytes above
-    T* const object = ::new (static_cast<void*>(bytes.data())) T{};
+    T* const object = new (raw) T();
     ok = use(*object) && ok;
     object->~T();
   }

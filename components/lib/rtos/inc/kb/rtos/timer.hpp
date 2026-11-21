@@ -35,7 +35,6 @@ public:
   ~Timer() {
     if (created_) {
       backend::TimerDelete(storage_);
-      created_ = false;
     }
   }
 

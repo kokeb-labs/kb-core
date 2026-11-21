@@ -136,8 +136,9 @@ SharedBytes& Shared() noexcept {
 // One round: two contenders on a new object in Shared(), joined, then the object's end.
 template <typename T>
 bool ContendInShared() noexcept {
+  void* const raw = static_cast<void*>(Shared().data());
   // NOLINTNEXTLINE(cppcoreguidelines-owning-memory): placement into the shared bytes
-  T* const object = ::new (static_cast<void*>(Shared().data())) T{};
+  T* const object = new (raw) T();
   bool ok = false;
   if constexpr (std::is_same_v<T, r::EventFlags>) {
     ok = object->Create().IsOk();
