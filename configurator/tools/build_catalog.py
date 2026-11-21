@@ -477,6 +477,27 @@ def _released(obj):
     return obj
 
 
+def _without_own_future(catalog: dict) -> dict:
+    """`catalog` without the kb-core releases the checked commit cannot hold: a tag on that commit or after it.
+
+    A release tag points at a commit whose catalogue was committed before the tag existed, so the check of that
+    commit (the tag's own CI run) must not expect the tag in it.
+    """
+    clone = CONF.parent if (CONF.parent / ".git").exists() else None
+    if clone is None:
+        return catalog
+    head = (run(["git", "rev-parse", "HEAD"], cwd=clone) or "").strip()
+
+    def older(commit: str) -> bool:
+        return commit != head and run(["git", "merge-base", "--is-ancestor", commit, head], cwd=clone,
+                                      check=False) is not None
+
+    out = dict(catalog)
+    out["kb_core"] = dict(catalog["kb_core"])
+    out["kb_core"]["releases"] = [r for r in catalog["kb_core"]["releases"] if r["kind"] == "dev" or older(r["commit"])]
+    return out
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--drivers-root", type=Path, default=CONF.parent.parent,
@@ -497,9 +518,10 @@ def main(argv: list[str] | None = None) -> int:
     if args.check:
         # The development revision (--include-head, kind dev) moves with every push to main, so the check compares the
         # released content only: dev revisions and the source date they feed are left out on both sides. A local
-        # preview keeps --include-head; CI checks without it.
+        # preview keeps --include-head; CI checks without it. A kb-core tag on the checked commit or a later one is
+        # left out of the fresh build, since that commit's catalogue was written before the tag existed.
         committed = json.loads(out_json.read_text()) if out_json.exists() else None
-        same = committed is not None and _released(committed) == _released(json.loads(text))
+        same = committed is not None and _released(committed) == _released(_without_own_future(json.loads(text)))
         print("build_catalog: up to date" if same else "build_catalog: catalogue differs; rerun the builder")
         return 0 if same else 1
     out_json.write_text(text)
