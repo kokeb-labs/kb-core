@@ -44,6 +44,10 @@ Every part that may be assembled, at every selectable version:
 - Optional on any version: `osv`, its known-vulnerability scan (`scanned_at`, `database`, `findings`); on a kb-core
   version: `bindings`, the drivers it has a handler binding for. The resolver reads neither; `kb sbom` and the site
   report the scans.
+- Optional on a driver or kb-core version: `language`, its language floor (`standard`, `profile`, `compilers`,
+  `tested`, `source`), copied from `driver.yml` (or kb-core's `kb.yml`) at that tag; a tag without the block records
+  the registry default, C++20 with profile KB-CPP20 (`source: default`). An entry without the field is read the same
+  way ([Language floor](../language-floor.md)).
 
 ### Image
 
@@ -53,6 +57,7 @@ image: example-board-a            # [a-z0-9][a-z0-9-]*, default kb-image
 kb_core: {version: 0.4.0}
 mcu: {family: esp32, target: esp32s3, port: {version: 0.5.0}}   # target and port optional
 rtos: freertos                    # optional: the family's default
+language: {standard: 20, compilers: {gcc: "12"}}   # optional: the project's C++ standard and compilers
 drivers:
   - pcal9555                      # kb-core's pin, else the newest release, else the newest rc
   - {name: tmc5160, version: 0.1.0-rc.2}
@@ -79,6 +84,7 @@ warnings are sorted by code, then subject.
 | `mcu.target`, `mcu.port.version`, `rtos` | strings when present | `KB-RES-001`, the path |
 | `drivers[i]` | a name, or `{name, version?}` with strings | `KB-RES-001`, `drivers[i]` or `drivers[i].name` |
 | `buses.<name>` | name `[a-z][a-z0-9_]{0,31}`; `{model, devices, kind?}`; devices are strings | `KB-RES-001`, the path |
+| `language` | `{standard, compilers?}`: 17, 20, 23 or 26; `compilers`: `gcc`, `clang`, `msvc`, `arm_gcc`, `esp_idf` | `KB-RES-001`, `KB-RES-022` |
 
 ### Semantics
 
@@ -104,6 +110,13 @@ warnings are sorted by code, then subject.
    a `requires_owner` chip is not on a guarded bus (`KB-RES-018`); a known kind is one of the driver version's
    buses (`KB-RES-019`). A device on more than one bus is `KB-RES-017`, subject the device: one chip, one bus, one
    thread model.
+7. **Language** ([Language floor](../language-floor.md)), only when the image has a `language` block: kb-core's
+   floor (`standard` above the image's is `KB-RES-024`, subject `kb-core`) and each driver version's floor (subject
+   the driver name) are checked; a compiler the image names whose floor in the part is newer is `KB-RES-025`. Each
+   such error carries `alternative`: the newest catalogued version (a release, else an rc; never dev) that fits, or
+   `null`. A driver named **without** a version whose default does not fit takes that alternative instead and warns
+   `KB-RES-W04` (with the same `alternative`); only when nothing fits is it an error. A part with no language block
+   is read as C++20 with the KB-CPP20 compiler floors. Compiler versions are quoted strings such as `"12.2"`.
 
 ### Versions
 
@@ -116,7 +129,9 @@ Tags are `vX.Y.Z` or `vX.Y.Z-rc.N` only. Order: by `X`, `Y`, `Z`, then a release
 For a valid image: `schema`, `image`, `kb_core` (version, repository, tag, commit, kind, licence, authors), `mcu`
 (family, target), `rtos`, `parts` (`utils`, `rtos`, `interfaces`, and `handlers` when a driver is selected),
 `ports` (one entry), `drivers` (sorted by name), `buses` (sorted by name, devices sorted) and `cmake` (`KB_MCU` and
-`KB_RTOS` upper-case, `KB_PARTS` joined by `;`, `KB_ENABLE_<NAME>` `ON` per driver).
+`KB_RTOS` upper-case, `KB_PARTS` joined by `;`, `KB_ENABLE_<NAME>` `ON` per driver). When the image has a `language`
+block, the lock also records it (`language`: `standard` and the sorted `compilers`, `{}` when none) and `cmake` gains
+`KB_CPP_STANDARD`; without one, both are absent, so the files of an image without the block do not change.
 
 ### Emitted files
 
@@ -173,7 +188,8 @@ while planning; the result is the same rows, codes, new image, lock and report b
    its first failing gate. No candidate: the current version stays.
 5. **Driver gates**, in this order, the resolver's own rules: MCU family (`KB-RES-013`), `kb_core_min` against the
    new kb-core (`KB-RES-014`), a `requires_owner` chip on a guarded bus (`KB-RES-018`), the bus kind in use
-   (`KB-RES-019`).
+   (`KB-RES-019`), and, when the image has a `language` block, its standard and compilers (`KB-RES-024`,
+   `KB-RES-025`; kb-core's candidates pass this gate too).
 6. **New image.** The image with every version explicit (kb-core, an extracted port, each driver, drivers sorted by
    name), everything else unchanged; it is resolved again and its lock and files are the plan's. Its warnings
    (`KB-RES-W01`, `KB-RES-W03`) join the plan's.
@@ -223,9 +239,12 @@ changes with their release pages, held-back versions, fixed and remaining vulner
 | `KB-RES-021` | Unsupported image schema |
 | `KB-RES-022` | Unknown field |
 | `KB-RES-023` | Unknown bus kind |
+| `KB-RES-024` | The part needs a newer C++ standard than the image's `language.standard` |
+| `KB-RES-025` | The part needs a newer compiler than the image's `language.compilers` |
 | `KB-RES-030` | Unsupported catalogue schema |
 | `KB-RES-W01` | A release-candidate pin is selected |
 | `KB-RES-W03` | kb-core is an unreleased development revision |
+| `KB-RES-W04` | An older driver version is used: the default one needs a newer C++ standard or compiler |
 
 ### Upgrade codes
 
@@ -244,8 +263,9 @@ changes with their release pages, held-back versions, fixed and remaining vulner
 ## Vectors
 
 `tests/resolver/vectors/NNN-<case>.json`: a description, the catalogue (a file under `catalogs/` or inline), the
-image, and the expectation (`ok`, the codes and subjects of errors and warnings, and for a valid image the lock and
-every emitted file). `tools/kb/tests/test_vectors.py` and `tests/resolver/run_js_vectors.mjs` run them all; CTest
+image, and the expectation (`ok`, the codes and subjects of errors and warnings with the `alternative` of those that
+name one, and for a valid image the lock and every emitted file). `tools/kb/tests/test_vectors.py` and
+`tests/resolver/run_js_vectors.mjs` run them all; CTest
 runs both (`kb_cli_unit`, `kb_resolver_js_vectors`). Every code above appears in at least one vector, which a test
 checks.
 

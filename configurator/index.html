@@ -9,7 +9,7 @@
 <meta name="color-scheme" content="light dark">
 <title>kb configurator</title>
 <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
-<link rel="modulepreload" href="resolver.mjs" integrity="sha384-tvzUD+SUERagwoJkEjoCiM30HUBp1gbSh4wuwFaEZhk7+3O49G0wCIFW0E9kAeek">
+<link rel="modulepreload" href="resolver.mjs" integrity="sha384-7f5arwgT2QqIAkl3N7+Z4wqW5wbDSuRXqAPAqChpCmv1dZKMeSeNO5xAOckFxCL/">
 <link rel="stylesheet" href="css/app.css" integrity="sha384-Lq0xihy27CCJldmy39VZuAk2eQJVkD/2lSv0A/lUsR/LlmI+nLjZkfR3J+FCLLJb">
 </head>
 <body class="booting">
@@ -92,6 +92,9 @@ catalogue it reads is <a href="data/catalog.json">data/catalog.json</a>.</p></no
         <div class="field"><label for="image-name">Image name</label>
           <input type="text" id="image-name" autocomplete="off" spellcheck="false" maxlength="40" aria-describedby="image-hint">
           <span class="hint" id="image-hint">Lower-case letters, digits and dashes; names the folder and the preset.</span></div>
+        <div class="field"><label for="cxx">C++ standard</label><select id="cxx" aria-describedby="cxx-hint"></select>
+          <span class="hint" id="cxx-hint">What your toolchain builds with. A part that needs a newer standard is refused,
+            with the newest version that fits (<a href="https://kokeb-labs.github.io/kb-core/latest/language-floor/">language floor</a>).</span></div>
       </div>
     </section>
 
@@ -157,14 +160,14 @@ catalogue it reads is <a href="data/catalog.json">data/catalog.json</a>.</p></no
 </footer>
 
 <script src="vendor/fflate-0.8.2/fflate.umd.js" integrity="sha384-DT0Ls0mO7JmjTnT+oBuMhEJzYJO1zUqzuuMXNdnOmOQRIpN2BgSjvBV/j50NngIT"></script>
-<script src="data/catalog.js" integrity="sha384-Ongg1x38BBMBh1eDhdsuvJiQltBAsuWrgFJNGh3/H5dbwgaVWJUHN7sSC4mSsBNS"></script>
+<script src="data/catalog.js" integrity="sha384-z7ugIwGcnlLVOtMREhHPQOIOMG4Vi07wTKXZx7CsgHjmGbJFLZ7VON2ZZ5/ZlyAO"></script>
 <script src="js/core.js" integrity="sha384-w90ycptWLHSy39vTbREpkFzJL/XHhRYhRUMOJiuptwKUQVWagUynVy4NblwC3TFy"></script>
 <script src="js/resolver.js" integrity="sha384-IXgZ1EoqJZ55co37pFfSWfK3u3XsbWS5pkz9lxQx2tl05Pe7rlLfVQVvg3fckQ7v"></script>
-<script src="js/generate.js" integrity="sha384-6oPM4UYVZCfPrZl6cSgvovoRbzI2zOcNl78rr71ykvL1UIFppFCVpoxFUQaP3poA"></script>
-<script src="js/state.js" integrity="sha384-y5SRO7FFt7NaqmZEjHVyROPO5P1LbLfgYlezpqB8pf7B2Zciv5O+LmluGtji+/UY"></script>
-<script src="js/shared.js" integrity="sha384-NpkslvNQIkHmXOUghQySGQHi9YktdFKprBfqkT/oQPjpWuekZKyAdlVFLDos4hDT"></script>
-<script src="js/project.js" integrity="sha384-biBwrhj0QTlQZXmkDLTixR84d97x30XLKvky8NRrR7KwVgZASRzFIw2VUTQ5NSsR"></script>
-<script src="js/ui.js" integrity="sha384-5Zx22ZuJe6IsUclHZWbs3/jAoPjGGUVeRgsaRqeIfsG7Jsfui9iCtBWfQrp9Q+Kp"></script>
+<script src="js/generate.js" integrity="sha384-rm0v2IHNBwA7rpkx5rKCjIkzLqBJV7hwzLnVIcw+2GJjzCFUJ/vZyYNCdaFBrjee"></script>
+<script src="js/state.js" integrity="sha384-iN1OFQR3VgUxSVKtkedzAFiwGNQkSBdyRYI+knasQLKQqtdtdEmmzco88ev7dyYE"></script>
+<script src="js/shared.js" integrity="sha384-sxG0W6iIUu6e63T9ZAXKwPKFfmBoZDSfmk40xj5dyWgUXp/OuTwwl3czIAWmSTdE"></script>
+<script src="js/project.js" integrity="sha384-+uMc6JUk/0hp4cuVCeoitLGWgX4s13C72rZ8NUi+4CmGhJZh0PVxUkfd+lSqNDHV"></script>
+<script src="js/ui.js" integrity="sha384-jLSrtqnClLIiQUF1VUpDQFkG6mRs6VREXkUIZ9yDUeBQmRv8b1rZtZUgS/IWri4B"></script>
 <script type="module" src="js/boot.mjs" integrity="sha384-xQwFO3CxtutDfQdOosbkKnYCNCVSi2sjJpWJF5ljlTVnCe2dQ1N7O1Edt9a/rzZY"></script>
 </body>
 </html>

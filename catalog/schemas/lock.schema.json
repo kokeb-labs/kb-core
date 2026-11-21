@@ -99,6 +99,13 @@
     },
     "cmake": {"type": "object", "additionalProperties": {"type": "string"}},
     "toolchain": {"type": "object", "additionalProperties": {"type": "string"}},
+    "language": {
+      "type": "object",
+      "required": ["standard", "compilers"],
+      "additionalProperties": false,
+      "description": "The image's language block, recorded when the image declares one; cmake.KB_CPP_STANDARD carries the standard",
+      "properties": {"standard": {"enum": [17, 20, 23, 26]}, "compilers": {"type": "object", "additionalProperties": false, "properties": {"arm_gcc": {"type": "string", "pattern": "^(0|[1-9][0-9]*)(\\.(0|[1-9][0-9]*)){0,2}$"}, "clang": {"type": "string", "pattern": "^(0|[1-9][0-9]*)(\\.(0|[1-9][0-9]*)){0,2}$"}, "esp_idf": {"type": "string", "pattern": "^(0|[1-9][0-9]*)(\\.(0|[1-9][0-9]*)){0,2}$"}, "gcc": {"type": "string", "pattern": "^(0|[1-9][0-9]*)(\\.(0|[1-9][0-9]*)){0,2}$"}, "msvc": {"type": "string", "pattern": "^(0|[1-9][0-9]*)(\\.(0|[1-9][0-9]*)){0,2}$"}}, "description": "The oldest version of each compiler (quoted strings)"}}
+    },
     "soup": {"type": "array", "items": {"type": "object", "required": ["name", "version"]}},
     "files": {
       "type": "array",

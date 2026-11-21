@@ -40,7 +40,7 @@ sys.path.insert(0, str(HERE))
 from jsonschema_lite import validate  # noqa: E402
 
 sys.path.insert(0, str(CONF.parent / "tools"))
-from kb import repolayout  # noqa: E402
+from kb import language, repolayout  # noqa: E402
 
 sys.path.insert(0, str(CONF.parent / "tools" / "examples"))
 import examples as kb_examples  # noqa: E402
@@ -288,6 +288,9 @@ def build_driver(clone: Path, online: bool, figures: bool, platforms: dict) -> t
             raise BuildError(f"{repo}@{tag}: driver.yml version {meta.get('version')} does not match the tag")
         date = src.date()
         dates.append(date)
+        lang, problems = language.normalise(language.block_from_text(meta_text), "driver.yml", f"{repo}@{tag}")
+        if problems:
+            raise BuildError("; ".join(problems))
         versions.append({
             "version": tag[1:],
             "tag": tag,
@@ -300,6 +303,7 @@ def build_driver(clone: Path, online: bool, figures: bool, platforms: dict) -> t
             "kb_core_min": meta.get("kb_core_min"),
             # The rule of `kb catalog build` (tools/kb/catalog.py): driver.yml at the tag, or a platform binding fact.
             "requires_owner": meta.get("requires_owner") is True or bool(binding.get("requires_owner", False)),
+            "language": lang,
             "metadata_source": src.origin,
             "osv": None,
         })
@@ -365,7 +369,16 @@ def kb_core_head(clone: Path) -> dict:
     parts = [re.search(rf"set\(KB_VERSION_{k} (\d+)\)", text).group(1) for k in ("MAJOR", "MINOR", "PATCH")]
     date = utc(run(["git", "log", "-1", "--format=%cI", commit], cwd=clone).strip())
     return {"version": ".".join(parts), "tag": None, "commit": commit, "kind": "dev", "date": date, "bindings": [],
+            "language": kb_language(run(["git", "show", f"{commit}:kb.yml"], cwd=clone), f"kb-core@{commit[:12]}"),
             "osv": None}
+
+
+def kb_language(text: str | None, where: str) -> dict:
+    """kb-core's language floor from its kb.yml at a revision (no file: the registry default, source default)."""
+    lang, problems = language.normalise(language.block_from_text(text) if text is not None else None, "kb.yml", where)
+    if problems:
+        raise BuildError("; ".join(problems))
+    return lang
 
 
 def driver_pins(clone: Path | None) -> dict[str, str]:
@@ -406,6 +419,7 @@ def build_releases(repo: str, clone: Path | None, online: bool, extra: dict | No
         entry.update(extra or {})
         if bindings:
             entry["bindings"] = kb_core_bindings(src)
+            entry["language"] = kb_language(src.text("kb.yml"), f"{repo}@{tag}")
         releases.append(entry)
     return releases, dates
 

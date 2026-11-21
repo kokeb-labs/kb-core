@@ -67,9 +67,15 @@
       || sel.drivers.some((d) => drivers.has(d.name) && rcOf(drivers.get(d.name).versions, d.version));
   }
   // The version a driver gets when added: kb-core's pin or the newest release, or with the toggle on also an rc.
+  // With a declared C++ standard, only versions that build with it are offered first (docs/language-floor.md).
   function pickVersion(d) {
-    if (showRc) return latestVersion(d);
-    const rel = d.versions.filter((v) => !isRc(v));
+    const fits = (v) => !image || !image.cxx || cxxOf(v) <= image.cxx;
+    if (showRc) {
+      const best = latestVersion(d);
+      if (!best || fits(best)) return best;
+      return d.versions.filter(fits).sort((a, b) => KB.core.compareVersions(b.version, a.version))[0] || best;
+    }
+    const rel = d.versions.filter((v) => !isRc(v) && fits(v));
     if (d.pinned) { const pinned = rel.find((v) => v.version === d.pinned); if (pinned) return pinned; }
     return rel.slice().sort((a, b) => KB.core.compareVersions(b.version, a.version))[0] || null;
   }
@@ -92,6 +98,7 @@
       port: fam.port ? newestVersion(fam.port.releases) : null,
       mcu: { family: fam.id, target: board.target, board: board.id },
       rtos: fam.default_rtos,
+      cxx: null,
       drivers: [],
       buses: {},
     };
@@ -212,6 +219,14 @@
     $('rtos-note').textContent = fam.rtos_note || 'The RTOS backend of kb::rtos.';
   }
 
+  // The C++ standard a version needs (its catalogue language block, else the registry default C++20).
+  function cxxOf(v) {
+    return v && v.language && typeof v.language.standard === 'number' ? v.language.standard : 20;
+  }
+  function verText(v) {
+    return `${v.version}${v.kind === 'rc' ? ' (rc)' : ''}, C++${cxxOf(v)}`;
+  }
+
   function versionOptions(releases, current, none) {
     const opts = visibleVersions(releases, current).slice().sort((a, b) => KB.core.compareVersions(b.version, a.version))
       .map((r) => h('option', { value: r.version, selected: r.version === current,
@@ -233,6 +248,9 @@
     }
     const name = $('image-name');
     if (doc.activeElement !== name) name.value = image.image;
+    $('cxx').replaceChildren(
+      h('option', { value: '', selected: !image.cxx, text: 'Not declared (no check)' }),
+      ...[20, 23].map((n) => h('option', { value: String(n), selected: image.cxx === n, text: `C++${n}` })));
   }
 
   // -- step 3: the catalogue ---------------------------------------------------------------------------------
@@ -289,7 +307,7 @@
             update();
           }
         } },
-      d.versions.length ? d.versions.map((v) => h('option', { value: v.version, selected: latest && v.version === latest.version, text: `${v.version}${v.kind === 'rc' ? ' (rc)' : ''}` }))
+      d.versions.length ? d.versions.map((v) => h('option', { value: v.version, selected: latest && v.version === latest.version, text: verText(v) }))
         : h('option', { text: 'none published' }));
       const add = h('button', { type: 'button', class: 'add', id: 'add-' + d.name, 'aria-pressed': 'false', disabled: !d.versions.length,
         text: 'Add',
@@ -365,7 +383,7 @@
       const shownVersions = visibleVersions(d.versions, s ? s.version : null);
       const want = s ? s.version : (pickVersion(d) || {}).version;
       versionSel.replaceChildren(...(shownVersions.length
-        ? shownVersions.map((v) => h('option', { value: v.version, selected: v.version === want, text: `${v.version}${v.kind === 'rc' ? ' (rc)' : ''}` }))
+        ? shownVersions.map((v) => h('option', { value: v.version, selected: v.version === want, text: verText(v) }))
         : [h('option', { value: '', text: d.versions.length ? 'release candidates only' : 'none published' })]));
       versionSel.disabled = !shownVersions.length;
       add.disabled = !shownVersions.length && !s;
@@ -773,6 +791,7 @@
     $('kb-version').addEventListener('change', (e) => { image.kb_core = e.target.value || null; update(); });
     $('port-version').addEventListener('change', (e) => { image.port = e.target.value || null; update(); });
     $('image-name').addEventListener('change', (e) => { image.image = e.target.value; update(); });
+    $('cxx').addEventListener('change', (e) => { image.cxx = e.target.value ? Number(e.target.value) : null; update(); });
     $('tabs').addEventListener('keydown', onTabKey);
     $('open-files').addEventListener('change', (e) => { openFiles(e.target.files).catch((err) => { $('open-status').textContent = `Could not read the files: ${err.message}`; }); });
     $('allow-rc').addEventListener('change', (e) => setShowRc(e.target.checked, true));

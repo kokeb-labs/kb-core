@@ -81,6 +81,7 @@
     if (kbImg.mcu.port) mcuText = mcuText.replace(/\}$/, `, port: ${yamlFlow(kbImg.mcu.port)}}`);
     lines.push(`mcu: ${mcuText}`);
     if (kbImg.rtos) lines.push(`rtos: ${yamlScalar(kbImg.rtos)}`);
+    if (kbImg.language) lines.push(`language: ${yamlFlow(kbImg.language)}`);
     if (!kbImg.drivers.length) lines.push('drivers: []');
     else {
       lines.push('drivers:');

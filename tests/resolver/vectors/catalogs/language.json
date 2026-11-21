@@ -1,0 +1,418 @@
+{
+  "drivers": [
+    {
+      "folder": "driver-bmp581",
+      "name": "bmp581",
+      "pinned": "0.1.0",
+      "repo": "kokeb-labs-drivers/driver-bmp581",
+      "versions": [
+        {
+          "authors": [
+            "The driver-bmp581 authors"
+          ],
+          "bus": [
+            "i2c",
+            "spi"
+          ],
+          "commit": "11b4fd22a3778ccc355837b0db4c931467483e93",
+          "kb_core_min": null,
+          "kind": "release",
+          "license": "MIT",
+          "mcus": [
+            "any"
+          ],
+          "peripheral": null,
+          "requires_owner": false,
+          "tag": "v0.2.0",
+          "version": "0.2.0"
+        },
+        {
+          "authors": [
+            "The driver-bmp581 authors"
+          ],
+          "bus": [
+            "i2c",
+            "spi"
+          ],
+          "commit": "baff9763cfa1737e3603a8fb1b0e7991f8a5b88d",
+          "kb_core_min": null,
+          "kind": "release",
+          "license": "MIT",
+          "mcus": [
+            "any"
+          ],
+          "peripheral": null,
+          "requires_owner": false,
+          "tag": "v0.1.0",
+          "version": "0.1.0"
+        }
+      ]
+    },
+    {
+      "folder": "driver-bno08x",
+      "name": "bno08x",
+      "pinned": null,
+      "repo": "kokeb-labs-drivers/driver-bno08x",
+      "versions": [
+        {
+          "authors": [
+            "The driver-bno08x authors"
+          ],
+          "bus": [
+            "i2c",
+            "spi",
+            "uart"
+          ],
+          "commit": "d42ec62fc8f2ba33486b58fadf6cfbf475ca3cb7",
+          "kb_core_min": "0.4.0",
+          "kind": "release",
+          "license": "MIT",
+          "mcus": [
+            "any"
+          ],
+          "peripheral": null,
+          "requires_owner": true,
+          "tag": "v0.1.0",
+          "version": "0.1.0"
+        }
+      ]
+    },
+    {
+      "folder": "driver-pcal9555",
+      "name": "pcal9555",
+      "pinned": null,
+      "repo": "kokeb-labs-drivers/driver-pcal9555",
+      "versions": [
+        {
+          "authors": [
+            "The driver-pcal9555 authors"
+          ],
+          "bus": [
+            "i2c"
+          ],
+          "commit": "b456b5e8b4ca6037f431c53a915d3733602c90c2",
+          "kb_core_min": null,
+          "kind": "rc",
+          "license": "MIT",
+          "mcus": [
+            "any"
+          ],
+          "peripheral": null,
+          "requires_owner": false,
+          "tag": "v0.2.0-rc.1",
+          "version": "0.2.0-rc.1"
+        },
+        {
+          "authors": [
+            "The driver-pcal9555 authors"
+          ],
+          "bus": [
+            "i2c"
+          ],
+          "commit": "dbdbae3e67ebb0e729815f047f375c41b844058f",
+          "kb_core_min": null,
+          "kind": "release",
+          "license": "MIT",
+          "mcus": [
+            "any"
+          ],
+          "peripheral": null,
+          "requires_owner": false,
+          "tag": "v0.1.0",
+          "version": "0.1.0"
+        }
+      ]
+    },
+    {
+      "folder": "driver-tmc5160",
+      "name": "tmc5160",
+      "pinned": null,
+      "repo": "kokeb-labs-drivers/driver-tmc5160",
+      "versions": [
+        {
+          "authors": [
+            "The driver-tmc5160 authors"
+          ],
+          "bus": [
+            "spi",
+            "uart"
+          ],
+          "commit": "6e7dae3f1e329521a215f4d18c647872d4d1db89",
+          "kb_core_min": null,
+          "kind": "rc",
+          "license": "MIT",
+          "mcus": [
+            "any"
+          ],
+          "peripheral": null,
+          "requires_owner": false,
+          "tag": "v0.1.0-rc.2",
+          "version": "0.1.0-rc.2"
+        },
+        {
+          "authors": [
+            "The driver-tmc5160 authors"
+          ],
+          "bus": [
+            "spi",
+            "uart"
+          ],
+          "commit": "cc37d1b55047521f137997a70503e3815ad1b369",
+          "kb_core_min": null,
+          "kind": "rc",
+          "license": "MIT",
+          "mcus": [
+            "any"
+          ],
+          "peripheral": null,
+          "requires_owner": false,
+          "tag": "v0.1.0-rc.1",
+          "version": "0.1.0-rc.1"
+        }
+      ]
+    },
+    {
+      "folder": "driver-tmc9660",
+      "name": "tmc9660",
+      "pinned": null,
+      "repo": "kokeb-labs-drivers/driver-tmc9660",
+      "versions": [
+        {
+          "authors": [
+            "The driver-tmc9660 authors"
+          ],
+          "bus": [
+            "spi",
+            "uart"
+          ],
+          "commit": "6060606060606060606060606060606060606060",
+          "kb_core_min": null,
+          "kind": "release",
+          "language": {
+            "compilers": {
+              "clang": "17",
+              "gcc": "13"
+            },
+            "profile": "KB-CPP23",
+            "standard": 23
+          },
+          "license": "MIT",
+          "mcus": [
+            "any"
+          ],
+          "peripheral": null,
+          "requires_owner": false,
+          "tag": "v0.6.0",
+          "version": "0.6.0"
+        },
+        {
+          "authors": [
+            "The driver-tmc9660 authors"
+          ],
+          "bus": [
+            "spi",
+            "uart"
+          ],
+          "commit": "5252525252525252525252525252525252525252",
+          "kb_core_min": null,
+          "kind": "release",
+          "language": {
+            "compilers": {
+              "clang": "13",
+              "gcc": "10"
+            },
+            "profile": "KB-CPP20",
+            "standard": 20
+          },
+          "license": "MIT",
+          "mcus": [
+            "any"
+          ],
+          "peripheral": null,
+          "requires_owner": false,
+          "tag": "v0.5.2",
+          "version": "0.5.2"
+        },
+        {
+          "authors": [
+            "The driver-tmc9660 authors"
+          ],
+          "bus": [
+            "spi",
+            "uart"
+          ],
+          "commit": "5050505050505050505050505050505050505050",
+          "kb_core_min": null,
+          "kind": "release",
+          "license": "MIT",
+          "mcus": [
+            "any"
+          ],
+          "peripheral": null,
+          "requires_owner": false,
+          "tag": "v0.5.0",
+          "version": "0.5.0"
+        }
+      ]
+    },
+    {
+      "folder": "driver-ws2812-rmt",
+      "name": "ws2812_rmt",
+      "pinned": null,
+      "repo": "kokeb-labs-drivers/driver-ws2812-rmt",
+      "versions": [
+        {
+          "authors": [
+            "The driver-ws2812-rmt authors"
+          ],
+          "bus": [
+            "pio"
+          ],
+          "commit": "660f98ae2c6bcf7c3ac01ad6b14f2ab6390ff5f6",
+          "kb_core_min": null,
+          "kind": "release",
+          "license": "MIT",
+          "mcus": [
+            "esp32"
+          ],
+          "peripheral": "rmt",
+          "requires_owner": false,
+          "tag": "v0.1.0",
+          "version": "0.1.0"
+        }
+      ]
+    }
+  ],
+  "kb_core": {
+    "authors": [
+      "The kb-core authors"
+    ],
+    "license": "MIT",
+    "repo": "kokeb-labs/kb-core",
+    "versions": [
+      {
+        "commit": "5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a5a",
+        "kind": "release",
+        "language": {
+          "compilers": {
+            "clang": "17",
+            "gcc": "13"
+          },
+          "profile": "KB-CPP23",
+          "standard": 23
+        },
+        "tag": "v0.5.0",
+        "version": "0.5.0"
+      },
+      {
+        "commit": "080f7cfe7e98e006ac3b7c6695b3a9599a39f64d",
+        "kind": "release",
+        "language": {
+          "compilers": {
+            "clang": "13",
+            "gcc": "10"
+          },
+          "profile": "KB-CPP20",
+          "standard": 20
+        },
+        "tag": "v0.4.0",
+        "version": "0.4.0"
+      },
+      {
+        "commit": "57c039089e7424940586b874906694a6610531dd",
+        "kind": "rc",
+        "tag": "v0.4.0-rc.1",
+        "version": "0.4.0-rc.1"
+      },
+      {
+        "commit": "0b28aa5cb288ea69e20e8580f7e1a77698b192b9",
+        "kind": "release",
+        "tag": "v0.3.0",
+        "version": "0.3.0"
+      }
+    ]
+  },
+  "mcus": [
+    {
+      "default_rtos": "freertos",
+      "family": "esp32",
+      "port": {
+        "name": "esp32",
+        "path": "components/ports/esp32",
+        "repo": "kokeb-labs-drivers/port-esp32",
+        "versions": []
+      },
+      "rtos": [
+        "freertos"
+      ],
+      "status": "supported",
+      "targets": [
+        "esp32",
+        "esp32c3",
+        "esp32c5",
+        "esp32c6",
+        "esp32h2",
+        "esp32p4",
+        "esp32s2",
+        "esp32s3"
+      ]
+    },
+    {
+      "default_rtos": "none",
+      "family": "host",
+      "port": {
+        "name": "host",
+        "path": "components/lib/interfaces/host",
+        "repo": "kokeb-labs/kb-core",
+        "versions": []
+      },
+      "rtos": [
+        "host",
+        "none"
+      ],
+      "status": "supported",
+      "targets": [
+        "host"
+      ]
+    },
+    {
+      "default_rtos": "freertos",
+      "family": "stm32",
+      "port": null,
+      "rtos": [
+        "freertos",
+        "none",
+        "threadx"
+      ],
+      "status": "planned",
+      "targets": [
+        "stm32"
+      ]
+    }
+  ],
+  "parts": [
+    "utils",
+    "rtos",
+    "interfaces",
+    "handlers"
+  ],
+  "rtos": [
+    {
+      "name": "freertos",
+      "status": "supported"
+    },
+    {
+      "name": "host",
+      "status": "supported"
+    },
+    {
+      "name": "none",
+      "status": "supported"
+    },
+    {
+      "name": "threadx",
+      "status": "planned"
+    }
+  ],
+  "schema": 1
+}

@@ -13,7 +13,7 @@
 kb_add_part(rtos DEPENDS utils)
 
 add_library(kb_rtos_api INTERFACE)
-target_compile_features(kb_rtos_api INTERFACE cxx_std_20)
+target_compile_features(kb_rtos_api INTERFACE ${KB_CXX_FLOOR_FEATURE})
 target_include_directories(kb_rtos_api INTERFACE
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/inc>" "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>")
 target_link_libraries(kb_rtos_api INTERFACE kb::utils)

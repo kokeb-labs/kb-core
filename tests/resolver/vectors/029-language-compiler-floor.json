@@ -1,0 +1,37 @@
+{
+  "catalog": "catalogs/language.json",
+  "description": "The project declares GCC 12; the named driver version needs GCC 13: rejected, with the newest version whose compiler floor GCC 12 meets.",
+  "expect": {
+    "errors": [
+      {
+        "alternative": "0.5.2",
+        "code": "KB-RES-025",
+        "subject": "tmc9660"
+      }
+    ],
+    "ok": false,
+    "warnings": []
+  },
+  "image": {
+    "drivers": [
+      {
+        "name": "tmc9660",
+        "version": "0.6.0"
+      }
+    ],
+    "image": "lang-gcc",
+    "kb_core": {
+      "version": "0.4.0"
+    },
+    "language": {
+      "compilers": {
+        "gcc": "12"
+      },
+      "standard": 23
+    },
+    "mcu": {
+      "family": "host"
+    },
+    "schema": 1
+  }
+}

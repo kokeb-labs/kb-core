@@ -45,6 +45,7 @@ stale_skip:
 vendor:
   - LICENSE
   - CMakeLists.txt
+  - kb.yml
   - cmake
   - tools/layout/paths.yml
   - "{lib}/utils/CMakeLists.txt"
@@ -82,3 +83,4 @@ root_files:
   - CMakeLists.txt
   - LICENSE
   - README.md
+  - kb.yml

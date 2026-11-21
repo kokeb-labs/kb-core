@@ -1,0 +1,38 @@
+{
+  "catalog": "catalogs/language.json",
+  "description": "A language block with an unknown standard, an unknown compiler and an unquoted version.",
+  "expect": {
+    "errors": [
+      {
+        "code": "KB-RES-001",
+        "subject": "language.compilers.gcc"
+      },
+      {
+        "code": "KB-RES-001",
+        "subject": "language.standard"
+      },
+      {
+        "code": "KB-RES-022",
+        "subject": "language.compilers.icc"
+      }
+    ],
+    "ok": false,
+    "warnings": []
+  },
+  "image": {
+    "kb_core": {
+      "version": "0.4.0"
+    },
+    "language": {
+      "compilers": {
+        "gcc": 12,
+        "icc": "1"
+      },
+      "standard": 21
+    },
+    "mcu": {
+      "family": "host"
+    },
+    "schema": 1
+  }
+}

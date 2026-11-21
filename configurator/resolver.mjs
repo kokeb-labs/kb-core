@@ -6,7 +6,7 @@
 // Copyright (c) 2026 The kb-core authors
 
 const VERSION_RE = /^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(-rc\.(0|[1-9][0-9]*))?$/;
-const IMAGE_KEYS = ["buses", "drivers", "image", "kb_core", "mcu", "rtos", "schema"];
+const IMAGE_KEYS = ["buses", "drivers", "image", "kb_core", "language", "mcu", "rtos", "schema"];
 const NAME_RE = /^[a-z0-9][a-z0-9-]{0,62}$/;
 const BUS_RE = /^[a-z][a-z0-9_]{0,31}$/;
 const BUS_KIND_RE = /^(i2c|spi|uart|can|adc|pio|gpio)[0-9]*$/;
@@ -14,6 +14,15 @@ const BUS_KINDS = ["adc", "can", "canopen", "gpio", "i2c", "modbus", "onewire", 
 const MODELS = ["guarded", "owner"];
 const PART_ORDER = ["utils", "rtos", "interfaces", "handlers"];
 const DEFAULT_IMAGE = "kb-image";
+// The language floor (docs/language-floor.md). A catalogue entry without a `language` block is read as the registry
+// default, profile KB-CPP20 of the organisation's standards registry (ci-tools tools/standards/standards.yml).
+export const DEFAULT_LANGUAGE = Object.freeze({
+  standard: 20, profile: "KB-CPP20",
+  compilers: Object.freeze({ arm_gcc: "10", clang: "13", esp_idf: "5.0", gcc: "10", msvc: "19.30" }),
+});
+export const STANDARDS = [17, 20, 23, 26];
+const COMPILERS = ["arm_gcc", "clang", "esp_idf", "gcc", "msvc"];
+const COMPILER_RE = /^(0|[1-9][0-9]*)(\.(0|[1-9][0-9]*)){0,2}$/;
 
 export const LOCK_FILE = "kb-image.lock.yml";
 export const PRESETS_FILE = "CMakePresets.json";
@@ -54,11 +63,11 @@ class Collector {
     this.errors = [];
     this.warnings = [];
   }
-  error(code, subject, message) {
-    this.errors.push({ code, subject, message });
+  error(code, subject, message, extra = {}) {
+    this.errors.push({ code, subject, message, ...extra });
   }
-  warn(code, subject, message) {
-    this.warnings.push({ code, subject, message });
+  warn(code, subject, message, extra = {}) {
+    this.warnings.push({ code, subject, message, ...extra });
   }
 }
 
@@ -66,6 +75,91 @@ function unknownKeys(c, obj, allowed, prefix) {
   for (const key of sortedKeys(obj)) {
     if (!allowed.includes(key)) c.error("KB-RES-022", `${prefix}${key}`, `unknown field '${prefix}${key}'`);
   }
+}
+
+function checkLanguageShape(lang, c) {
+  if (!isObj(lang)) {
+    c.error("KB-RES-001", "language", "language must be a mapping with a standard");
+    return;
+  }
+  unknownKeys(c, lang, ["compilers", "standard"], "language.");
+  if (!isInt(lang.standard) || !STANDARDS.includes(lang.standard)) {
+    c.error("KB-RES-001", "language.standard", `language.standard must be one of ${STANDARDS.join(", ")}`);
+  }
+  if (has(lang, "compilers")) {
+    const comps = lang.compilers;
+    if (!isObj(comps)) {
+      c.error("KB-RES-001", "language.compilers", "language.compilers must be a mapping of compiler to version");
+      return;
+    }
+    unknownKeys(c, comps, COMPILERS, "language.compilers.");
+    for (const key of sortedKeys(comps).filter((k) => COMPILERS.includes(k))) {
+      if (!(isStr(comps[key]) && COMPILER_RE.test(comps[key]))) {
+        c.error("KB-RES-001", `language.compilers.${key}`,
+          `language.compilers.${key} must be a quoted version such as "12" or "12.2"`);
+      }
+    }
+  }
+}
+
+/** The language block of a catalogue entry, or the registry default when it has none. */
+export function languageOf(entry) {
+  const lang = entry ? entry.language : undefined;
+  if (!isObj(lang)) return DEFAULT_LANGUAGE;
+  return { standard: has(lang, "standard") ? lang.standard : 20, compilers: { ...(lang.compilers || {}) } };
+}
+
+const numbers = (text) => text.split(".").map(Number);
+function compareNumbers(a, b) {
+  const x = numbers(a);
+  const y = numbers(b);
+  for (let i = 0; i < Math.max(x.length, y.length); i += 1) {
+    const p = i < x.length ? x[i] : null;
+    const q = i < y.length ? y[i] : null;
+    if (p === null) return -1; // Python tuple order: a shorter prefix sorts first
+    if (q === null) return 1;
+    if (p !== q) return p > q ? 1 : -1;
+  }
+  return 0;
+}
+
+/** null when `entry` builds with the project's declared language `want`, else [code, needs, has, raise]. */
+export function languageMisfit(entry, want) {
+  const lang = languageOf(entry);
+  if (lang.standard > want.standard) {
+    return ["KB-RES-024", `C++${lang.standard}`, `C++${want.standard}`, `language.standard to ${lang.standard}`];
+  }
+  for (const key of sortedKeys(want.compilers || {})) {
+    const need = lang.compilers[key];
+    const have = want.compilers[key];
+    if (need !== undefined && compareNumbers(need, have) > 0) {
+      return ["KB-RES-025", `${key} ${need} or newer`, `${key} ${have}`, `language.compilers.${key} to ${need}`];
+    }
+  }
+  return null;
+}
+
+/** The newest release whose floor the project meets, else the newest release candidate, else null. */
+export function newestFitting(versions, want) {
+  const fit = versions.filter((v) => v.kind !== "dev" && languageMisfit(v, want) === null);
+  return newest(fit, "release") || newest(fit, "rc");
+}
+
+function languageFinding(c, subject, label, entry, want, versions) {
+  const bad = languageMisfit(entry, want);
+  if (bad === null) return;
+  const [code, needs, hasText, lift] = bad;
+  const alt = newestFitting(versions, want);
+  const hint = alt !== null
+    ? `${label} ${alt.version} is the newest version that builds with ${hasText}, or raise ${lift}`
+    : `no version of ${label} builds with ${hasText}; raise ${lift}`;
+  c.error(code, subject, `${label} ${entry.version} needs ${needs}; the project builds with ${hasText}. ${hint}`,
+    { alternative: alt === null ? null : alt.version });
+}
+
+function wantedLanguage(image) {
+  if (!has(image, "language")) return null;
+  return { standard: image.language.standard, compilers: { ...(image.language.compilers || {}) } };
 }
 
 // Phase 1: the image's shape. Returns the normalised driver list [[name, version or null]].
@@ -110,6 +204,7 @@ function checkShape(image, c) {
     }
   }
   if (has(image, "rtos") && !isStr(image.rtos)) c.error("KB-RES-001", "rtos", "rtos must be a string");
+  if (has(image, "language")) checkLanguageShape(image.language, c);
   const drivers = [];
   if (has(image, "drivers")) {
     const lst = image.drivers;
@@ -222,6 +317,8 @@ export function resolve(catalog, image) {
   } else if (kb.kind === "dev") {
     c.warn("KB-RES-W03", "kb-core", `kb-core ${kbReq} at ${kb.commit.slice(0, 12)} is not a release`);
   }
+  const want = wantedLanguage(image);
+  if (kb !== null && want !== null) languageFinding(c, "kb-core", "kb-core", kb, want, catalog.kb_core.versions);
 
   // MCU family, target and port
   const famReq = image.mcu.family;
@@ -298,11 +395,22 @@ export function resolve(catalog, image) {
       c.error("KB-RES-012", name, `'${verReq}' is not X.Y.Z or X.Y.Z-rc.N`);
       continue;
     }
-    const ver = verReq === null ? defaultVersion(drv.versions, drv.pinned) : find(drv.versions, "version", verReq);
+    let ver = verReq === null ? defaultVersion(drv.versions, drv.pinned) : find(drv.versions, "version", verReq);
     if (ver === null) {
       c.error("KB-RES-011", name, `driver '${name}' has no version ${verReq !== null ? verReq : "(any)"}`);
       continue;
     }
+    if (want !== null && verReq === null && languageMisfit(ver, want) !== null) {
+      // No version named: use the newest one the project's language can build (docs/language-floor.md).
+      const alt = newestFitting(drv.versions, want);
+      if (alt !== null) {
+        const bad = languageMisfit(ver, want);
+        c.warn("KB-RES-W04", name, `${name} ${ver.version} needs ${bad[1]}; ${alt.version} is the newest version that builds with ${bad[2]}, so it is used`,
+          { alternative: alt.version });
+        ver = alt;
+      }
+    }
+    if (want !== null) languageFinding(c, name, name, ver, want, drv.versions);
     if (ver.kind === "rc") c.warn("KB-RES-W01", name, `${name} ${ver.version} is a release candidate`);
     if (mcu !== null && !ver.mcus.includes("any") && !ver.mcus.includes(famReq)) {
       let need = ver.mcus.join(", ");
@@ -394,6 +502,12 @@ export function resolve(catalog, image) {
     buses: busLock,
     cmake,
   };
+  if (want !== null) {
+    cmake.KB_CPP_STANDARD = String(want.standard);
+    const compilers = {};
+    for (const k of sortedKeys(want.compilers)) compilers[k] = want.compilers[k];
+    lock.language = { standard: want.standard, compilers };
+  }
   return result(c, lock);
 }
 
@@ -570,11 +684,14 @@ export const HELD_TEXT = {
   "KB-RES-014": "needs a newer kb-core",
   "KB-RES-018": "requires an owner-task bus",
   "KB-RES-019": "does not support the bus kind in use",
+  "KB-RES-024": "needs a newer C++ standard than the image's language block",
+  "KB-RES-025": "needs a newer compiler than the image's language block",
 };
 
 const WARNING_TEXT = {
   "KB-RES-W01": "release candidate",
   "KB-RES-W03": "kb-core development revision",
+  "KB-RES-W04": "older driver version for the language block",
   "KB-UPG-W01": "breaking change",
   "KB-UPG-W02": "newer version held back",
   "KB-UPG-W03": "known vulnerabilities remain",
@@ -815,7 +932,12 @@ export function plan(catalog, image, options = {}) {
   const [kbCur, kbRelock] = currentOf("kb-core", cur.kb_core);
   const none = () => null;
   const target = (k) => (has(to, k) ? to[k] : undefined);
-  const [kbNew, kbHeld] = pick(kbVersions, kbCur, allowRc, target("kb-core"), none, "kb-core", c);
+  const want = wantedLanguage(current);
+  const langGate = (v) => {
+    const bad = want === null ? null : languageMisfit(v, want);
+    return bad === null ? null : bad[0];
+  };
+  const [kbNew, kbHeld] = pick(kbVersions, kbCur, allowRc, target("kb-core"), langGate, "kb-core", c);
   const rows = [];
   if (kbNew !== null) rows.push(upgradeRow("kb-core", "kb-core", catalog.kb_core.repo, kbVersions, kbCur, kbNew, kbHeld, kbRelock));
 
@@ -845,7 +967,7 @@ export function plan(catalog, image, options = {}) {
       if (kbNew !== null && kmin !== null && kmin !== undefined && compareVersions(kmin, kbNew.version) > 0) return "KB-RES-014";
       for (const bus of busesOf.get(name) || []) if (v.requires_owner && bus.model === "guarded") return "KB-RES-018";
       for (const bus of busesOf.get(name) || []) if (bus.kind !== null && !v.bus.includes(bus.kind)) return "KB-RES-019";
-      return null;
+      return langGate(v);
     };
     const [dCur, dRelock] = currentOf(name, d);
     const [nv, held] = pick(entry.versions, dCur, allowRc, target(name), gate, name, c);
@@ -893,6 +1015,12 @@ export function imageText(image) {
   if (has(mcu, "port")) pairs.push(["port", has(mcu.port, "version") ? flow([["version", q(mcu.port.version)]]) : "{}"]);
   lines.push(`mcu: ${flow(pairs)}`);
   if (has(image, "rtos")) lines.push(`rtos: ${q(image.rtos)}`);
+  if (has(image, "language")) {
+    const lang = image.language;
+    const p = [["standard", String(lang.standard)]];
+    if (has(lang, "compilers")) p.push(["compilers", flow(sortedKeys(lang.compilers).map((k) => [k, q(lang.compilers[k])]))]);
+    lines.push(`language: ${flow(p)}`);
+  }
   if (has(image, "drivers")) {
     if (!image.drivers.length) lines.push("drivers: []");
     else {

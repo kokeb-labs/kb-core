@@ -1,5 +1,5 @@
 # kb_add_part(<part> DEPENDS <part>...): one part as an INTERFACE target kb_<part> with the alias kb::<part>, its
-# include directory, C++20, and the install and export rules of the package kb (component <part>).
+# include directory, the language floor (KB_CXX_FLOOR_FEATURE, kb.yml), and the install and export rules of the package kb (component <part>).
 # Header-only parts stay INTERFACE; a part that gains boundary .cpp files gets a separate PRIVATE port or backend
 # target, never public sources (ADR-0001).
 # SPDX-License-Identifier: MIT
@@ -13,7 +13,7 @@ function(kb_add_part part)
   add_library(${target} INTERFACE)
   add_library(kb::${part} ALIAS ${target})
   set_target_properties(${target} PROPERTIES EXPORT_NAME ${part})
-  target_compile_features(${target} INTERFACE cxx_std_20)
+  target_compile_features(${target} INTERFACE ${KB_CXX_FLOOR_FEATURE})
   target_include_directories(${target} INTERFACE
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/inc>"
     "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>")

@@ -12,7 +12,8 @@ from . import common, minischema
 
 
 def _pick(entries):
-    return [{"code": e["code"], "subject": e["subject"]} for e in entries]
+    # The code and subject of each finding, and the nearest version that fits when it names one (KB-RES-024).
+    return [{k: e[k] for k in ("code", "subject", "alternative") if k in e} for e in entries]
 
 
 class VectorTest(unittest.TestCase):

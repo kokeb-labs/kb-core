@@ -11,6 +11,7 @@
 cmake_minimum_required(VERSION 3.24)
 
 if(ESP_PLATFORM)
+  include("${CMAKE_CURRENT_LIST_DIR}/cmake/kb_language.cmake")
   include("${CMAKE_CURRENT_LIST_DIR}/cmake/kb_build_settings.cmake")
   # Absolute paths: the component may be registered through a forwarding folder named `kb`
   # (components/ports/esp32/examples/components/kb), whose own directory is not this one.
@@ -28,10 +29,11 @@ if(ESP_PLATFORM)
   endif()
   idf_component_register(SRCS ${_kb_idf_sources} INCLUDE_DIRS ${_kb_idf_includes} REQUIRES ${KB_IDF_REQUIRES})
   if(_kb_idf_sources)
-    target_compile_features(${COMPONENT_LIB} PUBLIC cxx_std_20)
-    set_source_files_properties(${_kb_idf_sources} PROPERTIES COMPILE_OPTIONS "-std=c++20;-fno-exceptions;-fno-rtti")
+    target_compile_features(${COMPONENT_LIB} PUBLIC ${KB_CXX_FLOOR_FEATURE})
+    set_source_files_properties(${_kb_idf_sources} PROPERTIES COMPILE_OPTIONS
+      "-std=c++${KB_CPP_STANDARD};-fno-exceptions;-fno-rtti")
   else()
-    target_compile_features(${COMPONENT_LIB} INTERFACE cxx_std_20)
+    target_compile_features(${COMPONENT_LIB} INTERFACE ${KB_CXX_FLOOR_FEATURE})
   endif()
   return()
 endif()
@@ -39,7 +41,8 @@ endif()
 include("${CMAKE_CURRENT_LIST_DIR}/cmake/kb_version.cmake")
 project(kb_core VERSION ${KB_VERSION} DESCRIPTION "kb-core: utils, RTOS, DMA, interfaces and handlers" LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 20)
+include("${CMAKE_CURRENT_LIST_DIR}/cmake/kb_language.cmake")
+set(CMAKE_CXX_STANDARD ${KB_CPP_STANDARD})
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
