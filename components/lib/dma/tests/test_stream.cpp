@@ -2,6 +2,7 @@
 // signed stall check, the supervisor (restart, back-off, fallback), PublishFromDevice and the frame
 // view's ownership. SPDX-License-Identifier: MIT Copyright (c) 2026 The kb-core authors
 #include <array>
+#include <atomic>
 #include <bit>
 #include <cstddef>
 #include <cstdint>
@@ -485,4 +486,31 @@ KB_TEST("stream: PublishFromDevice refuses a lease smaller than the stream's har
   KB_CHECK_EQ(s.PublishFromDevice(Port::Key(), ops, lease, 0U, d::Completion{Instant{1U}, 0U}),
               Status::InvalidArgument);
   KB_CHECK_EQ(lease.Complete(Port::Key(), ops, d::Outcome::Ok), Status::Ok);
+}
+
+KB_TEST("stream: frame times above 32 bits survive the two-word stamp and the stall check") {
+  constexpr uint64_t kBase = (uint64_t{1U} << 33U) + 7U;
+  S2 s{d::StreamConfig{.frame_period = kb::Microseconds{100U}, .stall_periods = 10U}};
+  s.Start(Instant{kBase});
+  KB_CHECK_EQ(s.LastFrameAt().Us(), kBase);
+  KB_CHECK_EQ(s.Publish(Frame{}, Instant{kBase + 50U}, 0U), Status::Ok);
+  KB_CHECK_EQ(s.LastFrameAt().Us(), kBase + 50U);
+  KB_CHECK(!s.CheckStall(Instant{kBase + 1049U}));
+  KB_CHECK(s.CheckStall(Instant{kBase + 1050U}));
+  // A restart after the last frame re-arms from the restart time.
+  s.NoteRestart(Instant{kBase + 2000U});
+  KB_CHECK_EQ(s.LastFrameAt().Us(), kBase + 2000U);
+  KB_CHECK(!s.CheckStall(Instant{kBase + 2999U}));
+}
+
+// The stream's shared state needs only 32-bit lock-free atomics, which every supported core has
+// without a runtime library (a 64-bit atomic would need libatomic on 32-bit cores).
+static_assert(std::atomic<uint32_t>::is_always_lock_free);
+
+KB_TEST("buffer: holds no address of itself, so a zeroed section is its start state") {
+  static d::Buffer<Region4, 12U> b;
+  KB_CHECK(b.Current() == d::BufferState::Cpu);
+  KB_CHECK_EQ(b.Capacity(), std::size_t{12U});
+  KB_CHECK_EQ(b.CpuView().size(), std::size_t{12U});
+  KB_CHECK_EQ(b.Stats().lends, 0U);
 }

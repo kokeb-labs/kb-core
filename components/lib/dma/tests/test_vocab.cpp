@@ -135,15 +135,15 @@ KB_TEST("buffer: size is padded to the region unit and the data is aligned") {
   static_assert(decltype(b)::kCapacity == 64U);
   static_assert(decltype(b)::kAlign == 32U);
   KB_CHECK_EQ(b.CpuView().size(), std::size_t{40U});
-  KB_CHECK_EQ(b.Header().Capacity(), std::size_t{64U});
-  KB_CHECK_EQ(d::AddressOf(b.Header().Base()) % 32U, std::uintptr_t{0U});
+  KB_CHECK_EQ(b.Capacity(), std::size_t{64U});
+  KB_CHECK_EQ(d::AddressOf(b.Base()) % 32U, std::uintptr_t{0U});
   const auto& cb = b;
   KB_CHECK_EQ(cb.CpuView().size(), std::size_t{40U});
-  KB_CHECK_EQ(b.Verify(d::AddressOf(b.Header().Base()) - 64U, 4096U), Status::Ok);
-  KB_CHECK_EQ(b.Verify(d::AddressOf(b.Header().Base()) + 64U, 4096U), Status::OutOfRange);
-  KB_CHECK_EQ(b.Verify(d::AddressOf(b.Header().Base()) - 64U, 32U), Status::OutOfRange);
+  KB_CHECK_EQ(b.Verify(d::AddressOf(b.Base()) - 64U, 4096U), Status::Ok);
+  KB_CHECK_EQ(b.Verify(d::AddressOf(b.Base()) + 64U, 4096U), Status::OutOfRange);
+  KB_CHECK_EQ(b.Verify(d::AddressOf(b.Base()) - 64U, 32U), Status::OutOfRange);
   d::Buffer<Plain, 5U> p;
-  KB_CHECK_EQ(p.Header().Capacity(), std::size_t{8U});
+  KB_CHECK_EQ(p.Capacity(), std::size_t{8U});
 }
 
 KB_TEST("buffer: Verify rejects a misaligned placement") {
@@ -155,7 +155,7 @@ KB_TEST("buffer: Verify rejects a misaligned placement") {
 KB_TEST("lease: a transmit lend cleans the used lines, completion returns the memory") {
   d::Buffer<Cached, 100U> b;
   Recorder rec;
-  rec.origin = b.Header().Base();
+  rec.origin = b.Base();
   d::Lease<Cached> lease;
   KB_CHECK(!lease.Active());
   KB_CHECK_EQ(b.Lend(Port::Key(), d::Direction::ToDevice, 40U, rec, lease), Status::Ok);
@@ -184,7 +184,7 @@ KB_TEST("lease: a receive lend cleans then invalidates the whole buffer and inva
         "lines on return") {
   d::Buffer<Cached, 100U> b;
   Recorder rec;
-  rec.origin = b.Header().Base();
+  rec.origin = b.Base();
   d::Lease<Cached> lease;
   KB_CHECK_EQ(b.Lend(Port::Key(), d::Direction::FromDevice, 33U, rec, lease), Status::Ok);
   KB_REQUIRE(rec.cleans.size() == 1U);
@@ -201,7 +201,7 @@ KB_TEST("lease: a receive lend cleans then invalidates the whole buffer and inva
 KB_TEST("lease: an uncached region needs no line maintenance, only the barrier") {
   d::Buffer<Plain, 10U> b;
   Recorder rec;
-  rec.origin = b.Header().Base();
+  rec.origin = b.Base();
   d::Lease<Plain> lease;
   KB_CHECK_EQ(b.Lend(Port::Key(), d::Direction::FromDevice, 10U, rec, lease), Status::Ok);
   KB_CHECK_EQ(lease.Complete(Port::Key(), rec, d::Outcome::Ok), Status::Ok);
@@ -242,7 +242,7 @@ KB_TEST("lease: a moved lease keeps the buffer on the device, and the source is 
 KB_TEST("lease: an unconfirmed abort quarantines and only a proven recovery returns the buffer") {
   d::Buffer<Cached, 40U> b;
   Recorder rec;
-  rec.origin = b.Header().Base();
+  rec.origin = b.Base();
   d::Lease<Cached> lease;
   KB_CHECK_EQ(b.Lend(Port::Key(), d::Direction::FromDevice, 40U, rec, lease), Status::Ok);
   KB_CHECK_EQ(lease.Abort(Port::Key(), rec, d::StopEvidence::NotConfirmed), Status::Fault);
@@ -423,7 +423,7 @@ KB_TEST("lease: the used length is zero when inactive, after every way a lease e
 
 KB_TEST("buffer: Verify at the edges of the region") {
   d::Buffer<Cached, 40U> b;
-  const std::uintptr_t at = d::AddressOf(b.Header().Base());
+  const std::uintptr_t at = d::AddressOf(b.Base());
   KB_CHECK_EQ(b.Verify(at, 64U), Status::Ok);
   KB_CHECK_EQ(b.Verify(at, 63U), Status::OutOfRange);
   KB_CHECK_EQ(b.Verify(at - 32U, 96U), Status::Ok);

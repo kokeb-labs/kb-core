@@ -31,7 +31,7 @@ register code; a driver or handler gets a buffer it cannot misuse. Decisions: [A
 <!-- /figure -->
 
 A `Buffer` is a static object: aligned to its region's unit, padded to a whole number of units, so cache
-maintenance over it never reaches a neighbour. `CpuView()` returns the data while the CPU owns the buffer and an
+maintenance over it never reaches a neighbour. It holds no address of itself and its all-zero bytes are its start state (CPU-owned, counters 0), so it may live in `.bss` or in a `NOLOAD` DMA section that the board's start-up code zeroes before use, as the generated linker fragment places it. `CpuView()` returns the data while the CPU owns the buffer and an
 empty span otherwise (counted in `Stats().cpu_denied`). The port moves it with a `PortKey`, a passkey only the
 port's own class can construct:
 

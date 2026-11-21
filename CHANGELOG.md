@@ -49,6 +49,13 @@ lists its changes per part, the ESP32 port and its driver pins. The format follo
   `RequireSamePriority`, `RequireBusCarries` and `RequireShape` and four compile-fail tests.
 - The pinned copy a port keeps (`tools/layout/layout.py vendor`) now includes `components/lib/dma` (headers and the
   host model with the conformance suite), so a port runs the suite against its own boundary.
+- `Stream` no longer holds a 64-bit atomic: the producer's frame time is a single-writer sequence lock over two
+  32-bit words, and the owner's arm time is owner-only. A firmware using `Stream` on a 32-bit Cortex-M now links
+  without `__atomic_load_8` / `__atomic_store_8` (bare-metal toolchains ship no libatomic). A stall check that finds
+  the producer writing on every try reports no stall.
+- `Buffer` holds no address of itself: `BufferHeader` lost `Base()` and `Capacity()` (use `Buffer::Base()` and
+  `Buffer::Capacity()`), and the lease carries the address it lends. An all-zero buffer is its start state, so a
+  buffer may live in a `NOLOAD` section that start-up code zeroes, as the generated linker fragment places them.
 
 ### Fixed
 
