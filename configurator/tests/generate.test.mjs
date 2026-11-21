@@ -169,11 +169,17 @@ test('the starter project unpacks with the expected tree and executable scripts'
   const zip = KB.generate.zipProject(ctx.fflate, out);
   const files = Object.keys(ctx.fflate.unzipSync(zip)).sort();
   assert.deepEqual(files, ['demo/.gitignore', 'demo/CMakeLists.txt', 'demo/CMakePresets.json', 'demo/README.md',
-    'demo/evidence/licences.md', 'demo/evidence/sbom.cdx.json', 'demo/evidence/sbom.spdx.json', 'demo/evidence/status.md',
+    'demo/components/kb/CMakeLists.txt', 'demo/components/kb_port_esp32/CMakeLists.txt', 'demo/evidence/licences.md', 'demo/evidence/sbom.cdx.json', 'demo/evidence/sbom.spdx.json', 'demo/evidence/status.md',
     'demo/kb-fetch.sh', 'demo/kb-image.lock.yml', 'demo/kb-image.yml', 'demo/kb_image.cmake',
     'demo/main/CMakeLists.txt', 'demo/main/board.cpp', 'demo/main/main.cpp']);
   const cm = out.project.find((f) => f.path === 'CMakeLists.txt').text;
   assert.match(cm, /include\(\$\{CMAKE_CURRENT_LIST_DIR\}\/kb_image\.cmake\)/);
+  // ESP-IDF names a component after its folder: the forwarding folders give kb-core and the port their names, each
+  // driver checkout is the component driver-<chip>, and main requires all of them (exports build them for real).
+  assert.match(cm, /set\(EXTRA_COMPONENT_DIRS .*external\/drivers\/driver-pf1550/);
+  assert.match(out.project.find((f) => f.path === 'components/kb/CMakeLists.txt').text, /external\/kb-core" ABSOLUTE\)/);
+  assert.match(out.project.find((f) => f.path === 'main/CMakeLists.txt').text, /REQUIRES kb kb_port_esp32 driver-/);
+  assert.match(out.project.find((f) => f.path === 'main/board.cpp').text, /#include "kb\/handlers\/bindings\/pf1550\.hpp"/);
   assert.match(file(out, 'cmake'), /set\(KB_DRIVER_PF1550_DIR "\$\{CMAKE_CURRENT_LIST_DIR\}\/external\/drivers\/driver-pf1550"\)/);
   const host = image();
   host.mcu = { family: 'host', target: 'host', board: 'host' };

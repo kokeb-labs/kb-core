@@ -259,28 +259,52 @@
   }
 
   // -- starter project ----------------------------------------------------------------------------------------
-  function projectFiles(lock, res) {
+  // The board layer: the buses with their thread models, and the handler binding of every selected driver that this
+  // kb-core version has (kb/handlers/bindings/<chip>.hpp), included so the first build already compiles each one.
+  function boardFile(name, buses, bound) {
+    const busLines = Object.keys(buses).map((id) => `//   ${id}: ${buses[id].model} (${buses[id].devices.join(', ')})`);
+    return [
+      `// Board layer of the image ${name}: declare each bus with its thread model (ADR-0009) and bind the handlers.`,
+      ...busLines,
+      ...(bound.length ? ['// The handler binding of each selected driver; bind each to its bus below.',
+        ...bound.map((d) => `#include "kb/handlers/bindings/${d}.hpp"`)] : []),
+      'namespace board {', 'void Start() {}', '}  // namespace board'].join('\n') + '\n';
+  }
+
+  function projectFiles(lock, res, catalog) {
     const name = lock.image;
     const fam = lock.mcu.family;
     const files = [];
     const buses = res.resolved.buses;
-    const busLines = Object.keys(buses).map((id) => `//   ${id}: ${buses[id].model} (${buses[id].devices.join(', ')})`);
+    const release = ((catalog && catalog.kb_core && catalog.kb_core.releases) || []).find((r) => r.version === lock.kb_core.version);
+    const bound = lock.drivers.map((d) => d.name).filter((d) => !release || !release.bindings || !release.bindings.length || release.bindings.includes(d));
     if (fam === 'esp32') {
       const port = lock.ports[0];
       const portDir = port.in_tree ? `external/kb-core/${port.path}` : `external/port-${port.name}`;
+      const driverDirs = lock.drivers.map((d) => `\${CMAKE_CURRENT_LIST_DIR}/external/drivers/${d.folder}`);
       files.push({ path: 'CMakeLists.txt', text: [
-        `# ESP-IDF project of the image ${name}. kb-core is the ESP-IDF component "kb" (ADR-0008); kb-fetch.sh puts`,
-        '# it and the drivers under external/, and kb_image.cmake points KB_DRIVER_<NAME>_DIR at them.',
+        `# ESP-IDF project of the image ${name}. kb-fetch.sh puts kb-core, the port and the drivers under external/;`,
+        '# components/kb and components/kb_port_esp32 give the first two their ESP-IDF component names (ESP-IDF names',
+        '# a component after its folder), each driver is a component of its own (driver-<chip>), and kb_image.cmake',
+        '# sets KB_MCU, KB_RTOS, KB_PARTS, KB_ENABLE_* and KB_DRIVER_<NAME>_DIR.',
         'cmake_minimum_required(VERSION 3.16)',
         'include(${CMAKE_CURRENT_LIST_DIR}/kb_image.cmake)',
-        `set(EXTRA_COMPONENT_DIRS \${CMAKE_CURRENT_LIST_DIR}/external/kb-core \${CMAKE_CURRENT_LIST_DIR}/${portDir})`,
+        ...(driverDirs.length ? [`set(EXTRA_COMPONENT_DIRS ${driverDirs.join(' ')})`] : []),
         'include($ENV{IDF_PATH}/tools/cmake/project.cmake)',
         `project(${name.replace(/-/g, '_')})`,
       ].join('\n') + '\n' });
-      files.push({ path: 'main/CMakeLists.txt', text: 'idf_component_register(SRCS "main.cpp" "board.cpp" REQUIRES kb)\n' });
-      files.push({ path: 'main/board.cpp', text: [
-        `// Board layer of the image ${name}: declare each bus with its thread model (ADR-0009) and bind the handlers.`,
-        ...busLines, 'namespace board {', 'void Start() {}', '}  // namespace board'].join('\n') + '\n' });
+      files.push({ path: 'components/kb/CMakeLists.txt', text: [
+        '# The ESP-IDF component `kb`: forwards to external/kb-core, whose root CMakeLists.txt registers it under',
+        '# ESP_PLATFORM.',
+        'get_filename_component(KB_CORE_ROOT "${CMAKE_CURRENT_LIST_DIR}/../../external/kb-core" ABSOLUTE)',
+        'include("${KB_CORE_ROOT}/CMakeLists.txt")'].join('\n') + '\n' });
+      files.push({ path: 'components/kb_port_esp32/CMakeLists.txt', text: [
+        `# The ESP-IDF component \`kb_port_esp32\`: forwards to ${portDir}, which registers it under ESP_PLATFORM.`,
+        `get_filename_component(KB_PORT_ESP32_ROOT "\${CMAKE_CURRENT_LIST_DIR}/../../${portDir}" ABSOLUTE)`,
+        'include("${KB_PORT_ESP32_ROOT}/CMakeLists.txt")'].join('\n') + '\n' });
+      const requires = ['kb', 'kb_port_esp32', ...lock.drivers.map((d) => d.folder)].join(' ');
+      files.push({ path: 'main/CMakeLists.txt', text: `idf_component_register(SRCS "main.cpp" "board.cpp" REQUIRES ${requires})\n` });
+      files.push({ path: 'main/board.cpp', text: boardFile(name, buses, bound) });
       files.push({ path: 'main/main.cpp', text: [`// Entry point of the image ${name}.`, 'namespace board { void Start(); }',
         'extern "C" void app_main(void) { board::Start(); }'].join('\n') + '\n' });
     } else {
@@ -300,9 +324,7 @@
         'add_executable(app src/main.cpp)',
         'target_link_libraries(app PRIVATE board kb::utils kb::rtos)',
       ].join('\n') + '\n' });
-      files.push({ path: 'board/board.cpp', text: [
-        `// Board layer of the image ${name}: declare each bus with its thread model (ADR-0009) and bind the handlers.`,
-        ...busLines, 'namespace board {', 'void Start() {}', '}  // namespace board'].join('\n') + '\n' });
+      files.push({ path: 'board/board.cpp', text: boardFile(name, buses, bound) });
       files.push({ path: 'src/main.cpp', text: [`// Entry point of the image ${name}.`, 'namespace board { void Start(); }',
         'int main() {', '  board::Start();', '  return 0;', '}'].join('\n') + '\n' });
     }
@@ -343,7 +365,7 @@
       { id: 'licences', label: 'Licences', path: 'evidence/licences.md', lang: 'md', text: licenceReport(name, res) },
       { id: 'status', label: 'Status', path: 'evidence/status.md', lang: 'md', text: statusReport(name, res) },
     ];
-    return { files, project: lock ? projectFiles(lock, res) : [], stamp: created, name, lock, rows: rows(res), soup: soupFor(res), ready: !!lock && res.ok };
+    return { files, project: lock ? projectFiles(lock, res, catalog) : [], stamp: created, name, lock, rows: rows(res), soup: soupFor(res), ready: !!lock && res.ok };
   }
 
   // The starter project as a ZIP. Deterministic: sorted entries, a fixed time, fixed permissions.

@@ -37,6 +37,9 @@ python3 tools/sri.py --write                             # after changing any sc
 python3 tools/bundle_offline.py                          # then regenerate offline.html
 node --test tests/*.test.mjs                             # unit tests, vectors, static page checks
 node tools/headless_check.mjs [--shots DIR]              # the page in headless Chrome, served and from file
+node tools/export_matrix.mjs OUT --chrome                # export the rows of tools/export-matrix.json through the page
+python3 tools/validate_exports.py OUT                    # SPDX, CycloneDX, schemas, licence report, kb resolve agrees
+bash tools/export_build.sh OUT/<row>/project host        # kb-fetch.sh and the build (host, cortex-m or esp-idf)
 ```
 
 `build_catalog.py --check`, `sri.py --check` and `bundle_offline.py --check` fail when a generated file is stale.

@@ -1,0 +1,73 @@
+{
+  "description": "Selections that tools/export_matrix.mjs exports through the configurator and tools/export_build.sh builds (docs/configurator-checks.md, Exports). `drivers` entries are name, bus kind and bus; versions are the catalogue default (release candidates on). `ci` marks the rows the Configurator exports job builds on every change.",
+  "rows": [
+    {
+      "id": "host-only",
+      "ci": true,
+      "image": "host-only",
+      "family": "host", "target": "host", "board": "host", "rtos": "none",
+      "drivers": [],
+      "models": {},
+      "build": "host"
+    },
+    {
+      "id": "host-shared-i2c",
+      "ci": true,
+      "image": "host-shared-i2c",
+      "family": "host", "target": "host", "board": "host", "rtos": "host",
+      "drivers": [["bmp581", "i2c", "i2c0"], ["pca9685", "i2c", "i2c0"], ["pcal9555", "i2c", "i2c0"], ["pf1550", "i2c", "i2c0"],
+        ["sfm_flow_meter", "i2c", "i2c0"], ["at25040b", "spi", "spi0"], ["as5047u", "spi", "spi0"], ["tmc5160", "spi", "spi0"]],
+      "models": {"i2c0": "guarded", "spi0": "owner"},
+      "build": "host"
+    },
+    {
+      "id": "esp32c6-freertos",
+      "ci": true,
+      "image": "esp32c6-freertos",
+      "family": "esp32", "target": "esp32c6", "board": "esp32c6-devkitc", "rtos": "freertos",
+      "drivers": [["bmp581", "i2c", "i2c0"], ["pcal9555", "i2c", "i2c0"]],
+      "models": {"i2c0": "guarded"},
+      "build": "esp-idf"
+    },
+    {
+      "id": "esp32s3-freertos",
+      "image": "esp32s3-freertos",
+      "family": "esp32", "target": "esp32s3", "board": "esp32s3-devkitc", "rtos": "freertos",
+      "drivers": [["bno08x", "spi", "spi0"], ["ws2812_rmt", "pio", "pio0"], ["tmc9660", "uart", "uart1"]],
+      "models": {"spi0": "owner", "pio0": "owner", "uart1": "guarded"},
+      "build": "esp-idf"
+    },
+    {
+      "id": "stm32-few",
+      "image": "stm32-few",
+      "family": "stm32", "target": "stm32h7", "board": "nucleo-h743zi", "rtos": "freertos",
+      "drivers": [["bmp581", "i2c", "i2c0"], ["tmc5160", "spi", "spi0"], ["max22200", "spi", "spi0"]],
+      "models": {"i2c0": "guarded", "spi0": "owner"},
+      "expect_refused": "KB-RES-004",
+      "build": "none"
+    },
+    {
+      "id": "cortexm-few",
+      "ci": true,
+      "image": "cortexm-few",
+      "family": "host", "target": "host", "board": "host", "rtos": "none",
+      "drivers": [["bmp581", "i2c", "i2c0"], ["tmc5160", "spi", "spi0"], ["max22200", "spi", "spi0"]],
+      "models": {"i2c0": "guarded", "spi0": "owner"},
+      "build": "cortex-m"
+    },
+    {
+      "id": "esp32s3-every-driver",
+      "image": "esp32s3-every-driver",
+      "family": "esp32", "target": "esp32s3", "board": "generic-esp32s3", "rtos": "freertos",
+      "drivers": "every",
+      "build": "esp-idf"
+    },
+    {
+      "id": "host-every-driver",
+      "image": "host-every-driver",
+      "family": "host", "target": "host", "board": "host", "rtos": "host",
+      "drivers": "every",
+      "build": "host"
+    }
+  ]
+}
