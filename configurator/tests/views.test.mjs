@@ -48,6 +48,21 @@ test('every evidence document matches kb-evidence/1 at its top level and is the 
   }
 });
 
+test('size budgets of the page: first-view scripts 120 KB, stylesheet 25 KB (visualization plan 4.3, never raised)', () => {
+  const html = readFileSync(join(root, 'index.html'), 'utf8');
+  const own = [...html.matchAll(/<script src="(js\/[a-z]+\.js)"/g)].map((m) => m[1]);
+  // The first view is the shell: the page, its picker and the resolver and generator it runs. The explorer (views.js),
+  // "Open an existing project" (project.js, upgrade.js), the vendored library, the data and resolver.mjs load beside it
+  // but are budgeted on their own.
+  const later = ['js/views.js', 'js/project.js', 'js/upgrade.js'];
+  const first = own.filter((f) => !later.includes(f));
+  assert.ok(first.includes('js/ui.js') && first.includes('js/picker.js'), first.join());
+  const bytes = first.reduce((a, f) => a + statSync(join(root, f)).size, 0);
+  assert.ok(bytes <= 120000, `first-view script ${bytes} bytes over ${first.join(', ')}`);
+  for (const f of later) assert.ok(statSync(join(root, f)).size <= 40000, f);
+  assert.ok(statSync(join(root, 'css/app.css')).size <= 25000, 'css/app.css');
+});
+
 test('size budgets: each view module 40 KB, evidence 150 KB per release, offline.html 1.5 MB', () => {
   const kb = (f) => statSync(join(root, f)).size / 1024;
   assert.ok(kb('js/views.js') <= 40, `js/views.js ${kb('js/views.js').toFixed(1)} KB`);

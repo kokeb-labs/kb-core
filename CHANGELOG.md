@@ -14,12 +14,25 @@ lists its changes per part, the ESP32 port and its driver pins. The format follo
   `availability(catalog, selection)` in `configurator/resolver.mjs` and `tools/kb/resolver.py` lists the drivers a
   target, RTOS and language standard can use and the reason for each that it cannot; shared vectors 033 to 040.
   `build_catalog.py` fetches topics only with `--online` and says so when it does not.
+- Configurator, simpler main path: target (family, target, RTOS filtered by the family, C++ standard from the family
+  default), drivers, output; a first project takes four clicks, counted by the headless check. Versions, image name,
+  release candidates, per-driver versions, buses and thread models, *Open an existing project*, the *Inside*
+  explorer and the file previews moved into one closed *Advanced* disclosure. The board select and the pin meter are
+  gone from the page (the board layer provides pins; the generated files are unchanged).
+- Configurator, cascading selection: a change of family, target, RTOS or standard re-evaluates the drivers with
+  `availability()`; unavailable drivers are hidden with *Show N unavailable* and a reason each, and what a change drops
+  is named in one line with *Undo*.
+- Configurator, driver picker: cards, a sortable list and a grouped view (by category or bus), search over name,
+  summary, tags, category and bus, chips for bus, category, tag (with counts) and *Works with my target*, a selected
+  tray with a shared-bus hint, *Show more* past 60 results, and the view remembered per viewer. The view is in the link
+  through optional `w=1` parameters; older links read as before (`js/picker.js`, `js/state.js`).
+- Configurator budgets in `node --test`: first-view scripts 120 KB, stylesheet 25 KB, other scripts 40 KB.
 
 ### Changed
 
 - Configurator: while kb-core has only release candidates the page starts on the newest one (the release-candidate
-  switch turns on) instead of opening with an error; *Open an existing project* is folded; on small screens a bar
-  at the bottom shows whether the selection resolves and offers the ZIP.
+  switch turns on) instead of opening with an error; *Open an existing project* is folded (now inside *Advanced*);
+  on small screens a bar at the bottom shows whether the selection resolves and offers the ZIP.
 
 ### Changed
 

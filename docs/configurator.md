@@ -7,52 +7,91 @@ so a copied link reproduces it exactly. To use it without a network, take the of
 or `configurator/offline.html` in the repository) and open it from disk.
 
 **[Open the configurator](app/index.html)**: pick a platform, add drivers, download the project. The defaults
-already resolve, so a first project takes four choices and one click.
+already resolve, so a first project takes four clicks.
 
-## The steps
+## The main path
 
-1. **Platform.** Pick the MCU family (ESP32, STM32, host), the target and the board. The target fixes how many
-   I2C, SPI, UART, CAN and RMT instances exist; a named development board also gives the number of free pins.
-   A family marked *planned* has no port yet and cannot be built.
-2. **RTOS and versions.** Pick the RTOS backend the family allows (ESP-IDF runs FreeRTOS only; ThreadX on the
-   families that list it), the kb-core version and, once the port has its own repository, the port version.
-   Until kb-core has a release, the catalogue offers its development revision, pinned by commit and flagged with a
-   warning.
-   **C++ standard** declares what your toolchain builds with (`language:` in `kb-image.yml`, `x=` in the link);
-   a part that needs a newer standard is then refused with the newest version that fits, and a driver added
-   afterwards gets that version ([Language floor](language-floor.md)). Left at *Not declared*, nothing is checked.
-3. **Drivers.** Search the catalogue by chip, bus or capability, or filter by bus. Each card shows the chip, its
-   package, the buses it speaks, its capabilities, its licence, its status and a pinout or block diagram (click it for
-   every figure). Each driver has a version selector with its published releases; the default is kb-core's pin, else the
-   newest release. Release candidates (marked *rc*) are **hidden by default**: turn on *Show release candidates* to list
-   them and to add a driver that has only release candidates. The switch is kept in the link (`c=1`) and turns on by
-   itself when a link or an opened project already uses an rc, and while kb-core itself has only release candidates (the
-   page then starts on the newest one instead of an empty selection). A search with no match offers **request it**: a
-   link to the driver request form of `kokeb-labs-drivers/driver-requests`, prefilled with the search text reduced to
-   letters, digits, `.`, `_` and `-`; the footer links to the request forms for a driver and for a port or target. The
-   page itself sends nothing.
-4. **Buses and thread models.** Each driver goes on a bus (`i2c0`, `spi1`, `uart1`, `pio0`, ...). Give each bus one
-   thread model ([ADR-0009](adr/ADR-0009-handler-thread-models.md)): an **owner task** that serves every device
-   on it, or a **guarded facade** that locks around each call. Chips that must be serviced continuously (bno08x)
-   need an owner task. The pin meter adds up the bus pins and the optional control pins.
+Three steps, in this order; each one shows only what the earlier ones allow.
 
-5. **Inside and tested.** For the kb-core version of the selection: the *Architecture* map (the parts, the port
-   and your drivers; pick one for what it holds, needs and how it was tested), the *Evidence* of that release (the
-   test protocol and its results, read from the release's CI artifacts, each chart with its table; also on
-   [Test evidence](assurance/evidence.md)) and *Versions* (every kb-core version with its headline evidence).
+1. **Target.** Pick the MCU family (ESP32, STM32, host), the target, the RTOS and the C++ standard. Only the RTOS
+   backends the family lists are offered (`rtos` and `default_rtos` of the family in the catalogue), and the standard
+   starts at the family's `default_language`. A family marked *planned* has no port yet and cannot be built. Pins and
+   board mapping are not chosen here: they come with your board layer, so the page uses each target's default board
+   internally and the generated files do not depend on it.
+2. **Drivers.** Cards with the chip pinout, the name, a one-line purpose, the buses and the category, each with
+   *Add* or *Remove*. The *Selected* tray lists what you chose and says when two drivers share a bus. Search runs over
+   name, summary, tags, category and bus; chips filter by bus, category and tag (each with its count from `tag_index`)
+   and by *Works with my target*; *Reset* clears the filters and the order, and a line says how many drivers match.
+3. **Output.** *Download starter project (.zip)* and *Copy share link*. The defaults already resolve, so a first
+   project is the target, two drivers and the download: four clicks, which `headless_check.mjs` counts and fails above.
+
+The result bar (small screens) and the *Check* panel keep the findings of the shared rules and the site checks in view.
+
+## Cascading selection
+
+A choice shapes the next ones. After every change of family, target, RTOS or C++ standard the page asks
+`KB.engine.availability()` (the shared resolver, `resolver.mjs`; see Tags and availability below) which drivers the new
+selection can use. The page holds no rule of its own, so a new port or driver needs no page change.
+
+- Unavailable drivers are hidden. *Show N unavailable* lists them with the one-line reason (the MCU family, the
+  peripheral or bus the target lacks, the RTOS, the kb-core or the language floor). Turning *Works with my target* off
+  lists every driver in the main list, the unavailable ones with their reason and no *Add*.
+- A change keeps whatever still fits. If it drops a chosen driver or the RTOS, one line says what and why
+  ("ws2812_rmt removed: needs MCU family esp32, not host") with an *Undo* button, and a live region announces it.
+  *Undo* restores the earlier selection whole.
+- A link that already holds a driver the target cannot use is kept as it is: the tray marks it *unavailable* with the
+  reason and the Check panel reports the resolver's error. Only a change you make drops anything.
+
+## Views
+
+The driver list has three views, remembered per viewer in `localStorage` (the key `kb-configurator-view`; the page
+works without it): **Cards** (the default), a compact **List** (a table whose Driver, Bus and Category headers sort)
+and **Grouped** (cards under headings, grouped by category or by bus). *Sort by* (name, category, bus) with its
+direction and the filters work with every view and with the grouping. A result of up to 60 drivers is shown whole; a
+longer one shows 24 and a *Show more* button.
+
+The filters, the sort, the grouping and the view are in the link, so it reproduces what you saw. They are optional
+parameters of the same hash, written only when they differ from the defaults and read only when `w=1` is present, so
+every older link keeps its meaning:
+
+| Parameter | Meaning |
+|---|---|
+| `w=1` | The view parameters follow (version 1) |
+| `q=` | Search text, lower case, letters, digits, space and `. _ -`, at most 40 characters |
+| `fb=`, `fc=`, `ft=` | Comma lists of bus, category and tag chips |
+| `fw=0` | *Works with my target* is off |
+| `vw=l` or `vw=g` | List or grouped view (cards when absent) |
+| `gb=b` | Group by bus (by category when absent) |
+| `so=c` or `so=b` | Sort by category or bus (by name when absent); a leading `-` reverses |
+| `su=1` | The unavailable drivers are listed |
+
+## Advanced
+
+One closed disclosure, *Advanced*, holds everything a first project does not need:
+
+- **Open an existing project**, with the upgrade report and the downloads (see below), and *Offer release candidates*;
+- **Versions and name**: the kb-core and port versions (the newest by default), the image name, and *Show release
+  candidates*, which also lets a driver with only release candidates be added;
+- **Drivers, buses and thread models**: each chosen driver's version, bus kind and bus, and one thread model per bus
+  ([ADR-0009](adr/ADR-0009-handler-thread-models.md)): an **owner task** that serves every device on it, or a
+  **guarded facade** that locks around each call. A driver that must be serviced continuously (bno08x) makes its bus
+  an owner bus when you add it;
+- **Inside and tested**: the *Architecture* map, the *Evidence* of the kb-core release (also on
+  [Test evidence](assurance/evidence.md)) and *Versions*, read from the release's CI artifacts;
+- **Preview files**: every generated file, with *Copy* and *Download*. The zip stays the main output.
 
 ## Open an existing project
 
-*Open an existing project*, folded above step 1, takes your project's `kb-image.yml` and its `kb-image.lock.yml` (pick
+*Open an existing project*, in *Advanced*, takes your project's `kb-image.yml` and its `kb-image.lock.yml` (pick
 both at once; a lock alone also works). The page reads them in the browser with the file picker: nothing is
 uploaded or stored. The address bar gets only catalogue identifiers: the project's own image name stays out of it
 while the project is open, and drivers this catalogue does not list are left out of the selection (and named under
-the file picker). The project becomes the selection of the four steps, with every version taken from the lock,
+the file picker). The project becomes the selection, with every version taken from the lock,
 and **Available upgrades** lists one row per component (kb-core, an extracted port, each driver):
 
 - the current version and the version it can move to: the newest **final release** that passes the gates against
   the new kb-core (MCU family, `kb_core_min`, the owner-task rule, the bus kind in use); tick *Offer release
-  candidates* (the same switch as in step 3) to include rcs, or pick a version per row (the same as
+  candidates* (the same switch as in *Versions and name*) to include rcs, or pick a version per row (the same as
   `kb upgrade --to`); versions that are held back are listed but cannot be picked, and **Clear chosen versions**
   undoes the picks;
 - the change (`major`, `minor`, `patch`, `prerelease`, or `commit` when the lock pins another commit than the
