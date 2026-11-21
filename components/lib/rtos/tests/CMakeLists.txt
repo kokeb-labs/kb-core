@@ -29,6 +29,11 @@ if(TARGET kb_rtos_backend_threadx_linux)
 endif()
 if(TARGET kb_rtos_backend_host)
   kb_add_unit_test(kb_rtos_tests_host SOURCES test_rtos_host.cpp LIBS kb_rtos_backend_host)
+  # Coverage builds: several threads run the same instrumented code, so the counters are updated atomically; plain
+  # counters lose counts and gcov then derives negative ones (a failed report).
+  if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND "${CMAKE_CXX_FLAGS}" MATCHES "--coverage|-fprofile-arcs")
+    target_compile_options(kb_rtos_tests_host PRIVATE -fprofile-update=atomic)
+  endif()
 endif()
 kb_add_compile_fail_tests(rtos "${CMAKE_CURRENT_SOURCE_DIR}/compile_fail"
   SOURCES queue_not_copyable.cpp queue_zero.cpp sleep_bare_integer.cpp thread_missing_step.cpp mutex_copied.cpp
