@@ -537,6 +537,8 @@
       
         
       
+        
+      
     
     
     
@@ -1862,6 +1864,10 @@ specification and has its own vectors in <code>tests/resolver/vectors/upgrade/</
 <li>Optional on any version: <code>osv</code>, its known-vulnerability scan (<code>scanned_at</code>, <code>database</code>, <code>findings</code>); on a kb-core
   version: <code>bindings</code>, the drivers it has a handler binding for. The resolver reads neither; <code>kb sbom</code> and the site
   report the scans.</li>
+<li>Optional on a driver or kb-core version: <code>language</code>, its language floor (<code>standard</code>, <code>profile</code>, <code>compilers</code>,
+  <code>tested</code>, <code>source</code>), copied from <code>driver.yml</code> (or kb-core's <code>kb.yml</code>) at that tag; a tag without the block records
+  the registry default, C++20 with profile KB-CPP20 (<code>source: default</code>). An entry without the field is read the same
+  way (<a href="../../language-floor/">Language floor</a>).</li>
 </ul>
 <h3 id="image">Image<a class="headerlink" href="#image" title="Permanent link">&para;</a></h3>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
@@ -1869,12 +1875,13 @@ specification and has its own vectors in <code>tests/resolver/vectors/upgrade/</
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nt">kb_core</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="nv">0.4.0</span><span class="p p-Indicator">}</span>
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="nt">mcu</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">family</span><span class="p">:</span><span class="w"> </span><span class="nv">esp32</span><span class="p p-Indicator">,</span><span class="nt"> target</span><span class="p">:</span><span class="w"> </span><span class="nv">esp32s3</span><span class="p p-Indicator">,</span><span class="nt"> port</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="nv">0.5.0</span><span class="p p-Indicator">}}</span><span class="w">   </span><span class="c1"># target and port optional</span>
 </span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="nt">rtos</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">freertos</span><span class="w">                    </span><span class="c1"># optional: the family's default</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="nt">drivers</span><span class="p">:</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pcal9555</span><span class="w">                      </span><span class="c1"># kb-core's pin, else the newest release, else the newest rc</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="nv">tmc5160</span><span class="p p-Indicator">,</span><span class="nt"> version</span><span class="p">:</span><span class="w"> </span><span class="nv">0.1.0-rc.2</span><span class="p p-Indicator">}</span>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="nt">buses</span><span class="p">:</span>
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">  </span><span class="nt">i2c0</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="nv">guarded</span><span class="p p-Indicator">,</span><span class="nt"> devices</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">pcal9555</span><span class="p p-Indicator">]}</span>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">  </span><span class="nt">spi1</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="nv">owner</span><span class="p p-Indicator">,</span><span class="nt"> devices</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">tmc5160</span><span class="p p-Indicator">]}</span><span class="w">   </span><span class="c1"># kind from the name, or kind: spi</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="nt">language</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">standard</span><span class="p">:</span><span class="w"> </span><span class="nv">20</span><span class="p p-Indicator">,</span><span class="nt"> compilers</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">gcc</span><span class="p">:</span><span class="w"> </span><span class="s">"12"</span><span class="p p-Indicator">}}</span><span class="w">   </span><span class="c1"># optional: the project's C++ standard and compilers</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="nt">drivers</span><span class="p">:</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pcal9555</span><span class="w">                      </span><span class="c1"># kb-core's pin, else the newest release, else the newest rc</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="nv">tmc5160</span><span class="p p-Indicator">,</span><span class="nt"> version</span><span class="p">:</span><span class="w"> </span><span class="nv">0.1.0-rc.2</span><span class="p p-Indicator">}</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="nt">buses</span><span class="p">:</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">  </span><span class="nt">i2c0</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="nv">guarded</span><span class="p p-Indicator">,</span><span class="nt"> devices</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">pcal9555</span><span class="p p-Indicator">]}</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">  </span><span class="nt">spi1</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="nv">owner</span><span class="p p-Indicator">,</span><span class="nt"> devices</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">tmc5160</span><span class="p p-Indicator">]}</span><span class="w">   </span><span class="c1"># kind from the name, or kind: spi</span>
 </span></code></pre></div>
 <h2 id="rules">Rules<a class="headerlink" href="#rules" title="Permanent link">&para;</a></h2>
 <p>Resolution has two phases. <strong>Shape</strong> checks the image alone; if it finds anything, resolution stops with those
@@ -1930,6 +1937,11 @@ warnings are sorted by code, then subject.</p>
 <td>name <code>[a-z][a-z0-9_]{0,31}</code>; <code>{model, devices, kind?}</code>; devices are strings</td>
 <td><code>KB-RES-001</code>, the path</td>
 </tr>
+<tr>
+<td><code>language</code></td>
+<td><code>{standard, compilers?}</code>: 17, 20, 23 or 26; <code>compilers</code>: <code>gcc</code>, <code>clang</code>, <code>msvc</code>, <code>arm_gcc</code>, <code>esp_idf</code></td>
+<td><code>KB-RES-001</code>, <code>KB-RES-022</code></td>
+</tr>
 </tbody>
 </table>
 <h3 id="semantics">Semantics<a class="headerlink" href="#semantics" title="Permanent link">&para;</a></h3>
@@ -1956,6 +1968,13 @@ warnings are sorted by code, then subject.</p>
    a <code>requires_owner</code> chip is not on a guarded bus (<code>KB-RES-018</code>); a known kind is one of the driver version's
    buses (<code>KB-RES-019</code>). A device on more than one bus is <code>KB-RES-017</code>, subject the device: one chip, one bus, one
    thread model.</li>
+<li><strong>Language</strong> (<a href="../../language-floor/">Language floor</a>), only when the image has a <code>language</code> block: kb-core's
+   floor (<code>standard</code> above the image's is <code>KB-RES-024</code>, subject <code>kb-core</code>) and each driver version's floor (subject
+   the driver name) are checked; a compiler the image names whose floor in the part is newer is <code>KB-RES-025</code>. Each
+   such error carries <code>alternative</code>: the newest catalogued version (a release, else an rc; never dev) that fits, or
+   <code>null</code>. A driver named <strong>without</strong> a version whose default does not fit takes that alternative instead and warns
+   <code>KB-RES-W04</code> (with the same <code>alternative</code>); only when nothing fits is it an error. A part with no language block
+   is read as C++20 with the KB-CPP20 compiler floors. Compiler versions are quoted strings such as <code>"12.2"</code>.</li>
 </ol>
 <h3 id="versions">Versions<a class="headerlink" href="#versions" title="Permanent link">&para;</a></h3>
 <p>Tags are <code>vX.Y.Z</code> or <code>vX.Y.Z-rc.N</code> only. Order: by <code>X</code>, <code>Y</code>, <code>Z</code>, then a release after every rc of the same
@@ -1965,7 +1984,9 @@ warnings are sorted by code, then subject.</p>
 <p>For a valid image: <code>schema</code>, <code>image</code>, <code>kb_core</code> (version, repository, tag, commit, kind, licence, authors), <code>mcu</code>
 (family, target), <code>rtos</code>, <code>parts</code> (<code>utils</code>, <code>rtos</code>, <code>interfaces</code>, and <code>handlers</code> when a driver is selected),
 <code>ports</code> (one entry), <code>drivers</code> (sorted by name), <code>buses</code> (sorted by name, devices sorted) and <code>cmake</code> (<code>KB_MCU</code> and
-<code>KB_RTOS</code> upper-case, <code>KB_PARTS</code> joined by <code>;</code>, <code>KB_ENABLE_&lt;NAME&gt;</code> <code>ON</code> per driver).</p>
+<code>KB_RTOS</code> upper-case, <code>KB_PARTS</code> joined by <code>;</code>, <code>KB_ENABLE_&lt;NAME&gt;</code> <code>ON</code> per driver). When the image has a <code>language</code>
+block, the lock also records it (<code>language</code>: <code>standard</code> and the sorted <code>compilers</code>, <code>{}</code> when none) and <code>cmake</code> gains
+<code>KB_CPP_STANDARD</code>; without one, both are absent, so the files of an image without the block do not change.</p>
 <h3 id="emitted-files">Emitted files<a class="headerlink" href="#emitted-files" title="Permanent link">&para;</a></h3>
 <p>Byte-for-byte the same from both implementations:</p>
 <table>
@@ -2032,7 +2053,8 @@ while planning; the result is the same rows, codes, new image, lock and report b
    its first failing gate. No candidate: the current version stays.</li>
 <li><strong>Driver gates</strong>, in this order, the resolver's own rules: MCU family (<code>KB-RES-013</code>), <code>kb_core_min</code> against the
    new kb-core (<code>KB-RES-014</code>), a <code>requires_owner</code> chip on a guarded bus (<code>KB-RES-018</code>), the bus kind in use
-   (<code>KB-RES-019</code>).</li>
+   (<code>KB-RES-019</code>), and, when the image has a <code>language</code> block, its standard and compilers (<code>KB-RES-024</code>,
+   <code>KB-RES-025</code>; kb-core's candidates pass this gate too).</li>
 <li><strong>New image.</strong> The image with every version explicit (kb-core, an extracted port, each driver, drivers sorted by
    name), everything else unchanged; it is resolved again and its lock and files are the plan's. Its warnings
    (<code>KB-RES-W01</code>, <code>KB-RES-W03</code>) join the plan's.</li>
@@ -2155,6 +2177,14 @@ changes with their release pages, held-back versions, fixed and remaining vulner
 <td>Unknown bus kind</td>
 </tr>
 <tr>
+<td><code>KB-RES-024</code></td>
+<td>The part needs a newer C++ standard than the image's <code>language.standard</code></td>
+</tr>
+<tr>
+<td><code>KB-RES-025</code></td>
+<td>The part needs a newer compiler than the image's <code>language.compilers</code></td>
+</tr>
+<tr>
 <td><code>KB-RES-030</code></td>
 <td>Unsupported catalogue schema</td>
 </tr>
@@ -2165,6 +2195,10 @@ changes with their release pages, held-back versions, fixed and remaining vulner
 <tr>
 <td><code>KB-RES-W03</code></td>
 <td>kb-core is an unreleased development revision</td>
+</tr>
+<tr>
+<td><code>KB-RES-W04</code></td>
+<td>An older driver version is used: the default one needs a newer C++ standard or compiler</td>
 </tr>
 </tbody>
 </table>
@@ -2217,8 +2251,9 @@ changes with their release pages, held-back versions, fixed and remaining vulner
 </table>
 <h2 id="vectors">Vectors<a class="headerlink" href="#vectors" title="Permanent link">&para;</a></h2>
 <p><code>tests/resolver/vectors/NNN-&lt;case&gt;.json</code>: a description, the catalogue (a file under <code>catalogs/</code> or inline), the
-image, and the expectation (<code>ok</code>, the codes and subjects of errors and warnings, and for a valid image the lock and
-every emitted file). <code>tools/kb/tests/test_vectors.py</code> and <code>tests/resolver/run_js_vectors.mjs</code> run them all; CTest
+image, and the expectation (<code>ok</code>, the codes and subjects of errors and warnings with the <code>alternative</code> of those that
+name one, and for a valid image the lock and every emitted file). <code>tools/kb/tests/test_vectors.py</code> and
+<code>tests/resolver/run_js_vectors.mjs</code> run them all; CTest
 runs both (<code>kb_cli_unit</code>, <code>kb_resolver_js_vectors</code>). Every code above appears in at least one vector, which a test
 checks.</p>
 <p><code>tests/resolver/vectors/upgrade/NNN-&lt;case&gt;.json</code>: a description, the catalogue (<code>../catalogs/upgrade.json</code> and
