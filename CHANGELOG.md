@@ -22,6 +22,14 @@ lists its changes per part, the ESP32 port and its driver pins. The format follo
   calls. The kb-core helper layer `tools/docs/kbfig.py` is removed, and `tools/docs/check_figures.py` accepts a model
   file or a module that draws with figkit ([Figures](docs/figures.md)).
 
+### dma
+
+- Board declarations (`kb/dma/assignment.hpp`): `StreamAssignment`, `InterruptLimits`, `BusLimits` and `StreamShape`,
+  the values the board generator writes from `board.yml`, with the compile-time checks `RequireInterruptTier`,
+  `RequireSamePriority`, `RequireBusCarries` and `RequireShape` and four compile-fail tests.
+- The pinned copy a port keeps (`tools/layout/layout.py vendor`) now includes `components/lib/dma` (headers and the
+  host model with the conformance suite), so a port runs the suite against its own boundary.
+
 ### Fixed
 
 - ADR numbers: the asynchronous bus and held transactions record is ADR-0016 (it shared 0015 with the ThreadX

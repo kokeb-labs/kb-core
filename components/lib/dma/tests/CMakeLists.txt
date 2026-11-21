@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2026 The kb-core authors
 kb_add_unit_test(kb_dma_tests
-  SOURCES test_vocab.cpp test_stream.cpp test_conformance.cpp
+  SOURCES test_vocab.cpp test_assignment.cpp test_stream.cpp test_conformance.cpp
   LIBS kb_dma kb_dma_host)
 find_package(Threads)
 if(Threads_FOUND)
@@ -18,4 +18,6 @@ kb_add_compile_fail_tests(dma "${CMAKE_CURRENT_SOURCE_DIR}/compile_fail"
           region_align_below_line.cpp region_unreachable.cpp frame_too_large.cpp size_not_whole_units.cpp
           element_size_mismatch.cpp stream_one_frame.cpp stream_frame_not_trivial.cpp stream_move.cpp
           frameview_copy.cpp cacheops_missing.cpp
+          notify_above_rtos_limit.cpp bus_frame_too_large.cpp shape_frames_mismatch.cpp
+          streams_priority_differ.cpp
   LIBS kb_dma)

@@ -8,6 +8,7 @@
 #ifndef KB_DMA_DMA_HPP
 #define KB_DMA_DMA_HPP
 
+#include "kb/dma/assignment.hpp"
 #include "kb/dma/buffer.hpp"
 #include "kb/dma/cache.hpp"
 #include "kb/dma/capabilities.hpp"
