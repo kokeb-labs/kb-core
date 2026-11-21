@@ -2,7 +2,7 @@
 # Known vulnerabilities of the pinned components (tools/vuln, schema kb-vulns/1, docs/assurance/vulnerabilities.md).
 # Weekly (Mondays 05:17 UTC) and on demand: scan the pins in OSV, open or update ONE issue when an advisory is listed,
 # fail (red) when the scan itself fails, then rebuild and republish the site with the fresh data embedded at build
-# time (the page has no network access). Nothing is committed. The tests on fixtures and the snapshot check run in the CI gate
+# time (the page has no network access). Nothing is committed. The fixture tests and snapshot check run in the CI gate
 # (ci-vulnerabilities-check.yml, called from ci.yml).
 name: Vulnerabilities
 
