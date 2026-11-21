@@ -11,7 +11,7 @@ lists its changes per part, the ESP32 port and its driver pins. The format follo
 - Known vulnerabilities: a weekly scan of the pinned components (every driver at its pinned tag, ThreadX, ESP-IDF)
   against OSV (`tools/vuln/scan.py`, schema `kb-vulns/1`), a snapshot in `configurator/data/vulnerabilities.json`
   and `.js` and the generated page [Known vulnerabilities](docs/assurance/vulnerabilities.md). The workflow
-  `ci-vulnerabilities.yml` opens one issue when an advisory is listed, fails when the scan itself fails, commits
+  `ci-vulnerabilities.yml` (the fixtures-and-schema check runs in the CI gate through ci-vulnerabilities-check.yml) opens one issue when an advisory is listed, fails when the scan itself fails, commits
   nothing, and republishes the site with the fresh data; the data is shown as out of date after 10 days. The first
   scan lists eight advisories for the pinned ThreadX release.
 
