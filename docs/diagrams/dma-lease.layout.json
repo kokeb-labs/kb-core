@@ -1,0 +1,73 @@
+{
+ "direction": "TB",
+ "edges": [
+  {
+   "from": "@start0",
+   "to": "Cpu",
+   "via": []
+  },
+  {
+   "from": "Cpu",
+   "to": "Device",
+   "via": []
+  },
+  {
+   "from": "Device",
+   "to": "Cpu",
+   "via": []
+  },
+  {
+   "from": "Device",
+   "to": "Quarantined",
+   "via": []
+  },
+  {
+   "from": "Quarantined",
+   "to": "Cpu",
+   "via": [
+    [
+     178,
+     358
+    ],
+    [
+     178,
+     270
+    ]
+   ]
+  }
+ ],
+ "engine": "graphviz dot 13.1.0 (recorded for the reader; render never reads it)",
+ "figkit_layout": 1,
+ "id": "dma-lease",
+ "input": "f5b33141b62872ad5d1501d80296fa61d984d783b6bbbbc979c0e226b538bd23",
+ "nodes": {
+  "@start0": [
+   64,
+   0,
+   22,
+   22
+  ],
+  "Cpu": [
+   0,
+   102,
+   150,
+   88
+  ],
+  "Device": [
+   0,
+   270,
+   150,
+   88
+  ],
+  "Quarantined": [
+   80,
+   438,
+   150,
+   69
+  ]
+ },
+ "size": [
+  230,
+  507
+ ]
+}

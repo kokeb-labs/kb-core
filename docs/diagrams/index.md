@@ -17,7 +17,11 @@ committed figure no longer matches the code. Each figure below lists the files i
 </picture>
 <!-- /figure -->
 
-Figure module: [`docs/diagrams/figures/assembler-flow.py`](../../docs/diagrams/figures/assembler-flow.py)
+Hardware description: [`docs/model/assembler-flow.graph.yml`](../model/assembler-flow.graph.yml)
+
+Drawn from:
+
+- [`docs/model/assembler-flow.graph.yml`](../model/assembler-flow.graph.yml)
 
 ## One asynchronous read
 
@@ -25,14 +29,17 @@ Figure module: [`docs/diagrams/figures/assembler-flow.py`](../../docs/diagrams/f
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="async-poll.dark.svg">
   <img src="async-poll.svg"
-    alt="Sequence: the owner task starts a read through the poller and the port in pass n; the poller polls
-    and gets Pending; the interrupt completes the transfer; in pass n+1 the poll returns Done with the
-    byte count and the completion is Ok. Past the deadline the result is Timeout; Cancel releases the
-    buffers.">
+    alt="Sequence in which the owner task starts a read through the poller and the port in pass n, polls and
+    gets Pending, the interrupt completes the transfer, and in pass n+1 the poll returns Done with the
+    byte count.">
 </picture>
 <!-- /figure -->
 
-Figure module: [`docs/diagrams/figures/async-poll.py`](../../docs/diagrams/figures/async-poll.py)
+Hardware description: [`docs/model/async-poll.seq.yml`](../model/async-poll.seq.yml)
+
+Drawn from:
+
+- [`docs/model/async-poll.seq.yml`](../model/async-poll.seq.yml)
 
 ## Held transactions
 
@@ -40,13 +47,17 @@ Figure module: [`docs/diagrams/figures/async-poll.py`](../../docs/diagrams/figur
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="bus-hold.dark.svg">
   <img src="bus-hold.svg"
-    alt="Two side by side models. Guarded bus: task X takes the handler mutex, then the bus mutex, and makes
-    several calls while task Y's plain request waits or times out. Owner bus: the owner task takes the
-    hold between passes and runs inline calls; the service pass reports Busy while the hold is held.">
+    alt="Two chains side by side: on a guarded bus task X takes the handler mutex and then the bus mutex
+    while task Y waits; on an owner bus the owner task takes the hold between passes and the service
+    pass reports Busy.">
 </picture>
 <!-- /figure -->
 
-Figure module: [`docs/diagrams/figures/bus-hold.py`](../../docs/diagrams/figures/bus-hold.py)
+Hardware description: [`docs/model/bus-hold.graph.yml`](../model/bus-hold.graph.yml)
+
+Drawn from:
+
+- [`docs/model/bus-hold.graph.yml`](../model/bus-hold.graph.yml)
 
 ## One call through the layers
 
@@ -54,13 +65,17 @@ Figure module: [`docs/diagrams/figures/bus-hold.py`](../../docs/diagrams/figures
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="call-sequence.dark.svg">
   <img src="call-sequence.svg"
-    alt="Sequence: the HAL calls a guarded handler, which locks and calls the pf1550 driver; the driver calls
-    the kb binding's WriteRead, which calls the ESP32 I2C device; results return the same way. Only the
-    I2C device knows it is an ESP32.">
+    alt="Call chain in which the HAL calls a guarded handler, which locks and calls the pf1550 driver, the
+    driver calls the kb binding's WriteRead, which calls the ESP32 I2C device, and the results return
+    the same way.">
 </picture>
 <!-- /figure -->
 
-Figure module: [`docs/diagrams/figures/call-sequence.py`](../../docs/diagrams/figures/call-sequence.py)
+Hardware description: [`docs/model/call-sequence.graph.yml`](../model/call-sequence.graph.yml)
+
+Drawn from:
+
+- [`docs/model/call-sequence.graph.yml`](../model/call-sequence.graph.yml)
 
 ## The CI flow
 
@@ -68,13 +83,17 @@ Figure module: [`docs/diagrams/figures/call-sequence.py`](../../docs/diagrams/fi
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="ci-flow.dark.svg">
   <img src="ci-flow.svg"
-    alt="Flow: local preflight, then a pull request; always-run checks, path-gated checks and the drivers
-    that are never re-run feed one required gate; a tag then produces the release assets and a schedule
-    re-scans them.">
+    alt="Flow from the local preflight to a pull request, then always-run and path-gated checks into one
+    required gate, with the drivers' own tests never re-run, and a tag producing the release assets that
+    a schedule re-scans.">
 </picture>
 <!-- /figure -->
 
-Figure module: [`docs/diagrams/figures/ci-flow.py`](../../docs/diagrams/figures/ci-flow.py)
+Hardware description: [`docs/model/ci-flow.graph.yml`](../model/ci-flow.graph.yml)
+
+Drawn from:
+
+- [`docs/model/ci-flow.graph.yml`](../model/ci-flow.graph.yml)
 
 ## Parts, ports and drivers
 
@@ -82,9 +101,8 @@ Figure module: [`docs/diagrams/figures/ci-flow.py`](../../docs/diagrams/figures/
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="components-map.dark.svg">
   <img src="components-map.svg"
-    alt="Map of the repository: the lib parts utils, rtos, interfaces and handlers, each depending on the
-    next down; MCU ports that satisfy the interface contracts; and the pinned drivers that handlers
-    bind.">
+    alt="Map of the repository in which the lib parts handlers, interfaces, rtos and utils each rest on the
+    next one down, the MCU ports satisfy the interface contracts, and handlers bind the pinned drivers.">
 </picture>
 <!-- /figure -->
 
@@ -102,12 +120,16 @@ Drawn from:
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="dependency-rules.dark.svg">
   <img src="dependency-rules.svg"
-    alt="Two lists of dependency arrows between layers. Allowed: twelve, from the application down to
-    kb::utils. Forbidden: seven, each labelled with the check that catches it.">
+    alt="Table of nineteen dependency rules between layers, twelve allowed from the application down to
+    kb::utils and seven forbidden, each forbidden one with the check that catches it.">
 </picture>
 <!-- /figure -->
 
-Figure module: [`docs/diagrams/figures/dependency-rules.py`](../../docs/diagrams/figures/dependency-rules.py)
+Hardware description: [`docs/model/dependency-rules.matrix.yml`](../model/dependency-rules.matrix.yml)
+
+Drawn from:
+
+- [`docs/model/dependency-rules.matrix.yml`](../model/dependency-rules.matrix.yml)
 
 ## Ownership of a DMA buffer
 
@@ -115,13 +137,17 @@ Figure module: [`docs/diagrams/figures/dependency-rules.py`](../../docs/diagrams
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="dma-lease.dark.svg">
   <img src="dma-lease.svg"
-    alt="State machine with the states Cpu, Device and Quarantined: Lend moves a buffer from Cpu to Device,
-    Complete or a proven Abort returns it to Cpu, an unproven Abort moves it to Quarantined, and Recover
-    with proof returns it to Cpu.">
+    alt="State machine with the states Cpu, Device and Quarantined: Lend moves a buffer to Device, Complete
+    or a proven Abort returns it to Cpu, an unproven Abort quarantines it, and Recover with proof
+    returns it to Cpu.">
 </picture>
 <!-- /figure -->
 
-Figure module: [`docs/diagrams/figures/dma-lease.py`](../../docs/diagrams/figures/dma-lease.py)
+Hardware description: [`docs/model/dma-lease.state.yml`](../model/dma-lease.state.yml)
+
+Drawn from:
+
+- [`docs/model/dma-lease.state.yml`](../model/dma-lease.state.yml)
 
 ## The DMA copy-out stream
 
@@ -129,13 +155,17 @@ Figure module: [`docs/diagrams/figures/dma-lease.py`](../../docs/diagrams/figure
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="dma-stream.dark.svg">
   <img src="dma-stream.svg"
-    alt="Flow: the DMA ring raises an interrupt that copies each finished frame into a slot; the task takes a
-    slot as a FrameView, a content check feeds the supervisor, which can switch to a declared fallback
-    producer; a full ring drops the frame and flags the next one with Gap.">
+    alt="Flow in which the DMA ring raises an interrupt that copies each finished frame into a slot, the task
+    takes a slot as a FrameView, a content check feeds the supervisor, and a full ring drops the frame
+    and flags the next with Gap.">
 </picture>
 <!-- /figure -->
 
-Figure module: [`docs/diagrams/figures/dma-stream.py`](../../docs/diagrams/figures/dma-stream.py)
+Hardware description: [`docs/model/dma-stream.graph.yml`](../model/dma-stream.graph.yml)
+
+Drawn from:
+
+- [`docs/model/dma-stream.graph.yml`](../model/dma-stream.graph.yml)
 
 ## Fault evidence path
 
@@ -143,14 +173,17 @@ Figure module: [`docs/diagrams/figures/dma-stream.py`](../../docs/diagrams/figur
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="fault-journal.dark.svg">
   <img src="fault-journal.svg"
-    alt="Flow: handler health edges and the liveness verdict go to the health journal, which appends one
-    record to a CRC-checked ring in a port-provided store that survives a reset; the boot reset reason
-    is recorded too; the watchdog is kicked only when nothing is stale; after a reset Open finds the
-    newest record.">
+    alt="Flow in which handler health edges and the liveness verdict go to the health journal, which appends
+    one record to a CRC-checked ring in a port store that survives a reset, with the boot reset reason
+    recorded and the watchdog kicked only when nothing is stale.">
 </picture>
 <!-- /figure -->
 
-Figure module: [`docs/diagrams/figures/fault-journal.py`](../../docs/diagrams/figures/fault-journal.py)
+Hardware description: [`docs/model/fault-journal.graph.yml`](../model/fault-journal.graph.yml)
+
+Drawn from:
+
+- [`docs/model/fault-journal.graph.yml`](../model/fault-journal.graph.yml)
 
 ## Generators and the configurator
 
@@ -158,13 +191,17 @@ Figure module: [`docs/diagrams/figures/fault-journal.py`](../../docs/diagrams/fi
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="generator-flow.dark.svg">
   <img src="generator-flow.svg"
-    alt="Three columns. Inputs: driver.yml files, the release lock, evidence, tested version sets and later
-    board.yml. Middle: the kb command line and the configurator site, both using one resolver. Outputs:
-    kb-image.yml, git commands, CMake presets, evidence for the selection and later a project archive.">
+    alt="Flow from the release inputs through the kb command line or the configurator site to one resolver,
+    which writes kb-image.yml, git commands, CMake presets, evidence for the selection and later a
+    project archive.">
 </picture>
 <!-- /figure -->
 
-Figure module: [`docs/diagrams/figures/generator-flow.py`](../../docs/diagrams/figures/generator-flow.py)
+Hardware description: [`docs/model/generator-flow.graph.yml`](../model/generator-flow.graph.yml)
+
+Drawn from:
+
+- [`docs/model/generator-flow.graph.yml`](../model/generator-flow.graph.yml)
 
 ## Handler lifecycle and health
 
@@ -172,13 +209,16 @@ Figure module: [`docs/diagrams/figures/generator-flow.py`](../../docs/diagrams/f
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="handler-health.dark.svg">
   <img src="handler-health.svg"
-    alt="State machine: Unknown to Starting to Ready; Ready and Degraded swap on a failing and a passing
-    call; Starting, Degraded and Ready can go to Faulted; Faulted goes to Recovering and back to Ready
-    or Faulted; Deinitialize returns Ready or Faulted to Unknown.">
+    alt="State machine of a handler with the states Unknown, Starting, Ready, Degraded, Faulted and
+    Recovering, and the calls and failures that move it between them.">
 </picture>
 <!-- /figure -->
 
-Figure module: [`docs/diagrams/figures/handler-health.py`](../../docs/diagrams/figures/handler-health.py)
+Hardware description: [`docs/model/handler-health.state.yml`](../model/handler-health.state.yml)
+
+Drawn from:
+
+- [`docs/model/handler-health.state.yml`](../model/handler-health.state.yml)
 
 ## The pieces of a handler
 
@@ -186,14 +226,17 @@ Figure module: [`docs/diagrams/figures/handler-health.py`](../../docs/diagrams/f
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="handler-pieces.dark.svg">
   <img src="handler-pieces.svg"
-    alt="Stack: a HAL manager calls an access facade, OwnerAccess or Guarded; the facade calls the handler
-    core with a service key and owns the bus domain; the core holds the start-up runner, health,
-    snapshot and liveness beat and builds the driver, which reaches the HAL's bus through the binding's
-    port and the kb::iface contract.">
+    alt="Stack in which a HAL manager calls an access facade, the facade runs the handler core with a service
+    key and owns the bus domain, and the core builds the driver, which reaches the HAL's bus through the
+    binding's port and the kb::iface contract.">
 </picture>
 <!-- /figure -->
 
-Figure module: [`docs/diagrams/figures/handler-pieces.py`](../../docs/diagrams/figures/handler-pieces.py)
+Hardware description: [`docs/model/handler-pieces.graph.yml`](../model/handler-pieces.graph.yml)
+
+Drawn from:
+
+- [`docs/model/handler-pieces.graph.yml`](../model/handler-pieces.graph.yml)
 
 ## The handler start-up pipeline
 
@@ -201,13 +244,17 @@ Figure module: [`docs/diagrams/figures/handler-pieces.py`](../../docs/diagrams/f
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="handler-startup.dark.svg">
   <img src="handler-startup.svg"
-    alt="Pipeline of eight start-up stages in order, Power, HostReset, Boot, Link, Identify, Secure,
-    Configure and Verify, ending in Ready; beside it the plans of most drivers, the bno08x and the
-    se05x, each using only some of the stages.">
+    alt="Eight start-up stages in order, Power, HostReset, Boot, Link, Identify, Secure, Configure and
+    Verify, ending in Ready, beside the plans of most drivers, the bno08x and the se05x, each using only
+    some of the stages.">
 </picture>
 <!-- /figure -->
 
-Figure module: [`docs/diagrams/figures/handler-startup.py`](../../docs/diagrams/figures/handler-startup.py)
+Hardware description: [`docs/model/handler-startup.pipeline.yml`](../model/handler-startup.pipeline.yml)
+
+Drawn from:
+
+- [`docs/model/handler-startup.pipeline.yml`](../model/handler-startup.pipeline.yml)
 
 ## Handler thread models
 
@@ -215,10 +262,9 @@ Figure module: [`docs/diagrams/figures/handler-startup.py`](../../docs/diagrams/
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="handler-threading.dark.svg">
   <img src="handler-threading.svg"
-    alt="Two side by side models. Owner task: other tasks read a lock-free snapshot or post requests to a
-    queue that the owner task publishes to and drains, and the owner task steps the handlers on an
-    unlocked bus domain. Guarded facade: tasks call a guarded handler that takes the handler lock then a
-    bounded bus lock.">
+    alt="Two thread models, one above the other: in model O other tasks read a lock-free snapshot or queue
+    requests that the owner task publishes and drains, and in model G tasks call guarded handlers that
+    take the handler lock and then a bounded bus lock.">
 </picture>
 <!-- /figure -->
 
@@ -230,14 +276,17 @@ Figure module: [`docs/diagrams/figures/handler-threading.py`](../../docs/diagram
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="layer-stack.dark.svg">
   <img src="layer-stack.svg"
-    alt="Layer stack, top to bottom: the product application; the board HAL repository; kb-core with
-    kb::handlers, kb::interfaces, kb::rtos and kb::utils, each depending on the next; below it the
-    drivers used by handlers, the MCU ports that satisfy the interface contracts, and the vendor SOUP
-    reached only through boundary files.">
+    alt="Layer stack from the product application through the board HAL to kb::handlers, kb::interfaces,
+    kb::rtos and kb::utils, with the drivers that handlers bind, the MCU ports that satisfy the
+    contracts, and vendor SOUP reached only through boundary files.">
 </picture>
 <!-- /figure -->
 
-Figure module: [`docs/diagrams/figures/layer-stack.py`](../../docs/diagrams/figures/layer-stack.py)
+Hardware description: [`docs/model/layer-stack.graph.yml`](../model/layer-stack.graph.yml)
+
+Drawn from:
+
+- [`docs/model/layer-stack.graph.yml`](../model/layer-stack.graph.yml)
 
 ## MISRA C++:2023 scope
 
@@ -245,13 +294,17 @@ Figure module: [`docs/diagrams/figures/layer-stack.py`](../../docs/diagrams/figu
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="misra-scope.dark.svg">
   <img src="misra-scope.svg"
-    alt="Four zones from strongest claim to none: kb-core own code claimed compliant with zero deviations;
-    boundary files compliant with recorded deviations; drivers covered by their own evidence; SOUP out
-    of scope and never reported.">
+    alt="Table of four zones from strongest claim to none, with kb-core's own code claimed compliant with
+    zero deviations, boundary files compliant with recorded deviations, drivers covered by their own
+    evidence and SOUP out of scope.">
 </picture>
 <!-- /figure -->
 
-Figure module: [`docs/diagrams/figures/misra-scope.py`](../../docs/diagrams/figures/misra-scope.py)
+Hardware description: [`docs/model/misra-scope.matrix.yml`](../model/misra-scope.matrix.yml)
+
+Drawn from:
+
+- [`docs/model/misra-scope.matrix.yml`](../model/misra-scope.matrix.yml)
 
 ## The kb repository family
 
@@ -259,13 +312,17 @@ Figure module: [`docs/diagrams/figures/misra-scope.py`](../../docs/diagrams/figu
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="repo-family.dark.svg">
   <img src="repo-family.svg"
-    alt="Repository graph with consumers on top: the product application uses a product board HAL, which uses
-    kb-hal-common and an MCU port; both depend on kb-core, which pins the drivers. The configurator
-    reads kb-core releases and fills the application template; tested version sets list sets of kb-core.">
+    alt="Repository graph with consumers on top, in which the product application uses a board HAL built on
+    kb-hal-common and an MCU port, both resting on kb-core, which pins the drivers, while planned tool
+    repositories read kb-core.">
 </picture>
 <!-- /figure -->
 
-Figure module: [`docs/diagrams/figures/repo-family.py`](../../docs/diagrams/figures/repo-family.py)
+Hardware description: [`docs/model/repo-family.graph.yml`](../model/repo-family.graph.yml)
+
+Drawn from:
+
+- [`docs/model/repo-family.graph.yml`](../model/repo-family.graph.yml)
 
 ## Phase roadmap
 
@@ -273,12 +330,16 @@ Figure module: [`docs/diagrams/figures/repo-family.py`](../../docs/diagrams/figu
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="roadmap.dark.svg">
   <img src="roadmap.svg"
-    alt="Two rows of four phases, M0 to M7, in order: decisions, utils, rtos, interfaces, ESP32 port and
-    bindings, handler rollout, breadth and generators, each with its exit criteria.">
+    alt="Column of eight phases in order, M0 to M7: decisions, utils, rtos, interfaces, the ESP32 port and
+    bindings, the handler rollout, breadth and generators, each with its exit criteria.">
 </picture>
 <!-- /figure -->
 
-Figure module: [`docs/diagrams/figures/roadmap.py`](../../docs/diagrams/figures/roadmap.py)
+Hardware description: [`docs/model/roadmap.graph.yml`](../model/roadmap.graph.yml)
+
+Drawn from:
+
+- [`docs/model/roadmap.graph.yml`](../model/roadmap.graph.yml)
 
 ## kb::rtos backends
 
@@ -286,13 +347,17 @@ Figure module: [`docs/diagrams/figures/roadmap.py`](../../docs/diagrams/figures/
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="rtos-backends.dark.svg">
   <img src="rtos-backends.svg"
-    alt="The kb::rtos API reaches one backend through a single seam: none, FreeRTOS, host (tests only) or
-    ThreadX; FreeRTOS and ThreadX reach their kernel, which is SOUP, through boundary files and are
+    alt="The kb::rtos API reaches one backend through a single seam, none, FreeRTOS, ThreadX or host for
+    tests, and FreeRTOS and ThreadX reach their kernel, which is SOUP, through boundary files and are
     tested on fake kernels.">
 </picture>
 <!-- /figure -->
 
-Figure module: [`docs/diagrams/figures/rtos-backends.py`](../../docs/diagrams/figures/rtos-backends.py)
+Hardware description: [`docs/model/rtos-backends.graph.yml`](../model/rtos-backends.graph.yml)
+
+Drawn from:
+
+- [`docs/model/rtos-backends.graph.yml`](../model/rtos-backends.graph.yml)
 
 ## The ThreadX backend
 
@@ -300,13 +365,17 @@ Figure module: [`docs/diagrams/figures/rtos-backends.py`](../../docs/diagrams/fi
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="rtos-threadx.dark.svg">
   <img src="rtos-threadx.svg"
-    alt="The kb::rtos API and seam lead to two ThreadX backend files; the boundary file reaches the ThreadX
-    kernel, which comes either from a product's copy or the pinned submodule; tests run it on a fake
-    kernel and on the Linux port.">
+    alt="The kb::rtos API and seam lead to two ThreadX backend files, and the boundary file reaches the
+    ThreadX kernel, from a product's copy or the pinned submodule, which tests run on a fake kernel and
+    on the Linux port.">
 </picture>
 <!-- /figure -->
 
-Figure module: [`docs/diagrams/figures/rtos-threadx.py`](../../docs/diagrams/figures/rtos-threadx.py)
+Hardware description: [`docs/model/rtos-threadx.graph.yml`](../model/rtos-threadx.graph.yml)
+
+Drawn from:
+
+- [`docs/model/rtos-threadx.graph.yml`](../model/rtos-threadx.graph.yml)
 
 ## The update path
 
@@ -314,10 +383,14 @@ Figure module: [`docs/diagrams/figures/rtos-threadx.py`](../../docs/diagrams/fig
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="update-path.dark.svg">
   <img src="update-path.svg"
-    alt="Five steps: read the lock, catalogue and image; order kb-core, port and drivers; apply the driver
-    gates and hold back what fails; write one row per component; write the new image, lock, CMake files,
-    fetch script and report, then review, fetch, build and test.">
+    alt="Five steps from reading the lock, catalogue and image through ordering, gating, one row per
+    component and writing the new files, with failing versions held back and a final review, fetch,
+    build and test by hand.">
 </picture>
 <!-- /figure -->
 
-Figure module: [`docs/diagrams/figures/update-path.py`](../../docs/diagrams/figures/update-path.py)
+Hardware description: [`docs/model/update-path.graph.yml`](../model/update-path.graph.yml)
+
+Drawn from:
+
+- [`docs/model/update-path.graph.yml`](../model/update-path.graph.yml)

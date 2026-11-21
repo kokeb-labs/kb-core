@@ -1,0 +1,42 @@
+---
+# Held bus transactions in both thread models.
+kind: graph
+id: bus-hold
+title: Held transactions
+kicker: Handlers
+subtitle: The order of the locks, and what each hold excludes. Left, a guarded bus; right, an owner bus.
+alt: >-
+  Two chains side by side: on a guarded bus task X takes the handler mutex and then the bus mutex while task Y waits;
+  on an owner bus the owner task takes the hold between passes and the service pass reports Busy.
+reads: >-
+  Guarded bus, on the left: task X calls Guarded::Hold(timeout), takes the handler mutex first and then the bus mutex
+  through BusDomain::Hold, both with a bounded wait, and holds the bus in GuardedHeld for several calls (Request,
+  Sample and so on) with nothing in between; another task's plain Request waits (bounded) or returns Timeout. Owner
+  bus, on the right: the owner task takes BusDomain::Hold() between passes, which never waits, and sets the pass flag
+  while the hold is held; OwnerAccess::Held(hold) runs inline calls for several handlers, and Service(now, ...)
+  reports Busy while the hold is held and the violation is counted.
+direction: TB
+print: portrait
+legend:
+  - [brown, task]
+  - [violet, handler]
+  - [teal, bus domain]
+  - [rose, excluded]
+nodes:
+  - {id: tx, label: Task X, tone: brown, sub: guarded bus, lines: ["Guarded::Hold(timeout)"], accent: true}
+  - {id: hl, label: "1: handler mutex", tone: violet, lines: [bounded wait], accent: true}
+  - {id: bl, label: "2: BusDomain::Hold", tone: teal, lines: [bus mutex, bounded], accent: true}
+  - {id: gh, label: GuardedHeld, tone: violet, lines: [many calls, nothing between], accent: true}
+  - {id: ty, label: "Task Y: Request", tone: rose, lines: [waits or Timeout], accent: true}
+  - {id: ot, label: Owner task, tone: brown, sub: owner bus, lines: ["Hold() between passes"], accent: true}
+  - {id: pf, label: Pass flag, tone: teal, lines: [set while held, never waits], accent: true}
+  - {id: oh, label: "OwnerAccess::Held", tone: violet, lines: [inline calls, several handlers], accent: true}
+  - {id: sp, label: "Service(now, ...)", tone: rose, lines: [Busy, violation counted], accent: true}
+edges:
+  - {from: tx, to: hl, tone: brown}
+  - {from: hl, to: bl, tone: violet}
+  - {from: bl, to: gh, tone: teal}
+  - {from: gh, to: ty, label: excludes, tone: rose, dashed: true}
+  - {from: ot, to: pf, tone: brown}
+  - {from: pf, to: oh, tone: teal}
+  - {from: oh, to: sp, label: excludes, tone: rose, dashed: true}

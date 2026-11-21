@@ -1,0 +1,154 @@
+{
+ "direction": "TB",
+ "edges": [
+  {
+   "from": "@start0",
+   "to": "Unknown",
+   "via": []
+  },
+  {
+   "from": "Unknown",
+   "to": "Starting",
+   "via": []
+  },
+  {
+   "from": "Starting",
+   "to": "Ready",
+   "via": []
+  },
+  {
+   "from": "Starting",
+   "to": "Faulted",
+   "via": []
+  },
+  {
+   "from": "Ready",
+   "to": "Degraded",
+   "via": []
+  },
+  {
+   "from": "Degraded",
+   "to": "Ready",
+   "via": []
+  },
+  {
+   "from": "Degraded",
+   "to": "Faulted",
+   "via": []
+  },
+  {
+   "from": "Ready",
+   "to": "Faulted",
+   "via": [
+    [
+     206,
+     753
+    ]
+   ]
+  },
+  {
+   "from": "Faulted",
+   "to": "Recovering",
+   "via": []
+  },
+  {
+   "from": "Recovering",
+   "to": "Ready",
+   "via": [
+    [
+     0,
+     822
+    ],
+    [
+     0,
+     753
+    ]
+   ]
+  },
+  {
+   "from": "Recovering",
+   "to": "Faulted",
+   "via": []
+  },
+  {
+   "from": "Ready",
+   "to": "Unknown",
+   "via": [
+    [
+     71,
+     422
+    ],
+    [
+     71,
+     353
+    ]
+   ]
+  },
+  {
+   "from": "Faulted",
+   "to": "Unknown",
+   "via": [
+    [
+     517,
+     422
+    ],
+    [
+     517,
+     353
+    ]
+   ]
+  }
+ ],
+ "engine": "graphviz dot 13.1.0 (recorded for the reader; render never reads it)",
+ "figkit_layout": 1,
+ "id": "handler-health",
+ "input": "73142a93c0c517f42597c6240cbc77d13de26bedc2d3b12d4643f315993e138d",
+ "nodes": {
+  "@start0": [
+   283,
+   0,
+   22,
+   22
+  ],
+  "Degraded": [
+   28,
+   753,
+   150,
+   69
+  ],
+  "Faulted": [
+   188,
+   953,
+   150,
+   69
+  ],
+  "Ready": [
+   28,
+   553,
+   150,
+   69
+  ],
+  "Recovering": [
+   188,
+   1153,
+   150,
+   69
+  ],
+  "Starting": [
+   99,
+   353,
+   390,
+   69
+  ],
+  "Unknown": [
+   219,
+   153,
+   150,
+   69
+  ]
+ },
+ "size": [
+  517,
+  1222
+ ]
+}

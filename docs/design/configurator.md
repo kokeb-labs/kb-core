@@ -8,9 +8,9 @@ command-line tool and the hosted configurator site. Decision:
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="../diagrams/generator-flow.dark.svg">
   <img src="../diagrams/generator-flow.svg"
-    alt="Three columns. Inputs: driver.yml files, the release lock, evidence, tested version sets and later
-    board.yml. Middle: the kb command line and the configurator site, both using one resolver. Outputs:
-    kb-image.yml, git commands, CMake presets, evidence for the selection and later a project archive.">
+    alt="Flow from the release inputs through the kb command line or the configurator site to one resolver,
+    which writes kb-image.yml, git commands, CMake presets, evidence for the selection and later a
+    project archive.">
 </picture>
 <!-- /figure -->
 

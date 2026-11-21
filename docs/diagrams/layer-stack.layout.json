@@ -1,0 +1,124 @@
+{
+ "direction": "TB",
+ "edges": [
+  {
+   "from": "app",
+   "to": "hal",
+   "via": []
+  },
+  {
+   "from": "hal",
+   "to": "handlers",
+   "via": []
+  },
+  {
+   "from": "hal",
+   "to": "ports",
+   "via": []
+  },
+  {
+   "from": "handlers",
+   "to": "ifaces",
+   "via": []
+  },
+  {
+   "from": "handlers",
+   "to": "drv",
+   "via": []
+  },
+  {
+   "from": "ports",
+   "to": "ifaces",
+   "via": []
+  },
+  {
+   "from": "ifaces",
+   "to": "rtos",
+   "via": []
+  },
+  {
+   "from": "rtos",
+   "to": "utils",
+   "via": []
+  },
+  {
+   "from": "ports",
+   "to": "soup",
+   "via": [
+    [
+     384,
+     650
+    ]
+   ]
+  },
+  {
+   "from": "rtos",
+   "to": "soup",
+   "via": []
+  }
+ ],
+ "engine": "graphviz dot 13.1.0 (recorded for the reader; render never reads it)",
+ "figkit_layout": 1,
+ "id": "layer-stack",
+ "input": "a9bf5a91665a2e8bf741a8eaa72e63fd393cb88a1508c2239dc98957cba2ff12",
+ "nodes": {
+  "app": [
+   174,
+   0,
+   169,
+   107
+  ],
+  "drv": [
+   0,
+   650,
+   150,
+   88
+  ],
+  "hal": [
+   183,
+   217,
+   150,
+   125
+  ],
+  "handlers": [
+   80,
+   452,
+   150,
+   88
+  ],
+  "ifaces": [
+   206,
+   660,
+   150,
+   69
+  ],
+  "ports": [
+   286,
+   452,
+   150,
+   88
+  ],
+  "rtos": [
+   206,
+   848,
+   150,
+   88
+  ],
+  "soup": [
+   366,
+   1046,
+   150,
+   125
+  ],
+  "utils": [
+   160,
+   1064,
+   150,
+   88
+  ]
+ },
+ "size": [
+  516,
+  1171
+ ]
+}

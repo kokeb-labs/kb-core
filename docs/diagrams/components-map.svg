@@ -1,123 +1,79 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620" role="img" aria-labelledby="components-map-title components-map-desc" font-family="Inter, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="1064" viewBox="0 0 640 1064" role="img" aria-labelledby="components-map-title components-map-desc" font-family="Inter, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
 <title id="components-map-title">Parts, ports and drivers</title>
-<desc id="components-map-desc">Map of the repository: the lib parts utils, rtos, interfaces and handlers, each depending on the next down; MCU ports that satisfy the interface contracts; and the pinned drivers that handlers bind.</desc>
-<defs><marker id="fk-arrow-rail" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#8893A2"/></marker><marker id="fk-arrow-teal-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#0B7A72"/></marker><marker id="fk-arrow-violet-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#7C3AED"/></marker></defs>
-<rect x="0.5" y="0.5" width="1199" height="619" rx="16" fill="#FFFFFF" stroke="#E2E7EE"/>
+<desc id="components-map-desc">Map of the repository in which the lib parts handlers, interfaces, rtos and utils each rest on the next one down, the MCU ports satisfy the interface contracts, and handlers bind the pinned drivers.</desc>
+<defs><marker id="components-map-arrow-rail" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#7C8798"/></marker><marker id="components-map-arrow-teal-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#0B7A72"/></marker><marker id="components-map-arrow-violet-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#7C3AED"/></marker></defs>
+<rect x="0.5" y="0.5" width="639" height="1063" rx="16" fill="#FFFFFF" stroke="#E2E7EE"/>
 <text x="32" y="44" font-size="12.5" font-weight="700" letter-spacing="1.2" fill="#7A360E">ARCHITECTURE</text>
 <text x="32" y="77.3" font-size="26" font-weight="700" fill="#0E1726">Parts, ports and drivers</text>
-<text x="32" y="103.8" font-size="15" fill="#566070">Read from components/: a new part, port or driver appears here without anyone editing the figure.</text>
-<rect x="32" y="119.8" width="1136" height="1" fill="#E2E7EE"/>
-<rect x="32" y="137.8" width="1136" height="182" rx="14" fill="#FBEFE6" stroke="#E9C3A6" stroke-width="1.2"/>
-<rect x="32" y="389.8" width="635.7" height="169" rx="14" fill="#EAF7EF" stroke="#B2E2C2" stroke-width="1.2"/>
-<rect x="707.7" y="389.8" width="460.3" height="126" rx="14" fill="#E6F6F4" stroke="#A6DCD5" stroke-width="1.2"/>
-<path d="M259 241.3 L269 241.3" fill="none" stroke="#8893A2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rail)"/>
-<path d="M483 241.3 L493 241.3" fill="none" stroke="#8893A2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rail)"/>
-<path d="M707 241.3 L717 241.3" fill="none" stroke="#8893A2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rail)"/>
-<path d="M931 241.3 L941 241.3" fill="none" stroke="#8893A2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rail)"/>
-<path d="M1131.2 385.8 L1131.2 354.8 Q1131.2 346.8 1123.2 346.8 L384 346.8 Q376 346.8 376 338.8 L376 307.8" fill="none" stroke="#0B7A72" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-teal-strong)"/>
-<path d="M152 306.8 L152 386.8" fill="none" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-violet-strong)"/>
-<rect x="48" y="178.8" width="208" height="125" rx="10" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1.4"/>
-<rect x="48" y="186.8" width="4" height="109" rx="2" fill="#7C3AED"/>
-<rect x="272" y="178.8" width="208" height="125" rx="10" fill="#EAF2FF" stroke="#2563EB" stroke-width="1.4"/>
-<rect x="272" y="186.8" width="4" height="109" rx="2" fill="#2563EB"/>
-<rect x="496" y="178.8" width="208" height="125" rx="10" fill="#FFF5E3" stroke="#C26A05" stroke-width="1.4"/>
-<rect x="496" y="186.8" width="4" height="109" rx="2" fill="#C26A05"/>
-<rect x="720" y="178.8" width="208" height="125" rx="10" fill="#FBEFE6" stroke="#9A4A17" stroke-width="1.4"/>
-<rect x="720" y="186.8" width="4" height="109" rx="2" fill="#9A4A17"/>
-<rect x="944" y="178.8" width="208" height="125" rx="10" fill="#FBEFE6" stroke="#9A4A17" stroke-width="1.4"/>
-<rect x="944" y="186.8" width="4" height="109" rx="2" fill="#9A4A17"/>
-<rect x="723.7" y="430.8" width="206.2" height="69" rx="10" fill="#E6F6F4" stroke="#0B7A72" stroke-width="1.4"/>
-<rect x="723.7" y="438.8" width="4" height="53" rx="2" fill="#0B7A72"/>
-<rect x="945.8" y="430.8" width="206.2" height="69" rx="10" fill="#E6F6F4" stroke="#0B7A72" stroke-width="1.4"/>
-<rect x="945.8" y="438.8" width="4" height="53" rx="2" fill="#0B7A72"/>
-<text x="48" y="162.8" font-size="13" font-weight="700" fill="#7A360E">COMPONENTS/LIB: THE PARTS</text>
-<text x="68" y="205.6" font-size="15" font-weight="700" fill="#5B21B6">kb::handlers</text>
-<text x="68" y="222.8" font-size="12" fill="#5B21B6">components/lib/handlers</text>
-<text x="68" y="246.6" font-size="13" fill="#2B3442">bindings, handler core,</text>
-<text x="68" y="265.4" font-size="13" fill="#2B3442">start-up pipeline</text>
-<text x="292" y="205.6" font-size="15" font-weight="700" fill="#1E429F">kb::interfaces</text>
-<text x="292" y="222.8" font-size="12" fill="#1E429F">components/lib/interfaces</text>
-<text x="292" y="246.6" font-size="13" fill="#2B3442">contracts as C++20</text>
-<text x="292" y="265.4" font-size="13" fill="#2B3442">concepts, host test port</text>
-<text x="516" y="205.6" font-size="15" font-weight="700" fill="#8A3C0B">kb::rtos</text>
-<text x="516" y="222.8" font-size="12" fill="#8A3C0B">components/lib/rtos</text>
-<text x="516" y="246.6" font-size="13" fill="#2B3442">mutexes, queues, threads;</text>
-<text x="516" y="265.4" font-size="13" fill="#2B3442">none, FreeRTOS, ThreadX</text>
-<text x="516" y="284.3" font-size="13" fill="#2B3442">backends</text>
-<text x="740" y="205.6" font-size="15" font-weight="700" fill="#7A360E">kb::utils</text>
-<text x="740" y="222.8" font-size="12" fill="#7A360E">components/lib/utils</text>
-<text x="740" y="246.6" font-size="13" fill="#2B3442">Status/Result, units,</text>
-<text x="740" y="265.4" font-size="13" fill="#2B3442">containers, CRC, seqlock</text>
-<text x="964" y="205.6" font-size="15" font-weight="700" fill="#7A360E">kb::dma</text>
-<text x="964" y="222.8" font-size="12" fill="#7A360E">components/lib/dma</text>
-<text x="964" y="246.6" font-size="13" fill="#2B3442"></text>
-<rect x="48" y="430.8" width="67.9" height="21.5" rx="10.8" fill="#EAF7EF" stroke="#B2E2C2" stroke-width="1"/>
-<text x="56" y="445.2" font-size="11.5" font-weight="700" fill="#14532D">ads7952</text>
-<rect x="123.9" y="430.8" width="69.3" height="21.5" rx="10.8" fill="#EAF7EF" stroke="#B2E2C2" stroke-width="1"/>
-<text x="131.9" y="445.2" font-size="11.5" font-weight="700" fill="#14532D">ads9324</text>
-<rect x="201.2" y="430.8" width="93.5" height="21.5" rx="10.8" fill="#EAF7EF" stroke="#B2E2C2" stroke-width="1"/>
-<text x="209.2" y="445.2" font-size="11.5" font-weight="700" fill="#14532D">alicat-basis2</text>
-<rect x="302.7" y="430.8" width="68.6" height="21.5" rx="10.8" fill="#EAF7EF" stroke="#B2E2C2" stroke-width="1"/>
-<text x="310.7" y="445.2" font-size="11.5" font-weight="700" fill="#14532D">as5047u</text>
-<rect x="379.3" y="430.8" width="75.2" height="21.5" rx="10.8" fill="#EAF7EF" stroke="#B2E2C2" stroke-width="1"/>
-<text x="387.3" y="445.2" font-size="11.5" font-weight="700" fill="#14532D">at25040b</text>
-<rect x="462.5" y="430.8" width="63.3" height="21.5" rx="10.8" fill="#EAF7EF" stroke="#B2E2C2" stroke-width="1"/>
-<text x="470.5" y="445.2" font-size="11.5" font-weight="700" fill="#14532D">bmp581</text>
-<rect x="533.7" y="430.8" width="62" height="21.5" rx="10.8" fill="#EAF7EF" stroke="#B2E2C2" stroke-width="1"/>
-<text x="541.7" y="445.2" font-size="11.5" font-weight="700" fill="#14532D">bno08x</text>
-<rect x="48" y="460.3" width="106.6" height="21.5" rx="10.8" fill="#EAF7EF" stroke="#B2E2C2" stroke-width="1"/>
-<text x="56" y="474.7" font-size="11.5" font-weight="700" fill="#14532D">canopen-client</text>
-<rect x="162.6" y="460.3" width="77.8" height="21.5" rx="10.8" fill="#EAF7EF" stroke="#B2E2C2" stroke-width="1"/>
-<text x="170.6" y="474.7" font-size="11.5" font-weight="700" fill="#14532D">dynamixel</text>
-<rect x="248.4" y="460.3" width="43.7" height="21.5" rx="10.8" fill="#EAF7EF" stroke="#B2E2C2" stroke-width="1"/>
-<text x="256.4" y="474.7" font-size="11.5" font-weight="700" fill="#14532D">fdo2</text>
-<rect x="300.1" y="460.3" width="74" height="21.5" rx="10.8" fill="#EAF7EF" stroke="#B2E2C2" stroke-width="1"/>
-<text x="308.1" y="474.7" font-size="11.5" font-weight="700" fill="#14532D">isf15acp4</text>
-<rect x="382.1" y="460.3" width="80.7" height="21.5" rx="10.8" fill="#EAF7EF" stroke="#B2E2C2" stroke-width="1"/>
-<text x="390.1" y="474.7" font-size="11.5" font-weight="700" fill="#14532D">max22200</text>
-<rect x="470.8" y="460.3" width="73.4" height="21.5" rx="10.8" fill="#EAF7EF" stroke="#B2E2C2" stroke-width="1"/>
-<text x="478.8" y="474.7" font-size="11.5" font-weight="700" fill="#14532D">mcp9700</text>
-<rect x="48" y="489.8" width="103.4" height="21.5" rx="10.8" fill="#EAF7EF" stroke="#B2E2C2" stroke-width="1"/>
-<text x="56" y="504.2" font-size="11.5" font-weight="700" fill="#14532D">ntc-thermistor</text>
-<rect x="159.4" y="489.8" width="69.3" height="21.5" rx="10.8" fill="#EAF7EF" stroke="#B2E2C2" stroke-width="1"/>
-<text x="167.4" y="504.2" font-size="11.5" font-weight="700" fill="#14532D">pca9685</text>
-<rect x="236.7" y="489.8" width="71.9" height="21.5" rx="10.8" fill="#EAF7EF" stroke="#B2E2C2" stroke-width="1"/>
-<text x="244.7" y="504.2" font-size="11.5" font-weight="700" fill="#14532D">pcal9555</text>
-<rect x="316.6" y="489.8" width="57.2" height="21.5" rx="10.8" fill="#EAF7EF" stroke="#B2E2C2" stroke-width="1"/>
-<text x="324.6" y="504.2" font-size="11.5" font-weight="700" fill="#14532D">pf1550</text>
-<rect x="381.7" y="489.8" width="53" height="21.5" rx="10.8" fill="#EAF7EF" stroke="#B2E2C2" stroke-width="1"/>
-<text x="389.7" y="504.2" font-size="11.5" font-weight="700" fill="#14532D">se05x</text>
-<rect x="442.7" y="489.8" width="111.3" height="21.5" rx="10.8" fill="#EAF7EF" stroke="#B2E2C2" stroke-width="1"/>
-<text x="450.7" y="504.2" font-size="11.5" font-weight="700" fill="#14532D">sfm-flow-meter</text>
-<rect x="562" y="489.8" width="85.6" height="21.5" rx="10.8" fill="#EAF7EF" stroke="#B2E2C2" stroke-width="1"/>
-<text x="570" y="504.2" font-size="11.5" font-weight="700" fill="#14532D">tle92466ed</text>
-<rect x="48" y="519.3" width="67.7" height="21.5" rx="10.8" fill="#EAF7EF" stroke="#B2E2C2" stroke-width="1"/>
-<text x="56" y="533.7" font-size="11.5" font-weight="700" fill="#14532D">tmc5160</text>
-<rect x="123.7" y="519.3" width="70.7" height="21.5" rx="10.8" fill="#EAF7EF" stroke="#B2E2C2" stroke-width="1"/>
-<text x="131.7" y="533.7" font-size="11.5" font-weight="700" fill="#14532D">tmc9660</text>
-<rect x="202.5" y="519.3" width="88" height="21.5" rx="10.8" fill="#EAF7EF" stroke="#B2E2C2" stroke-width="1"/>
-<text x="210.5" y="533.7" font-size="11.5" font-weight="700" fill="#14532D">ws2812-rmt</text>
-<text x="48" y="414.8" font-size="13" font-weight="700" fill="#14532D">COMPONENTS/DRIVERS: PINNED RELEASES</text>
-<text x="359.3" y="414.8" font-size="12" fill="#14532D">23 drivers</text>
-<text x="723.7" y="414.8" font-size="13" font-weight="700" fill="#0B5F59">COMPONENTS/PORTS: THE MCU SEAM</text>
-<text x="743.7" y="457.6" font-size="15" font-weight="700" fill="#0B5F59">esp32</text>
-<text x="743.7" y="482.4" font-size="13" fill="#2B3442">MCU port</text>
-<text x="965.8" y="457.6" font-size="15" font-weight="700" fill="#0B5F59">host</text>
-<text x="965.8" y="482.4" font-size="13" fill="#2B3442">tests only</text>
-<rect x="727.3" y="336.8" width="52.6" height="20" rx="10" fill="#FFFFFF"/>
-<text x="753.6" y="351.1" font-size="12" font-weight="500" text-anchor="middle" fill="#566070">satisfy</text>
-<rect x="132.7" y="336.8" width="38.6" height="20" rx="10" fill="#FFFFFF"/>
-<text x="152" y="351.1" font-size="12" font-weight="500" text-anchor="middle" fill="#566070">bind</text>
-<rect x="32" y="574.2" width="14" height="14" rx="4" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1.4"/>
-<text x="54" y="585.8" font-size="12.5" fill="#566070">handlers</text>
-<rect x="132.1" y="574.2" width="14" height="14" rx="4" fill="#EAF2FF" stroke="#2563EB" stroke-width="1.4"/>
-<text x="154.1" y="585.8" font-size="12.5" fill="#566070">interfaces and contracts</text>
-<rect x="330.7" y="574.2" width="14" height="14" rx="4" fill="#FFF5E3" stroke="#C26A05" stroke-width="1.4"/>
-<text x="352.7" y="585.8" font-size="12.5" fill="#566070">kb::rtos</text>
-<rect x="424" y="574.2" width="14" height="14" rx="4" fill="#FBEFE6" stroke="#9A4A17" stroke-width="1.4"/>
-<text x="446" y="585.8" font-size="12.5" fill="#566070">kb::utils</text>
-<rect x="518.6" y="574.2" width="14" height="14" rx="4" fill="#E6F6F4" stroke="#0B7A72" stroke-width="1.4"/>
-<text x="540.6" y="585.8" font-size="12.5" fill="#566070">MCU ports</text>
-<rect x="632.2" y="574.2" width="14" height="14" rx="4" fill="#EAF7EF" stroke="#15803D" stroke-width="1.4"/>
-<text x="654.2" y="585.8" font-size="12.5" fill="#566070">drivers</text>
+<text x="32" y="103.8" font-size="15" fill="#566070">Read from components/: a new part, port or driver appears here without</text>
+<text x="32" y="125.5" font-size="15" fill="#566070">anyone editing the figure.</text>
+<rect x="32" y="141.6" width="576" height="1" fill="#E2E7EE"/>
+<path d="M362 241.6 L362 279.6 Q362 287.6 354 287.6 L286 287.6 Q278 287.6 278 295.6 L278 436.6" fill="none" stroke="#7C8798" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#components-map-arrow-rail)"/>
+<path d="M197 532.5 L197 717.5" fill="none" stroke="#7C8798" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#components-map-arrow-rail)"/>
+<path d="M197 813.5 L197 828.2 Q197 836.2 205 836.2 L231 836.2 Q239 836.2 239 844.2 L239 885.5" fill="none" stroke="#7C8798" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#components-map-arrow-rail)"/>
+<path d="M443 813.5 L443 854.9 Q443 862.9 435 862.9 L409 862.9 Q401 862.9 401 870.9 L401 885.5" fill="none" stroke="#7C8798" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#components-map-arrow-rail)"/>
+<path d="M197 251.6 L197 259.6 Q197 267.6 189 267.6 L124 267.6 Q116 267.6 116 275.6 L116 436.6" fill="none" stroke="#0B7A72" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#components-map-arrow-teal-strong)"/>
+<path d="M524 241.6 L524 299.6 Q524 307.6 516 307.6 L451 307.6 Q443 307.6 443 315.6 L443 323.6" fill="none" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#components-map-arrow-violet-strong)"/>
+<rect x="348" y="168.6" width="190" height="69" rx="10" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1.4"/>
+<rect x="348" y="176.6" width="4" height="53" rx="2" fill="#7C3AED"/>
+<rect x="102" y="440.6" width="190" height="88" rx="10" fill="#EAF2FF" stroke="#2563EB" stroke-width="1.4"/>
+<rect x="102" y="448.6" width="4" height="72" rx="2" fill="#2563EB"/>
+<rect x="102" y="721.5" width="190" height="88" rx="10" fill="#FFF5E3" stroke="#C26A05" stroke-width="1.4"/>
+<rect x="102" y="729.5" width="4" height="72" rx="2" fill="#C26A05"/>
+<rect x="225" y="889.5" width="190" height="88" rx="10" fill="#FBEFE6" stroke="#9A4A17" stroke-width="1.4"/>
+<rect x="225" y="897.5" width="4" height="72" rx="2" fill="#9A4A17"/>
+<rect x="348" y="721.5" width="190" height="88" rx="10" fill="#FBEFE6" stroke="#9A4A17" stroke-width="1.4"/>
+<rect x="348" y="729.5" width="4" height="72" rx="2" fill="#9A4A17"/>
+<rect x="102" y="159.6" width="190" height="88" rx="10" fill="#E6F6F4" stroke="#0B7A72" stroke-width="1.4"/>
+<rect x="102" y="167.6" width="4" height="72" rx="2" fill="#0B7A72"/>
+<rect x="348" y="327.6" width="190" height="314" rx="10" fill="#EAF7EF" stroke="#15803D" stroke-width="1.4"/>
+<rect x="348" y="335.6" width="4" height="298" rx="2" fill="#15803D"/>
+<text x="368" y="195.3" font-size="15" font-weight="700" fill="#5B21B6">kb::handlers</text>
+<text x="368" y="220.2" font-size="13" fill="#2B3442">bindings, core, start-up</text>
+<text x="122" y="467.3" font-size="15" font-weight="700" fill="#1E429F">kb::interfaces</text>
+<text x="122" y="492.2" font-size="13" fill="#2B3442">C++20 concepts, host</text>
+<text x="122" y="511" font-size="13" fill="#2B3442">port</text>
+<text x="122" y="748.3" font-size="15" font-weight="700" fill="#8A3C0B">kb::rtos</text>
+<text x="122" y="773.2" font-size="13" fill="#2B3442">none, FreeRTOS,</text>
+<text x="122" y="792" font-size="13" fill="#2B3442">ThreadX</text>
+<text x="245" y="916.3" font-size="15" font-weight="700" fill="#7A360E">kb::utils</text>
+<text x="245" y="941.2" font-size="13" fill="#2B3442">Result, units, CRC,</text>
+<text x="245" y="960" font-size="13" fill="#2B3442">seqlock</text>
+<text x="368" y="748.3" font-size="15" font-weight="700" fill="#7A360E">kb::dma</text>
+<text x="368" y="773.2" font-size="13" fill="#2B3442">buffers, leases,</text>
+<text x="368" y="792" font-size="13" fill="#2B3442">streams</text>
+<text x="122" y="186.3" font-size="15" font-weight="700" fill="#0B5F59">components/ports</text>
+<text x="122" y="211.2" font-size="13" fill="#2B3442">esp32: MCU port</text>
+<text x="122" y="230" font-size="13" fill="#2B3442">host: tests only</text>
+<text x="368" y="354.3" font-size="15" font-weight="700" fill="#14532D">23 pinned drivers</text>
+<text x="368" y="379.1" font-size="13" fill="#2B3442">ads7952, ads9324,</text>
+<text x="368" y="398" font-size="13" fill="#2B3442">alicat-basis2, as5047u,</text>
+<text x="368" y="416.8" font-size="13" fill="#2B3442">at25040b, bmp581,</text>
+<text x="368" y="435.7" font-size="13" fill="#2B3442">bno08x,</text>
+<text x="368" y="454.6" font-size="13" fill="#2B3442">canopen-client,</text>
+<text x="368" y="473.4" font-size="13" fill="#2B3442">dynamixel, fdo2,</text>
+<text x="368" y="492.3" font-size="13" fill="#2B3442">isf15acp4, max22200,</text>
+<text x="368" y="511.1" font-size="13" fill="#2B3442">mcp9700,</text>
+<text x="368" y="530" font-size="13" fill="#2B3442">ntc-thermistor,</text>
+<text x="368" y="548.8" font-size="13" fill="#2B3442">pca9685, pcal9555,</text>
+<text x="368" y="567.7" font-size="13" fill="#2B3442">pf1550, se05x,</text>
+<text x="368" y="586.5" font-size="13" fill="#2B3442">sfm-flow-meter,</text>
+<text x="368" y="605.4" font-size="13" fill="#2B3442">tle92466ed, tmc5160,</text>
+<text x="368" y="624.2" font-size="13" fill="#2B3442">tmc9660, ws2812-rmt</text>
+<rect x="130.2" y="257.6" width="52.6" height="20" rx="10" fill="#FFFFFF"/>
+<text x="156.5" y="271.9" font-size="12" font-weight="500" text-anchor="middle" fill="#566070">satisfy</text>
+<rect x="464.2" y="297.6" width="38.6" height="20" rx="10" fill="#FFFFFF"/>
+<text x="483.5" y="311.9" font-size="12" font-weight="500" text-anchor="middle" fill="#566070">bind</text>
+<rect x="32" y="992.9" width="14" height="14" rx="4" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1.4"/>
+<text x="54" y="1004.5" font-size="12.5" fill="#566070">handlers</text>
+<rect x="132.1" y="992.9" width="14" height="14" rx="4" fill="#EAF2FF" stroke="#2563EB" stroke-width="1.4"/>
+<text x="154.1" y="1004.5" font-size="12.5" fill="#566070">interfaces</text>
+<rect x="240.8" y="992.9" width="14" height="14" rx="4" fill="#FFF5E3" stroke="#C26A05" stroke-width="1.4"/>
+<text x="262.8" y="1004.5" font-size="12.5" fill="#566070">kb::rtos</text>
+<rect x="334.1" y="992.9" width="14" height="14" rx="4" fill="#FBEFE6" stroke="#9A4A17" stroke-width="1.4"/>
+<text x="356.1" y="1004.5" font-size="12.5" fill="#566070">kb::utils</text>
+<rect x="428.7" y="992.9" width="14" height="14" rx="4" fill="#E6F6F4" stroke="#0B7A72" stroke-width="1.4"/>
+<text x="450.7" y="1004.5" font-size="12.5" fill="#566070">MCU ports</text>
+<rect x="32" y="1017.9" width="14" height="14" rx="4" fill="#EAF7EF" stroke="#15803D" stroke-width="1.4"/>
+<text x="54" y="1029.5" font-size="12.5" fill="#566070">drivers</text>
 </svg>

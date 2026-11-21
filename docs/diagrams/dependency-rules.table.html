@@ -1,0 +1,28 @@
+<details>
+<summary>Table form of this figure</summary>
+<table>
+<caption>Which layer may depend on which</caption>
+<thead><tr><th scope="col"></th><th scope="col">Verdict</th></tr></thead>
+<tbody>
+<tr><th scope="row">Application → Board HAL</th><td>allowed</td></tr>
+<tr><th scope="row">Application → kb::rtos</th><td>allowed</td></tr>
+<tr><th scope="row">Application → kb::utils</th><td>allowed</td></tr>
+<tr><th scope="row">Board HAL → kb::handlers</th><td>allowed</td></tr>
+<tr><th scope="row">Board HAL → kb::interfaces</th><td>allowed</td></tr>
+<tr><th scope="row">Board HAL → MCU port</th><td>allowed</td></tr>
+<tr><th scope="row">MCU port → kb::interfaces</th><td>allowed (installed headers only)</td></tr>
+<tr><th scope="row">MCU port → SDK headers</th><td>allowed (boundary files only)</td></tr>
+<tr><th scope="row">kb::handlers → driver-&lt;chip&gt;</th><td>allowed</td></tr>
+<tr><th scope="row">kb::handlers → kb::interfaces</th><td>allowed</td></tr>
+<tr><th scope="row">kb::interfaces → kb::rtos</th><td>allowed</td></tr>
+<tr><th scope="row">kb::rtos → kb::utils</th><td>allowed</td></tr>
+<tr><th scope="row">Application → kb::interfaces</th><td>forbidden (include checker, symbol lint)</td></tr>
+<tr><th scope="row">Application → SDK headers</th><td>forbidden (include checker, symbol lint)</td></tr>
+<tr><th scope="row">kb::handlers → SDK headers</th><td>forbidden (poison build, include checker)</td></tr>
+<tr><th scope="row">kb::handlers → MCU port</th><td>forbidden (CMake DAG check)</td></tr>
+<tr><th scope="row">kb::interfaces → MCU port</th><td>forbidden (include checker (LAY-010))</td></tr>
+<tr><th scope="row">driver-&lt;chip&gt; → kb::utils</th><td>forbidden (driver CI, include checker)</td></tr>
+<tr><th scope="row">kb::utils → kb::rtos</th><td>forbidden (CMake target graph)</td></tr>
+</tbody>
+</table>
+</details>

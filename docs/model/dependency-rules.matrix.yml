@@ -1,0 +1,68 @@
+---
+# Layer dependency rules: which layer may depend on which, and the check that catches each forbidden edge.
+kind: matrix
+id: dependency-rules
+title: Which layer may depend on which
+kicker: Layering
+subtitle: Every forbidden edge is caught by a named check before it can merge.
+alt: >-
+  Table of nineteen dependency rules between layers, twelve allowed from the application down to kb::utils and seven
+  forbidden, each forbidden one with the check that catches it.
+reads: >-
+  The twelve allowed dependencies come first: the application uses the board HAL, kb::rtos and kb::utils; the board
+  HAL uses kb::handlers, kb::interfaces and one MCU port; the MCU port uses the installed kb::interfaces headers only
+  and the vendor SDK headers in boundary files only; kb::handlers uses the drivers and kb::interfaces;
+  kb::interfaces uses kb::rtos; kb::rtos uses kb::utils. The seven forbidden dependencies follow, each with the
+  check that catches it: the application using kb::interfaces or the SDK directly (the include checker and the
+  symbol lint), kb::handlers using the SDK (the poison build and the include checker) or an MCU port (the CMake DAG
+  check), kb::interfaces using an MCU port (the include checker, LAY-010), a driver using kb::utils (the driver CI
+  and the include checker), and kb::utils using kb::rtos (the CMake target graph). Each cell carries a word and a
+  mark, so the meaning does not rest on colour alone.
+print: portrait
+width: 640
+cell_width: 300
+legend:
+  - [ok, allowed]
+  - [fail, forbidden]
+cols:
+  - {id: rule, label: Verdict}
+rows:
+  - {id: a01, label: "Application → Board HAL"}
+  - {id: a02, label: "Application → kb::rtos"}
+  - {id: a03, label: "Application → kb::utils"}
+  - {id: a04, label: "Board HAL → kb::handlers"}
+  - {id: a05, label: "Board HAL → kb::interfaces"}
+  - {id: a06, label: "Board HAL → MCU port"}
+  - {id: a07, label: "MCU port → kb::interfaces"}
+  - {id: a08, label: "MCU port → SDK headers"}
+  - {id: a09, label: "kb::handlers → driver-<chip>"}
+  - {id: a10, label: "kb::handlers → kb::interfaces"}
+  - {id: a11, label: "kb::interfaces → kb::rtos"}
+  - {id: a12, label: "kb::rtos → kb::utils"}
+  - {id: f01, label: "Application → kb::interfaces"}
+  - {id: f02, label: "Application → SDK headers"}
+  - {id: f03, label: "kb::handlers → SDK headers"}
+  - {id: f04, label: "kb::handlers → MCU port"}
+  - {id: f05, label: "kb::interfaces → MCU port"}
+  - {id: f06, label: "driver-<chip> → kb::utils"}
+  - {id: f07, label: "kb::utils → kb::rtos"}
+cells:
+  - {row: a01, col: rule, status: ok, text: allowed}
+  - {row: a02, col: rule, status: ok, text: allowed}
+  - {row: a03, col: rule, status: ok, text: allowed}
+  - {row: a04, col: rule, status: ok, text: allowed}
+  - {row: a05, col: rule, status: ok, text: allowed}
+  - {row: a06, col: rule, status: ok, text: allowed}
+  - {row: a07, col: rule, status: ok, text: allowed, note: installed headers only}
+  - {row: a08, col: rule, status: ok, text: allowed, note: boundary files only}
+  - {row: a09, col: rule, status: ok, text: allowed}
+  - {row: a10, col: rule, status: ok, text: allowed}
+  - {row: a11, col: rule, status: ok, text: allowed}
+  - {row: a12, col: rule, status: ok, text: allowed}
+  - {row: f01, col: rule, status: fail, text: forbidden, note: "include checker, symbol lint"}
+  - {row: f02, col: rule, status: fail, text: forbidden, note: "include checker, symbol lint"}
+  - {row: f03, col: rule, status: fail, text: forbidden, note: "poison build, include checker"}
+  - {row: f04, col: rule, status: fail, text: forbidden, note: "CMake DAG check"}
+  - {row: f05, col: rule, status: fail, text: forbidden, note: "include checker (LAY-010)"}
+  - {row: f06, col: rule, status: fail, text: forbidden, note: "driver CI, include checker"}
+  - {row: f07, col: rule, status: fail, text: forbidden, note: "CMake target graph"}

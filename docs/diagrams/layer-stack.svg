@@ -1,105 +1,100 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1035" viewBox="0 0 1200 1035" role="img" aria-labelledby="layer-stack-title layer-stack-desc" font-family="Inter, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" width="696" height="1417" viewBox="0 0 696 1417" role="img" aria-labelledby="layer-stack-title layer-stack-desc" font-family="Inter, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
 <title id="layer-stack-title">The layer stack</title>
-<desc id="layer-stack-desc">Layer stack, top to bottom: the product application; the board HAL repository; kb-core with kb::handlers, kb::interfaces, kb::rtos and kb::utils, each depending on the next; below it the drivers used by handlers, the MCU ports that satisfy the interface contracts, and the vendor SOUP reached only through boundary files.</desc>
-<defs><marker id="fk-arrow-rail" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#8893A2"/></marker></defs>
-<rect x="0.5" y="0.5" width="1199" height="1034" rx="16" fill="#FFFFFF" stroke="#E2E7EE"/>
+<desc id="layer-stack-desc">Layer stack from the product application through the board HAL to kb::handlers, kb::interfaces, kb::rtos and kb::utils, with the drivers that handlers bind, the MCU ports that satisfy the contracts, and vendor SOUP reached only through boundary files.</desc>
+<defs><marker id="layer-stack-arrow-rail" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#7C8798"/></marker><marker id="layer-stack-arrow-teal-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#0B7A72"/></marker></defs>
+<rect x="0.5" y="0.5" width="695" height="1416" rx="16" fill="#FFFFFF" stroke="#E2E7EE"/>
 <text x="32" y="44" font-size="12.5" font-weight="700" letter-spacing="1.2" fill="#7A360E">ARCHITECTURE</text>
 <text x="32" y="77.3" font-size="26" font-weight="700" fill="#0E1726">The layer stack</text>
-<text x="32" y="103.8" font-size="15" fill="#566070">Arrows point from a layer to what it depends on. Only boundary files touch vendor code.</text>
-<rect x="32" y="119.8" width="1136" height="1" fill="#E2E7EE"/>
-<rect x="32" y="137.8" width="1136" height="126" rx="14" fill="#F1F4F8" stroke="#CBD5E1" stroke-width="1.2"/>
-<rect x="32" y="311.8" width="1136" height="145" rx="14" fill="#F1F4F8" stroke="#CBD5E1" stroke-width="1.2"/>
-<rect x="32" y="524.8" width="1136" height="164" rx="14" fill="#FBEFE6" stroke="#E9C3A6" stroke-width="1.2"/>
-<rect x="312.5" y="712.8" width="855.5" height="126" rx="14" fill="#E6F6F4" stroke="#A6DCD5" stroke-width="1.2"/>
-<path d="M1118.9 251.8 L1118.9 292.3 Q1118.9 300.3 1110.9 300.3 L436.5 300.3 Q428.5 300.3 428.5 308.3 L428.5 348.8" fill="none" stroke="#8893A2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rail)"/>
-<path d="M313.5 619.3 L325.5 619.3" fill="none" stroke="#8893A2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rail)"/>
-<path d="M594 619.3 L606 619.3" fill="none" stroke="#8893A2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rail)"/>
-<path d="M874.5 619.3 L886.5 619.3" fill="none" stroke="#8893A2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rail)"/>
-<path d="M428.5 444.8 L428.5 495.3 Q428.5 503.3 420.5 503.3 L292.2 503.3 Q284.2 503.3 284.2 511.3 L284.2 561.8" fill="none" stroke="#8893A2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rail)"/>
-<path d="M284.2 676.8 L284.2 748.8" fill="none" stroke="#8893A2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rail)"/>
-<path d="M650.7 749.8 L650.7 721.3 Q650.7 713.3 642.7 713.3 L467.8 713.3 Q459.8 713.3 459.8 705.3 L459.8 676.8" fill="none" stroke="#8893A2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rail)"/>
-<path d="M650.7 826.8 L650.7 855.8 Q650.7 863.8 642.7 863.8 L608 863.8 Q600 863.8 600 871.8 L600 900.8" fill="none" stroke="#8893A2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rail)"/>
-<rect x="48" y="178.8" width="1104" height="69" rx="10" fill="#FDF0FF" stroke="#A21CAF" stroke-width="1.4"/>
-<rect x="48" y="186.8" width="4" height="53" rx="2" fill="#A21CAF"/>
-<rect x="48" y="352.8" width="400.5" height="88" rx="10" fill="#FFFFFF" stroke="#C9D1DB" stroke-width="1"/>
-<rect x="48" y="360.8" width="4" height="72" rx="2" fill="#A21CAF"/>
-<rect x="466.5" y="352.8" width="293.7" height="88" rx="10" fill="#FFFFFF" stroke="#C9D1DB" stroke-width="1"/>
-<rect x="466.5" y="360.8" width="4" height="72" rx="2" fill="#A21CAF"/>
-<rect x="778.2" y="352.8" width="373.8" height="88" rx="10" fill="#FFFFFF" stroke="#C9D1DB" stroke-width="1"/>
-<rect x="778.2" y="360.8" width="4" height="72" rx="2" fill="#A21CAF"/>
-<rect x="48" y="565.8" width="262.5" height="107" rx="10" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1.4"/>
-<rect x="48" y="573.8" width="4" height="91" rx="2" fill="#7C3AED"/>
-<rect x="328.5" y="565.8" width="262.5" height="107" rx="10" fill="#EAF2FF" stroke="#2563EB" stroke-width="1.4"/>
-<rect x="328.5" y="573.8" width="4" height="91" rx="2" fill="#2563EB"/>
-<rect x="609" y="565.8" width="262.5" height="107" rx="10" fill="#FFF5E3" stroke="#C26A05" stroke-width="1.4"/>
-<rect x="609" y="573.8" width="4" height="91" rx="2" fill="#C26A05"/>
-<rect x="889.5" y="565.8" width="262.5" height="107" rx="10" fill="#FBEFE6" stroke="#9A4A17" stroke-width="1.4"/>
-<rect x="889.5" y="573.8" width="4" height="91" rx="2" fill="#9A4A17"/>
-<rect x="48" y="752.8" width="262.5" height="88" rx="10" fill="#EAF7EF" stroke="#15803D" stroke-width="1.4"/>
-<rect x="48" y="760.8" width="4" height="72" rx="2" fill="#15803D"/>
-<rect x="328.5" y="753.8" width="402.8" height="69" rx="10" fill="#E6F6F4" stroke="#0B7A72" stroke-width="1.4"/>
-<rect x="328.5" y="761.8" width="4" height="53" rx="2" fill="#0B7A72"/>
-<rect x="749.2" y="753.8" width="402.8" height="69" rx="10" fill="#FFFFFF" stroke="#C9D1DB" stroke-width="1" stroke-dasharray="6 4"/>
-<rect x="32" y="904.8" width="1136" height="69" rx="10" fill="#FFFFFF" stroke="#C9D1DB" stroke-width="1" stroke-dasharray="6 4"/>
-<text x="48" y="162.8" font-size="13" font-weight="700" fill="#334155">PRODUCT</text>
-<text x="68" y="205.6" font-size="15" font-weight="700" fill="#86198F">Application tasks</text>
-<text x="68" y="230.4" font-size="13" fill="#2B3442">control, protocols, safety layer</text>
-<text x="48" y="336.8" font-size="13" font-weight="700" fill="#334155">BOARD HAL</text>
-<text x="68" y="379.6" font-size="15" font-weight="700" fill="#0E1726">Board facade and managers</text>
-<text x="68" y="404.4" font-size="13" fill="#2B3442">built on kb-hal-common</text>
-<text x="486.5" y="379.6" font-size="15" font-weight="700" fill="#0E1726">Board config</text>
-<text x="486.5" y="404.4" font-size="13" fill="#2B3442">bus table, thread model per bus, chip</text>
-<text x="486.5" y="423.3" font-size="13" fill="#2B3442">list, pins</text>
-<text x="798.2" y="379.6" font-size="15" font-weight="700" fill="#0E1726">Platform bind</text>
-<text x="798.2" y="404.4" font-size="13" fill="#2B3442">builds the port objects, sets the start-up order</text>
-<rect x="753.8" y="290.3" width="39.8" height="20" rx="10" fill="#FFFFFF"/>
-<text x="773.7" y="304.6" font-size="12" font-weight="500" text-anchor="middle" fill="#566070">calls</text>
-<text x="48" y="549.8" font-size="13" font-weight="700" fill="#7A360E">KB-CORE</text>
-<text x="68" y="592.5" font-size="15" font-weight="700" fill="#5B21B6">kb::handlers</text>
-<text x="68" y="617.4" font-size="13" fill="#2B3442">bindings, handler core, start-up</text>
-<text x="68" y="636.2" font-size="13" fill="#2B3442">pipeline, owner and guarded</text>
-<text x="68" y="655.1" font-size="13" fill="#2B3442">access</text>
-<text x="348.5" y="592.5" font-size="15" font-weight="700" fill="#1E429F">kb::interfaces</text>
-<text x="348.5" y="617.4" font-size="13" fill="#2B3442">contracts: C++20 concepts only,</text>
-<text x="348.5" y="636.2" font-size="13" fill="#2B3442">plus the host test port</text>
-<text x="629" y="592.5" font-size="15" font-weight="700" fill="#8A3C0B">kb::rtos</text>
-<text x="629" y="617.4" font-size="13" fill="#2B3442">API; backends none, FreeRTOS,</text>
-<text x="629" y="636.2" font-size="13" fill="#2B3442">ThreadX</text>
-<text x="909.5" y="592.5" font-size="15" font-weight="700" fill="#7A360E">kb::utils</text>
-<text x="909.5" y="617.4" font-size="13" fill="#2B3442">Status/Result, units, containers,</text>
-<text x="909.5" y="636.2" font-size="13" fill="#2B3442">CRC, seqlock</text>
-<rect x="335.9" y="493.3" width="40.8" height="20" rx="10" fill="#FFFFFF"/>
-<text x="356.4" y="507.6" font-size="12" font-weight="500" text-anchor="middle" fill="#566070">uses</text>
-<text x="68" y="779.5" font-size="15" font-weight="700" fill="#14532D">driver-&lt;chip&gt;</text>
-<text x="68" y="804.4" font-size="13" fill="#2B3442">brand-free, own CI at level high,</text>
-<text x="68" y="823.2" font-size="13" fill="#2B3442">pinned release tags</text>
-<rect x="261.5" y="702.8" width="45.4" height="20" rx="10" fill="#FFFFFF"/>
-<text x="284.2" y="717.1" font-size="12" font-weight="500" text-anchor="middle" fill="#566070">binds</text>
-<text x="328.5" y="737.8" font-size="13" font-weight="700" fill="#0B5F59">MCU PORTS</text>
-<text x="348.5" y="780.5" font-size="15" font-weight="700" fill="#0B5F59">port-esp32</text>
-<text x="348.5" y="805.4" font-size="13" fill="#2B3442">components/ports/esp32, own CMake project</text>
-<text x="769.2" y="780.5" font-size="15" font-weight="700" fill="#0E1726">port-stm32</text>
-<text x="769.2" y="805.4" font-size="13" fill="#2B3442">planned, own repository</text>
-<rect x="523.8" y="703.3" width="62.8" height="20" rx="10" fill="#FFFFFF"/>
-<text x="555.2" y="717.6" font-size="12" font-weight="500" text-anchor="middle" fill="#566070">satisfies</text>
-<text x="52" y="931.5" font-size="15" font-weight="700" fill="#0E1726">SOUP</text>
-<text x="52" y="956.4" font-size="13" fill="#2B3442">ESP-IDF, STM32 HAL, FreeRTOS, ThreadX, mbedTLS. Reached only through boundary files of the ports and the RTOS backends; never analysed, never edited.</text>
-<rect x="561.2" y="853.8" width="128.4" height="20" rx="10" fill="#FFFFFF"/>
-<text x="625.4" y="868.1" font-size="12" font-weight="500" text-anchor="middle" fill="#566070">boundary files only</text>
-<rect x="32" y="989.2" width="14" height="14" rx="4" fill="#FDF0FF" stroke="#A21CAF" stroke-width="1.4"/>
-<text x="54" y="1000.8" font-size="12.5" fill="#566070">product and board HAL</text>
-<rect x="224.5" y="989.2" width="14" height="14" rx="4" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1.4"/>
-<text x="246.5" y="1000.8" font-size="12.5" fill="#566070">handlers</text>
-<rect x="324.7" y="989.2" width="14" height="14" rx="4" fill="#EAF2FF" stroke="#2563EB" stroke-width="1.4"/>
-<text x="346.7" y="1000.8" font-size="12.5" fill="#566070">interfaces and contracts</text>
-<rect x="523.2" y="989.2" width="14" height="14" rx="4" fill="#FFF5E3" stroke="#C26A05" stroke-width="1.4"/>
-<text x="545.2" y="1000.8" font-size="12.5" fill="#566070">kb::rtos</text>
-<rect x="616.5" y="989.2" width="14" height="14" rx="4" fill="#FBEFE6" stroke="#9A4A17" stroke-width="1.4"/>
-<text x="638.5" y="1000.8" font-size="12.5" fill="#566070">kb::utils</text>
-<rect x="711.1" y="989.2" width="14" height="14" rx="4" fill="#E6F6F4" stroke="#0B7A72" stroke-width="1.4"/>
-<text x="733.1" y="1000.8" font-size="12.5" fill="#566070">MCU ports</text>
-<rect x="824.7" y="989.2" width="14" height="14" rx="4" fill="#EAF7EF" stroke="#15803D" stroke-width="1.4"/>
-<text x="846.7" y="1000.8" font-size="12.5" fill="#566070">drivers</text>
-<rect x="914.2" y="989.2" width="14" height="14" rx="4" fill="#F1F4F8" stroke="#64748B" stroke-width="1.4"/>
-<text x="936.2" y="1000.8" font-size="12.5" fill="#566070">SOUP and planned</text>
+<text x="32" y="103.8" font-size="15" fill="#566070">Arrows point from a layer to what it depends on. Only boundary files touch vendor</text>
+<text x="32" y="125.5" font-size="15" fill="#566070">code.</text>
+<rect x="32" y="141.6" width="632" height="1" fill="#E2E7EE"/>
+<path d="M348.5 270.6 L348 372.6" fill="none" stroke="#7C8798" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#layer-stack-arrow-rail)"/>
+<path d="M287 505.6 L287 525.2 Q287 533.2 279 533.2 L253 533.2 Q245 533.2 245 541.2 L245 607.5" fill="none" stroke="#7C8798" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#layer-stack-arrow-rail)"/>
+<path d="M409 505.6 L409 571.9 Q409 579.9 417 579.9 L443 579.9 Q451 579.9 451 587.9 L451 607.5" fill="none" stroke="#7C8798" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#layer-stack-arrow-rail)"/>
+<path d="M306 703.5 L306 737.7 Q306 739.7 308 739.7 L308 739.7 Q310 739.7 310 741.7 L310 815.5" fill="none" stroke="#7C8798" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#layer-stack-arrow-rail)"/>
+<path d="M184 703.5 L184 711.6 Q184 719.6 176 719.6 L173 719.6 Q165 719.6 165 727.6 L165 805.5" fill="none" stroke="#7C8798" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#layer-stack-arrow-rail)"/>
+<path d="M390 703.5 L390 751.8 Q390 759.8 398 759.8 L424 759.8 Q432 759.8 432 767.8 L432 815.5" fill="none" stroke="#0B7A72" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#layer-stack-arrow-teal-strong)"/>
+<path d="M371 892.5 L371 1003.5" fill="none" stroke="#7C8798" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#layer-stack-arrow-rail)"/>
+<path d="M310 1099.5 L310 1107 Q310 1114.5 317.5 1114.5 L317.5 1114.5 Q325 1114.5 325 1122 L325 1219.5" fill="none" stroke="#7C8798" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#layer-stack-arrow-rail)"/>
+<path d="M512 703.5 L512 781.5 Q512 789.5 504 789.5 L482 789.5 Q474 789.5 474 797.5 L474 962.9 Q474 970.9 482 970.9 L496.3 970.9 Q504.3 970.9 504.3 978.9 L504.3 1178.6 Q504.3 1186.6 512.3 1186.6 L584.5 1186.6 Q592 1186.6 592 1194.1 L592 1201.5" fill="none" stroke="#7C8798" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 5" marker-end="url(#layer-stack-arrow-rail)"/>
+<path d="M432 1099.5 L432 1142.5 Q432 1150.5 440 1150.5 L462 1150.5 Q470 1150.5 470 1158.5 L470 1201.5" fill="none" stroke="#7C8798" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 5" marker-end="url(#layer-stack-arrow-rail)"/>
+<rect x="264" y="159.6" width="169" height="107" rx="10" fill="#FDF0FF" stroke="#A21CAF" stroke-width="1.4"/>
+<rect x="264" y="167.6" width="4" height="91" rx="2" fill="#A21CAF"/>
+<rect x="273" y="376.6" width="150" height="125" rx="10" fill="#FDF0FF" stroke="#A21CAF" stroke-width="1.4"/>
+<rect x="273" y="384.6" width="4" height="109" rx="2" fill="#A21CAF"/>
+<rect x="170" y="611.5" width="150" height="88" rx="10" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1.4"/>
+<rect x="170" y="619.5" width="4" height="72" rx="2" fill="#7C3AED"/>
+<rect x="376" y="611.5" width="150" height="88" rx="10" fill="#E6F6F4" stroke="#0B7A72" stroke-width="1.4"/>
+<rect x="376" y="619.5" width="4" height="72" rx="2" fill="#0B7A72"/>
+<rect x="296" y="819.5" width="150" height="69" rx="10" fill="#EAF2FF" stroke="#2563EB" stroke-width="1.4"/>
+<rect x="296" y="827.5" width="4" height="53" rx="2" fill="#2563EB"/>
+<rect x="90" y="809.5" width="150" height="88" rx="10" fill="#EAF7EF" stroke="#15803D" stroke-width="1.4"/>
+<rect x="90" y="817.5" width="4" height="72" rx="2" fill="#15803D"/>
+<rect x="296" y="1007.5" width="150" height="88" rx="10" fill="#FFF5E3" stroke="#C26A05" stroke-width="1.4"/>
+<rect x="296" y="1015.5" width="4" height="72" rx="2" fill="#C26A05"/>
+<rect x="250" y="1223.5" width="150" height="88" rx="10" fill="#FBEFE6" stroke="#9A4A17" stroke-width="1.4"/>
+<rect x="250" y="1231.5" width="4" height="72" rx="2" fill="#9A4A17"/>
+<rect x="456" y="1205.5" width="150" height="125" rx="10" fill="#FFFFFF" stroke="#738093" stroke-width="1"/>
+<rect x="456" y="1213.5" width="4" height="109" rx="2" fill="#64748B"/>
+<text x="284" y="186.3" font-size="15" font-weight="700" fill="#86198F">Application tasks</text>
+<text x="284" y="211.2" font-size="13" fill="#2B3442">control</text>
+<text x="284" y="230" font-size="13" fill="#2B3442">protocols</text>
+<text x="284" y="248.8" font-size="13" fill="#2B3442">safety</text>
+<text x="293" y="403.3" font-size="15" font-weight="700" fill="#86198F">Board HAL</text>
+<text x="293" y="428.2" font-size="13" fill="#2B3442">facade and</text>
+<text x="293" y="447" font-size="13" fill="#2B3442">managers</text>
+<text x="293" y="465.9" font-size="13" fill="#2B3442">board config</text>
+<text x="293" y="484.7" font-size="13" fill="#2B3442">platform bind</text>
+<text x="190" y="638.3" font-size="15" font-weight="700" fill="#5B21B6">kb::handlers</text>
+<text x="190" y="663.2" font-size="13" fill="#2B3442">bindings, core</text>
+<text x="190" y="682" font-size="13" fill="#2B3442">start-up, access</text>
+<text x="396" y="638.3" font-size="15" font-weight="700" fill="#0B5F59">MCU ports</text>
+<text x="396" y="663.2" font-size="13" fill="#2B3442">port-esp32</text>
+<text x="396" y="682" font-size="13" fill="#2B3442">port-stm32 later</text>
+<text x="316" y="846.3" font-size="15" font-weight="700" fill="#1E429F">kb::interfaces</text>
+<text x="316" y="871.2" font-size="13" fill="#2B3442">C++20 concepts</text>
+<text x="110" y="836.3" font-size="15" font-weight="700" fill="#14532D">driver-&lt;chip&gt;</text>
+<text x="110" y="861.2" font-size="13" fill="#2B3442">pinned release</text>
+<text x="110" y="880" font-size="13" fill="#2B3442">tags</text>
+<text x="316" y="1034.3" font-size="15" font-weight="700" fill="#8A3C0B">kb::rtos</text>
+<text x="316" y="1059.2" font-size="13" fill="#2B3442">none, FreeRTOS,</text>
+<text x="316" y="1078" font-size="13" fill="#2B3442">ThreadX</text>
+<text x="270" y="1250.3" font-size="15" font-weight="700" fill="#7A360E">kb::utils</text>
+<text x="270" y="1275.1" font-size="13" fill="#2B3442">Result, units,</text>
+<text x="270" y="1294" font-size="13" fill="#2B3442">CRC</text>
+<text x="476" y="1232.3" font-size="15" font-weight="700" fill="#0E1726">SOUP</text>
+<text x="476" y="1257.1" font-size="13" fill="#2B3442">vendor SDK</text>
+<text x="476" y="1276" font-size="13" fill="#2B3442">kernels,</text>
+<text x="476" y="1294.8" font-size="13" fill="#2B3442">mbedTLS</text>
+<text x="476" y="1313.7" font-size="13" fill="#2B3442">never edited</text>
+<rect x="356.6" y="311.6" width="39.8" height="20" rx="10" fill="#FFFFFF"/>
+<text x="376.5" y="325.9" font-size="12" font-weight="500" text-anchor="middle" fill="#566070">calls</text>
+<rect x="245.6" y="523.2" width="40.8" height="20" rx="10" fill="#FFFFFF"/>
+<text x="266" y="537.5" font-size="12" font-weight="500" text-anchor="middle" fill="#566070">uses</text>
+<rect x="459.2" y="569.9" width="70.6" height="20" rx="10" fill="#FFFFFF"/>
+<text x="494.5" y="584.2" font-size="12" font-weight="500" text-anchor="middle" fill="#566070">picks one</text>
+<rect x="191.8" y="709.6" width="45.4" height="20" rx="10" fill="#FFFFFF"/>
+<text x="214.5" y="724" font-size="12" font-weight="500" text-anchor="middle" fill="#566070">binds</text>
+<rect x="440.1" y="749.8" width="62.8" height="20" rx="10" fill="#FFFFFF"/>
+<text x="471.5" y="764.2" font-size="12" font-weight="500" text-anchor="middle" fill="#566070">satisfies</text>
+<rect x="519.9" y="779.5" width="99.1" height="20" rx="10" fill="#FFFFFF"/>
+<text x="569.5" y="793.8" font-size="12" font-weight="500" text-anchor="middle" fill="#566070">boundary files</text>
+<rect x="477.9" y="1140.5" width="99.1" height="20" rx="10" fill="#FFFFFF"/>
+<text x="527.5" y="1154.9" font-size="12" font-weight="500" text-anchor="middle" fill="#566070">boundary files</text>
+<rect x="32" y="1345.9" width="14" height="14" rx="4" fill="#FDF0FF" stroke="#A21CAF" stroke-width="1.4"/>
+<text x="54" y="1357.5" font-size="12.5" fill="#566070">product and board HAL</text>
+<rect x="224.5" y="1345.9" width="14" height="14" rx="4" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1.4"/>
+<text x="246.5" y="1357.5" font-size="12.5" fill="#566070">handlers</text>
+<rect x="324.7" y="1345.9" width="14" height="14" rx="4" fill="#EAF2FF" stroke="#2563EB" stroke-width="1.4"/>
+<text x="346.7" y="1357.5" font-size="12.5" fill="#566070">interfaces</text>
+<rect x="433.4" y="1345.9" width="14" height="14" rx="4" fill="#FFF5E3" stroke="#C26A05" stroke-width="1.4"/>
+<text x="455.4" y="1357.5" font-size="12.5" fill="#566070">kb::rtos</text>
+<rect x="526.7" y="1345.9" width="14" height="14" rx="4" fill="#FBEFE6" stroke="#9A4A17" stroke-width="1.4"/>
+<text x="548.7" y="1357.5" font-size="12.5" fill="#566070">kb::utils</text>
+<rect x="32" y="1370.9" width="14" height="14" rx="4" fill="#E6F6F4" stroke="#0B7A72" stroke-width="1.4"/>
+<text x="54" y="1382.5" font-size="12.5" fill="#566070">MCU ports</text>
+<rect x="145.6" y="1370.9" width="14" height="14" rx="4" fill="#EAF7EF" stroke="#15803D" stroke-width="1.4"/>
+<text x="167.6" y="1382.5" font-size="12.5" fill="#566070">drivers</text>
+<rect x="235.1" y="1370.9" width="14" height="14" rx="4" fill="#F1F4F8" stroke="#64748B" stroke-width="1.4"/>
+<text x="257.1" y="1382.5" font-size="12.5" fill="#566070">SOUP</text>
 </svg>

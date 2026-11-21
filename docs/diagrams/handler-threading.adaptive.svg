@@ -1,0 +1,130 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="1330" viewBox="0 0 640 1330" role="img" aria-labelledby="handler-threading-title handler-threading-desc" font-family="Inter, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" class="fk">
+<title id="handler-threading-title">Handler thread models</title>
+<desc id="handler-threading-desc">Two thread models, one above the other: in model O other tasks read a lock-free snapshot or queue requests that the owner task publishes and drains, and in model G tasks call guarded handlers that take the handler lock and then a bounded bus lock.</desc>
+<style>
+.fk{--fk-blue-strong:#2563EB;--fk-blue-text:#1E429F;--fk-blue-tint:#EAF2FF;--fk-brand-text:#7A360E;--fk-brown-strong:#7C4A1E;--fk-brown-text:#6B3F17;--fk-brown-tint:#F8F1EA;--fk-canvas:#FFFFFF;--fk-frame:#E2E7EE;--fk-hair:#E2E7EE;--fk-ink:#0E1726;--fk-ink2:#2B3442;--fk-muted:#566070;--fk-slate-soft:#CBD5E1;--fk-slate-text:#334155;--fk-slate-tint:#F1F4F8;--fk-teal-strong:#0B7A72;--fk-teal-text:#0B5F59;--fk-teal-tint:#E6F6F4;--fk-violet-soft:#D5C5FA;--fk-violet-strong:#7C3AED;--fk-violet-text:#5B21B6;--fk-violet-tint:#F3EEFF;}
+@media (prefers-color-scheme:dark){.fk{--fk-blue-strong:#60A5FA;--fk-blue-text:#BFDBFE;--fk-blue-tint:#13233A;--fk-brand-text:#F8D27A;--fk-brown-strong:#D6A26B;--fk-brown-text:#F1D5B5;--fk-brown-tint:#2A1F14;--fk-canvas:#0E131A;--fk-frame:#283241;--fk-hair:#252F3C;--fk-ink:#E8EDF3;--fk-ink2:#D2DAE4;--fk-muted:#9AA6B5;--fk-slate-soft:#3A4656;--fk-slate-text:#E2E8F0;--fk-slate-tint:#1B232E;--fk-teal-strong:#2BB3A3;--fk-teal-text:#A7F3E6;--fk-teal-tint:#0F2A28;--fk-violet-soft:#4B3A82;--fk-violet-strong:#A78BFA;--fk-violet-text:#DDD6FE;--fk-violet-tint:#221A3A;}}
+:root[data-theme="dark"] .fk,[data-md-color-scheme="slate"] .fk{--fk-blue-strong:#60A5FA;--fk-blue-text:#BFDBFE;--fk-blue-tint:#13233A;--fk-brand-text:#F8D27A;--fk-brown-strong:#D6A26B;--fk-brown-text:#F1D5B5;--fk-brown-tint:#2A1F14;--fk-canvas:#0E131A;--fk-frame:#283241;--fk-hair:#252F3C;--fk-ink:#E8EDF3;--fk-ink2:#D2DAE4;--fk-muted:#9AA6B5;--fk-slate-soft:#3A4656;--fk-slate-text:#E2E8F0;--fk-slate-tint:#1B232E;--fk-teal-strong:#2BB3A3;--fk-teal-text:#A7F3E6;--fk-teal-tint:#0F2A28;--fk-violet-soft:#4B3A82;--fk-violet-strong:#A78BFA;--fk-violet-text:#DDD6FE;--fk-violet-tint:#221A3A;}
+:root[data-theme="light"] .fk,[data-md-color-scheme="default"] .fk{--fk-blue-strong:#2563EB;--fk-blue-text:#1E429F;--fk-blue-tint:#EAF2FF;--fk-brand-text:#7A360E;--fk-brown-strong:#7C4A1E;--fk-brown-text:#6B3F17;--fk-brown-tint:#F8F1EA;--fk-canvas:#FFFFFF;--fk-frame:#E2E7EE;--fk-hair:#E2E7EE;--fk-ink:#0E1726;--fk-ink2:#2B3442;--fk-muted:#566070;--fk-slate-soft:#CBD5E1;--fk-slate-text:#334155;--fk-slate-tint:#F1F4F8;--fk-teal-strong:#0B7A72;--fk-teal-text:#0B5F59;--fk-teal-tint:#E6F6F4;--fk-violet-soft:#D5C5FA;--fk-violet-strong:#7C3AED;--fk-violet-text:#5B21B6;--fk-violet-tint:#F3EEFF;}
+.fk-f-blue-strong{fill:var(--fk-blue-strong)}.fk-s-blue-strong{stroke:var(--fk-blue-strong)}
+.fk-f-blue-text{fill:var(--fk-blue-text)}.fk-s-blue-text{stroke:var(--fk-blue-text)}
+.fk-f-blue-tint{fill:var(--fk-blue-tint)}.fk-s-blue-tint{stroke:var(--fk-blue-tint)}
+.fk-f-brand-text{fill:var(--fk-brand-text)}.fk-s-brand-text{stroke:var(--fk-brand-text)}
+.fk-f-brown-strong{fill:var(--fk-brown-strong)}.fk-s-brown-strong{stroke:var(--fk-brown-strong)}
+.fk-f-brown-text{fill:var(--fk-brown-text)}.fk-s-brown-text{stroke:var(--fk-brown-text)}
+.fk-f-brown-tint{fill:var(--fk-brown-tint)}.fk-s-brown-tint{stroke:var(--fk-brown-tint)}
+.fk-f-canvas{fill:var(--fk-canvas)}.fk-s-canvas{stroke:var(--fk-canvas)}
+.fk-f-frame{fill:var(--fk-frame)}.fk-s-frame{stroke:var(--fk-frame)}
+.fk-f-hair{fill:var(--fk-hair)}.fk-s-hair{stroke:var(--fk-hair)}
+.fk-f-ink{fill:var(--fk-ink)}.fk-s-ink{stroke:var(--fk-ink)}
+.fk-f-ink2{fill:var(--fk-ink2)}.fk-s-ink2{stroke:var(--fk-ink2)}
+.fk-f-muted{fill:var(--fk-muted)}.fk-s-muted{stroke:var(--fk-muted)}
+.fk-f-slate-soft{fill:var(--fk-slate-soft)}.fk-s-slate-soft{stroke:var(--fk-slate-soft)}
+.fk-f-slate-text{fill:var(--fk-slate-text)}.fk-s-slate-text{stroke:var(--fk-slate-text)}
+.fk-f-slate-tint{fill:var(--fk-slate-tint)}.fk-s-slate-tint{stroke:var(--fk-slate-tint)}
+.fk-f-teal-strong{fill:var(--fk-teal-strong)}.fk-s-teal-strong{stroke:var(--fk-teal-strong)}
+.fk-f-teal-text{fill:var(--fk-teal-text)}.fk-s-teal-text{stroke:var(--fk-teal-text)}
+.fk-f-teal-tint{fill:var(--fk-teal-tint)}.fk-s-teal-tint{stroke:var(--fk-teal-tint)}
+.fk-f-violet-soft{fill:var(--fk-violet-soft)}.fk-s-violet-soft{stroke:var(--fk-violet-soft)}
+.fk-f-violet-strong{fill:var(--fk-violet-strong)}.fk-s-violet-strong{stroke:var(--fk-violet-strong)}
+.fk-f-violet-text{fill:var(--fk-violet-text)}.fk-s-violet-text{stroke:var(--fk-violet-text)}
+.fk-f-violet-tint{fill:var(--fk-violet-tint)}.fk-s-violet-tint{stroke:var(--fk-violet-tint)}
+@media (forced-colors:active){.fk text{fill:CanvasText}.fk rect,.fk circle{fill:Canvas;stroke:CanvasText}.fk path{stroke:CanvasText}.fk marker path{fill:CanvasText;stroke:none}}
+</style>
+<defs><marker id="handler-threading-arrow-brown-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="fk-f-brown-strong"/></marker><marker id="handler-threading-arrow-violet-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="fk-f-violet-strong"/></marker></defs>
+<rect x="0.5" y="0.5" width="639" height="1329" rx="16" class="fk-f-canvas fk-s-frame"/>
+<text x="32" y="44" font-size="12.5" font-weight="700" letter-spacing="1.2" class="fk-f-brand-text">HANDLERS</text>
+<text x="32" y="77.3" font-size="26" font-weight="700" class="fk-f-ink">Handler thread models</text>
+<text x="32" y="103.8" font-size="15" class="fk-f-muted">Declared per bus. Callers on other tasks use one access API in both models.</text>
+<rect x="32" y="119.8" width="576" height="1" class="fk-f-hair"/>
+<rect x="32" y="137.8" width="576" height="646.4" rx="14" stroke-width="1.2" class="fk-f-violet-tint fk-s-violet-soft"/>
+<rect x="32" y="820.2" width="576" height="360.4" rx="14" stroke-width="1.2" class="fk-f-violet-tint fk-s-violet-soft"/>
+<path d="M180 287.2 L180 333.2" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#handler-threading-arrow-brown-strong)" class="fk-s-brown-strong"/>
+<path d="M460 287.2 L460 333.2" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#handler-threading-arrow-brown-strong)" class="fk-s-brown-strong"/>
+<path d="M180 454.2 L180 408.2" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#handler-threading-arrow-brown-strong)" class="fk-s-brown-strong"/>
+<path d="M460 454.2 L460 408.2" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#handler-threading-arrow-brown-strong)" class="fk-s-brown-strong"/>
+<path d="M180 529.2 L180 575.2" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#handler-threading-arrow-brown-strong)" class="fk-s-brown-strong"/>
+<path d="M460 529.2 L460 575.2" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#handler-threading-arrow-brown-strong)" class="fk-s-brown-strong"/>
+<path d="M180 650.2 L180 696.2" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#handler-threading-arrow-violet-strong)" class="fk-s-violet-strong"/>
+<path d="M460 650.2 L460 696.2" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#handler-threading-arrow-violet-strong)" class="fk-s-violet-strong"/>
+<path d="M180 925.6 L180 971.6" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#handler-threading-arrow-brown-strong)" class="fk-s-brown-strong"/>
+<path d="M460 925.6 L460 971.6" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#handler-threading-arrow-brown-strong)" class="fk-s-brown-strong"/>
+<path d="M180 1046.6 L180 1092.6" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#handler-threading-arrow-violet-strong)" class="fk-s-violet-strong"/>
+<path d="M460 1046.6 L460 1092.6" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#handler-threading-arrow-violet-strong)" class="fk-s-violet-strong"/>
+<rect x="48" y="196.2" width="544" height="88" rx="10" stroke-width="1.4" class="fk-f-brown-tint fk-s-brown-strong"/>
+<rect x="48" y="204.2" width="4" height="72" rx="2" class="fk-f-brown-strong"/>
+<rect x="48" y="336.2" width="264" height="69" rx="10" stroke-width="1.4" class="fk-f-blue-tint fk-s-blue-strong"/>
+<rect x="48" y="344.2" width="4" height="53" rx="2" class="fk-f-blue-strong"/>
+<rect x="328" y="336.2" width="264" height="69" rx="10" stroke-width="1.4" class="fk-f-blue-tint fk-s-blue-strong"/>
+<rect x="328" y="344.2" width="4" height="53" rx="2" class="fk-f-blue-strong"/>
+<rect x="48" y="457.2" width="544" height="69" rx="10" stroke-width="1.4" class="fk-f-brown-tint fk-s-brown-strong"/>
+<rect x="48" y="465.2" width="4" height="53" rx="2" class="fk-f-brown-strong"/>
+<rect x="48" y="578.2" width="264" height="69" rx="10" stroke-width="1.4" class="fk-f-violet-tint fk-s-violet-strong"/>
+<rect x="48" y="586.2" width="4" height="53" rx="2" class="fk-f-violet-strong"/>
+<rect x="328" y="578.2" width="264" height="69" rx="10" stroke-width="1.4" class="fk-f-violet-tint fk-s-violet-strong"/>
+<rect x="328" y="586.2" width="4" height="53" rx="2" class="fk-f-violet-strong"/>
+<rect x="48" y="699.2" width="544" height="69" rx="10" stroke-width="1.4" class="fk-f-teal-tint fk-s-teal-strong"/>
+<rect x="48" y="707.2" width="4" height="53" rx="2" class="fk-f-teal-strong"/>
+<rect x="48" y="878.6" width="264" height="44" rx="10" stroke-width="1.4" class="fk-f-brown-tint fk-s-brown-strong"/>
+<rect x="48" y="886.6" width="4" height="28" rx="2" class="fk-f-brown-strong"/>
+<rect x="328" y="878.6" width="264" height="44" rx="10" stroke-width="1.4" class="fk-f-brown-tint fk-s-brown-strong"/>
+<rect x="328" y="886.6" width="4" height="28" rx="2" class="fk-f-brown-strong"/>
+<rect x="48" y="974.6" width="264" height="69" rx="10" stroke-width="1.4" class="fk-f-violet-tint fk-s-violet-strong"/>
+<rect x="48" y="982.6" width="4" height="53" rx="2" class="fk-f-violet-strong"/>
+<rect x="328" y="974.6" width="264" height="69" rx="10" stroke-width="1.4" class="fk-f-violet-tint fk-s-violet-strong"/>
+<rect x="328" y="982.6" width="4" height="53" rx="2" class="fk-f-violet-strong"/>
+<rect x="48" y="1095.6" width="544" height="69" rx="10" stroke-width="1.4" class="fk-f-teal-tint fk-s-teal-strong"/>
+<rect x="48" y="1103.6" width="4" height="53" rx="2" class="fk-f-teal-strong"/>
+<rect x="32" y="1208.6" width="576" height="60.5" rx="10" stroke-width="1" class="fk-f-slate-tint fk-s-slate-soft"/>
+<text x="68" y="223" font-size="15" font-weight="700" class="fk-f-brown-text">Other tasks</text>
+<text x="68" y="247.8" font-size="13" class="fk-f-ink2">Latest(): lock-free copy</text>
+<text x="68" y="266.6" font-size="13" class="fk-f-ink2">Request(cmd, timeout): post, wait</text>
+<text x="68" y="363" font-size="15" font-weight="700" class="fk-f-blue-text">SeqlockSnapshot</text>
+<text x="68" y="387.8" font-size="13" class="fk-f-ink2">published each step</text>
+<text x="348" y="363" font-size="15" font-weight="700" class="fk-f-blue-text">Command queue</text>
+<text x="348" y="387.8" font-size="13" class="fk-f-ink2">drained, bounded</text>
+<rect x="150.6" y="300.2" width="58.8" height="20" rx="10" class="fk-f-canvas"/>
+<text x="180" y="314.5" font-size="12" font-weight="500" text-anchor="middle" class="fk-f-muted">Latest()</text>
+<rect x="424.4" y="300.2" width="71.3" height="20" rx="10" class="fk-f-canvas"/>
+<text x="460" y="314.5" font-size="12" font-weight="500" text-anchor="middle" class="fk-f-muted">Request()</text>
+<text x="68" y="483.9" font-size="15" font-weight="700" class="fk-f-brown-text">Owner task</text>
+<text x="68" y="508.8" font-size="13" class="fk-f-ink2">fixed-rate Thread, calls Service(now)</text>
+<rect x="144.7" y="421.2" width="70.6" height="20" rx="10" class="fk-f-canvas"/>
+<text x="180" y="435.5" font-size="12" font-weight="500" text-anchor="middle" class="fk-f-muted">publishes</text>
+<rect x="435.1" y="421.2" width="49.7" height="20" rx="10" class="fk-f-canvas"/>
+<text x="460" y="435.5" font-size="12" font-weight="500" text-anchor="middle" class="fk-f-muted">drains</text>
+<text x="68" y="605" font-size="15" font-weight="700" class="fk-f-violet-text">Handler A</text>
+<text x="68" y="629.8" font-size="13" class="fk-f-ink2">single-threaded core</text>
+<text x="348" y="605" font-size="15" font-weight="700" class="fk-f-violet-text">Handler B</text>
+<text x="348" y="629.8" font-size="13" class="fk-f-ink2">single-threaded core</text>
+<text x="68" y="726" font-size="15" font-weight="700" class="fk-f-teal-text">BusDomain&lt;SPI1, Owner&gt;</text>
+<text x="68" y="750.8" font-size="13" class="fk-f-ink2">no mutex, owner check</text>
+<text x="48" y="162.8" font-size="13" font-weight="700" class="fk-f-violet-text">MODEL O: OWNER TASK</text>
+<text x="48" y="180.2" font-size="12" class="fk-f-violet-text">default for real-time buses</text>
+<text x="68" y="905.3" font-size="15" font-weight="700" class="fk-f-brown-text">Task X</text>
+<text x="348" y="905.3" font-size="15" font-weight="700" class="fk-f-brown-text">Task Y</text>
+<text x="68" y="1001.3" font-size="15" font-weight="700" class="fk-f-violet-text">Guarded&lt;Handler C&gt;</text>
+<text x="68" y="1026.2" font-size="13" class="fk-f-ink2">handler lock</text>
+<text x="348" y="1001.3" font-size="15" font-weight="700" class="fk-f-violet-text">Guarded&lt;Handler D&gt;</text>
+<text x="348" y="1026.2" font-size="13" class="fk-f-ink2">handler lock</text>
+<rect x="123.4" y="938.6" width="113.1" height="20" rx="10" class="fk-f-canvas"/>
+<text x="180" y="952.9" font-size="12" font-weight="500" text-anchor="middle" class="fk-f-muted">Call(timeout, op)</text>
+<rect x="403.4" y="938.6" width="113.1" height="20" rx="10" class="fk-f-canvas"/>
+<text x="460" y="952.9" font-size="12" font-weight="500" text-anchor="middle" class="fk-f-muted">Call(timeout, op)</text>
+<text x="68" y="1122.3" font-size="15" font-weight="700" class="fk-f-teal-text">BusDomain&lt;I2C0, Guarded&gt;</text>
+<text x="68" y="1147.2" font-size="13" class="fk-f-ink2">mutex, recovery, statistics</text>
+<rect x="133.2" y="1059.6" width="93.6" height="20" rx="10" class="fk-f-canvas"/>
+<text x="180" y="1073.9" font-size="12" font-weight="500" text-anchor="middle" class="fk-f-muted">then bus lock</text>
+<text x="48" y="845.2" font-size="13" font-weight="700" class="fk-f-violet-text">MODEL G: GUARDED FACADE</text>
+<text x="48" y="862.6" font-size="12" class="fk-f-violet-text">slow, sporadic devices</text>
+<text x="46" y="1235.3" font-size="15" font-weight="700" class="fk-f-slate-text">Interrupts</text>
+<text x="46" y="1253.1" font-size="13" class="fk-f-slate-text">An ISR only sets event flags or notifies the owner task. It never calls a handler.</text>
+<rect x="32" y="1284.5" width="14" height="14" rx="4" stroke-width="1.4" class="fk-f-brown-tint fk-s-brown-strong"/>
+<text x="54" y="1296.1" font-size="12.5" class="fk-f-muted">task</text>
+<rect x="104" y="1284.5" width="14" height="14" rx="4" stroke-width="1.4" class="fk-f-blue-tint fk-s-blue-strong"/>
+<text x="126" y="1296.1" font-size="12.5" class="fk-f-muted">shared state</text>
+<rect x="227.7" y="1284.5" width="14" height="14" rx="4" stroke-width="1.4" class="fk-f-violet-tint fk-s-violet-strong"/>
+<text x="249.7" y="1296.1" font-size="12.5" class="fk-f-muted">handler</text>
+<rect x="320.8" y="1284.5" width="14" height="14" rx="4" stroke-width="1.4" class="fk-f-teal-tint fk-s-teal-strong"/>
+<text x="342.8" y="1296.1" font-size="12.5" class="fk-f-muted">bus domain</text>
+</svg>

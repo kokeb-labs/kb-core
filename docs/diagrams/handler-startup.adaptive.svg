@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="644" height="1043" viewBox="0 0 644 1043" role="img" aria-labelledby="handler-startup-title handler-startup-desc" font-family="Inter, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" class="fk">
+<title id="handler-startup-title">The handler start-up pipeline</title>
+<desc id="handler-startup-desc">Eight start-up stages in order, Power, HostReset, Boot, Link, Identify, Secure, Configure and Verify, ending in Ready, beside the plans of most drivers, the bno08x and the se05x, each using only some of the stages.</desc>
+<style>
+.fk{--fk-blue-soft:#BCD2F9;--fk-blue-strong:#2563EB;--fk-blue-text:#1E429F;--fk-blue-tint:#EAF2FF;--fk-brand-text:#7A360E;--fk-canvas:#FFFFFF;--fk-card:#FFFFFF;--fk-frame:#E2E7EE;--fk-green-strong:#15803D;--fk-green-tint:#EAF7EF;--fk-hair:#E2E7EE;--fk-ink:#0E1726;--fk-ink2:#2B3442;--fk-line:#738093;--fk-muted:#566070;--fk-rail:#7C8798;--fk-slate-strong:#64748B;--fk-violet-soft:#D5C5FA;--fk-violet-strong:#7C3AED;--fk-violet-text:#5B21B6;--fk-violet-tint:#F3EEFF;}
+@media (prefers-color-scheme:dark){.fk{--fk-blue-soft:#2B4C78;--fk-blue-strong:#60A5FA;--fk-blue-text:#BFDBFE;--fk-blue-tint:#13233A;--fk-brand-text:#F8D27A;--fk-canvas:#0E131A;--fk-card:#151C26;--fk-frame:#283241;--fk-green-strong:#4ADE80;--fk-green-tint:#11281A;--fk-hair:#252F3C;--fk-ink:#E8EDF3;--fk-ink2:#D2DAE4;--fk-line:#6C7889;--fk-muted:#9AA6B5;--fk-rail:#6C7889;--fk-slate-strong:#94A3B8;--fk-violet-soft:#4B3A82;--fk-violet-strong:#A78BFA;--fk-violet-text:#DDD6FE;--fk-violet-tint:#221A3A;}}
+:root[data-theme="dark"] .fk,[data-md-color-scheme="slate"] .fk{--fk-blue-soft:#2B4C78;--fk-blue-strong:#60A5FA;--fk-blue-text:#BFDBFE;--fk-blue-tint:#13233A;--fk-brand-text:#F8D27A;--fk-canvas:#0E131A;--fk-card:#151C26;--fk-frame:#283241;--fk-green-strong:#4ADE80;--fk-green-tint:#11281A;--fk-hair:#252F3C;--fk-ink:#E8EDF3;--fk-ink2:#D2DAE4;--fk-line:#6C7889;--fk-muted:#9AA6B5;--fk-rail:#6C7889;--fk-slate-strong:#94A3B8;--fk-violet-soft:#4B3A82;--fk-violet-strong:#A78BFA;--fk-violet-text:#DDD6FE;--fk-violet-tint:#221A3A;}
+:root[data-theme="light"] .fk,[data-md-color-scheme="default"] .fk{--fk-blue-soft:#BCD2F9;--fk-blue-strong:#2563EB;--fk-blue-text:#1E429F;--fk-blue-tint:#EAF2FF;--fk-brand-text:#7A360E;--fk-canvas:#FFFFFF;--fk-card:#FFFFFF;--fk-frame:#E2E7EE;--fk-green-strong:#15803D;--fk-green-tint:#EAF7EF;--fk-hair:#E2E7EE;--fk-ink:#0E1726;--fk-ink2:#2B3442;--fk-line:#738093;--fk-muted:#566070;--fk-rail:#7C8798;--fk-slate-strong:#64748B;--fk-violet-soft:#D5C5FA;--fk-violet-strong:#7C3AED;--fk-violet-text:#5B21B6;--fk-violet-tint:#F3EEFF;}
+.fk-f-blue-soft{fill:var(--fk-blue-soft)}.fk-s-blue-soft{stroke:var(--fk-blue-soft)}
+.fk-f-blue-strong{fill:var(--fk-blue-strong)}.fk-s-blue-strong{stroke:var(--fk-blue-strong)}
+.fk-f-blue-text{fill:var(--fk-blue-text)}.fk-s-blue-text{stroke:var(--fk-blue-text)}
+.fk-f-blue-tint{fill:var(--fk-blue-tint)}.fk-s-blue-tint{stroke:var(--fk-blue-tint)}
+.fk-f-brand-text{fill:var(--fk-brand-text)}.fk-s-brand-text{stroke:var(--fk-brand-text)}
+.fk-f-canvas{fill:var(--fk-canvas)}.fk-s-canvas{stroke:var(--fk-canvas)}
+.fk-f-card{fill:var(--fk-card)}.fk-s-card{stroke:var(--fk-card)}
+.fk-f-frame{fill:var(--fk-frame)}.fk-s-frame{stroke:var(--fk-frame)}
+.fk-f-green-strong{fill:var(--fk-green-strong)}.fk-s-green-strong{stroke:var(--fk-green-strong)}
+.fk-f-green-tint{fill:var(--fk-green-tint)}.fk-s-green-tint{stroke:var(--fk-green-tint)}
+.fk-f-hair{fill:var(--fk-hair)}.fk-s-hair{stroke:var(--fk-hair)}
+.fk-f-ink{fill:var(--fk-ink)}.fk-s-ink{stroke:var(--fk-ink)}
+.fk-f-ink2{fill:var(--fk-ink2)}.fk-s-ink2{stroke:var(--fk-ink2)}
+.fk-f-line{fill:var(--fk-line)}.fk-s-line{stroke:var(--fk-line)}
+.fk-f-muted{fill:var(--fk-muted)}.fk-s-muted{stroke:var(--fk-muted)}
+.fk-f-rail{fill:var(--fk-rail)}.fk-s-rail{stroke:var(--fk-rail)}
+.fk-f-slate-strong{fill:var(--fk-slate-strong)}.fk-s-slate-strong{stroke:var(--fk-slate-strong)}
+.fk-f-violet-soft{fill:var(--fk-violet-soft)}.fk-s-violet-soft{stroke:var(--fk-violet-soft)}
+.fk-f-violet-strong{fill:var(--fk-violet-strong)}.fk-s-violet-strong{stroke:var(--fk-violet-strong)}
+.fk-f-violet-text{fill:var(--fk-violet-text)}.fk-s-violet-text{stroke:var(--fk-violet-text)}
+.fk-f-violet-tint{fill:var(--fk-violet-tint)}.fk-s-violet-tint{stroke:var(--fk-violet-tint)}
+@media (forced-colors:active){.fk text{fill:CanvasText}.fk rect,.fk circle{fill:Canvas;stroke:CanvasText}.fk path{stroke:CanvasText}.fk marker path{fill:CanvasText;stroke:none}}
+</style>
+<defs><marker id="handler-startup-arrow-rail" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="fk-f-rail"/></marker></defs>
+<rect x="0.5" y="0.5" width="643" height="1042" rx="16" class="fk-f-canvas fk-s-frame"/>
+<text x="32" y="44" font-size="12.5" font-weight="700" letter-spacing="1.2" class="fk-f-brand-text">HANDLERS</text>
+<text x="32" y="77.3" font-size="26" font-weight="700" class="fk-f-ink">The handler start-up pipeline</text>
+<text x="32" y="103.8" font-size="15" class="fk-f-muted">One runner, a plan of declared stages per chip. Each stage is synchronous</text>
+<text x="32" y="125.5" font-size="15" class="fk-f-muted">or polled, and bounded.</text>
+<rect x="32" y="141.6" width="580" height="1" class="fk-f-hair"/>
+<rect x="32" y="159.6" width="270" height="822" rx="14" stroke-width="1.2" class="fk-f-violet-tint fk-s-violet-soft"/>
+<rect x="342" y="159.6" width="270" height="822" rx="14" stroke-width="1.2" class="fk-f-blue-tint fk-s-blue-soft"/>
+<path d="M167 285.6 L167 293.6" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#handler-startup-arrow-rail)" class="fk-s-rail"/>
+<path d="M167 370.6 L167 378.6" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#handler-startup-arrow-rail)" class="fk-s-rail"/>
+<path d="M167 455.6 L167 463.6" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#handler-startup-arrow-rail)" class="fk-s-rail"/>
+<path d="M167 540.5 L167 548.5" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#handler-startup-arrow-rail)" class="fk-s-rail"/>
+<path d="M167 625.5 L167 633.5" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#handler-startup-arrow-rail)" class="fk-s-rail"/>
+<path d="M167 710.5 L167 718.5" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#handler-startup-arrow-rail)" class="fk-s-rail"/>
+<path d="M167 795.5 L167 803.5" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#handler-startup-arrow-rail)" class="fk-s-rail"/>
+<path d="M167 880.5 L167 888.5" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#handler-startup-arrow-rail)" class="fk-s-rail"/>
+<rect x="44" y="212.6" width="246" height="69" rx="10" stroke-width="1" class="fk-f-card fk-s-line"/>
+<rect x="44" y="220.6" width="4" height="53" rx="2" class="fk-f-violet-strong"/>
+<rect x="44" y="297.6" width="246" height="69" rx="10" stroke-width="1" class="fk-f-card fk-s-line"/>
+<rect x="44" y="305.6" width="4" height="53" rx="2" class="fk-f-violet-strong"/>
+<rect x="44" y="382.6" width="246" height="69" rx="10" stroke-width="1" class="fk-f-card fk-s-line"/>
+<rect x="44" y="390.6" width="4" height="53" rx="2" class="fk-f-violet-strong"/>
+<rect x="44" y="467.6" width="246" height="69" rx="10" stroke-width="1" class="fk-f-card fk-s-line"/>
+<rect x="44" y="475.6" width="4" height="53" rx="2" class="fk-f-violet-strong"/>
+<rect x="44" y="552.5" width="246" height="69" rx="10" stroke-width="1" class="fk-f-card fk-s-line"/>
+<rect x="44" y="560.5" width="4" height="53" rx="2" class="fk-f-violet-strong"/>
+<rect x="44" y="637.5" width="246" height="69" rx="10" stroke-width="1" class="fk-f-card fk-s-line"/>
+<rect x="44" y="645.5" width="4" height="53" rx="2" class="fk-f-violet-strong"/>
+<rect x="44" y="722.5" width="246" height="69" rx="10" stroke-width="1" class="fk-f-card fk-s-line"/>
+<rect x="44" y="730.5" width="4" height="53" rx="2" class="fk-f-violet-strong"/>
+<rect x="44" y="807.5" width="246" height="69" rx="10" stroke-width="1" class="fk-f-card fk-s-line"/>
+<rect x="44" y="815.5" width="4" height="53" rx="2" class="fk-f-violet-strong"/>
+<rect x="44" y="892.5" width="246" height="69" rx="10" stroke-width="1" class="fk-f-card fk-s-line"/>
+<rect x="44" y="900.5" width="4" height="53" rx="2" class="fk-f-green-strong"/>
+<rect x="354" y="212.6" width="246" height="69" rx="10" stroke-width="1" class="fk-f-card fk-s-line"/>
+<rect x="354" y="220.6" width="4" height="53" rx="2" class="fk-f-blue-strong"/>
+<rect x="354" y="297.6" width="246" height="107" rx="10" stroke-width="1" class="fk-f-card fk-s-line"/>
+<rect x="354" y="305.6" width="4" height="91" rx="2" class="fk-f-blue-strong"/>
+<rect x="354" y="420.6" width="246" height="107" rx="10" stroke-width="1" class="fk-f-card fk-s-line"/>
+<rect x="354" y="428.6" width="4" height="91" rx="2" class="fk-f-blue-strong"/>
+<rect x="354" y="543.5" width="246" height="88" rx="10" stroke-width="1" class="fk-f-card fk-s-line"/>
+<rect x="354" y="551.5" width="4" height="72" rx="2" class="fk-f-slate-strong"/>
+<text x="48" y="184.6" font-size="13" font-weight="700" class="fk-f-violet-text">STAGES, IN ORDER</text>
+<text x="358" y="184.6" font-size="13" font-weight="700" class="fk-f-blue-text">PLANS OF THREE CHIPS</text>
+<text x="64" y="239.3" font-size="15" font-weight="700" class="fk-f-ink">1 Power</text>
+<text x="64" y="264.1" font-size="13" class="fk-f-ink2">rail or enable pin</text>
+<text x="64" y="324.3" font-size="15" font-weight="700" class="fk-f-ink">2 HostReset</text>
+<text x="64" y="349.1" font-size="13" class="fk-f-ink2">reset pulse, hold, release</text>
+<text x="64" y="409.3" font-size="15" font-weight="700" class="fk-f-ink">3 Boot</text>
+<text x="64" y="434.2" font-size="13" class="fk-f-ink2">boot time, ready pin</text>
+<text x="64" y="494.3" font-size="15" font-weight="700" class="fk-f-ink">4 Link</text>
+<text x="64" y="519.2" font-size="13" class="fk-f-ink2">transport: T=1, SHTP</text>
+<text x="64" y="579.3" font-size="15" font-weight="700" class="fk-f-ink">5 Identify</text>
+<text x="64" y="604.2" font-size="13" class="fk-f-ink2">ID, probe, capabilities</text>
+<text x="64" y="664.3" font-size="15" font-weight="700" class="fk-f-ink">6 Secure</text>
+<text x="64" y="689.2" font-size="13" class="fk-f-ink2">platform SCP03</text>
+<text x="64" y="749.3" font-size="15" font-weight="700" class="fk-f-ink">7 Configure</text>
+<text x="64" y="774.2" font-size="13" class="fk-f-ink2">apply the configuration</text>
+<text x="64" y="834.3" font-size="15" font-weight="700" class="fk-f-ink">8 Verify</text>
+<text x="64" y="859.2" font-size="13" class="fk-f-ink2">read-back, lifecycle</text>
+<text x="64" y="919.3" font-size="15" font-weight="700" class="fk-f-ink">Ready</text>
+<text x="64" y="944.2" font-size="13" class="fk-f-ink2">serves calls</text>
+<text x="374" y="239.3" font-size="15" font-weight="700" class="fk-f-ink">Most drivers</text>
+<text x="374" y="264.1" font-size="13" class="fk-f-ink2">Start = EnsureInitialized()</text>
+<text x="374" y="324.3" font-size="15" font-weight="700" class="fk-f-ink">bno08x</text>
+<text x="374" y="349.1" font-size="13" class="fk-f-ink2">HostReset = Begin(cfg)</text>
+<text x="374" y="368" font-size="13" class="fk-f-ink2">Boot, Link = Poll()</text>
+<text x="374" y="386.9" font-size="13" class="fk-f-ink2">Configure = SetFeature</text>
+<text x="374" y="447.3" font-size="15" font-weight="700" class="fk-f-ink">se05x</text>
+<text x="374" y="472.2" font-size="13" class="fk-f-ink2">keys = SetPlatformKeys()</text>
+<text x="374" y="491" font-size="13" class="fk-f-ink2">Link, Identify, Secure = Open()</text>
+<text x="374" y="509.9" font-size="13" class="fk-f-ink2">Verify = lifecycle, optional</text>
+<text x="374" y="570.3" font-size="15" font-weight="700" class="fk-f-ink">Optional stages</text>
+<text x="374" y="595.2" font-size="13" class="fk-f-ink2">no pin, rail or key:</text>
+<text x="374" y="614" font-size="13" class="fk-f-ink2">skipped, not failed</text>
+<rect x="32" y="996.9" width="14" height="14" rx="4" stroke-width="1.4" class="fk-f-violet-tint fk-s-violet-strong"/>
+<text x="54" y="1008.5" font-size="12.5" class="fk-f-muted">stage</text>
+<rect x="112.6" y="996.9" width="14" height="14" rx="4" stroke-width="1.4" class="fk-f-green-tint fk-s-green-strong"/>
+<text x="134.6" y="1008.5" font-size="12.5" class="fk-f-muted">ready</text>
+<rect x="194.3" y="996.9" width="14" height="14" rx="4" stroke-width="1.4" class="fk-f-blue-tint fk-s-blue-strong"/>
+<text x="216.3" y="1008.5" font-size="12.5" class="fk-f-muted">plan of one chip</text>
+</svg>

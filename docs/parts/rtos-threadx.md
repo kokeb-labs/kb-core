@@ -8,9 +8,9 @@ as the FreeRTOS backend. Why ThreadX is supported, with the evidence: [ADR-0015]
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="../diagrams/rtos-threadx.dark.svg">
   <img src="../diagrams/rtos-threadx.svg"
-    alt="The kb::rtos API and seam lead to two ThreadX backend files; the boundary file reaches the ThreadX
-    kernel, which comes either from a product's copy or the pinned submodule; tests run it on a fake
-    kernel and on the Linux port.">
+    alt="The kb::rtos API and seam lead to two ThreadX backend files, and the boundary file reaches the
+    ThreadX kernel, from a product's copy or the pinned submodule, which tests run on a fake kernel and
+    on the Linux port.">
 </picture>
 <!-- /figure -->
 

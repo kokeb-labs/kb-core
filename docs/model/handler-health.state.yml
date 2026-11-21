@@ -1,0 +1,51 @@
+---
+# Handler lifecycle and health.
+kind: state
+id: handler-health
+title: Handler lifecycle and health
+kicker: Handlers
+subtitle: >-
+  Only EnsureInitialized, StartStep, Deinitialize and Recover change the lifecycle. A call never starts or restarts
+  the chip.
+alt: >-
+  State machine of a handler with the states Unknown, Starting, Ready, Degraded, Faulted and Recovering, and the calls
+  and failures that move it between them.
+reads: >-
+  Six states. A handler starts Unknown (constructed, no I/O). EnsureInitialized or StartStep moves it to Starting,
+  which walks the declared stages, each bounded by its deadline; the last stage makes it Ready, a failing stage makes
+  it Faulted, and a failed start leaves the driver destroyed so the next start begins again from the first stage. A
+  failing call makes a Ready handler Degraded until the next call succeeds; fault_after failures in a row, or one
+  fatal error (the chip reset or lost its state), make it Faulted. Recover() moves Faulted to Recovering with a
+  backoff that doubles on each failure, and is refused after max_attempts; Recovering returns to Ready when the plan
+  succeeds and to Faulted when it fails. Deinitialize() returns Ready or Faulted to Unknown. Only EnsureInitialized,
+  StartStep, Deinitialize and Recover change the lifecycle: calls never start or restart the chip.
+direction: TB
+print: portrait
+legend:
+  - [slate, not started]
+  - [amber, in progress or degraded]
+  - [green, healthy]
+  - [rose, failed]
+  - [violet, recovering]
+states:
+  - {id: Unknown, tone: slate, note: no I/O}
+  - {id: Starting, tone: amber, note: walks the stages}
+  - {id: Ready, tone: green, note: all calls allowed}
+  - {id: Degraded, tone: amber, note: below fault_after}
+  - {id: Faulted, tone: rose, note: chip lost}
+  - {id: Recovering, tone: violet, note: with backoff}
+transitions:
+  - {from: "[*]", to: Unknown, label: ctor}
+  - {from: Unknown, to: Starting, label: start}
+  - {from: Starting, to: Starting, label: next stage}
+  - {from: Starting, to: Ready, label: last stage ok, tone: green}
+  - {from: Starting, to: Faulted, label: stage fails, tone: rose}
+  - {from: Ready, to: Degraded, label: call fails, tone: amber}
+  - {from: Degraded, to: Ready, label: call ok, tone: green}
+  - {from: Degraded, to: Faulted, label: fault_after, tone: rose}
+  - {from: Ready, to: Faulted, label: fatal error, tone: rose}
+  - {from: Faulted, to: Recovering, label: "Recover()", tone: violet}
+  - {from: Recovering, to: Ready, label: ok, tone: green}
+  - {from: Recovering, to: Faulted, label: fails, tone: rose, dashed: true}
+  - {from: Ready, to: Unknown, label: "Deinitialize()"}
+  - {from: Faulted, to: Unknown, label: "Deinitialize()"}

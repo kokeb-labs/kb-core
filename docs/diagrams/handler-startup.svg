@@ -1,97 +1,86 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1049" viewBox="0 0 1200 1049" role="img" aria-labelledby="handler-startup-title handler-startup-desc" font-family="Inter, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" width="644" height="1043" viewBox="0 0 644 1043" role="img" aria-labelledby="handler-startup-title handler-startup-desc" font-family="Inter, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
 <title id="handler-startup-title">The handler start-up pipeline</title>
-<desc id="handler-startup-desc">Pipeline of eight start-up stages in order, Power, HostReset, Boot, Link, Identify, Secure, Configure and Verify, ending in Ready; beside it the plans of most drivers, the bno08x and the se05x, each using only some of the stages.</desc>
-<defs><marker id="fk-arrow-green-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#15803D"/></marker><marker id="fk-arrow-violet-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#7C3AED"/></marker></defs>
-<rect x="0.5" y="0.5" width="1199" height="1048" rx="16" fill="#FFFFFF" stroke="#E2E7EE"/>
+<desc id="handler-startup-desc">Eight start-up stages in order, Power, HostReset, Boot, Link, Identify, Secure, Configure and Verify, ending in Ready, beside the plans of most drivers, the bno08x and the se05x, each using only some of the stages.</desc>
+<defs><marker id="handler-startup-arrow-rail" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#7C8798"/></marker></defs>
+<rect x="0.5" y="0.5" width="643" height="1042" rx="16" fill="#FFFFFF" stroke="#E2E7EE"/>
 <text x="32" y="44" font-size="12.5" font-weight="700" letter-spacing="1.2" fill="#7A360E">HANDLERS</text>
 <text x="32" y="77.3" font-size="26" font-weight="700" fill="#0E1726">The handler start-up pipeline</text>
-<text x="32" y="103.8" font-size="15" fill="#566070">One runner, a plan of declared stages per chip. Each stage is synchronous or polled, and bounded.</text>
-<rect x="32" y="119.8" width="1136" height="1" fill="#E2E7EE"/>
-<path d="M267 215.8 L267 231.8" fill="none" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-violet-strong)"/>
-<path d="M267 312.8 L267 328.8" fill="none" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-violet-strong)"/>
-<path d="M267 409.8 L267 425.8" fill="none" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-violet-strong)"/>
-<path d="M267 506.8 L267 522.8" fill="none" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-violet-strong)"/>
-<path d="M267 603.8 L267 619.8" fill="none" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-violet-strong)"/>
-<path d="M267 700.8 L267 716.8" fill="none" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-violet-strong)"/>
-<path d="M267 797.8 L267 813.8" fill="none" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-violet-strong)"/>
-<path d="M267 894.8 L267 910.8" fill="none" stroke="#15803D" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-green-strong)"/>
-<rect x="32" y="137.8" width="470" height="75" rx="10" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1.4"/>
-<rect x="32" y="145.8" width="4" height="59" rx="2" fill="#7C3AED"/>
-<rect x="32" y="234.8" width="470" height="75" rx="10" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1.4"/>
-<rect x="32" y="242.8" width="4" height="59" rx="2" fill="#7C3AED"/>
-<rect x="32" y="331.8" width="470" height="75" rx="10" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1.4"/>
-<rect x="32" y="339.8" width="4" height="59" rx="2" fill="#7C3AED"/>
-<rect x="32" y="428.8" width="470" height="75" rx="10" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1.4"/>
-<rect x="32" y="436.8" width="4" height="59" rx="2" fill="#7C3AED"/>
-<rect x="32" y="525.8" width="470" height="75" rx="10" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1.4"/>
-<rect x="32" y="533.8" width="4" height="59" rx="2" fill="#7C3AED"/>
-<rect x="32" y="622.8" width="470" height="75" rx="10" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1.4"/>
-<rect x="32" y="630.8" width="4" height="59" rx="2" fill="#7C3AED"/>
-<rect x="32" y="719.8" width="470" height="75" rx="10" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1.4"/>
-<rect x="32" y="727.8" width="4" height="59" rx="2" fill="#7C3AED"/>
-<rect x="32" y="816.8" width="470" height="75" rx="10" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1.4"/>
-<rect x="32" y="824.8" width="4" height="59" rx="2" fill="#7C3AED"/>
-<rect x="32" y="913.8" width="470" height="74" rx="10" fill="#EAF7EF" stroke="#15803D" stroke-width="1.4"/>
-<rect x="32" y="921.8" width="4" height="58" rx="2" fill="#15803D"/>
-<rect x="562" y="171.8" width="606" height="88" rx="10" fill="#EAF2FF" stroke="#2563EB" stroke-width="1.4"/>
-<rect x="562" y="179.8" width="4" height="72" rx="2" fill="#2563EB"/>
-<rect x="562" y="279.8" width="606" height="107" rx="10" fill="#EAF2FF" stroke="#2563EB" stroke-width="1.4"/>
-<rect x="562" y="287.8" width="4" height="91" rx="2" fill="#2563EB"/>
-<rect x="562" y="406.8" width="606" height="107" rx="10" fill="#EAF2FF" stroke="#2563EB" stroke-width="1.4"/>
-<rect x="562" y="414.8" width="4" height="91" rx="2" fill="#2563EB"/>
-<rect x="562" y="539.8" width="606" height="60.5" rx="10" fill="#F1F4F8" stroke="#CBD5E1" stroke-width="1"/>
-<text x="52" y="164.6" font-size="15" font-weight="700" fill="#5B21B6">Power</text>
-<text x="52" y="189.4" font-size="13" fill="#2B3442">rail or enable pin</text>
-<circle cx="474" cy="175.3" r="10.9" fill="#5B21B6"/>
-<text x="474" y="179.4" font-size="11.5" font-weight="700" text-anchor="middle" fill="#FFFFFF">1</text>
-<text x="52" y="261.6" font-size="15" font-weight="700" fill="#5B21B6">HostReset</text>
-<text x="52" y="286.4" font-size="13" fill="#2B3442">reset pulse, hold, release</text>
-<circle cx="474" cy="272.3" r="10.9" fill="#5B21B6"/>
-<text x="474" y="276.4" font-size="11.5" font-weight="700" text-anchor="middle" fill="#FFFFFF">2</text>
-<text x="52" y="358.6" font-size="15" font-weight="700" fill="#5B21B6">Boot</text>
-<text x="52" y="383.4" font-size="13" fill="#2B3442">boot time, ready pin, advertisement</text>
-<circle cx="474" cy="369.3" r="10.9" fill="#5B21B6"/>
-<text x="474" y="373.4" font-size="11.5" font-weight="700" text-anchor="middle" fill="#FFFFFF">3</text>
-<text x="52" y="455.6" font-size="15" font-weight="700" fill="#5B21B6">Link</text>
-<text x="52" y="480.4" font-size="13" fill="#2B3442">transport session (T=1, SHTP)</text>
-<circle cx="474" cy="466.3" r="10.9" fill="#5B21B6"/>
-<text x="474" y="470.4" font-size="11.5" font-weight="700" text-anchor="middle" fill="#FFFFFF">4</text>
-<text x="52" y="552.5" font-size="15" font-weight="700" fill="#5B21B6">Identify</text>
-<text x="52" y="577.4" font-size="13" fill="#2B3442">ID, select, probe, capabilities</text>
-<circle cx="474" cy="563.3" r="10.9" fill="#5B21B6"/>
-<text x="474" y="567.4" font-size="11.5" font-weight="700" text-anchor="middle" fill="#FFFFFF">5</text>
-<text x="52" y="649.5" font-size="15" font-weight="700" fill="#5B21B6">Secure</text>
-<text x="52" y="674.4" font-size="13" fill="#2B3442">secure channel (platform SCP03)</text>
-<circle cx="474" cy="660.3" r="10.9" fill="#5B21B6"/>
-<text x="474" y="664.4" font-size="11.5" font-weight="700" text-anchor="middle" fill="#FFFFFF">6</text>
-<text x="52" y="746.5" font-size="15" font-weight="700" fill="#5B21B6">Configure</text>
-<text x="52" y="771.4" font-size="13" fill="#2B3442">apply the configuration</text>
-<circle cx="474" cy="757.3" r="10.9" fill="#5B21B6"/>
-<text x="474" y="761.4" font-size="11.5" font-weight="700" text-anchor="middle" fill="#FFFFFF">7</text>
-<text x="52" y="843.5" font-size="15" font-weight="700" fill="#5B21B6">Verify</text>
-<text x="52" y="868.4" font-size="13" fill="#2B3442">read-back, lifecycle state</text>
-<circle cx="474" cy="854.3" r="10.9" fill="#5B21B6"/>
-<text x="474" y="858.4" font-size="11.5" font-weight="700" text-anchor="middle" fill="#FFFFFF">8</text>
-<text x="52" y="940.5" font-size="15" font-weight="700" fill="#14532D">Ready</text>
-<text x="52" y="965.4" font-size="13" fill="#2B3442">the handler serves calls</text>
-<text x="562" y="153.8" font-size="13" font-weight="700" fill="#1E429F">PLANS OF DIFFERENT CHIPS</text>
-<text x="582" y="198.6" font-size="15" font-weight="700" fill="#1E429F">Most drivers</text>
-<text x="582" y="223.4" font-size="13" fill="#2B3442">One step: Start = driver.EnsureInitialized().</text>
-<text x="582" y="242.2" font-size="13" fill="#2B3442">Identify and Configure happen inside the driver.</text>
-<text x="582" y="306.6" font-size="15" font-weight="700" fill="#1E429F">bno08x</text>
-<text x="582" y="331.4" font-size="13" fill="#2B3442">HostReset = Begin(cfg), synchronous.</text>
-<text x="582" y="350.2" font-size="13" fill="#2B3442">Boot and Link = Poll() until Ready(), polled.</text>
-<text x="582" y="369.1" font-size="13" fill="#2B3442">Configure = SetFeature operations until OpDone, polled.</text>
-<text x="582" y="433.6" font-size="15" font-weight="700" fill="#1E429F">se05x</text>
-<text x="582" y="458.4" font-size="13" fill="#2B3442">Secure keys = SetPlatformKeys(), no I/O.</text>
-<text x="582" y="477.3" font-size="13" fill="#2B3442">Link, Identify and Secure = Open(), synchronous and bounded by the link.</text>
-<text x="582" y="496.1" font-size="13" fill="#2B3442">Verify = lifecycle state check, optional.</text>
-<text x="576" y="566.5" font-size="15" font-weight="700" fill="#334155">Optional stages</text>
-<text x="576" y="584.4" font-size="13" fill="#334155">A stage the HAL gives nothing for (no pin, rail or key) is skipped, not failed.</text>
-<rect x="32" y="1003.2" width="14" height="14" rx="4" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1.4"/>
-<text x="54" y="1014.8" font-size="12.5" fill="#566070">stage</text>
-<rect x="112.6" y="1003.2" width="14" height="14" rx="4" fill="#EAF7EF" stroke="#15803D" stroke-width="1.4"/>
-<text x="134.6" y="1014.8" font-size="12.5" fill="#566070">ready</text>
-<rect x="194.3" y="1003.2" width="14" height="14" rx="4" fill="#EAF2FF" stroke="#2563EB" stroke-width="1.4"/>
-<text x="216.3" y="1014.8" font-size="12.5" fill="#566070">plan of one chip</text>
+<text x="32" y="103.8" font-size="15" fill="#566070">One runner, a plan of declared stages per chip. Each stage is synchronous</text>
+<text x="32" y="125.5" font-size="15" fill="#566070">or polled, and bounded.</text>
+<rect x="32" y="141.6" width="580" height="1" fill="#E2E7EE"/>
+<rect x="32" y="159.6" width="270" height="822" rx="14" fill="#F3EEFF" stroke="#D5C5FA" stroke-width="1.2"/>
+<rect x="342" y="159.6" width="270" height="822" rx="14" fill="#EAF2FF" stroke="#BCD2F9" stroke-width="1.2"/>
+<path d="M167 285.6 L167 293.6" fill="none" stroke="#7C8798" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#handler-startup-arrow-rail)"/>
+<path d="M167 370.6 L167 378.6" fill="none" stroke="#7C8798" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#handler-startup-arrow-rail)"/>
+<path d="M167 455.6 L167 463.6" fill="none" stroke="#7C8798" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#handler-startup-arrow-rail)"/>
+<path d="M167 540.5 L167 548.5" fill="none" stroke="#7C8798" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#handler-startup-arrow-rail)"/>
+<path d="M167 625.5 L167 633.5" fill="none" stroke="#7C8798" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#handler-startup-arrow-rail)"/>
+<path d="M167 710.5 L167 718.5" fill="none" stroke="#7C8798" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#handler-startup-arrow-rail)"/>
+<path d="M167 795.5 L167 803.5" fill="none" stroke="#7C8798" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#handler-startup-arrow-rail)"/>
+<path d="M167 880.5 L167 888.5" fill="none" stroke="#7C8798" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#handler-startup-arrow-rail)"/>
+<rect x="44" y="212.6" width="246" height="69" rx="10" fill="#FFFFFF" stroke="#738093" stroke-width="1"/>
+<rect x="44" y="220.6" width="4" height="53" rx="2" fill="#7C3AED"/>
+<rect x="44" y="297.6" width="246" height="69" rx="10" fill="#FFFFFF" stroke="#738093" stroke-width="1"/>
+<rect x="44" y="305.6" width="4" height="53" rx="2" fill="#7C3AED"/>
+<rect x="44" y="382.6" width="246" height="69" rx="10" fill="#FFFFFF" stroke="#738093" stroke-width="1"/>
+<rect x="44" y="390.6" width="4" height="53" rx="2" fill="#7C3AED"/>
+<rect x="44" y="467.6" width="246" height="69" rx="10" fill="#FFFFFF" stroke="#738093" stroke-width="1"/>
+<rect x="44" y="475.6" width="4" height="53" rx="2" fill="#7C3AED"/>
+<rect x="44" y="552.5" width="246" height="69" rx="10" fill="#FFFFFF" stroke="#738093" stroke-width="1"/>
+<rect x="44" y="560.5" width="4" height="53" rx="2" fill="#7C3AED"/>
+<rect x="44" y="637.5" width="246" height="69" rx="10" fill="#FFFFFF" stroke="#738093" stroke-width="1"/>
+<rect x="44" y="645.5" width="4" height="53" rx="2" fill="#7C3AED"/>
+<rect x="44" y="722.5" width="246" height="69" rx="10" fill="#FFFFFF" stroke="#738093" stroke-width="1"/>
+<rect x="44" y="730.5" width="4" height="53" rx="2" fill="#7C3AED"/>
+<rect x="44" y="807.5" width="246" height="69" rx="10" fill="#FFFFFF" stroke="#738093" stroke-width="1"/>
+<rect x="44" y="815.5" width="4" height="53" rx="2" fill="#7C3AED"/>
+<rect x="44" y="892.5" width="246" height="69" rx="10" fill="#FFFFFF" stroke="#738093" stroke-width="1"/>
+<rect x="44" y="900.5" width="4" height="53" rx="2" fill="#15803D"/>
+<rect x="354" y="212.6" width="246" height="69" rx="10" fill="#FFFFFF" stroke="#738093" stroke-width="1"/>
+<rect x="354" y="220.6" width="4" height="53" rx="2" fill="#2563EB"/>
+<rect x="354" y="297.6" width="246" height="107" rx="10" fill="#FFFFFF" stroke="#738093" stroke-width="1"/>
+<rect x="354" y="305.6" width="4" height="91" rx="2" fill="#2563EB"/>
+<rect x="354" y="420.6" width="246" height="107" rx="10" fill="#FFFFFF" stroke="#738093" stroke-width="1"/>
+<rect x="354" y="428.6" width="4" height="91" rx="2" fill="#2563EB"/>
+<rect x="354" y="543.5" width="246" height="88" rx="10" fill="#FFFFFF" stroke="#738093" stroke-width="1"/>
+<rect x="354" y="551.5" width="4" height="72" rx="2" fill="#64748B"/>
+<text x="48" y="184.6" font-size="13" font-weight="700" fill="#5B21B6">STAGES, IN ORDER</text>
+<text x="358" y="184.6" font-size="13" font-weight="700" fill="#1E429F">PLANS OF THREE CHIPS</text>
+<text x="64" y="239.3" font-size="15" font-weight="700" fill="#0E1726">1 Power</text>
+<text x="64" y="264.1" font-size="13" fill="#2B3442">rail or enable pin</text>
+<text x="64" y="324.3" font-size="15" font-weight="700" fill="#0E1726">2 HostReset</text>
+<text x="64" y="349.1" font-size="13" fill="#2B3442">reset pulse, hold, release</text>
+<text x="64" y="409.3" font-size="15" font-weight="700" fill="#0E1726">3 Boot</text>
+<text x="64" y="434.2" font-size="13" fill="#2B3442">boot time, ready pin</text>
+<text x="64" y="494.3" font-size="15" font-weight="700" fill="#0E1726">4 Link</text>
+<text x="64" y="519.2" font-size="13" fill="#2B3442">transport: T=1, SHTP</text>
+<text x="64" y="579.3" font-size="15" font-weight="700" fill="#0E1726">5 Identify</text>
+<text x="64" y="604.2" font-size="13" fill="#2B3442">ID, probe, capabilities</text>
+<text x="64" y="664.3" font-size="15" font-weight="700" fill="#0E1726">6 Secure</text>
+<text x="64" y="689.2" font-size="13" fill="#2B3442">platform SCP03</text>
+<text x="64" y="749.3" font-size="15" font-weight="700" fill="#0E1726">7 Configure</text>
+<text x="64" y="774.2" font-size="13" fill="#2B3442">apply the configuration</text>
+<text x="64" y="834.3" font-size="15" font-weight="700" fill="#0E1726">8 Verify</text>
+<text x="64" y="859.2" font-size="13" fill="#2B3442">read-back, lifecycle</text>
+<text x="64" y="919.3" font-size="15" font-weight="700" fill="#0E1726">Ready</text>
+<text x="64" y="944.2" font-size="13" fill="#2B3442">serves calls</text>
+<text x="374" y="239.3" font-size="15" font-weight="700" fill="#0E1726">Most drivers</text>
+<text x="374" y="264.1" font-size="13" fill="#2B3442">Start = EnsureInitialized()</text>
+<text x="374" y="324.3" font-size="15" font-weight="700" fill="#0E1726">bno08x</text>
+<text x="374" y="349.1" font-size="13" fill="#2B3442">HostReset = Begin(cfg)</text>
+<text x="374" y="368" font-size="13" fill="#2B3442">Boot, Link = Poll()</text>
+<text x="374" y="386.9" font-size="13" fill="#2B3442">Configure = SetFeature</text>
+<text x="374" y="447.3" font-size="15" font-weight="700" fill="#0E1726">se05x</text>
+<text x="374" y="472.2" font-size="13" fill="#2B3442">keys = SetPlatformKeys()</text>
+<text x="374" y="491" font-size="13" fill="#2B3442">Link, Identify, Secure = Open()</text>
+<text x="374" y="509.9" font-size="13" fill="#2B3442">Verify = lifecycle, optional</text>
+<text x="374" y="570.3" font-size="15" font-weight="700" fill="#0E1726">Optional stages</text>
+<text x="374" y="595.2" font-size="13" fill="#2B3442">no pin, rail or key:</text>
+<text x="374" y="614" font-size="13" fill="#2B3442">skipped, not failed</text>
+<rect x="32" y="996.9" width="14" height="14" rx="4" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1.4"/>
+<text x="54" y="1008.5" font-size="12.5" fill="#566070">stage</text>
+<rect x="112.6" y="996.9" width="14" height="14" rx="4" fill="#EAF7EF" stroke="#15803D" stroke-width="1.4"/>
+<text x="134.6" y="1008.5" font-size="12.5" fill="#566070">ready</text>
+<rect x="194.3" y="996.9" width="14" height="14" rx="4" fill="#EAF2FF" stroke="#2563EB" stroke-width="1.4"/>
+<text x="216.3" y="1008.5" font-size="12.5" fill="#566070">plan of one chip</text>
 </svg>

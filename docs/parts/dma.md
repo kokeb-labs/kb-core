@@ -24,9 +24,9 @@ register code; a driver or handler gets a buffer it cannot misuse. Decisions: [A
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="../diagrams/dma-lease.dark.svg">
   <img src="../diagrams/dma-lease.svg"
-    alt="State machine with the states Cpu, Device and Quarantined: Lend moves a buffer from Cpu to Device,
-    Complete or a proven Abort returns it to Cpu, an unproven Abort moves it to Quarantined, and Recover
-    with proof returns it to Cpu.">
+    alt="State machine with the states Cpu, Device and Quarantined: Lend moves a buffer to Device, Complete
+    or a proven Abort returns it to Cpu, an unproven Abort quarantines it, and Recover with proof
+    returns it to Cpu.">
 </picture>
 <!-- /figure -->
 
@@ -68,9 +68,9 @@ about to write. The default region on a part with a data cache is a non-cacheabl
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="../diagrams/dma-stream.dark.svg">
   <img src="../diagrams/dma-stream.svg"
-    alt="Flow: the DMA ring raises an interrupt that copies each finished frame into a slot; the task takes a
-    slot as a FrameView, a content check feeds the supervisor, which can switch to a declared fallback
-    producer; a full ring drops the frame and flags the next one with Gap.">
+    alt="Flow in which the DMA ring raises an interrupt that copies each finished frame into a slot, the task
+    takes a slot as a FrameView, a content check feeds the supervisor, and a full ring drops the frame
+    and flags the next with Gap.">
 </picture>
 <!-- /figure -->
 

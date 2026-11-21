@@ -54,9 +54,9 @@ components/ports/esp32/
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="../diagrams/repo-family.dark.svg">
   <img src="../diagrams/repo-family.svg"
-    alt="Repository graph with consumers on top: the product application uses a product board HAL, which uses
-    kb-hal-common and an MCU port; both depend on kb-core, which pins the drivers. The configurator
-    reads kb-core releases and fills the application template; tested version sets list sets of kb-core.">
+    alt="Repository graph with consumers on top, in which the product application uses a board HAL built on
+    kb-hal-common and an MCU port, both resting on kb-core, which pins the drivers, while planned tool
+    repositories read kb-core.">
 </picture>
 <!-- /figure -->
 

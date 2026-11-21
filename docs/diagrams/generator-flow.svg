@@ -1,88 +1,62 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="733" viewBox="0 0 1200 733" role="img" aria-labelledby="generator-flow-title generator-flow-desc" font-family="Inter, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="951" viewBox="0 0 640 951" role="img" aria-labelledby="generator-flow-title generator-flow-desc" font-family="Inter, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
 <title id="generator-flow-title">Generators and the configurator</title>
-<desc id="generator-flow-desc">Three columns. Inputs: driver.yml files, the release lock, evidence, tested version sets and later board.yml. Middle: the kb command line and the configurator site, both using one resolver. Outputs: kb-image.yml, git commands, CMake presets, evidence for the selection and later a project archive.</desc>
-<defs><marker id="fk-arrow-rail" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#8893A2"/></marker></defs>
-<rect x="0.5" y="0.5" width="1199" height="732" rx="16" fill="#FFFFFF" stroke="#E2E7EE"/>
+<desc id="generator-flow-desc">Flow from the release inputs through the kb command line or the configurator site to one resolver, which writes kb-image.yml, git commands, CMake presets, evidence for the selection and later a project archive.</desc>
+<defs><marker id="generator-flow-arrow-green-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#15803D"/></marker><marker id="generator-flow-arrow-rail" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#7C8798"/></marker></defs>
+<rect x="0.5" y="0.5" width="639" height="950" rx="16" fill="#FFFFFF" stroke="#E2E7EE"/>
 <text x="32" y="44" font-size="12.5" font-weight="700" letter-spacing="1.2" fill="#7A360E">CONFIGURATOR</text>
 <text x="32" y="77.3" font-size="26" font-weight="700" fill="#0E1726">Generators and the configurator</text>
-<text x="32" y="103.8" font-size="15" fill="#566070">One resolver specification, two front ends, repeatable downloads. Dashed cards come later (M6, M7).</text>
-<rect x="32" y="119.8" width="1136" height="1" fill="#E2E7EE"/>
-<rect x="32" y="137.8" width="332" height="515" rx="14" fill="#EAF2FF" stroke="#BCD2F9" stroke-width="1.2"/>
-<rect x="434" y="137.8" width="332" height="349" rx="14" fill="#F8F1EA" stroke="#DCC3A8" stroke-width="1.2"/>
-<rect x="836" y="137.8" width="332" height="534" rx="14" fill="#EAF7EF" stroke="#B2E2C2" stroke-width="1.2"/>
-<path d="M367 305.8 L431 305.8" fill="none" stroke="#8893A2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rail)"/>
-<path d="M769 305.8 L833 305.8" fill="none" stroke="#8893A2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rail)"/>
-<rect x="48" y="178.8" width="300" height="88" rx="10" fill="#EAF2FF" stroke="#2563EB" stroke-width="1.4"/>
-<rect x="48" y="186.8" width="4" height="72" rx="2" fill="#2563EB"/>
-<rect x="48" y="280.8" width="300" height="88" rx="10" fill="#EAF2FF" stroke="#2563EB" stroke-width="1.4"/>
-<rect x="48" y="288.8" width="4" height="72" rx="2" fill="#2563EB"/>
-<rect x="48" y="382.8" width="300" height="88" rx="10" fill="#EAF2FF" stroke="#2563EB" stroke-width="1.4"/>
-<rect x="48" y="390.8" width="4" height="72" rx="2" fill="#2563EB"/>
-<rect x="48" y="484.8" width="300" height="69" rx="10" fill="#EAF2FF" stroke="#2563EB" stroke-width="1.4"/>
-<rect x="48" y="492.8" width="4" height="53" rx="2" fill="#2563EB"/>
-<rect x="48" y="567.8" width="300" height="69" rx="10" fill="#EAF2FF" stroke="#2563EB" stroke-width="1.4" stroke-dasharray="6 4"/>
-<rect x="450" y="178.8" width="300" height="69" rx="10" fill="#F8F1EA" stroke="#7C4A1E" stroke-width="1.4"/>
-<rect x="450" y="186.8" width="4" height="53" rx="2" fill="#7C4A1E"/>
-<rect x="450" y="261.8" width="300" height="88" rx="10" fill="#F8F1EA" stroke="#7C4A1E" stroke-width="1.4"/>
-<rect x="450" y="269.8" width="4" height="72" rx="2" fill="#7C4A1E"/>
-<rect x="450" y="363.8" width="300" height="107" rx="10" fill="#F8F1EA" stroke="#7C4A1E" stroke-width="1.4"/>
-<rect x="450" y="371.8" width="4" height="91" rx="2" fill="#7C4A1E"/>
-<rect x="852" y="178.8" width="300" height="69" rx="10" fill="#EAF7EF" stroke="#15803D" stroke-width="1.4"/>
-<rect x="852" y="186.8" width="4" height="53" rx="2" fill="#15803D"/>
-<rect x="852" y="261.8" width="300" height="88" rx="10" fill="#EAF7EF" stroke="#15803D" stroke-width="1.4"/>
-<rect x="852" y="269.8" width="4" height="72" rx="2" fill="#15803D"/>
-<rect x="852" y="363.8" width="300" height="107" rx="10" fill="#EAF7EF" stroke="#15803D" stroke-width="1.4"/>
-<rect x="852" y="371.8" width="4" height="91" rx="2" fill="#15803D"/>
-<rect x="852" y="484.8" width="300" height="88" rx="10" fill="#EAF7EF" stroke="#15803D" stroke-width="1.4"/>
-<rect x="852" y="492.8" width="4" height="72" rx="2" fill="#15803D"/>
-<rect x="852" y="586.8" width="300" height="69" rx="10" fill="#EAF7EF" stroke="#15803D" stroke-width="1.4" stroke-dasharray="6 4"/>
-<text x="68" y="205.6" font-size="15" font-weight="700" fill="#1E429F">driver.yml of each pinned driver</text>
-<text x="68" y="230.4" font-size="13" fill="#2B3442">bus, mcus, peripheral, kb_core_min,</text>
-<text x="68" y="249.2" font-size="13" fill="#2B3442">ports, binding</text>
-<text x="68" y="307.6" font-size="15" font-weight="700" fill="#1E429F">Release lock</text>
-<text x="68" y="332.4" font-size="13" fill="#2B3442">kb-core tag and SHA, every pin with tag</text>
-<text x="68" y="351.2" font-size="13" fill="#2B3442">and SHA</text>
-<text x="68" y="409.6" font-size="15" font-weight="700" fill="#1E429F">Evidence</text>
-<text x="68" y="434.4" font-size="13" fill="#2B3442">SBOM (SPDX, CycloneDX), CVE scan,</text>
-<text x="68" y="453.3" font-size="13" fill="#2B3442">licence report</text>
-<text x="68" y="511.6" font-size="15" font-weight="700" fill="#1E429F">Tested version sets</text>
-<text x="68" y="536.4" font-size="13" fill="#2B3442">kb YYYY.N</text>
-<text x="68" y="594.5" font-size="15" font-weight="700" fill="#1E429F">board.yml</text>
-<text x="68" y="619.4" font-size="13" fill="#2B3442">buses, pins, chips (later)</text>
-<text x="48" y="162.8" font-size="13" font-weight="700" fill="#1E429F">INPUTS</text>
-<text x="470" y="205.6" font-size="15" font-weight="700" fill="#6B3F17">kb command line</text>
-<text x="470" y="230.4" font-size="13" fill="#2B3442">Python standard library only, tools/kb</text>
-<text x="470" y="288.6" font-size="15" font-weight="700" fill="#6B3F17">Configurator site</text>
-<text x="470" y="313.4" font-size="13" fill="#2B3442">static, GitHub Pages: pick MCU, RTOS,</text>
-<text x="470" y="332.2" font-size="13" fill="#2B3442">drivers, handlers</text>
-<text x="470" y="390.6" font-size="15" font-weight="700" fill="#6B3F17">Resolve</text>
-<text x="470" y="415.4" font-size="13" fill="#2B3442">drivers, then handlers, interfaces and</text>
-<text x="470" y="434.3" font-size="13" fill="#2B3442">parts; MCU gates; kb_core_min; thread</text>
-<text x="470" y="453.1" font-size="13" fill="#2B3442">model per bus</text>
-<text x="450" y="162.8" font-size="13" font-weight="700" fill="#6B3F17">ONE RESOLVER SPEC</text>
-<text x="872" y="205.6" font-size="15" font-weight="700" fill="#14532D">kb-image.yml</text>
-<text x="872" y="230.4" font-size="13" fill="#2B3442">the selection</text>
-<text x="872" y="288.6" font-size="15" font-weight="700" fill="#14532D">Git commands</text>
-<text x="872" y="313.4" font-size="13" fill="#2B3442">clone at the tag, check the SHA, init only</text>
-<text x="872" y="332.2" font-size="13" fill="#2B3442">the enabled submodules</text>
-<text x="872" y="390.6" font-size="15" font-weight="700" fill="#14532D">CMake presets and</text>
-<text x="872" y="410.1" font-size="15" font-weight="700" fill="#14532D">kb_image.cmake</text>
-<text x="872" y="434.9" font-size="13" fill="#2B3442">a presets fragment and the image</text>
-<text x="872" y="453.8" font-size="13" fill="#2B3442">include</text>
-<text x="872" y="511.6" font-size="15" font-weight="700" fill="#14532D">Evidence for the selection</text>
-<text x="872" y="536.4" font-size="13" fill="#2B3442">SBOM, CVEs, licences, compatibility</text>
-<text x="872" y="555.2" font-size="13" fill="#2B3442">rows, tested set</text>
-<text x="872" y="613.5" font-size="15" font-weight="700" fill="#14532D">Project archive</text>
-<text x="872" y="638.4" font-size="13" fill="#2B3442">later</text>
-<text x="852" y="162.8" font-size="13" font-weight="700" fill="#14532D">DOWNLOADS, BYTE FOR BYTE REPEATABLE</text>
-<rect x="379.3" y="295.8" width="39.5" height="20" rx="10" fill="#FFFFFF"/>
-<text x="399" y="310.1" font-size="12" font-weight="500" text-anchor="middle" fill="#566070">read</text>
-<rect x="776.3" y="295.8" width="49.3" height="20" rx="10" fill="#FFFFFF"/>
-<text x="801" y="310.1" font-size="12" font-weight="500" text-anchor="middle" fill="#566070">writes</text>
-<rect x="32" y="687.2" width="14" height="14" rx="4" fill="#EAF2FF" stroke="#2563EB" stroke-width="1.4"/>
-<text x="54" y="698.8" font-size="12.5" fill="#566070">inputs</text>
-<rect x="116.3" y="687.2" width="14" height="14" rx="4" fill="#F8F1EA" stroke="#7C4A1E" stroke-width="1.4"/>
-<text x="138.3" y="698.8" font-size="12.5" fill="#566070">tool</text>
-<rect x="185.7" y="687.2" width="14" height="14" rx="4" fill="#EAF7EF" stroke="#15803D" stroke-width="1.4"/>
-<text x="207.7" y="698.8" font-size="12.5" fill="#566070">outputs</text>
+<text x="32" y="103.8" font-size="15" fill="#566070">One resolver specification, two front ends, repeatable downloads. Items</text>
+<text x="32" y="125.5" font-size="15" fill="#566070">marked later come in M6 and M7.</text>
+<rect x="32" y="141.6" width="576" height="1" fill="#E2E7EE"/>
+<path d="M239 307.6 L239 315.7 Q239 323.7 231 323.7 L205 323.7 Q197 323.7 197 331.7 L197 369.6" fill="none" stroke="#7C8798" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#generator-flow-arrow-rail)"/>
+<path d="M401 307.6 L401 345.4 Q401 353.4 409 353.4 L435 353.4 Q443 353.4 443 361.4 L443 369.6" fill="none" stroke="#7C8798" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#generator-flow-arrow-rail)"/>
+<path d="M197 465.6 L197 476.9 Q197 484.9 205 484.9 L231 484.9 Q239 484.9 239 492.9 L239 527.5" fill="none" stroke="#7C8798" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#generator-flow-arrow-rail)"/>
+<path d="M443 465.6 L443 500.2 Q443 508.2 435 508.2 L409 508.2 Q401 508.2 401 516.2 L401 527.5" fill="none" stroke="#7C8798" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#generator-flow-arrow-rail)"/>
+<path d="M320 679.5 L320 741.5" fill="none" stroke="#15803D" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#generator-flow-arrow-green-strong)"/>
+<rect x="225" y="159.6" width="190" height="144" rx="10" fill="#EAF2FF" stroke="#2563EB" stroke-width="1.4"/>
+<rect x="225" y="167.6" width="4" height="128" rx="2" fill="#2563EB"/>
+<rect x="102" y="373.6" width="190" height="88" rx="10" fill="#F8F1EA" stroke="#7C4A1E" stroke-width="1.4"/>
+<rect x="102" y="381.6" width="4" height="72" rx="2" fill="#7C4A1E"/>
+<rect x="348" y="373.6" width="190" height="88" rx="10" fill="#F8F1EA" stroke="#7C4A1E" stroke-width="1.4"/>
+<rect x="348" y="381.6" width="4" height="72" rx="2" fill="#7C4A1E"/>
+<rect x="225" y="531.5" width="190" height="144" rx="10" fill="#F8F1EA" stroke="#7C4A1E" stroke-width="1.4"/>
+<rect x="225" y="539.5" width="4" height="128" rx="2" fill="#7C4A1E"/>
+<rect x="225" y="745.5" width="190" height="144" rx="10" fill="#EAF7EF" stroke="#15803D" stroke-width="1.4"/>
+<rect x="225" y="753.5" width="4" height="128" rx="2" fill="#15803D"/>
+<text x="245" y="186.3" font-size="15" font-weight="700" fill="#1E429F">Inputs</text>
+<text x="245" y="211.2" font-size="13" fill="#2B3442">driver.yml per driver</text>
+<text x="245" y="230" font-size="13" fill="#2B3442">release lock</text>
+<text x="245" y="248.8" font-size="13" fill="#2B3442">evidence: SBOM, CVEs</text>
+<text x="245" y="267.7" font-size="13" fill="#2B3442">tested sets kb YYYY.N</text>
+<text x="245" y="286.5" font-size="13" fill="#2B3442">board.yml (later)</text>
+<text x="122" y="400.3" font-size="15" font-weight="700" fill="#6B3F17">kb command line</text>
+<text x="122" y="425.2" font-size="13" fill="#2B3442">tools/kb</text>
+<text x="122" y="444" font-size="13" fill="#2B3442">standard library only</text>
+<text x="368" y="400.3" font-size="15" font-weight="700" fill="#6B3F17">Configurator site</text>
+<text x="368" y="425.2" font-size="13" fill="#2B3442">static</text>
+<text x="368" y="444" font-size="13" fill="#2B3442">GitHub Pages</text>
+<text x="245" y="558.3" font-size="15" font-weight="700" fill="#6B3F17">Resolve</text>
+<text x="245" y="583.2" font-size="13" fill="#2B3442">drivers to handlers</text>
+<text x="245" y="602" font-size="13" fill="#2B3442">interfaces and parts</text>
+<text x="245" y="620.9" font-size="13" fill="#2B3442">MCU gates</text>
+<text x="245" y="639.7" font-size="13" fill="#2B3442">kb_core_min</text>
+<text x="245" y="658.6" font-size="13" fill="#2B3442">thread model per bus</text>
+<text x="245" y="772.3" font-size="15" font-weight="700" fill="#14532D">Downloads</text>
+<text x="245" y="797.2" font-size="13" fill="#2B3442">kb-image.yml</text>
+<text x="245" y="816" font-size="13" fill="#2B3442">git commands</text>
+<text x="245" y="834.9" font-size="13" fill="#2B3442">CMake presets</text>
+<text x="245" y="853.7" font-size="13" fill="#2B3442">selection evidence</text>
+<text x="245" y="872.6" font-size="13" fill="#2B3442">project archive (later)</text>
+<rect x="198.3" y="313.7" width="39.5" height="20" rx="10" fill="#FFFFFF"/>
+<text x="218" y="328" font-size="12" font-weight="500" text-anchor="middle" fill="#566070">read</text>
+<rect x="402.3" y="343.4" width="39.5" height="20" rx="10" fill="#FFFFFF"/>
+<text x="422" y="357.7" font-size="12" font-weight="500" text-anchor="middle" fill="#566070">read</text>
+<rect x="327.8" y="700.5" width="49.3" height="20" rx="10" fill="#FFFFFF"/>
+<text x="352.5" y="714.9" font-size="12" font-weight="500" text-anchor="middle" fill="#566070">writes</text>
+<rect x="32" y="904.9" width="14" height="14" rx="4" fill="#EAF2FF" stroke="#2563EB" stroke-width="1.4"/>
+<text x="54" y="916.5" font-size="12.5" fill="#566070">inputs</text>
+<rect x="116.3" y="904.9" width="14" height="14" rx="4" fill="#F8F1EA" stroke="#7C4A1E" stroke-width="1.4"/>
+<text x="138.3" y="916.5" font-size="12.5" fill="#566070">tool</text>
+<rect x="185.7" y="904.9" width="14" height="14" rx="4" fill="#EAF7EF" stroke="#15803D" stroke-width="1.4"/>
+<text x="207.7" y="916.5" font-size="12.5" fill="#566070">outputs</text>
 </svg>

@@ -1,0 +1,41 @@
+---
+# The DMA copy-out stream.
+kind: graph
+id: dma-stream
+title: The DMA copy-out stream
+kicker: DMA
+subtitle: The interrupt copies each finished frame into a slot. The task never holds the ring itself.
+alt: >-
+  Flow in which the DMA ring raises an interrupt that copies each finished frame into a slot, the task takes a slot
+  as a FrameView, a content check feeds the supervisor, and a full ring drops the frame and flags the next with Gap.
+reads: >-
+  From the top. The DMA ring in the buffer holds two halves or N frames. A half or complete interrupt makes
+  PublishFromDevice invalidate the lines, copy the finished frame out and stamp a sequence number, a time and a torn
+  flag. It copies into a slot of a ring of at least two slots; when every slot is held the frame is dropped, counted
+  as Full, and the next frame carries Gap(). The task takes a slot with TryTake and reads it through a move-only
+  FrameView that releases on its end. Judge checks the content, and Supervise answers None, Restart, BackOff or
+  UseFallback. EnterFallback switches to the declared fallback producer, whose frames carry Fallback(). The ring is
+  never lent to the task (ADR-0031).
+direction: TB
+print: portrait
+legend:
+  - [teal, hardware]
+  - [violet, interrupt]
+  - [blue, task]
+  - [rose, gap]
+  - [green, fallback]
+nodes:
+  - {id: ring, label: DMA ring, tone: teal, lines: [2 halves or N frames], accent: true}
+  - {id: isr, label: Interrupt, tone: violet, lines: [PublishFromDevice, "copy out, seq, time, torn"], accent: true}
+  - {id: slots, label: Ring of slots, tone: blue, lines: [at least 2 slots], accent: true}
+  - {id: gap, label: "Next frame: Gap()", tone: rose, lines: [all slots held, frame dropped as Full], accent: true}
+  - {id: view, label: FrameView, tone: blue, lines: [move-only, releases on end], accent: true}
+  - {id: sup, label: Supervise, tone: violet, lines: ["None, Restart, BackOff,", UseFallback], accent: true}
+  - {id: fb, label: Fallback producer, tone: green, lines: ["frames carry Fallback()"], accent: true}
+edges:
+  - {from: ring, to: isr, label: half or complete}
+  - {from: isr, to: slots, label: slot free}
+  - {from: isr, to: gap, label: all held, tone: rose, dashed: true}
+  - {from: slots, to: view, label: TryTake}
+  - {from: view, to: sup, label: Judge}
+  - {from: sup, to: fb, label: EnterFallback, tone: green}

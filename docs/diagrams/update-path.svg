@@ -1,75 +1,69 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="513" viewBox="0 0 1200 513" role="img" aria-labelledby="update-path-title update-path-desc" font-family="Inter, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="1219" viewBox="0 0 640 1219" role="img" aria-labelledby="update-path-title update-path-desc" font-family="Inter, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
 <title id="update-path-title">The update path</title>
-<desc id="update-path-desc">Five steps: read the lock, catalogue and image; order kb-core, port and drivers; apply the driver gates and hold back what fails; write one row per component; write the new image, lock, CMake files, fetch script and report, then review, fetch, build and test.</desc>
-<defs><marker id="fk-arrow-green-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#15803D"/></marker><marker id="fk-arrow-rail" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#8893A2"/></marker><marker id="fk-arrow-rose-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#DB2752"/></marker></defs>
-<rect x="0.5" y="0.5" width="1199" height="512" rx="16" fill="#FFFFFF" stroke="#E2E7EE"/>
+<desc id="update-path-desc">Five steps from reading the lock, catalogue and image through ordering, gating, one row per component and writing the new files, with failing versions held back and a final review, fetch, build and test by hand.</desc>
+<defs><marker id="update-path-arrow-green-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#15803D"/></marker><marker id="update-path-arrow-rail" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#7C8798"/></marker><marker id="update-path-arrow-rose-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#DB2752"/></marker></defs>
+<rect x="0.5" y="0.5" width="639" height="1218" rx="16" fill="#FFFFFF" stroke="#E2E7EE"/>
 <text x="32" y="44" font-size="12.5" font-weight="700" letter-spacing="1.2" fill="#7A360E">UPDATES</text>
 <text x="32" y="77.3" font-size="26" font-weight="700" fill="#0E1726">The update path</text>
-<text x="32" y="103.8" font-size="15" fill="#566070">One pure function plans an upgrade. The kb tool and the configurator give the same bytes.</text>
-<rect x="32" y="119.8" width="1136" height="1" fill="#E2E7EE"/>
-<path d="M239.2 200.3 L261.2 200.3" fill="none" stroke="#8893A2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rail)"/>
-<path d="M472.4 200.3 L494.4 200.3" fill="none" stroke="#8893A2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rail)"/>
-<path d="M705.6 200.3 L727.6 200.3" fill="none" stroke="#8893A2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rail)"/>
-<path d="M938.8 200.3 L960.8 200.3" fill="none" stroke="#8893A2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rail)"/>
-<path d="M600 265.8 L600 323.8" fill="none" stroke="#DB2752" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 5" marker-end="url(#fk-arrow-rose-strong)"/>
-<path d="M1066.4 265.8 L1066.4 323.8" fill="none" stroke="#15803D" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-green-strong)"/>
-<rect x="32" y="137.8" width="203.2" height="125" rx="10" fill="#EAF2FF" stroke="#2563EB" stroke-width="1.4"/>
-<rect x="32" y="145.8" width="4" height="109" rx="2" fill="#2563EB"/>
-<rect x="265.2" y="137.8" width="203.2" height="125" rx="10" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1.4"/>
-<rect x="265.2" y="145.8" width="4" height="109" rx="2" fill="#7C3AED"/>
-<rect x="498.4" y="137.8" width="203.2" height="125" rx="10" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1.4"/>
-<rect x="498.4" y="145.8" width="4" height="109" rx="2" fill="#7C3AED"/>
-<rect x="731.6" y="137.8" width="203.2" height="125" rx="10" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1.4"/>
-<rect x="731.6" y="145.8" width="4" height="109" rx="2" fill="#7C3AED"/>
-<rect x="964.8" y="137.8" width="203.2" height="125" rx="10" fill="#EAF7EF" stroke="#15803D" stroke-width="1.4"/>
-<rect x="964.8" y="145.8" width="4" height="109" rx="2" fill="#15803D"/>
-<rect x="498.4" y="326.8" width="203.2" height="125" rx="10" fill="#FFEEF2" stroke="#DB2752" stroke-width="1.4"/>
-<rect x="498.4" y="334.8" width="4" height="109" rx="2" fill="#DB2752"/>
-<rect x="844.8" y="326.8" width="323.2" height="88" rx="10" fill="#F8F1EA" stroke="#7C4A1E" stroke-width="1.4"/>
-<rect x="844.8" y="334.8" width="4" height="72" rx="2" fill="#7C4A1E"/>
-<rect x="32" y="326.8" width="436.4" height="107" rx="10" fill="#F8F1EA" stroke="#7C4A1E" stroke-width="1.4"/>
-<rect x="32" y="334.8" width="4" height="91" rx="2" fill="#7C4A1E"/>
-<text x="52" y="164.6" font-size="15" font-weight="700" fill="#1E429F">1  Read</text>
-<text x="52" y="189.4" font-size="13" fill="#2B3442">lock, catalogue and</text>
-<text x="52" y="208.2" font-size="13" fill="#2B3442">image: the current</text>
-<text x="52" y="227.1" font-size="13" fill="#2B3442">versions come from the</text>
-<text x="52" y="245.9" font-size="13" fill="#2B3442">lock</text>
-<text x="285.2" y="164.6" font-size="15" font-weight="700" fill="#5B21B6">2  Order</text>
-<text x="285.2" y="189.4" font-size="13" fill="#2B3442">kb-core, then an</text>
-<text x="285.2" y="208.2" font-size="13" fill="#2B3442">extracted port, then each</text>
-<text x="285.2" y="227.1" font-size="13" fill="#2B3442">driver by name</text>
-<text x="518.4" y="164.6" font-size="15" font-weight="700" fill="#5B21B6">3  Gate</text>
-<text x="518.4" y="189.4" font-size="13" fill="#2B3442">MCU family,</text>
-<text x="518.4" y="208.2" font-size="13" fill="#2B3442">kb_core_min, owner-task</text>
-<text x="518.4" y="227.1" font-size="13" fill="#2B3442">rule, bus kind in use</text>
-<text x="751.6" y="164.6" font-size="15" font-weight="700" fill="#5B21B6">4  Rows</text>
-<text x="751.6" y="189.4" font-size="13" fill="#2B3442">one per component:</text>
-<text x="751.6" y="208.2" font-size="13" fill="#2B3442">change, breaking,</text>
-<text x="751.6" y="227.1" font-size="13" fill="#2B3442">vulnerabilities fixed</text>
-<text x="984.8" y="164.6" font-size="15" font-weight="700" fill="#14532D">5  Write</text>
-<text x="984.8" y="189.4" font-size="13" fill="#2B3442">image, lock, CMake files,</text>
-<text x="984.8" y="208.2" font-size="13" fill="#2B3442">fetch script,</text>
-<text x="984.8" y="227.1" font-size="13" fill="#2B3442">kb-upgrade.md</text>
-<text x="518.4" y="353.6" font-size="15" font-weight="700" fill="#9F1239">Held back</text>
-<text x="518.4" y="378.4" font-size="13" fill="#2B3442">a newer version that fails</text>
-<text x="518.4" y="397.3" font-size="13" fill="#2B3442">a gate is listed with the</text>
-<text x="518.4" y="416.1" font-size="13" fill="#2B3442">code of its first failing</text>
-<text x="518.4" y="435" font-size="13" fill="#2B3442">gate</text>
-<rect x="581.3" y="284.8" width="37.3" height="20" rx="10" fill="#FFFFFF"/>
-<text x="600" y="299.1" font-size="12" font-weight="500" text-anchor="middle" fill="#566070">fails</text>
-<text x="864.8" y="353.6" font-size="15" font-weight="700" fill="#6B3F17">Then, by hand</text>
-<text x="864.8" y="378.4" font-size="13" fill="#2B3442">review the diff, sh kb-fetch.sh, build and</text>
-<text x="864.8" y="397.3" font-size="13" fill="#2B3442">test</text>
-<text x="52" y="353.6" font-size="15" font-weight="700" fill="#6B3F17">Entry points</text>
-<text x="52" y="378.4" font-size="13" fill="#2B3442">kb outdated: exit 3 when a component can move</text>
-<text x="52" y="397.3" font-size="13" fill="#2B3442">kb upgrade: writes the files</text>
-<text x="52" y="416.1" font-size="13" fill="#2B3442">the configurator's Open an existing project view</text>
-<rect x="32" y="467.2" width="14" height="14" rx="4" fill="#EAF2FF" stroke="#2563EB" stroke-width="1.4"/>
-<text x="54" y="478.8" font-size="12.5" fill="#566070">inputs</text>
-<rect x="116.3" y="467.2" width="14" height="14" rx="4" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1.4"/>
-<text x="138.3" y="478.8" font-size="12.5" fill="#566070">plan</text>
-<rect x="188.9" y="467.2" width="14" height="14" rx="4" fill="#FFEEF2" stroke="#DB2752" stroke-width="1.4"/>
-<text x="210.9" y="478.8" font-size="12.5" fill="#566070">held back</text>
-<rect x="295.9" y="467.2" width="14" height="14" rx="4" fill="#EAF7EF" stroke="#15803D" stroke-width="1.4"/>
-<text x="317.9" y="478.8" font-size="12.5" fill="#566070">written</text>
+<text x="32" y="103.8" font-size="15" fill="#566070">One pure function plans an upgrade. The kb tool and the configurator give</text>
+<text x="32" y="125.5" font-size="15" fill="#566070">the same bytes.</text>
+<rect x="32" y="141.6" width="576" height="1" fill="#E2E7EE"/>
+<path d="M320 270.6 L320 332.6" fill="none" stroke="#7C8798" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#update-path-arrow-rail)"/>
+<path d="M320 409.6 L320 471.6" fill="none" stroke="#7C8798" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#update-path-arrow-rail)"/>
+<path d="M320 548.5 L320 610.5" fill="none" stroke="#7C8798" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#update-path-arrow-rail)"/>
+<path d="M401 706.5 L401 744.4 Q401 752.4 409 752.4 L435 752.4 Q443 752.4 443 760.4 L443 768.5" fill="none" stroke="#7C8798" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#update-path-arrow-rail)"/>
+<path d="M239 706.5 L239 714.7 Q239 722.7 231 722.7 L205 722.7 Q197 722.7 197 730.7 L197 768.5" fill="none" stroke="#DB2752" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 5" marker-end="url(#update-path-arrow-rose-strong)"/>
+<path d="M443 845.5 L443 907.5" fill="none" stroke="#15803D" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#update-path-arrow-green-strong)"/>
+<path d="M443 1003.5 L443 1065.5" fill="none" stroke="#7C8798" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#update-path-arrow-rail)"/>
+<rect x="225" y="159.6" width="190" height="107" rx="10" fill="#F8F1EA" stroke="#7C4A1E" stroke-width="1.4"/>
+<rect x="225" y="167.6" width="4" height="91" rx="2" fill="#7C4A1E"/>
+<rect x="225" y="336.6" width="190" height="69" rx="10" fill="#EAF2FF" stroke="#2563EB" stroke-width="1.4"/>
+<rect x="225" y="344.6" width="4" height="53" rx="2" fill="#2563EB"/>
+<rect x="225" y="475.6" width="190" height="69" rx="10" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1.4"/>
+<rect x="225" y="483.6" width="4" height="53" rx="2" fill="#7C3AED"/>
+<rect x="225" y="614.5" width="190" height="88" rx="10" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1.4"/>
+<rect x="225" y="622.5" width="4" height="72" rx="2" fill="#7C3AED"/>
+<rect x="102" y="772.5" width="190" height="69" rx="10" fill="#FFEEF2" stroke="#DB2752" stroke-width="1.4"/>
+<rect x="102" y="780.5" width="4" height="53" rx="2" fill="#DB2752"/>
+<rect x="348" y="772.5" width="190" height="69" rx="10" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1.4"/>
+<rect x="348" y="780.5" width="4" height="53" rx="2" fill="#7C3AED"/>
+<rect x="348" y="911.5" width="190" height="88" rx="10" fill="#EAF7EF" stroke="#15803D" stroke-width="1.4"/>
+<rect x="348" y="919.5" width="4" height="72" rx="2" fill="#15803D"/>
+<rect x="348" y="1069.5" width="190" height="88" rx="10" fill="#F8F1EA" stroke="#7C4A1E" stroke-width="1.4"/>
+<rect x="348" y="1077.5" width="4" height="72" rx="2" fill="#7C4A1E"/>
+<text x="245" y="186.3" font-size="15" font-weight="700" fill="#6B3F17">Entry points</text>
+<text x="245" y="211.2" font-size="13" fill="#2B3442">kb outdated</text>
+<text x="245" y="230" font-size="13" fill="#2B3442">kb upgrade</text>
+<text x="245" y="248.8" font-size="13" fill="#2B3442">the configurator</text>
+<text x="245" y="363.3" font-size="15" font-weight="700" fill="#1E429F">1 Read</text>
+<text x="245" y="388.1" font-size="13" fill="#2B3442">lock, catalogue, image</text>
+<text x="245" y="502.3" font-size="15" font-weight="700" fill="#5B21B6">2 Order</text>
+<text x="245" y="527.2" font-size="13" fill="#2B3442">kb-core, port, drivers</text>
+<text x="245" y="641.3" font-size="15" font-weight="700" fill="#5B21B6">3 Gate</text>
+<text x="245" y="666.2" font-size="13" fill="#2B3442">MCU, kb_core_min,</text>
+<text x="245" y="685" font-size="13" fill="#2B3442">owner task, bus kind</text>
+<text x="122" y="799.3" font-size="15" font-weight="700" fill="#9F1239">Held back</text>
+<text x="122" y="824.2" font-size="13" fill="#2B3442">first failing gate</text>
+<text x="368" y="799.3" font-size="15" font-weight="700" fill="#5B21B6">4 Rows</text>
+<text x="368" y="824.2" font-size="13" fill="#2B3442">one per component</text>
+<text x="368" y="938.3" font-size="15" font-weight="700" fill="#14532D">5 Write</text>
+<text x="368" y="963.2" font-size="13" fill="#2B3442">image, lock, CMake,</text>
+<text x="368" y="982" font-size="13" fill="#2B3442">fetch script, report</text>
+<text x="368" y="1096.3" font-size="15" font-weight="700" fill="#6B3F17">Then, by hand</text>
+<text x="368" y="1121.2" font-size="13" fill="#2B3442">review, fetch, build,</text>
+<text x="368" y="1140" font-size="13" fill="#2B3442">test</text>
+<rect x="394.4" y="742.4" width="55.1" height="20" rx="10" fill="#FFFFFF"/>
+<text x="422" y="756.7" font-size="12" font-weight="500" text-anchor="middle" fill="#566070">passes</text>
+<rect x="199.3" y="712.7" width="37.3" height="20" rx="10" fill="#FFFFFF"/>
+<text x="218" y="727" font-size="12" font-weight="500" text-anchor="middle" fill="#566070">fails</text>
+<rect x="32" y="1172.9" width="14" height="14" rx="4" fill="#F8F1EA" stroke="#7C4A1E" stroke-width="1.4"/>
+<text x="54" y="1184.5" font-size="12.5" fill="#566070">entry and hand steps</text>
+<rect x="210.3" y="1172.9" width="14" height="14" rx="4" fill="#EAF2FF" stroke="#2563EB" stroke-width="1.4"/>
+<text x="232.3" y="1184.5" font-size="12.5" fill="#566070">inputs</text>
+<rect x="294.6" y="1172.9" width="14" height="14" rx="4" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1.4"/>
+<text x="316.6" y="1184.5" font-size="12.5" fill="#566070">plan</text>
+<rect x="367.2" y="1172.9" width="14" height="14" rx="4" fill="#FFEEF2" stroke="#DB2752" stroke-width="1.4"/>
+<text x="389.2" y="1184.5" font-size="12.5" fill="#566070">held back</text>
+<rect x="474.2" y="1172.9" width="14" height="14" rx="4" fill="#EAF7EF" stroke="#15803D" stroke-width="1.4"/>
+<text x="496.2" y="1184.5" font-size="12.5" fill="#566070">written</text>
 </svg>

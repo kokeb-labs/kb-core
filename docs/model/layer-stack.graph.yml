@@ -1,0 +1,60 @@
+---
+# The layer stack of a kb-core product.
+kind: graph
+id: layer-stack
+title: The layer stack
+kicker: Architecture
+subtitle: Arrows point from a layer to what it depends on. Only boundary files touch vendor code.
+alt: >-
+  Layer stack from the product application through the board HAL to kb::handlers, kb::interfaces, kb::rtos and
+  kb::utils, with the drivers that handlers bind, the MCU ports that satisfy the contracts, and vendor SOUP reached
+  only through boundary files.
+reads: >-
+  From top to bottom. The product application (control, protocols, safety layer) calls the board HAL: its facade and
+  managers built on kb-hal-common, the board config (bus table, thread model per bus, chip list, pins) and the
+  platform bind, which builds the port objects and sets the start-up order. The board HAL uses kb::handlers and picks
+  one MCU port. In kb-core, kb::handlers (bindings, handler core, start-up pipeline, owner and guarded access) uses
+  the driver of each chip and the interface contracts; kb::interfaces (C++20 concepts only, plus the host test port)
+  rests on kb::rtos (the API, with the backends none, FreeRTOS and ThreadX), and kb::rtos rests on kb::utils
+  (Status/Result, units, containers, CRC, seqlock). Each driver-<chip> is brand-free, has its own CI at level high and
+  is pinned at release tags. The MCU port (port-esp32 in components/ports/esp32, its own CMake project; port-stm32
+  planned in its own repository) satisfies the interface contracts and touches the vendor SDK in its boundary files
+  only; the RTOS backends touch the kernel in theirs. The vendor SDK, kernels and mbedTLS (ESP-IDF, STM32 HAL,
+  FreeRTOS, ThreadX, mbedTLS) are SOUP: never analysed, never edited.
+direction: TB
+print: portrait
+node_width: 150
+legend:
+  - [magenta, product and board HAL]
+  - [violet, handlers]
+  - [blue, interfaces]
+  - [amber, "kb::rtos"]
+  - [brand, "kb::utils"]
+  - [teal, MCU ports]
+  - [green, drivers]
+  - [slate, SOUP]
+nodes:
+  - {id: app, label: Application tasks, tone: magenta, lines: [control, protocols, safety], accent: true}
+  - id: hal
+    label: Board HAL
+    tone: magenta
+    lines: [facade and managers, board config, platform bind]
+    accent: true
+  - {id: handlers, label: "kb::handlers", tone: violet, lines: ["bindings, core", "start-up, access"], accent: true}
+  - {id: ports, label: MCU ports, tone: teal, lines: [port-esp32, port-stm32 later], accent: true}
+  - {id: ifaces, label: "kb::interfaces", tone: blue, lines: [C++20 concepts], accent: true}
+  - {id: drv, label: "driver-<chip>", tone: green, lines: [pinned release tags], accent: true}
+  - {id: rtos, label: "kb::rtos", tone: amber, lines: ["none, FreeRTOS, ThreadX"], accent: true}
+  - {id: utils, label: "kb::utils", tone: brand, lines: ["Result, units, CRC"], accent: true}
+  - {id: soup, label: SOUP, tone: slate, lines: [vendor SDK, "kernels, mbedTLS", never edited]}
+edges:
+  - {from: app, to: hal, label: calls}
+  - {from: hal, to: handlers, label: uses}
+  - {from: hal, to: ports, label: picks one}
+  - {from: handlers, to: ifaces}
+  - {from: handlers, to: drv, label: binds}
+  - {from: ports, to: ifaces, label: satisfies, tone: teal}
+  - {from: ifaces, to: rtos}
+  - {from: rtos, to: utils}
+  - {from: ports, to: soup, label: boundary files, dashed: true}
+  - {from: rtos, to: soup, label: boundary files, dashed: true}

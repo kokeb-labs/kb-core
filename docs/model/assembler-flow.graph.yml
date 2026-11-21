@@ -1,0 +1,43 @@
+---
+# The assembler: from tags to a project.
+kind: graph
+id: assembler-flow
+title: From tags to a project
+kicker: Configurator
+subtitle: One resolver specification, implemented in Python and JavaScript, held to the same vectors.
+alt: >-
+  Driver and kb-core tags feed kb catalog build, which writes catalog.json; the resolver reads it and kb-image.yml and
+  writes the lock and the project files; kb sbom turns the lock into SBOMs.
+reads: >-
+  From the top. kb catalog build reads each driver's driver.yml at its tags and the kb-core tags with their platform
+  table and pins, and writes catalog.json, every part at every version. The resolver, one specification with a Python
+  and a JavaScript implementation, reads kb-image.yml (what the user selected) and the catalogue, and writes the lock
+  kb-image.lock.yml (every version, tag and SHA) and three project files: CMakePresets.json, kb_image.cmake and
+  kb-fetch.sh. kb sbom turns the lock into CycloneDX 1.6 and SPDX 2.3 documents.
+direction: TB
+print: portrait
+legend:
+  - [blue, inputs]
+  - [brown, tool]
+  - [green, outputs]
+nodes:
+  - id: tags
+    label: Release tags
+    tone: blue
+    lines: [driver.yml per driver, "kb-core: platform, pins"]
+    accent: true
+  - {id: build, label: kb catalog build, tone: brown, lines: [reads the tags], accent: true}
+  - {id: cat, label: catalog.json, tone: green, lines: [every part at every version], accent: true}
+  - {id: img, label: kb-image.yml, tone: blue, lines: [what the user picked, "MCU, RTOS, drivers"], accent: true}
+  - {id: res, label: Resolver, tone: brown, lines: [Python or JavaScript, one spec], accent: true}
+  - {id: lock, label: kb-image.lock.yml, tone: green, lines: [every version, every tag, every SHA], accent: true}
+  - {id: proj, label: Project files, tone: green, lines: [CMakePresets.json, kb_image.cmake, kb-fetch.sh], accent: true}
+  - {id: sbom, label: kb sbom, tone: brown, lines: [CycloneDX 1.6, SPDX 2.3], accent: true}
+edges:
+  - {from: tags, to: build, label: read}
+  - {from: build, to: cat, label: writes}
+  - {from: cat, to: res, label: read}
+  - {from: img, to: res, label: read}
+  - {from: res, to: lock, label: writes, tone: green}
+  - {from: res, to: proj, label: writes, tone: green}
+  - {from: lock, to: sbom, tone: brown}

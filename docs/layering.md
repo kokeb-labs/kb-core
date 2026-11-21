@@ -7,8 +7,8 @@ What may depend on and include what, and the checks that enforce it ([ADR-0001](
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="diagrams/dependency-rules.dark.svg">
   <img src="diagrams/dependency-rules.svg"
-    alt="Two lists of dependency arrows between layers. Allowed: twelve, from the application down to
-    kb::utils. Forbidden: seven, each labelled with the check that catches it.">
+    alt="Table of nineteen dependency rules between layers, twelve allowed from the application down to
+    kb::utils and seven forbidden, each forbidden one with the check that catches it.">
 </picture>
 <!-- /figure -->
 

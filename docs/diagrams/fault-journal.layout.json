@@ -1,0 +1,76 @@
+{
+ "direction": "TB",
+ "edges": [
+  {
+   "from": "hand",
+   "to": "hj",
+   "via": []
+  },
+  {
+   "from": "live",
+   "to": "hj",
+   "via": []
+  },
+  {
+   "from": "hj",
+   "to": "fj",
+   "via": []
+  },
+  {
+   "from": "boot",
+   "to": "fj",
+   "via": []
+  },
+  {
+   "from": "fj",
+   "to": "store",
+   "via": []
+  }
+ ],
+ "engine": "graphviz dot 13.1.0 (recorded for the reader; render never reads it)",
+ "figkit_layout": 1,
+ "id": "fault-journal",
+ "input": "4e008846540a6326d8ae8aa94edf971d35a50d4d927a884d29eafa20b4709bfc",
+ "nodes": {
+  "boot": [
+   325,
+   177,
+   160,
+   69
+  ],
+  "fj": [
+   214,
+   316,
+   166,
+   88
+  ],
+  "hand": [
+   0,
+   19,
+   160,
+   69
+  ],
+  "hj": [
+   109,
+   177,
+   160,
+   69
+  ],
+  "live": [
+   216,
+   0,
+   165,
+   107
+  ],
+  "store": [
+   217,
+   474,
+   160,
+   144
+  ]
+ },
+ "size": [
+  485,
+  618
+ ]
+}

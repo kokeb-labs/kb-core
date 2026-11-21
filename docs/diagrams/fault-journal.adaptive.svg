@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="665" height="817" viewBox="0 0 665 817" role="img" aria-labelledby="fault-journal-title fault-journal-desc" font-family="Inter, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" class="fk">
+<title id="fault-journal-title">Fault evidence path</title>
+<desc id="fault-journal-desc">Flow in which handler health edges and the liveness verdict go to the health journal, which appends one record to a CRC-checked ring in a port store that survives a reset, with the boot reset reason recorded and the watchdog kicked only when nothing is stale.</desc>
+<style>
+.fk{--fk-amber-strong:#C26A05;--fk-amber-text:#8A3C0B;--fk-amber-tint:#FFF5E3;--fk-brand-strong:#9A4A17;--fk-brand-text:#7A360E;--fk-brand-tint:#FBEFE6;--fk-canvas:#FFFFFF;--fk-frame:#E2E7EE;--fk-hair:#E2E7EE;--fk-ink:#0E1726;--fk-ink2:#2B3442;--fk-muted:#566070;--fk-teal-strong:#0B7A72;--fk-teal-text:#0B5F59;--fk-teal-tint:#E6F6F4;--fk-violet-strong:#7C3AED;--fk-violet-text:#5B21B6;--fk-violet-tint:#F3EEFF;}
+@media (prefers-color-scheme:dark){.fk{--fk-amber-strong:#FBBF24;--fk-amber-text:#FDE68A;--fk-amber-tint:#2C2310;--fk-brand-strong:#F4B942;--fk-brand-text:#F8D27A;--fk-brand-tint:#2A2113;--fk-canvas:#0E131A;--fk-frame:#283241;--fk-hair:#252F3C;--fk-ink:#E8EDF3;--fk-ink2:#D2DAE4;--fk-muted:#9AA6B5;--fk-teal-strong:#2BB3A3;--fk-teal-text:#A7F3E6;--fk-teal-tint:#0F2A28;--fk-violet-strong:#A78BFA;--fk-violet-text:#DDD6FE;--fk-violet-tint:#221A3A;}}
+:root[data-theme="dark"] .fk,[data-md-color-scheme="slate"] .fk{--fk-amber-strong:#FBBF24;--fk-amber-text:#FDE68A;--fk-amber-tint:#2C2310;--fk-brand-strong:#F4B942;--fk-brand-text:#F8D27A;--fk-brand-tint:#2A2113;--fk-canvas:#0E131A;--fk-frame:#283241;--fk-hair:#252F3C;--fk-ink:#E8EDF3;--fk-ink2:#D2DAE4;--fk-muted:#9AA6B5;--fk-teal-strong:#2BB3A3;--fk-teal-text:#A7F3E6;--fk-teal-tint:#0F2A28;--fk-violet-strong:#A78BFA;--fk-violet-text:#DDD6FE;--fk-violet-tint:#221A3A;}
+:root[data-theme="light"] .fk,[data-md-color-scheme="default"] .fk{--fk-amber-strong:#C26A05;--fk-amber-text:#8A3C0B;--fk-amber-tint:#FFF5E3;--fk-brand-strong:#9A4A17;--fk-brand-text:#7A360E;--fk-brand-tint:#FBEFE6;--fk-canvas:#FFFFFF;--fk-frame:#E2E7EE;--fk-hair:#E2E7EE;--fk-ink:#0E1726;--fk-ink2:#2B3442;--fk-muted:#566070;--fk-teal-strong:#0B7A72;--fk-teal-text:#0B5F59;--fk-teal-tint:#E6F6F4;--fk-violet-strong:#7C3AED;--fk-violet-text:#5B21B6;--fk-violet-tint:#F3EEFF;}
+.fk-f-amber-strong{fill:var(--fk-amber-strong)}.fk-s-amber-strong{stroke:var(--fk-amber-strong)}
+.fk-f-amber-text{fill:var(--fk-amber-text)}.fk-s-amber-text{stroke:var(--fk-amber-text)}
+.fk-f-amber-tint{fill:var(--fk-amber-tint)}.fk-s-amber-tint{stroke:var(--fk-amber-tint)}
+.fk-f-brand-strong{fill:var(--fk-brand-strong)}.fk-s-brand-strong{stroke:var(--fk-brand-strong)}
+.fk-f-brand-text{fill:var(--fk-brand-text)}.fk-s-brand-text{stroke:var(--fk-brand-text)}
+.fk-f-brand-tint{fill:var(--fk-brand-tint)}.fk-s-brand-tint{stroke:var(--fk-brand-tint)}
+.fk-f-canvas{fill:var(--fk-canvas)}.fk-s-canvas{stroke:var(--fk-canvas)}
+.fk-f-frame{fill:var(--fk-frame)}.fk-s-frame{stroke:var(--fk-frame)}
+.fk-f-hair{fill:var(--fk-hair)}.fk-s-hair{stroke:var(--fk-hair)}
+.fk-f-ink{fill:var(--fk-ink)}.fk-s-ink{stroke:var(--fk-ink)}
+.fk-f-ink2{fill:var(--fk-ink2)}.fk-s-ink2{stroke:var(--fk-ink2)}
+.fk-f-muted{fill:var(--fk-muted)}.fk-s-muted{stroke:var(--fk-muted)}
+.fk-f-teal-strong{fill:var(--fk-teal-strong)}.fk-s-teal-strong{stroke:var(--fk-teal-strong)}
+.fk-f-teal-text{fill:var(--fk-teal-text)}.fk-s-teal-text{stroke:var(--fk-teal-text)}
+.fk-f-teal-tint{fill:var(--fk-teal-tint)}.fk-s-teal-tint{stroke:var(--fk-teal-tint)}
+.fk-f-violet-strong{fill:var(--fk-violet-strong)}.fk-s-violet-strong{stroke:var(--fk-violet-strong)}
+.fk-f-violet-text{fill:var(--fk-violet-text)}.fk-s-violet-text{stroke:var(--fk-violet-text)}
+.fk-f-violet-tint{fill:var(--fk-violet-tint)}.fk-s-violet-tint{stroke:var(--fk-violet-tint)}
+@media (forced-colors:active){.fk text{fill:CanvasText}.fk rect,.fk circle{fill:Canvas;stroke:CanvasText}.fk path{stroke:CanvasText}.fk marker path{fill:CanvasText;stroke:none}}
+</style>
+<defs><marker id="fault-journal-arrow-amber-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="fk-f-amber-strong"/></marker><marker id="fault-journal-arrow-brand-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="fk-f-brand-strong"/></marker><marker id="fault-journal-arrow-teal-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="fk-f-teal-strong"/></marker><marker id="fault-journal-arrow-violet-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="fk-f-violet-strong"/></marker></defs>
+<rect x="0.5" y="0.5" width="664" height="816" rx="16" class="fk-f-canvas fk-s-frame"/>
+<text x="32" y="44" font-size="12.5" font-weight="700" letter-spacing="1.2" class="fk-f-brand-text">HANDLERS</text>
+<text x="32" y="77.3" font-size="26" font-weight="700" class="fk-f-ink">Fault evidence path</text>
+<text x="32" y="103.8" font-size="15" class="fk-f-muted">Health edges and stalls into a CRC-checked ring that survives a reset.</text>
+<rect x="32" y="119.8" width="601" height="1" class="fk-f-hair"/>
+<path d="M170 229.8 L170 257 Q170 265 178 265 L205 265 Q213 265 213 273 L213 310.8" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fault-journal-arrow-violet-strong)" class="fk-s-violet-strong"/>
+<path d="M388.5 248.8 L388.5 286.6 Q388.5 294.6 380.5 294.6 L353 294.6 Q345 294.6 345 302.6 L345 310.8" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fault-journal-arrow-amber-strong)" class="fk-s-amber-strong"/>
+<path d="M279 387.8 L279 396 Q279 404 287 404 L310 404 Q318 404 318 412 L318 449.8" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fault-journal-arrow-violet-strong)" class="fk-s-violet-strong"/>
+<path d="M495 387.8 L495 425.6 Q495 433.6 487 433.6 L464 433.6 Q456 433.6 456 441.6 L456 449.8" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fault-journal-arrow-teal-strong)" class="fk-s-teal-strong"/>
+<path d="M387 545.8 L387 607.8" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fault-journal-arrow-brand-strong)" class="fk-s-brand-strong"/>
+<rect x="90" y="156.8" width="160" height="69" rx="10" stroke-width="1.4" class="fk-f-violet-tint fk-s-violet-strong"/>
+<rect x="90" y="164.8" width="4" height="53" rx="2" class="fk-f-violet-strong"/>
+<rect x="306" y="137.8" width="165" height="107" rx="10" stroke-width="1.4" class="fk-f-amber-tint fk-s-amber-strong"/>
+<rect x="306" y="145.8" width="4" height="91" rx="2" class="fk-f-amber-strong"/>
+<rect x="199" y="314.8" width="160" height="69" rx="10" stroke-width="1.4" class="fk-f-violet-tint fk-s-violet-strong"/>
+<rect x="199" y="322.8" width="4" height="53" rx="2" class="fk-f-violet-strong"/>
+<rect x="415" y="314.8" width="160" height="69" rx="10" stroke-width="1.4" class="fk-f-teal-tint fk-s-teal-strong"/>
+<rect x="415" y="322.8" width="4" height="53" rx="2" class="fk-f-teal-strong"/>
+<rect x="304" y="453.8" width="166" height="88" rx="10" stroke-width="1.4" class="fk-f-brand-tint fk-s-brand-strong"/>
+<rect x="304" y="461.8" width="4" height="72" rx="2" class="fk-f-brand-strong"/>
+<rect x="307" y="611.8" width="160" height="144" rx="10" stroke-width="1.4" class="fk-f-teal-tint fk-s-teal-strong"/>
+<rect x="307" y="619.8" width="4" height="128" rx="2" class="fk-f-teal-strong"/>
+<text x="110" y="183.6" font-size="15" font-weight="700" class="fk-f-violet-text">Handlers</text>
+<text x="110" y="208.4" font-size="13" class="fk-f-ink2">Health(): lock-free</text>
+<text x="326" y="164.6" font-size="15" font-weight="700" class="fk-f-amber-text">LivenessMonitor</text>
+<text x="326" y="189.4" font-size="13" class="fk-f-ink2">Verdict(now)</text>
+<text x="326" y="208.2" font-size="13" class="fk-f-ink2">kicks the watchdog</text>
+<text x="326" y="227.1" font-size="13" class="fk-f-ink2">owner</text>
+<text x="219" y="341.6" font-size="15" font-weight="700" class="fk-f-violet-text">HealthJournal</text>
+<text x="219" y="366.4" font-size="13" class="fk-f-ink2">edges only</text>
+<text x="435" y="341.6" font-size="15" font-weight="700" class="fk-f-teal-text">Boot</text>
+<text x="435" y="366.4" font-size="13" class="fk-f-ink2">port reset reason</text>
+<text x="324" y="480.6" font-size="15" font-weight="700" class="fk-f-brand-text">FaultJournal ring</text>
+<text x="324" y="505.4" font-size="13" class="fk-f-ink2">32-byte records,</text>
+<text x="324" y="524.2" font-size="13" class="fk-f-ink2">CRC-32</text>
+<text x="327" y="638.5" font-size="15" font-weight="700" class="fk-f-teal-text">Store</text>
+<text x="327" y="663.4" font-size="13" class="fk-f-ink2">RTC or no-init</text>
+<text x="327" y="682.2" font-size="13" class="fk-f-ink2">RAM, NVS, FRAM,</text>
+<text x="327" y="701.1" font-size="13" class="fk-f-ink2">flash</text>
+<text x="327" y="720" font-size="13" class="fk-f-ink2">Open(): newest</text>
+<text x="327" y="738.8" font-size="13" class="fk-f-ink2">record</text>
+<rect x="166.7" y="255" width="49.5" height="20" rx="10" class="fk-f-canvas"/>
+<text x="191.5" y="269.3" font-size="12" font-weight="500" text-anchor="middle" class="fk-f-muted">edges</text>
+<rect x="339.5" y="284.6" width="54.4" height="20" rx="10" class="fk-f-canvas"/>
+<text x="366.8" y="299" font-size="12" font-weight="500" text-anchor="middle" class="fk-f-muted">verdict</text>
+<rect x="326.1" y="394" width="59.7" height="20" rx="10" class="fk-f-canvas"/>
+<text x="356" y="408.3" font-size="12" font-weight="500" text-anchor="middle" class="fk-f-muted">Append</text>
+<rect x="503.1" y="423.6" width="89.9" height="20" rx="10" class="fk-f-canvas"/>
+<text x="548" y="438" font-size="12" font-weight="500" text-anchor="middle" class="fk-f-muted">RecordReset</text>
+<rect x="394.9" y="566.8" width="126.1" height="20" rx="10" class="fk-f-canvas"/>
+<text x="458" y="581.1" font-size="12" font-weight="500" text-anchor="middle" class="fk-f-muted">one bounded write</text>
+<rect x="32" y="771.2" width="14" height="14" rx="4" stroke-width="1.4" class="fk-f-violet-tint fk-s-violet-strong"/>
+<text x="54" y="782.8" font-size="12.5" class="fk-f-muted">handler and journal</text>
+<rect x="198.4" y="771.2" width="14" height="14" rx="4" stroke-width="1.4" class="fk-f-amber-tint fk-s-amber-strong"/>
+<text x="220.4" y="782.8" font-size="12.5" class="fk-f-muted">liveness</text>
+<rect x="295.6" y="771.2" width="14" height="14" rx="4" stroke-width="1.4" class="fk-f-teal-tint fk-s-teal-strong"/>
+<text x="317.6" y="782.8" font-size="12.5" class="fk-f-muted">port</text>
+<rect x="366.9" y="771.2" width="14" height="14" rx="4" stroke-width="1.4" class="fk-f-brand-tint fk-s-brand-strong"/>
+<text x="388.9" y="782.8" font-size="12.5" class="fk-f-muted">stored record</text>
+</svg>

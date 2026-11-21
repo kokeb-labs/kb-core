@@ -8,10 +8,9 @@ Where kb-core sits, what each part holds, and the path one call takes from a HAL
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="diagrams/layer-stack.dark.svg">
   <img src="diagrams/layer-stack.svg"
-    alt="Layer stack, top to bottom: the product application; the board HAL repository; kb-core with
-    kb::handlers, kb::interfaces, kb::rtos and kb::utils, each depending on the next; below it the
-    drivers used by handlers, the MCU ports that satisfy the interface contracts, and the vendor SOUP
-    reached only through boundary files.">
+    alt="Layer stack from the product application through the board HAL to kb::handlers, kb::interfaces,
+    kb::rtos and kb::utils, with the drivers that handlers bind, the MCU ports that satisfy the
+    contracts, and vendor SOUP reached only through boundary files.">
 </picture>
 <!-- /figure -->
 
@@ -34,9 +33,9 @@ A HAL reads a register of a PF1550 power IC. Only the last step knows it runs on
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="diagrams/call-sequence.dark.svg">
   <img src="diagrams/call-sequence.svg"
-    alt="Sequence: the HAL calls a guarded handler, which locks and calls the pf1550 driver; the driver calls
-    the kb binding's WriteRead, which calls the ESP32 I2C device; results return the same way. Only the
-    I2C device knows it is an ESP32.">
+    alt="Call chain in which the HAL calls a guarded handler, which locks and calls the pf1550 driver, the
+    driver calls the kb binding's WriteRead, which calls the ESP32 I2C device, and the results return
+    the same way.">
 </picture>
 <!-- /figure -->
 

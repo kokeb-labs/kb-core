@@ -14,6 +14,14 @@ lists its changes per part, the ESP32 port and its driver pins. The format follo
   switch turns on) instead of opening with an error; *Open an existing project* is folded; on small screens a bar
   at the bottom shows whether the selection resolves and offers the ZIP.
 
+### Changed
+
+- Figures: all 22 diagrams are drawn from figkit model files (`docs/model/<id>.<kind>.yml`) with the shared kinds
+  (graph, state, seq, matrix, pipeline), about 640 px wide and read top to bottom so they stay readable on a phone;
+  the components map still reads the repository folders, and the thread-model figure stays a module of plain figkit
+  calls. The kb-core helper layer `tools/docs/kbfig.py` is removed, and `tools/docs/check_figures.py` accepts a model
+  file or a module that draws with figkit ([Figures](docs/figures.md)).
+
 ### Fixed
 
 - ADR numbers: the asynchronous bus and held transactions record is ADR-0016 (it shared 0015 with the ThreadX

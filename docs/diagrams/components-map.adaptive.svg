@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="1064" viewBox="0 0 640 1064" role="img" aria-labelledby="components-map-title components-map-desc" font-family="Inter, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" class="fk">
+<title id="components-map-title">Parts, ports and drivers</title>
+<desc id="components-map-desc">Map of the repository in which the lib parts handlers, interfaces, rtos and utils each rest on the next one down, the MCU ports satisfy the interface contracts, and handlers bind the pinned drivers.</desc>
+<style>
+.fk{--fk-amber-strong:#C26A05;--fk-amber-text:#8A3C0B;--fk-amber-tint:#FFF5E3;--fk-blue-strong:#2563EB;--fk-blue-text:#1E429F;--fk-blue-tint:#EAF2FF;--fk-brand-strong:#9A4A17;--fk-brand-text:#7A360E;--fk-brand-tint:#FBEFE6;--fk-canvas:#FFFFFF;--fk-frame:#E2E7EE;--fk-green-strong:#15803D;--fk-green-text:#14532D;--fk-green-tint:#EAF7EF;--fk-hair:#E2E7EE;--fk-ink:#0E1726;--fk-ink2:#2B3442;--fk-muted:#566070;--fk-rail:#7C8798;--fk-teal-strong:#0B7A72;--fk-teal-text:#0B5F59;--fk-teal-tint:#E6F6F4;--fk-violet-strong:#7C3AED;--fk-violet-text:#5B21B6;--fk-violet-tint:#F3EEFF;}
+@media (prefers-color-scheme:dark){.fk{--fk-amber-strong:#FBBF24;--fk-amber-text:#FDE68A;--fk-amber-tint:#2C2310;--fk-blue-strong:#60A5FA;--fk-blue-text:#BFDBFE;--fk-blue-tint:#13233A;--fk-brand-strong:#F4B942;--fk-brand-text:#F8D27A;--fk-brand-tint:#2A2113;--fk-canvas:#0E131A;--fk-frame:#283241;--fk-green-strong:#4ADE80;--fk-green-text:#BBF7D0;--fk-green-tint:#11281A;--fk-hair:#252F3C;--fk-ink:#E8EDF3;--fk-ink2:#D2DAE4;--fk-muted:#9AA6B5;--fk-rail:#6C7889;--fk-teal-strong:#2BB3A3;--fk-teal-text:#A7F3E6;--fk-teal-tint:#0F2A28;--fk-violet-strong:#A78BFA;--fk-violet-text:#DDD6FE;--fk-violet-tint:#221A3A;}}
+:root[data-theme="dark"] .fk,[data-md-color-scheme="slate"] .fk{--fk-amber-strong:#FBBF24;--fk-amber-text:#FDE68A;--fk-amber-tint:#2C2310;--fk-blue-strong:#60A5FA;--fk-blue-text:#BFDBFE;--fk-blue-tint:#13233A;--fk-brand-strong:#F4B942;--fk-brand-text:#F8D27A;--fk-brand-tint:#2A2113;--fk-canvas:#0E131A;--fk-frame:#283241;--fk-green-strong:#4ADE80;--fk-green-text:#BBF7D0;--fk-green-tint:#11281A;--fk-hair:#252F3C;--fk-ink:#E8EDF3;--fk-ink2:#D2DAE4;--fk-muted:#9AA6B5;--fk-rail:#6C7889;--fk-teal-strong:#2BB3A3;--fk-teal-text:#A7F3E6;--fk-teal-tint:#0F2A28;--fk-violet-strong:#A78BFA;--fk-violet-text:#DDD6FE;--fk-violet-tint:#221A3A;}
+:root[data-theme="light"] .fk,[data-md-color-scheme="default"] .fk{--fk-amber-strong:#C26A05;--fk-amber-text:#8A3C0B;--fk-amber-tint:#FFF5E3;--fk-blue-strong:#2563EB;--fk-blue-text:#1E429F;--fk-blue-tint:#EAF2FF;--fk-brand-strong:#9A4A17;--fk-brand-text:#7A360E;--fk-brand-tint:#FBEFE6;--fk-canvas:#FFFFFF;--fk-frame:#E2E7EE;--fk-green-strong:#15803D;--fk-green-text:#14532D;--fk-green-tint:#EAF7EF;--fk-hair:#E2E7EE;--fk-ink:#0E1726;--fk-ink2:#2B3442;--fk-muted:#566070;--fk-rail:#7C8798;--fk-teal-strong:#0B7A72;--fk-teal-text:#0B5F59;--fk-teal-tint:#E6F6F4;--fk-violet-strong:#7C3AED;--fk-violet-text:#5B21B6;--fk-violet-tint:#F3EEFF;}
+.fk-f-amber-strong{fill:var(--fk-amber-strong)}.fk-s-amber-strong{stroke:var(--fk-amber-strong)}
+.fk-f-amber-text{fill:var(--fk-amber-text)}.fk-s-amber-text{stroke:var(--fk-amber-text)}
+.fk-f-amber-tint{fill:var(--fk-amber-tint)}.fk-s-amber-tint{stroke:var(--fk-amber-tint)}
+.fk-f-blue-strong{fill:var(--fk-blue-strong)}.fk-s-blue-strong{stroke:var(--fk-blue-strong)}
+.fk-f-blue-text{fill:var(--fk-blue-text)}.fk-s-blue-text{stroke:var(--fk-blue-text)}
+.fk-f-blue-tint{fill:var(--fk-blue-tint)}.fk-s-blue-tint{stroke:var(--fk-blue-tint)}
+.fk-f-brand-strong{fill:var(--fk-brand-strong)}.fk-s-brand-strong{stroke:var(--fk-brand-strong)}
+.fk-f-brand-text{fill:var(--fk-brand-text)}.fk-s-brand-text{stroke:var(--fk-brand-text)}
+.fk-f-brand-tint{fill:var(--fk-brand-tint)}.fk-s-brand-tint{stroke:var(--fk-brand-tint)}
+.fk-f-canvas{fill:var(--fk-canvas)}.fk-s-canvas{stroke:var(--fk-canvas)}
+.fk-f-frame{fill:var(--fk-frame)}.fk-s-frame{stroke:var(--fk-frame)}
+.fk-f-green-strong{fill:var(--fk-green-strong)}.fk-s-green-strong{stroke:var(--fk-green-strong)}
+.fk-f-green-text{fill:var(--fk-green-text)}.fk-s-green-text{stroke:var(--fk-green-text)}
+.fk-f-green-tint{fill:var(--fk-green-tint)}.fk-s-green-tint{stroke:var(--fk-green-tint)}
+.fk-f-hair{fill:var(--fk-hair)}.fk-s-hair{stroke:var(--fk-hair)}
+.fk-f-ink{fill:var(--fk-ink)}.fk-s-ink{stroke:var(--fk-ink)}
+.fk-f-ink2{fill:var(--fk-ink2)}.fk-s-ink2{stroke:var(--fk-ink2)}
+.fk-f-muted{fill:var(--fk-muted)}.fk-s-muted{stroke:var(--fk-muted)}
+.fk-f-rail{fill:var(--fk-rail)}.fk-s-rail{stroke:var(--fk-rail)}
+.fk-f-teal-strong{fill:var(--fk-teal-strong)}.fk-s-teal-strong{stroke:var(--fk-teal-strong)}
+.fk-f-teal-text{fill:var(--fk-teal-text)}.fk-s-teal-text{stroke:var(--fk-teal-text)}
+.fk-f-teal-tint{fill:var(--fk-teal-tint)}.fk-s-teal-tint{stroke:var(--fk-teal-tint)}
+.fk-f-violet-strong{fill:var(--fk-violet-strong)}.fk-s-violet-strong{stroke:var(--fk-violet-strong)}
+.fk-f-violet-text{fill:var(--fk-violet-text)}.fk-s-violet-text{stroke:var(--fk-violet-text)}
+.fk-f-violet-tint{fill:var(--fk-violet-tint)}.fk-s-violet-tint{stroke:var(--fk-violet-tint)}
+@media (forced-colors:active){.fk text{fill:CanvasText}.fk rect,.fk circle{fill:Canvas;stroke:CanvasText}.fk path{stroke:CanvasText}.fk marker path{fill:CanvasText;stroke:none}}
+</style>
+<defs><marker id="components-map-arrow-rail" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="fk-f-rail"/></marker><marker id="components-map-arrow-teal-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="fk-f-teal-strong"/></marker><marker id="components-map-arrow-violet-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="fk-f-violet-strong"/></marker></defs>
+<rect x="0.5" y="0.5" width="639" height="1063" rx="16" class="fk-f-canvas fk-s-frame"/>
+<text x="32" y="44" font-size="12.5" font-weight="700" letter-spacing="1.2" class="fk-f-brand-text">ARCHITECTURE</text>
+<text x="32" y="77.3" font-size="26" font-weight="700" class="fk-f-ink">Parts, ports and drivers</text>
+<text x="32" y="103.8" font-size="15" class="fk-f-muted">Read from components/: a new part, port or driver appears here without</text>
+<text x="32" y="125.5" font-size="15" class="fk-f-muted">anyone editing the figure.</text>
+<rect x="32" y="141.6" width="576" height="1" class="fk-f-hair"/>
+<path d="M362 241.6 L362 279.6 Q362 287.6 354 287.6 L286 287.6 Q278 287.6 278 295.6 L278 436.6" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#components-map-arrow-rail)" class="fk-s-rail"/>
+<path d="M197 532.5 L197 717.5" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#components-map-arrow-rail)" class="fk-s-rail"/>
+<path d="M197 813.5 L197 828.2 Q197 836.2 205 836.2 L231 836.2 Q239 836.2 239 844.2 L239 885.5" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#components-map-arrow-rail)" class="fk-s-rail"/>
+<path d="M443 813.5 L443 854.9 Q443 862.9 435 862.9 L409 862.9 Q401 862.9 401 870.9 L401 885.5" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#components-map-arrow-rail)" class="fk-s-rail"/>
+<path d="M197 251.6 L197 259.6 Q197 267.6 189 267.6 L124 267.6 Q116 267.6 116 275.6 L116 436.6" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#components-map-arrow-teal-strong)" class="fk-s-teal-strong"/>
+<path d="M524 241.6 L524 299.6 Q524 307.6 516 307.6 L451 307.6 Q443 307.6 443 315.6 L443 323.6" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#components-map-arrow-violet-strong)" class="fk-s-violet-strong"/>
+<rect x="348" y="168.6" width="190" height="69" rx="10" stroke-width="1.4" class="fk-f-violet-tint fk-s-violet-strong"/>
+<rect x="348" y="176.6" width="4" height="53" rx="2" class="fk-f-violet-strong"/>
+<rect x="102" y="440.6" width="190" height="88" rx="10" stroke-width="1.4" class="fk-f-blue-tint fk-s-blue-strong"/>
+<rect x="102" y="448.6" width="4" height="72" rx="2" class="fk-f-blue-strong"/>
+<rect x="102" y="721.5" width="190" height="88" rx="10" stroke-width="1.4" class="fk-f-amber-tint fk-s-amber-strong"/>
+<rect x="102" y="729.5" width="4" height="72" rx="2" class="fk-f-amber-strong"/>
+<rect x="225" y="889.5" width="190" height="88" rx="10" stroke-width="1.4" class="fk-f-brand-tint fk-s-brand-strong"/>
+<rect x="225" y="897.5" width="4" height="72" rx="2" class="fk-f-brand-strong"/>
+<rect x="348" y="721.5" width="190" height="88" rx="10" stroke-width="1.4" class="fk-f-brand-tint fk-s-brand-strong"/>
+<rect x="348" y="729.5" width="4" height="72" rx="2" class="fk-f-brand-strong"/>
+<rect x="102" y="159.6" width="190" height="88" rx="10" stroke-width="1.4" class="fk-f-teal-tint fk-s-teal-strong"/>
+<rect x="102" y="167.6" width="4" height="72" rx="2" class="fk-f-teal-strong"/>
+<rect x="348" y="327.6" width="190" height="314" rx="10" stroke-width="1.4" class="fk-f-green-tint fk-s-green-strong"/>
+<rect x="348" y="335.6" width="4" height="298" rx="2" class="fk-f-green-strong"/>
+<text x="368" y="195.3" font-size="15" font-weight="700" class="fk-f-violet-text">kb::handlers</text>
+<text x="368" y="220.2" font-size="13" class="fk-f-ink2">bindings, core, start-up</text>
+<text x="122" y="467.3" font-size="15" font-weight="700" class="fk-f-blue-text">kb::interfaces</text>
+<text x="122" y="492.2" font-size="13" class="fk-f-ink2">C++20 concepts, host</text>
+<text x="122" y="511" font-size="13" class="fk-f-ink2">port</text>
+<text x="122" y="748.3" font-size="15" font-weight="700" class="fk-f-amber-text">kb::rtos</text>
+<text x="122" y="773.2" font-size="13" class="fk-f-ink2">none, FreeRTOS,</text>
+<text x="122" y="792" font-size="13" class="fk-f-ink2">ThreadX</text>
+<text x="245" y="916.3" font-size="15" font-weight="700" class="fk-f-brand-text">kb::utils</text>
+<text x="245" y="941.2" font-size="13" class="fk-f-ink2">Result, units, CRC,</text>
+<text x="245" y="960" font-size="13" class="fk-f-ink2">seqlock</text>
+<text x="368" y="748.3" font-size="15" font-weight="700" class="fk-f-brand-text">kb::dma</text>
+<text x="368" y="773.2" font-size="13" class="fk-f-ink2">buffers, leases,</text>
+<text x="368" y="792" font-size="13" class="fk-f-ink2">streams</text>
+<text x="122" y="186.3" font-size="15" font-weight="700" class="fk-f-teal-text">components/ports</text>
+<text x="122" y="211.2" font-size="13" class="fk-f-ink2">esp32: MCU port</text>
+<text x="122" y="230" font-size="13" class="fk-f-ink2">host: tests only</text>
+<text x="368" y="354.3" font-size="15" font-weight="700" class="fk-f-green-text">23 pinned drivers</text>
+<text x="368" y="379.1" font-size="13" class="fk-f-ink2">ads7952, ads9324,</text>
+<text x="368" y="398" font-size="13" class="fk-f-ink2">alicat-basis2, as5047u,</text>
+<text x="368" y="416.8" font-size="13" class="fk-f-ink2">at25040b, bmp581,</text>
+<text x="368" y="435.7" font-size="13" class="fk-f-ink2">bno08x,</text>
+<text x="368" y="454.6" font-size="13" class="fk-f-ink2">canopen-client,</text>
+<text x="368" y="473.4" font-size="13" class="fk-f-ink2">dynamixel, fdo2,</text>
+<text x="368" y="492.3" font-size="13" class="fk-f-ink2">isf15acp4, max22200,</text>
+<text x="368" y="511.1" font-size="13" class="fk-f-ink2">mcp9700,</text>
+<text x="368" y="530" font-size="13" class="fk-f-ink2">ntc-thermistor,</text>
+<text x="368" y="548.8" font-size="13" class="fk-f-ink2">pca9685, pcal9555,</text>
+<text x="368" y="567.7" font-size="13" class="fk-f-ink2">pf1550, se05x,</text>
+<text x="368" y="586.5" font-size="13" class="fk-f-ink2">sfm-flow-meter,</text>
+<text x="368" y="605.4" font-size="13" class="fk-f-ink2">tle92466ed, tmc5160,</text>
+<text x="368" y="624.2" font-size="13" class="fk-f-ink2">tmc9660, ws2812-rmt</text>
+<rect x="130.2" y="257.6" width="52.6" height="20" rx="10" class="fk-f-canvas"/>
+<text x="156.5" y="271.9" font-size="12" font-weight="500" text-anchor="middle" class="fk-f-muted">satisfy</text>
+<rect x="464.2" y="297.6" width="38.6" height="20" rx="10" class="fk-f-canvas"/>
+<text x="483.5" y="311.9" font-size="12" font-weight="500" text-anchor="middle" class="fk-f-muted">bind</text>
+<rect x="32" y="992.9" width="14" height="14" rx="4" stroke-width="1.4" class="fk-f-violet-tint fk-s-violet-strong"/>
+<text x="54" y="1004.5" font-size="12.5" class="fk-f-muted">handlers</text>
+<rect x="132.1" y="992.9" width="14" height="14" rx="4" stroke-width="1.4" class="fk-f-blue-tint fk-s-blue-strong"/>
+<text x="154.1" y="1004.5" font-size="12.5" class="fk-f-muted">interfaces</text>
+<rect x="240.8" y="992.9" width="14" height="14" rx="4" stroke-width="1.4" class="fk-f-amber-tint fk-s-amber-strong"/>
+<text x="262.8" y="1004.5" font-size="12.5" class="fk-f-muted">kb::rtos</text>
+<rect x="334.1" y="992.9" width="14" height="14" rx="4" stroke-width="1.4" class="fk-f-brand-tint fk-s-brand-strong"/>
+<text x="356.1" y="1004.5" font-size="12.5" class="fk-f-muted">kb::utils</text>
+<rect x="428.7" y="992.9" width="14" height="14" rx="4" stroke-width="1.4" class="fk-f-teal-tint fk-s-teal-strong"/>
+<text x="450.7" y="1004.5" font-size="12.5" class="fk-f-muted">MCU ports</text>
+<rect x="32" y="1017.9" width="14" height="14" rx="4" stroke-width="1.4" class="fk-f-green-tint fk-s-green-strong"/>
+<text x="54" y="1029.5" font-size="12.5" class="fk-f-muted">drivers</text>
+</svg>

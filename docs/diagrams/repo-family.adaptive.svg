@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="925" viewBox="0 0 640 925" role="img" aria-labelledby="repo-family-title repo-family-desc" font-family="Inter, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" class="fk">
+<title id="repo-family-title">The kb repository family</title>
+<desc id="repo-family-desc">Repository graph with consumers on top, in which the product application uses a board HAL built on kb-hal-common and an MCU port, both resting on kb-core, which pins the drivers, while planned tool repositories read kb-core.</desc>
+<style>
+.fk{--fk-brand-strong:#9A4A17;--fk-brand-text:#7A360E;--fk-brand-tint:#FBEFE6;--fk-brown-strong:#7C4A1E;--fk-brown-tint:#F8F1EA;--fk-canvas:#FFFFFF;--fk-card:#FFFFFF;--fk-frame:#E2E7EE;--fk-green-strong:#15803D;--fk-green-text:#14532D;--fk-green-tint:#EAF7EF;--fk-hair:#E2E7EE;--fk-ink:#0E1726;--fk-ink2:#2B3442;--fk-line:#738093;--fk-magenta-strong:#A21CAF;--fk-magenta-text:#86198F;--fk-magenta-tint:#FDF0FF;--fk-muted:#566070;--fk-rail:#7C8798;--fk-teal-strong:#0B7A72;--fk-teal-text:#0B5F59;--fk-teal-tint:#E6F6F4;}
+@media (prefers-color-scheme:dark){.fk{--fk-brand-strong:#F4B942;--fk-brand-text:#F8D27A;--fk-brand-tint:#2A2113;--fk-brown-strong:#D6A26B;--fk-brown-tint:#2A1F14;--fk-canvas:#0E131A;--fk-card:#151C26;--fk-frame:#283241;--fk-green-strong:#4ADE80;--fk-green-text:#BBF7D0;--fk-green-tint:#11281A;--fk-hair:#252F3C;--fk-ink:#E8EDF3;--fk-ink2:#D2DAE4;--fk-line:#6C7889;--fk-magenta-strong:#F0ABFC;--fk-magenta-text:#F5D0FE;--fk-magenta-tint:#2E1533;--fk-muted:#9AA6B5;--fk-rail:#6C7889;--fk-teal-strong:#2BB3A3;--fk-teal-text:#A7F3E6;--fk-teal-tint:#0F2A28;}}
+:root[data-theme="dark"] .fk,[data-md-color-scheme="slate"] .fk{--fk-brand-strong:#F4B942;--fk-brand-text:#F8D27A;--fk-brand-tint:#2A2113;--fk-brown-strong:#D6A26B;--fk-brown-tint:#2A1F14;--fk-canvas:#0E131A;--fk-card:#151C26;--fk-frame:#283241;--fk-green-strong:#4ADE80;--fk-green-text:#BBF7D0;--fk-green-tint:#11281A;--fk-hair:#252F3C;--fk-ink:#E8EDF3;--fk-ink2:#D2DAE4;--fk-line:#6C7889;--fk-magenta-strong:#F0ABFC;--fk-magenta-text:#F5D0FE;--fk-magenta-tint:#2E1533;--fk-muted:#9AA6B5;--fk-rail:#6C7889;--fk-teal-strong:#2BB3A3;--fk-teal-text:#A7F3E6;--fk-teal-tint:#0F2A28;}
+:root[data-theme="light"] .fk,[data-md-color-scheme="default"] .fk{--fk-brand-strong:#9A4A17;--fk-brand-text:#7A360E;--fk-brand-tint:#FBEFE6;--fk-brown-strong:#7C4A1E;--fk-brown-tint:#F8F1EA;--fk-canvas:#FFFFFF;--fk-card:#FFFFFF;--fk-frame:#E2E7EE;--fk-green-strong:#15803D;--fk-green-text:#14532D;--fk-green-tint:#EAF7EF;--fk-hair:#E2E7EE;--fk-ink:#0E1726;--fk-ink2:#2B3442;--fk-line:#738093;--fk-magenta-strong:#A21CAF;--fk-magenta-text:#86198F;--fk-magenta-tint:#FDF0FF;--fk-muted:#566070;--fk-rail:#7C8798;--fk-teal-strong:#0B7A72;--fk-teal-text:#0B5F59;--fk-teal-tint:#E6F6F4;}
+.fk-f-brand-strong{fill:var(--fk-brand-strong)}.fk-s-brand-strong{stroke:var(--fk-brand-strong)}
+.fk-f-brand-text{fill:var(--fk-brand-text)}.fk-s-brand-text{stroke:var(--fk-brand-text)}
+.fk-f-brand-tint{fill:var(--fk-brand-tint)}.fk-s-brand-tint{stroke:var(--fk-brand-tint)}
+.fk-f-brown-strong{fill:var(--fk-brown-strong)}.fk-s-brown-strong{stroke:var(--fk-brown-strong)}
+.fk-f-brown-tint{fill:var(--fk-brown-tint)}.fk-s-brown-tint{stroke:var(--fk-brown-tint)}
+.fk-f-canvas{fill:var(--fk-canvas)}.fk-s-canvas{stroke:var(--fk-canvas)}
+.fk-f-card{fill:var(--fk-card)}.fk-s-card{stroke:var(--fk-card)}
+.fk-f-frame{fill:var(--fk-frame)}.fk-s-frame{stroke:var(--fk-frame)}
+.fk-f-green-strong{fill:var(--fk-green-strong)}.fk-s-green-strong{stroke:var(--fk-green-strong)}
+.fk-f-green-text{fill:var(--fk-green-text)}.fk-s-green-text{stroke:var(--fk-green-text)}
+.fk-f-green-tint{fill:var(--fk-green-tint)}.fk-s-green-tint{stroke:var(--fk-green-tint)}
+.fk-f-hair{fill:var(--fk-hair)}.fk-s-hair{stroke:var(--fk-hair)}
+.fk-f-ink{fill:var(--fk-ink)}.fk-s-ink{stroke:var(--fk-ink)}
+.fk-f-ink2{fill:var(--fk-ink2)}.fk-s-ink2{stroke:var(--fk-ink2)}
+.fk-f-line{fill:var(--fk-line)}.fk-s-line{stroke:var(--fk-line)}
+.fk-f-magenta-strong{fill:var(--fk-magenta-strong)}.fk-s-magenta-strong{stroke:var(--fk-magenta-strong)}
+.fk-f-magenta-text{fill:var(--fk-magenta-text)}.fk-s-magenta-text{stroke:var(--fk-magenta-text)}
+.fk-f-magenta-tint{fill:var(--fk-magenta-tint)}.fk-s-magenta-tint{stroke:var(--fk-magenta-tint)}
+.fk-f-muted{fill:var(--fk-muted)}.fk-s-muted{stroke:var(--fk-muted)}
+.fk-f-rail{fill:var(--fk-rail)}.fk-s-rail{stroke:var(--fk-rail)}
+.fk-f-teal-strong{fill:var(--fk-teal-strong)}.fk-s-teal-strong{stroke:var(--fk-teal-strong)}
+.fk-f-teal-text{fill:var(--fk-teal-text)}.fk-s-teal-text{stroke:var(--fk-teal-text)}
+.fk-f-teal-tint{fill:var(--fk-teal-tint)}.fk-s-teal-tint{stroke:var(--fk-teal-tint)}
+@media (forced-colors:active){.fk text{fill:CanvasText}.fk rect,.fk circle{fill:Canvas;stroke:CanvasText}.fk path{stroke:CanvasText}.fk marker path{fill:CanvasText;stroke:none}}
+</style>
+<defs><marker id="repo-family-arrow-rail" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="fk-f-rail"/></marker></defs>
+<rect x="0.5" y="0.5" width="639" height="924" rx="16" class="fk-f-canvas fk-s-frame"/>
+<text x="32" y="44" font-size="12.5" font-weight="700" letter-spacing="1.2" class="fk-f-brand-text">PORTS AND REPOSITORIES</text>
+<text x="32" y="77.3" font-size="26" font-weight="700" class="fk-f-ink">The kb repository family</text>
+<text x="32" y="103.8" font-size="15" class="fk-f-muted">Only kb-core exists today. Every repository marked planned is not built yet.</text>
+<rect x="32" y="119.8" width="576" height="1" class="fk-f-hair"/>
+<path d="M197 210.8 L197 272.8" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#repo-family-arrow-rail)" class="fk-s-rail"/>
+<path d="M116 368.8 L116 430.8" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#repo-family-arrow-rail)" class="fk-s-rail"/>
+<path d="M278 368.8 L278 384.8 Q278 392.8 286 392.8 L354 392.8 Q362 392.8 362 400.8 L362 430.8" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#repo-family-arrow-rail)" class="fk-s-rail"/>
+<path d="M362 368.8 L362 398.8 Q362 406.8 354 406.8 L286 406.8 Q278 406.8 278 414.8 L278 430.8" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#repo-family-arrow-rail)" class="fk-s-rail"/>
+<path d="M524 368.8 L524 430.8" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#repo-family-arrow-rail)" class="fk-s-rail"/>
+<path d="M197 526.8 L197 538.1 Q197 546.1 205 546.1 L231 546.1 Q239 546.1 239 554.1 L239 588.8" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#repo-family-arrow-rail)" class="fk-s-rail"/>
+<path d="M443 526.8 L443 561.5 Q443 569.5 435 569.5 L409 569.5 Q401 569.5 401 577.5 L401 588.8" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#repo-family-arrow-rail)" class="fk-s-rail"/>
+<path d="M401 665.8 L401 703.6 Q401 711.6 409 711.6 L435 711.6 Q443 711.6 443 719.6 L443 727.8" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#repo-family-arrow-rail)" class="fk-s-rail"/>
+<path d="M239 665.8 L239 674 Q239 682 231 682 L205 682 Q197 682 197 690 L197 727.8" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 5" marker-end="url(#repo-family-arrow-rail)" class="fk-s-rail"/>
+<rect x="102" y="137.8" width="190" height="69" rx="10" stroke-width="1.4" class="fk-f-magenta-tint fk-s-magenta-strong"/>
+<rect x="102" y="145.8" width="4" height="53" rx="2" class="fk-f-magenta-strong"/>
+<rect x="102" y="731.8" width="190" height="107" rx="10" stroke-width="1" class="fk-f-card fk-s-line"/>
+<rect x="102" y="739.8" width="4" height="91" rx="2" class="fk-f-brown-strong"/>
+<rect x="102" y="276.8" width="190" height="88" rx="10" stroke-width="1.4" class="fk-f-magenta-tint fk-s-magenta-strong"/>
+<rect x="102" y="284.8" width="4" height="72" rx="2" class="fk-f-magenta-strong"/>
+<rect x="348" y="276.8" width="190" height="88" rx="10" stroke-width="1" class="fk-f-card fk-s-line"/>
+<rect x="348" y="284.8" width="4" height="72" rx="2" class="fk-f-brand-strong"/>
+<rect x="102" y="434.8" width="190" height="88" rx="10" stroke-width="1" class="fk-f-card fk-s-line"/>
+<rect x="102" y="442.8" width="4" height="72" rx="2" class="fk-f-brand-strong"/>
+<rect x="348" y="434.8" width="190" height="88" rx="10" stroke-width="1.4" class="fk-f-teal-tint fk-s-teal-strong"/>
+<rect x="348" y="442.8" width="4" height="72" rx="2" class="fk-f-teal-strong"/>
+<rect x="225" y="592.8" width="190" height="69" rx="10" stroke-width="1.4" class="fk-f-brand-tint fk-s-brand-strong"/>
+<rect x="225" y="600.8" width="4" height="53" rx="2" class="fk-f-brand-strong"/>
+<rect x="348" y="731.8" width="190" height="107" rx="10" stroke-width="1.4" class="fk-f-green-tint fk-s-green-strong"/>
+<rect x="348" y="739.8" width="4" height="91" rx="2" class="fk-f-green-strong"/>
+<text x="122" y="164.6" font-size="15" font-weight="700" class="fk-f-magenta-text">product application</text>
+<text x="122" y="189.4" font-size="13" class="fk-f-ink2">product organisation</text>
+<text x="122" y="758.5" font-size="15" font-weight="700" class="fk-f-ink">Planned tools</text>
+<text x="122" y="783.4" font-size="13" class="fk-f-ink2">kb-configurator</text>
+<text x="122" y="802.2" font-size="13" class="fk-f-ink2">kb-app-template</text>
+<text x="122" y="821.1" font-size="13" class="fk-f-ink2">kb-trains</text>
+<text x="122" y="303.6" font-size="15" font-weight="700" class="fk-f-magenta-text">board-&lt;name&gt;</text>
+<text x="122" y="328.4" font-size="13" class="fk-f-ink2">product board HAL</text>
+<text x="122" y="347.2" font-size="13" class="fk-f-ink2">product organisation</text>
+<text x="368" y="303.6" font-size="15" font-weight="700" class="fk-f-ink">kb-board-&lt;board&gt;</text>
+<text x="368" y="328.4" font-size="13" class="fk-f-ink2">reference HALs</text>
+<text x="368" y="347.2" font-size="13" class="fk-f-ink2">planned</text>
+<text x="122" y="461.6" font-size="15" font-weight="700" class="fk-f-ink">kb-hal-common</text>
+<text x="122" y="486.4" font-size="13" class="fk-f-ink2">shared HAL bases</text>
+<text x="122" y="505.3" font-size="13" class="fk-f-ink2">planned</text>
+<text x="368" y="461.6" font-size="15" font-weight="700" class="fk-f-teal-text">port-&lt;family&gt;</text>
+<text x="368" y="486.4" font-size="13" class="fk-f-ink2">port-esp32</text>
+<text x="368" y="505.3" font-size="13" class="fk-f-ink2">port-stm32</text>
+<text x="245" y="619.5" font-size="15" font-weight="700" class="fk-f-brand-text">kb-core</text>
+<text x="245" y="644.4" font-size="13" class="fk-f-ink2">parts and driver pins</text>
+<text x="368" y="758.5" font-size="15" font-weight="700" class="fk-f-green-text">driver-&lt;chip&gt;</text>
+<text x="368" y="783.4" font-size="13" class="fk-f-ink2">one repository</text>
+<text x="368" y="802.2" font-size="13" class="fk-f-ink2">per chip</text>
+<text x="368" y="821.1" font-size="13" class="fk-f-ink2">at release tags</text>
+<rect x="403.2" y="701.6" width="37.6" height="20" rx="10" class="fk-f-canvas"/>
+<text x="422" y="716" font-size="12" font-weight="500" text-anchor="middle" class="fk-f-muted">pins</text>
+<rect x="246.8" y="672" width="63.5" height="20" rx="10" class="fk-f-canvas"/>
+<text x="278.5" y="686.3" font-size="12" font-weight="500" text-anchor="middle" class="fk-f-muted">releases</text>
+<rect x="32" y="854.2" width="14" height="14" rx="4" stroke-width="1.4" class="fk-f-magenta-tint fk-s-magenta-strong"/>
+<text x="54" y="865.8" font-size="12.5" class="fk-f-muted">product organisation</text>
+<rect x="207.9" y="854.2" width="14" height="14" rx="4" stroke-width="1.4" class="fk-f-brand-tint fk-s-brand-strong"/>
+<text x="229.9" y="865.8" font-size="12.5" class="fk-f-muted">kokeb-labs</text>
+<rect x="324.1" y="854.2" width="14" height="14" rx="4" stroke-width="1.4" class="fk-f-teal-tint fk-s-teal-strong"/>
+<text x="346.1" y="865.8" font-size="12.5" class="fk-f-muted">kokeb-labs-drivers</text>
+<rect x="489.8" y="854.2" width="14" height="14" rx="4" stroke-width="1.4" class="fk-f-green-tint fk-s-green-strong"/>
+<text x="511.8" y="865.8" font-size="12.5" class="fk-f-muted">driver</text>
+<rect x="32" y="879.2" width="14" height="14" rx="4" stroke-width="1.4" class="fk-f-brown-tint fk-s-brown-strong"/>
+<text x="54" y="890.8" font-size="12.5" class="fk-f-muted">tool</text>
+</svg>

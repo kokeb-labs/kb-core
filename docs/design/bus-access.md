@@ -35,10 +35,9 @@ visible in its type. What each port adds for a native form is listed in ADR-0016
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="../diagrams/async-poll.dark.svg">
   <img src="../diagrams/async-poll.svg"
-    alt="Sequence: the owner task starts a read through the poller and the port in pass n; the poller polls
-    and gets Pending; the interrupt completes the transfer; in pass n+1 the poll returns Done with the
-    byte count and the completion is Ok. Past the deadline the result is Timeout; Cancel releases the
-    buffers.">
+    alt="Sequence in which the owner task starts a read through the poller and the port in pass n, polls and
+    gets Pending, the interrupt completes the transfer, and in pass n+1 the poll returns Done with the
+    byte count.">
 </picture>
 <!-- /figure -->
 
@@ -86,9 +85,9 @@ A guarded handler has no `Held(BusHold&)`: taking its handler lock while holding
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="../diagrams/bus-hold.dark.svg">
   <img src="../diagrams/bus-hold.svg"
-    alt="Two side by side models. Guarded bus: task X takes the handler mutex, then the bus mutex, and makes
-    several calls while task Y's plain request waits or times out. Owner bus: the owner task takes the
-    hold between passes and runs inline calls; the service pass reports Busy while the hold is held.">
+    alt="Two chains side by side: on a guarded bus task X takes the handler mutex and then the bus mutex
+    while task Y waits; on an owner bus the owner task takes the hold between passes and the service
+    pass reports Busy.">
 </picture>
 <!-- /figure -->
 
