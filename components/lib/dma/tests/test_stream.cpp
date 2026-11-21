@@ -501,6 +501,9 @@ KB_TEST("stream: frame times above 32 bits survive the two-word stamp and the st
   s.NoteRestart(Instant{kBase + 2000U});
   KB_CHECK_EQ(s.LastFrameAt().Us(), kBase + 2000U);
   KB_CHECK(!s.CheckStall(Instant{kBase + 2999U}));
+  // A frame one microsecond after the arm time is already the later one.
+  KB_CHECK_EQ(s.Publish(Frame{}, Instant{kBase + 2001U}, 0U), Status::Ok);
+  KB_CHECK_EQ(s.LastFrameAt().Us(), kBase + 2001U);
 }
 
 // The stream's shared state needs only 32-bit lock-free atomics, which every supported core has

@@ -64,9 +64,9 @@ DM-10 | components/lib/dma/inc/kb/dma/buffer.hpp | a transfer length of zero is 
 
 DM-11 | components/lib/dma/inc/kb/dma/buffer.hpp | an unconfirmed abort quarantines the buffer
 -       if (evidence == StopEvidence::Confirmed) {
--         detail::MaintainOnReturn<R>(dir_, header->base_, header->capacity_, ops);
+-         detail::MaintainOnReturn<R>(dir_, base_, capacity_, ops);
 +       if ((evidence == StopEvidence::Confirmed) || (evidence == StopEvidence::NotConfirmed)) {
-+         detail::MaintainOnReturn<R>(dir_, header->base_, header->capacity_, ops);
++         detail::MaintainOnReturn<R>(dir_, base_, capacity_, ops);
 
 DM-12 | components/lib/dma/inc/kb/dma/buffer.hpp | an unconfirmed abort reports the fault
 -         BufferHeader::bump(header->quarantines_);
@@ -142,10 +142,10 @@ DM-25 | components/lib/dma/inc/kb/dma/stream.hpp | a stall episode is counted on
 +     if (stalled) {
 
 DM-26 | components/lib/dma/inc/kb/dma/stream.hpp | the stall budget is stall_periods periods
-- static_cast<uint64_t>(config_.frame_period.Count()) * config_.stall_periods;
--       stalled
-+ static_cast<uint64_t>(config_.frame_period.Count());
-+       stalled
+-             static_cast<uint64_t>(config_.frame_period.Count()) * config_.stall_periods;
+-         stalled = (elapsed > 0) && std::cmp_greater_equal(elapsed, budget);
++             static_cast<uint64_t>(config_.frame_period.Count());
++         stalled = (elapsed > 0) && std::cmp_greater_equal(elapsed, budget);
 
 DM-27 | components/lib/dma/inc/kb/dma/stream.hpp | a restart too soon after the last waits
 -       } else if (restartTooRecent(now)) {
