@@ -1,4 +1,4 @@
-// BusHold and the held calls of both facades (ADR-0015), on the none backend (one context, fake
+// BusHold and the held calls of both facades (ADR-0016), on the none backend (one context, fake
 // time): Hold() on both domains, Bus(), Release(), moves, hold statistics; Guarded::Hold (both
 // locks in order, refusals when either is not had, Timeout and NotReady, the bus and handler free
 // again after release); OwnerAccess::Held (inline calls under the owner's hold, the pass refused

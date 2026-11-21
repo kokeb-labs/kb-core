@@ -26,7 +26,7 @@ vocabulary types they use, a type-erased `*Ref` for each, and the host test port
 | `MonotonicClock` | `time.hpp` | `kb::Instant Now() const` (64-bit microseconds) | `MonotonicClockRef` |
 | `BusyWait` | `time.hpp` | `void WaitUs(Microseconds)` (below 1 ms; longer waits use `kb::rtos::SleepFor`) | `BusyWaitRef` |
 | `LogSink` | `log.hpp` | `void Write(LogLevel, std::string_view)` (bounded, no allocation) | `LogSinkRef` |
-| `I2cAsync`, `SpiAsync` | `async.hpp` | the sync contract + `Status Start...(..., Deadline)`, `AsyncPoll Poll(Instant)`, `Status Cancel()`, `kNonBlocking`; `AsyncFromSync<Bus, Clock>` adapts a sync port ([bus access](../design/bus-access.md), ADR-0015) | - |
+| `I2cAsync`, `SpiAsync` | `async.hpp` | the sync contract + `Status Start...(..., Deadline)`, `AsyncPoll Poll(Instant)`, `Status Cancel()`, `kNonBlocking`; `AsyncFromSync<Bus, Clock>` adapts a sync port ([bus access](../design/bus-access.md), ADR-0016) | - |
 
 Every `*Ref` is in `refs.hpp` (or the umbrella `interfaces.hpp`).
 

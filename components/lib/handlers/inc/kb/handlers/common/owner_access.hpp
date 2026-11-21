@@ -16,7 +16,7 @@
  * `Health`, `Startup`, `RequestRecovery`, `Stop`, each bounded by its timeout (`Busy` when no
  * request slot is free, `Timeout` when the owner does not complete in time).
  *
- * Held calls (ADR-0015): the owner task itself, between passes, takes `domain.Hold()` and runs a
+ * Held calls (ADR-0016): the owner task itself, between passes, takes `domain.Hold()` and runs a
  * sequence of calls inline through `Held(hold)` (an `OwnerHeld` with the same `Request` and
  * `Sample`), several handlers of the bus under one hold. Nothing waits: the hold excludes the
  * service pass, so no queued request runs in between. A hold of another bus does not compile.

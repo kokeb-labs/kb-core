@@ -1,4 +1,4 @@
-// kb::handlers::AsyncPoller (ADR-0015) over the host asynchronous fakes and AsyncFromSync: starts,
+// kb::handlers::AsyncPoller (ADR-0016) over the host asynchronous fakes and AsyncFromSync: starts,
 // one non-blocking step per pass, completion once with the received bytes, refusals, deadlines,
 // late completions, NACKs, cancel and the destructor's cancel, the counters; and an owner-pass
 // access that samples a register through the poller, where no pass waits on the bus.

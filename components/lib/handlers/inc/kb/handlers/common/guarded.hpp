@@ -13,7 +13,7 @@
  *   `Health`, `Startup`, `RequestRecovery`, `Stop`, each bounded by its timeout.
  * - A handler with `kRequiresOwner` (a chip that must be serviced continuously), a domain that is
  * not `ThreadModel::Guarded`, or a bus of another kind than the handler's chip does not compile.
- * - `Hold(timeout)` keeps both locks for a sequence of calls (ADR-0015): a `GuardedHeld` has the
+ * - `Hold(timeout)` keeps both locks for a sequence of calls (ADR-0016): a `GuardedHeld` has the
  *   same `Request` and `Sample` as the facade, so a binding's app call (an EEPROM range of many
  *   chunks) runs whole, with no other task's call in between. It takes the locks in the same order
  *   as every call; there is no way to make one from a `BusHold` taken first (that order would

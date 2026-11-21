@@ -1,5 +1,5 @@
 // A hot-path poller over a port whose Start() waits (AsyncFromSync) does not compile: say
-// AsyncUse::MayBlock, or use a native asynchronous port (ADR-0015).
+// AsyncUse::MayBlock, or use a native asynchronous port (ADR-0016).
 // EXPECT: (Start\(\) waits for the transfer|static assertion failed|static_assert)
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 The kb-core authors

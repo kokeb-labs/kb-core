@@ -45,7 +45,7 @@ microseconds (8-15), source (16-17), `kb::Status` (18), reserved 0 (19), detail 
 A `JournalStore` has `Capacity()`, `Read(offset, span)` and `Write(offset, span)`, each bounded. kb-core ships
 `RamJournalStore<Bytes>` (host tests, and ports that place it in RAM kept across a reset). Ports add flash, NVS,
 FRAM or backup-register stores; a flash store hides erase units behind `Write()` or gives each slot its own write
-unit (ADR-0015 lists what each port adds).
+unit (ADR-0016 lists what each port adds).
 
 ```cpp
 kb::utils::RamJournalStore<16U * kb::utils::kFaultRecordBytes> store{};  // the port places it in no-init RAM

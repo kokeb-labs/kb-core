@@ -1,7 +1,7 @@
 /**
  * @file async_poller.hpp
  * @brief kb::handlers::AsyncPoller<Op, Bytes, Use>: one asynchronous bus transfer driven by an
- * owner task's service pass, so a hot-path read never waits on the bus (ADR-0015).
+ * owner task's service pass, so a hot-path read never waits on the bus (ADR-0016).
  *
  * The poller owns the transfer's buffers, so they outlive the transfer by construction: a pass
  * starts a transfer and returns; each later pass calls `Step(now)` once, which polls without
@@ -68,7 +68,7 @@ class AsyncPoller {
   static_assert((Use == AsyncUse::MayBlock) || kb::iface::NonBlocking<Op>,
                 "this port's Start() waits for the transfer (kNonBlocking is false, e.g. "
                 "AsyncFromSync): a hot path needs a native asynchronous port, or say "
-                "AsyncUse::MayBlock (ADR-0015)");
+                "AsyncUse::MayBlock (ADR-0016)");
 
 public:
   /** @brief Over `op`; no I/O. */

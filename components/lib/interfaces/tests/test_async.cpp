@@ -1,4 +1,4 @@
-// The asynchronous contract (ADR-0015): AsyncPoll, AsyncFromSync over the I2C and SPI fakes
+// The asynchronous contract (ADR-0016): AsyncPoll, AsyncFromSync over the I2C and SPI fakes
 // (start, one completion, Busy, an expired deadline, a late completion, cancel), and the host
 // asynchronous fakes with every injected fault: latency in polls, a hang ended by the deadline, a
 // NACK, a completion after the deadline, the cancel race, buffers untouched until completion.

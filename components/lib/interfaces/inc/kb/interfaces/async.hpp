@@ -1,7 +1,7 @@
 // clang-format off: the table below must keep one row per line.
 /**
  * @file async.hpp
- * @brief The asynchronous bus contract (ADR-0015): start a transfer, poll it without waiting until
+ * @brief The asynchronous bus contract (ADR-0016): start a transfer, poll it without waiting until
  * it completes or its deadline passes, cancel it; `I2cAsync` and `SpiAsync`, and `AsyncFromSync`,
  * which serves the contract from a synchronous port.
  *
@@ -136,7 +136,7 @@ concept NonBlocking = AsyncOperation<A> && A::kNonBlocking;
 
 /**
  * @brief The asynchronous contract over a synchronous port, for ports that have no native form
- * yet (ADR-0015): Start() runs the whole transfer at once (bounded by the port's own timeout) and
+ * yet (ADR-0016): Start() runs the whole transfer at once (bounded by the port's own timeout) and
  * the next Poll() reports it. It is *not* a hot-path fix: `kNonBlocking` is false, and a handler
  * that must not wait requires `NonBlocking<Port>`.
  *

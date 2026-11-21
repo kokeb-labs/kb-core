@@ -1,7 +1,7 @@
 /**
  * @file bus_domain.hpp
  * @brief kb::handlers::BusDomain<Bus, ThreadModel>: one physical bus and its declared thread model
- * (ADR-0009), and BusHold, the RAII hold of a whole bus that `Hold(timeout)` returns (ADR-0015).
+ * (ADR-0009), and BusHold, the RAII hold of a whole bus that `Hold(timeout)` returns (ADR-0016).
  *
  * - `BusDomain<Bus, ThreadModel::Owner>`: no mutex. The owner task calls `Service(now, a, b, ...)`
  *   each step, which services every OwnerAccess of the bus in order. A second `Service` while one
@@ -297,7 +297,7 @@ using BusDomain =
     std::conditional_t<(Model == ThreadModel::Owner), OwnerBusDomain<Bus>, GuardedBusDomain<Bus>>;
 
 /**
- * @brief The hold of a domain's whole bus (ADR-0015): on a guarded bus the bus mutex, taken within
+ * @brief The hold of a domain's whole bus (ADR-0016): on a guarded bus the bus mutex, taken within
  * a bounded wait; on an owner bus the pass flag, taken at once or not at all. Check OwnsLock().
  *
  * Made only by `Domain::Hold(timeout)`; `[[nodiscard]]`, so a hold that is discarded (and released
