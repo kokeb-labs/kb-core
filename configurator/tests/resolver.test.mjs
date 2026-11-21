@@ -112,7 +112,9 @@ test('the sample catalogue resolves a first selection with warnings and notes on
   // The ESP32 port is published (an rc), so it is pinned and warned about like a driver, not noted as inside kb-core.
   assert.ok(!r.infos.includes('CFG-PORT-004'), 'the ESP32 port has its own release');
   assert.equal(r.shared.ok, true);
-  assert.deepEqual(r.shared.warnings.map((w) => w.code).sort(), ['KB-RES-W01', 'KB-RES-W01', 'KB-RES-W03']);
+  // kb-core warns as a release candidate (W01) or, before its first tag, as a development revision (W03).
+  const kbWarn = cat.kb_core.releases[0].kind === 'dev' ? 'KB-RES-W03' : 'KB-RES-W01';
+  assert.deepEqual(r.shared.warnings.map((w) => w.code).sort(), ['KB-RES-W01', 'KB-RES-W01', kbWarn].sort());
 });
 
 test('address assignment search', () => {

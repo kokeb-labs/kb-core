@@ -153,7 +153,10 @@ const checks = [];
 let prefix = '';
 const check = (name, ok, detail) => { checks.push({ name: prefix + name, ok: !!ok, detail }); };
 
-const example = '#v=1&f=esp32&t=esp32s3&b=esp32s3-devkitc&r=freertos&k=0.0.0&p=&n=weather-node'
+// The newest kb-core in the catalogue: a release once one exists, else the development revision.
+const kbNewest = JSON.parse(readFileSync(join(root, 'data', 'catalog.json'), 'utf8')).kb_core.releases[0];
+const kbWarning = kbNewest.kind === 'dev' ? 'CFG-KB-003' : 'CFG-RC-001';
+const example = `#v=1&f=esp32&t=esp32s3&b=esp32s3-devkitc&r=freertos&k=${kbNewest.version}&p=&n=weather-node`
   + '&d=bmp581~0.1.0-rc.1~i2c~i2c0,bno08x~0.1.0-rc.1~spi~spi0,pf1550~0.1.0-rc.1~i2c~i2c0,ws2812_rmt~0.1.0-rc.1~pio~pio0'
   + '&m=i2c0~g,pio0~o,spi0~o';
 for (const pass of passes) {
@@ -194,7 +197,7 @@ try {
   })`);
   check('shared link restores four drivers', state.selected === 4, state);
   check('resolves with no error', state.errors.length === 0, state.errors);
-  check('rc, development-revision and untested warnings shown', ['CFG-RC-001', 'CFG-KB-003', 'CFG-SET-001'].every((c) => state.warnings.includes(c)), state.warnings);
+  check('rc, development-revision and untested warnings shown', ['CFG-RC-001', kbWarning, 'CFG-SET-001'].every((c) => state.warnings.includes(c)), state.warnings);
   check('nine file tabs', state.tabs === 9, state.tabs);
   check('shared resolver loaded and agrees', await evaluate('!!KB.engine && KB.shared.run(KB_CATALOG, KB.state.decode(location.hash)).shared.ok'));
   check('lock is the shared resolver output', await evaluate(`(() => { const i = KB.state.decode(location.hash); const r = KB.shared.run(KB_CATALOG, i);
@@ -215,7 +218,7 @@ try {
   await sleep(300);
   await shot('04-buses-fetch-dark');
 
-  const conflict = '#v=1&f=esp32&t=esp32c3&b=esp32c3-devkitm&r=freertos&k=0.0.0&p=&n=conflict'
+  const conflict = `#v=1&f=esp32&t=esp32c3&b=esp32c3-devkitm&r=freertos&k=${kbNewest.version}&p=&n=conflict`
     + '&d=bno08x~0.1.0-rc.1~i2c~i2c0,pca9685~0.1.0-rc.1~i2c~i2c1,ws2812_rmt~0.1.0-rc.1~pio~pio0,dynamixel~0.1.0-rc.1~uart~uart1,fdo2~0.1.0-rc.1~uart~uart1&m=i2c0~g,i2c1~g,pio0~o,uart1~o';
   await open(conflict);
   const errs = await evaluate(`[...document.querySelectorAll('.finding.error code')].map(e => e.textContent)`);
