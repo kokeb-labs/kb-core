@@ -1,0 +1,104 @@
+{
+ "schema": 1,
+ "name": "untested-combination",
+ "description": "A driver outside the tested set makes the combination untested",
+ "catalog": "../catalog-fixture.json",
+ "image": {
+  "image": "v",
+  "kb_core": "0.4.0",
+  "port": "0.4.0",
+  "mcu": {
+   "family": "esp32",
+   "target": "esp32s3",
+   "board": "esp32s3-devkitc"
+  },
+  "rtos": "freertos",
+  "drivers": [
+   {
+    "name": "bmp581",
+    "version": "0.1.0",
+    "via": "i2c",
+    "bus": "i2c0"
+   },
+   {
+    "name": "bno08x",
+    "version": "0.1.0",
+    "via": "spi",
+    "bus": "spi0"
+   },
+   {
+    "name": "pf1550",
+    "version": "0.1.0",
+    "via": "i2c",
+    "bus": "i2c0"
+   }
+  ],
+  "buses": {
+   "i2c0": {
+    "model": "guarded"
+   },
+   "spi0": {
+    "model": "owner"
+   }
+  }
+ },
+ "expect": {
+  "ok": true,
+  "errors": [],
+  "warnings": [
+   "CFG-SET-001"
+  ],
+  "infos": [
+   "CFG-BUS-011",
+   "CFG-CVE-002"
+  ],
+  "resolved": {
+   "kb_mcu": "ESP32",
+   "kb_rtos": "FREERTOS",
+   "parts": [
+    "utils",
+    "rtos",
+    "interfaces",
+    "handlers"
+   ],
+   "drivers": [
+    "bmp581",
+    "bno08x",
+    "pf1550"
+   ],
+   "buses": {
+    "i2c0": {
+     "kind": "i2c",
+     "via": [
+      "i2c"
+     ],
+     "model": "guarded",
+     "devices": [
+      "bmp581",
+      "pf1550"
+     ],
+     "addresses": {
+      "bmp581": 70,
+      "pf1550": 8
+     }
+    },
+    "spi0": {
+     "kind": "spi",
+     "via": [
+      "spi"
+     ],
+     "model": "owner",
+     "devices": [
+      "bno08x"
+     ]
+    }
+   },
+   "pins": {
+    "min": 6,
+    "optional": 6,
+    "budget": 33
+   },
+   "tested_sets": []
+  }
+ }
+}

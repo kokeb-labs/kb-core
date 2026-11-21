@@ -1,0 +1,258 @@
+# Changelog
+
+All notable changes to kb-core. One version covers every part ([versioning](docs/versioning.md)); each release
+lists its changes per part, the ESP32 port and its driver pins. The format follows
+[Keep a Changelog](https://keepachangelog.com/), and the project uses [Semantic Versioning](https://semver.org/).
+
+## [Unreleased]
+
+### Added
+
+- The se05x driver as a submodule (`components/drivers/driver-se05x`, v0.1.0-rc.1) with its lock entry; its binding and
+  integration test are now part of the integration, layering and catalogue checks.
+
+### Changed
+
+- **Repository layout** ([Repository layout](docs/layout.md)): the libraries, the ports and the driver submodules now
+  sit next to each other under `components/`; the host RTOS backend is the host port in `components/ports/host/`;
+  the JSON schemas moved into `catalog/`. A pure move (`git mv`, history kept), with every reference updated.
+
+  | Old | New |
+  | --- | --- |
+  | `lib/` | `components/lib/` |
+  | `ports/` | `components/ports/` |
+  | `drivers/` (submodules `drivers/driver-<chip>`, `drivers/drivers.lock.yml`) | `components/drivers/` |
+  | `host/rtos/CMakeLists.txt` | `components/ports/host/CMakeLists.txt` |
+  | `host/rtos/README.md` | `components/ports/host/README.md` |
+  | `host/rtos/host_backend.cpp` | `components/ports/host/src/host_backend.cpp` |
+  | `schemas/` | `catalog/schemas/` |
+
+  Unchanged at the root: `.github/`, `.kokeb/`, `_config/`, `catalog/`, `cmake/`, `configurator/`, `deviations/`,
+  `docs/`, `examples/`, `tests/`, `tools/`. Where things live is named once, in `tools/layout/paths.yml`; CMake
+  (`cmake/kb_layout.cmake`), the tools, `tools/preflight.sh` and the tests read it. `tools/layout/layout.py root`
+  fails on a top-level entry that is not in the allowlist in the same file, and `layout.py stale` fails on a
+  reference to a retired location (run by preflight, ctest and `ci-layout.yml`).
+  Consumers that keep a pinned copy of kb-core (`port-esp32`, `port-stm32`, `third_party/kb-core.lock`): the lock
+  format is unchanged; the copied paths move with the table above, and the copy gains `cmake/kb_layout.cmake` and
+  `tools/layout/paths.yml` (`layout.py vendor` prints the list). `path` values of in-tree ports in
+  `kb-image.lock.yml` and the catalogue are the new ones. Installed packages are unaffected.
+
+### Added
+
+- Examples are first-class (`examples/README.md`): `examples/examples.yml` indexes them; host examples
+  (`utils_checks`, `rtos_thread`, `interfaces_fakes`) are built with `KB_BUILD_EXAMPLES` and run as ctest tests
+  `example_<id>` in the host job on every pull request; the documentation shows their source through snippet
+  includes (`docs/parts/*.md`) and `docs/examples.md` lists the examples still to add; the configurator catalogue
+  carries the index (`examples`). `tools/examples/examples.py check` keeps all of it in step.
+
+### dma
+
+- New part `kb::dma` (`components/lib/dma/`, depends on utils): `Region` tags, `Buffer<Region, Bytes>` (static,
+  line-aligned, padded), move-only `Lease` with Cpu / Device / Quarantined states, port cache hooks (`CacheOps`), the
+  exactly-once `CompletionLatch`, `Stream<Frame, Frames, Region>` (copy-out ring with sequence numbers, timestamps,
+  three overrun checks, signed stall check, content check, restart policy and flagged fallback), `Capabilities` and
+  `DmaHealth`, compile-time frame, reach and alignment checks.
+- Host model of caches and a DMA engine with injectable defects, and the conformance suite T1 to T18, each case shown
+  to fail on the model with its defect; compile-fail tests, a stream fuzz target, a threaded test and a mutation
+  catalogue (`tools/mutants/dma.txt`).
+- ADR-0030 to ADR-0032 (numbers provisional).
+
+### Repository
+
+- Test infrastructure: a dependency-free harness (`tests/harness/`), strict flags, header self-containment checks,
+  compile-fail and fuzz helpers (`cmake/kb_testing.cmake`); `kb_parts_cross` for the Cortex-M build and scan.
+- `tools/preflight.sh`: every CI check that runs on a workstation, plus the Linux gates and the MISRA scan in the
+  CI images; `tools/lint/` holds misra_lint, eval_order_check and recursion_check.
+- CI: the standalone, integration, mutation (level high, enforced), pin hygiene, layering and catalogue callers run
+  on ci-tools v1.19; the MISRA scan and quality gates cover the library code (`lib/<part>/inc`, boundary files),
+  not tests.
+- Doxygen API reference (`_config/Doxyfile`), published under `/api/`.
+- ThreadX (ADR-0015): the official kernel as the pinned submodule `third_party/threadx`; CI builds the ThreadX
+  backend on it for three Cortex-M cores (`ci-cross-build.yml`) and runs its Linux-port tests in the host job; pin
+  hygiene ignores `third_party/**` (ci-tools 1.21 `ignore_paths`). `tools/preflight.sh` takes `JOBS` to cap its
+  builds, tests and clang-tidy, and runs the ThreadX Linux-port tests at 1000 and 100 Hz.
+
+- Repository skeleton: layout, build settings, documentation skeleton, ADR-0001 to ADR-0005, CI caller stubs.
+- Design and plan in the site (`docs/design/`), figure sources in `docs/diagrams/` embedded in the pages; every
+  page in the navigation, strict build clean.
+- ADR-0006: interface contracts are C++20 concepts only, with a register of permitted CRTP bases; supersedes
+  ADR-0003 and records the relation to handbook ADR-0016.
+- ADR-0007 and ADR-0008: MCU ports isolated in `ports/<mcu>/` as their own CMake projects; names of the kb
+  repository family (`kb-port-<family>`, `kb-board-<board>`, `kb-configurator`, ...).
+- ADR-0009 and ADR-0010: handler thread models declared per bus; start-up as a pipeline of declared stages,
+  including bno08x and se05x.
+- ADR-0011: assurance level `high` (was `safety`); drivers and handlers are not the safety layer. CI callers,
+  `.kokeb/handbook.yml` and docs updated.
+- ADR-0012: pins to release or rc tags only; release lock with kb-core's own SHA; pin checks PIN-011, PIN-012.
+- ADR-0013: hosted configurator with repeatable downloads and evidence; skeleton page in `configurator/`.
+- Install package: `kbConfig.cmake` loads component targets bottom-up, so `find_package(kb COMPONENTS interfaces)`
+  and `handlers` work from an installed tree (checked with the ESP32 port's seam configure).
+- Include checker rules for the port seam (LAY-010, LAY-011), no `virtual` (LAY-012) and the symbol lint.
+- ADR-0014: kb-core is the assembler: its own libraries plus a catalogue and lock of pinned parts, versions
+  selectable per driver, one resolver specification (`docs/design/assembler.md`) for the CLI and the site.
+- ADR-0008 amended: MCU port repositories are brandless, `kokeb-labs-drivers/port-<family>` (`port-esp32`,
+  `port-stm32`); code names unchanged. ADR-0001, ADR-0002, ADR-0004 and ADR-0005 accepted.
+- JSON schemas in `schemas/`: catalogue, `kb-image.yml`, lock (image lock and ADR-0012 release lock).
+- `kb` tool (`tools/kb/`): `kb catalog build` (offline from clones, online with `gh`), `kb resolve` (lock,
+  `CMakePresets.json`, `kb_image.cmake`, a fetch script that checks every commit), `kb sbom` (CycloneDX 1.6,
+  SPDX 2.3, deterministic); unit tests, a seeded property test, CTest `kb_cli_unit`.
+- `configurator/resolver.mjs`: the site's resolver, the same rules; shared vectors in `tests/resolver/vectors/`
+  run by both (CTest `kb_resolver_js_vectors`) plus a Python-JavaScript agreement test on mutated images.
+- One project layout: `kb-fetch.sh` adds kb-core, the port and the drivers as submodules under `external/` at their
+  tags (moved tags refused, `--verify` mode); `kb_image.cmake` and the presets set `KB_DRIVER_<NAME>_DIR`.
+- `kb sbom` lists ESP-IDF, FreeRTOS and ThreadX as SOUP and each component's `kb:osv` scan (`--catalog`); the
+  catalogue carries optional `osv`, kb-core `bindings` and driver `requires_owner`/`bindings`
+  (`schemas/driver-yml.schema.json`, `kb catalog build --platforms`).
+- Configurator (ADR-0013, P1 and P2 of the site): the page in `configurator/` (platform, RTOS and versions,
+  searchable driver catalogue with chip figures, buses and thread models), its site checks (`CFG-*`,
+  `docs/configurator-checks.md`) next to the shared rules of `resolver.mjs`, and the downloads: `kb-image.yml`, the
+  lock, CMake files and `kb-fetch.sh` from the shared resolver, CycloneDX and SPDX SBOMs with SOUP and scans,
+  licence and status reports, a starter project archive; `offline.html` for use from disk. Catalogue built from the
+  drivers' tags (`configurator/tools/build_catalog.py`), every script pinned by SRI. User guide:
+  `docs/configurator.md`.
+- CI: `ci-configurator.yml` runs the site's tests, the headless browser check when Chrome is present, and the
+  catalogue, SRI and offline-bundle freshness checks.
+- Update path: `kb outdated` and `kb upgrade [--to NAME=VERSION] [--allow-rc]` plan an upgrade of a project
+  from its `kb-image.yml` and lock (kb-core first, drivers gated against it, held-back versions with the gate's
+  code, SemVer breaking changes, known vulnerabilities fixed and remaining) and write the new image, lock, CMake
+  files, `kb-fetch.sh` and `kb-upgrade.md`; codes `KB-UPG-*`. The configurator's *Open an existing project* reads
+  the files locally and shows the same plan with the same downloads (`plan` in `resolver.mjs`). Shared vectors in
+  `tests/resolver/vectors/upgrade/`, Python-JavaScript agreement tests on mutated inputs, a YAML-reader parity test.
+- Update path, review round 1: a lock whose commit or kind differs from the catalogue is shown and warned
+  (`KB-UPG-W04`); the site's YAML reader is linear with line caps, refuses `__proto__`, non-string keys and the
+  plain forms PyYAML reads as numbers or dates; held-back versions cannot be picked and a refused pick keeps the
+  table; release candidates are hidden behind a *Show release candidates* switch; "request it" and footer links to
+  `kokeb-labs-drivers/driver-requests`; per-version `requires_owner` in the site catalogue and `kb` reads the
+  site's `data/catalog.json` as the page does (a wrong catalogue is exit 2); the kb tool tests fail instead of
+  skipping in CI without PyYAML.
+- Test fix: the request-channel race test always sees both a completed and a timed-out request.
+- ADR-0015 (proposed): non-blocking bus access (`Start`/`Poll`, ports may adapt synchronous calls for now) and held
+  bus transactions; design pages [Bus access](docs/design/bus-access.md) and
+  [Fault evidence](docs/design/fault-journal.md) with their figures.
+
+### utils
+
+- `kb::Status` and `kb::Result<T>` (with `Result<void>`): one error model with a vendor detail code; factories in
+  the value-initialise-then-set form; a default or `Failure(Ok)` result never reads as success.
+- Typed time: `kb::Microseconds`, `kb::Milliseconds`, the 64-bit `kb::Instant`, saturating and round-up
+  conversions, `MillisecondsToTicksCeil`, wrap-safe `ElapsedSince`/`HasElapsed`, `NarrowUs`/`NarrowMs`, `Deadline`.
+- Checked, saturating and range-checked integer arithmetic (`numeric.hpp`), free of undefined behaviour.
+- Constexpr table-driven CRCs with 11 catalogue presets (`crc.hpp`); byte-order loads and stores and the bounded
+  `ByteReader`/`ByteWriter` (`endian.hpp`).
+- `StaticVector`, `RingBuffer`, wait-free `SpscRing`; span helpers with `ConstantTimeEqual`; `FixedString` with
+  number formatting and no printf.
+- Unit tests, compile-fail tests, three libFuzzer targets with replayed seed corpora; ESP32-C6 smoke app.
+- 100 % line and branch coverage; mutation kill rate 100 % (367 killed, 47 equivalents listed with reasons in
+  `docs/assurance/equivalent-mutants.yml`); inputs go through `kb_test::Rt` so constexpr code runs at run time.
+- `FaultJournal<Store, Slots>` (`fault_journal.hpp`): fault evidence that survives a reset. 32-byte records with a
+  magic, a version and a CRC-32 in a ring over a `JournalStore` (`RamJournalStore<Bytes>` for host tests and RAM
+  kept across a reset); torn writes detected at `Open()`, wrap-around with modulo-2^32 sequences, one bounded store
+  write per `Append()`, the reset-reason record, `FindNewest(kind)`. Unit tests against a golden record and a
+  libFuzzer target (`fuzz_utils_journal`) with seeds.
+
+### rtos
+
+- The typed API (header-only, RTOS-free): `SleepFor` (milliseconds or microseconds, at least the time asked),
+  `Periodic` (fixed grid, overruns reported), `Now()`, `Mutex` with bounded `TryLockFor` and `LockGuard`,
+  counting `Semaphore`, `Queue<T, N>` over internal storage, `EventFlags` (24 flags), `Timer`,
+  `CriticalSection`, and the CRTP `Thread<Derived, StackBytes>` with a static stack, fixed-rate loop, stop handling
+  and step statistics. Every object is constexpr-constructed and created explicitly; ISR-safe calls are the
+  `...FromIsr` ones.
+- Backends: `none` (deterministic fake clock, timers fire as time advances), `freertos` (two boundary files, static
+  allocation only, built into the ESP-IDF component `kb`), the test-only `host` backend over std::thread in
+  `host/rtos/`; `KB_RTOS=THREADX` refused with a "not yet" message.
+- One contract test suite over `none` and over the FreeRTOS boundary with a fake kernel (`tests/fakes/freertos/`),
+  FreeRTOS link-seam tests, multi-threaded host tests, compile-fail tests; ESP32-C6 smoke app `kb_rtos_smoke`.
+- ThreadX backend (ADR-0015): `KB_RTOS=THREADX` over Eclipse ThreadX, one boundary file
+  (`lib/rtos/backends/threadx/threadx_boundary.cpp`), static allocation only, priority-inheriting mutexes, the
+  semaphore maximum, odd-sized queue items, delay-until with overrun count, nested critical sections and the stack
+  high-water mark; the kernel is a product's (`KB_THREADX_INCLUDE_DIRS`) or the pinned submodule
+  `third_party/threadx` (`v6.5.2.202603b_rel`, MIT, SOUP) built for `KB_THREADX_PORT`; the configure stops without
+  one. Tested over a fake kernel (`tests/fakes/threadx/`, the contract suite and the seam), on the real kernel's
+  Linux port (`KB_THREADX_HOST_TESTS`: the threaded suite and priority inheritance) and cross-compiled with the
+  kernel for Cortex-M0+, M4F and M7F (`tools/preflight/threadx_cross.sh`, CI job ThreadX Cortex-M). Docs:
+  `docs/parts/rtos-threadx.md`. The catalogue, the configurator and `kb resolve` list ThreadX as supported.
+  `KB_THREADX_TICK_HZ` is the tick the kernel and the backend are built for (required with a product kernel; the
+  backend fails to compile when the kernel's `TX_TIMER_TICKS_PER_SECOND` differs); `KB_THREADX_THREAD_BYTES`
+  optionally checks that the backend sees the product kernel's control-block layout. kb threads never run as
+  urgently as the ThreadX timer thread, and a delay-until that wakes after its grid point counts as an overrun.
+- The seam and the API gain what the ThreadX backend needed and every backend now implements:
+  `RecursiveMutex`/`RecursiveLockGuard`, `Thread::StartAndWaitToVerify`, `RequestPark`/`Resume`/`ResumeFromIsr`,
+  `Thread::StackFreeBytes()` (FreeRTOS: the task high-water mark), `Semaphore::IsCreated()`; on a ThreadX build queue
+  slots are whole kernel words (`KB_THREADX_QUEUE_WORD_BYTES`), elsewhere the item size. `Thread::Join` and
+  `StartAndWaitToVerify` wait on the monotonic clock, ending within a tick of their timeout at any tick rate (`Join`
+  overran by up to a tick per millisecond before). The delay-until, retake and tick-extension rules live in the
+  platform-free `kb/rtos/backend_rules.hpp`.
+- Fixed: the FreeRTOS backend created timers with the period in milliseconds as ticks (wrong unless the tick is
+  1000 Hz); it now converts with rounding up.
+
+### interfaces
+
+- The contracts as C++20 concepts in `kb::iface`: `I2cBus`, `SpiDevice` (+ `SpiClockControl`), `UartPort`
+  (+ `UartBaudControl`, `UartTxDrain`), `GpioOutput`, `GpioInput`, `GpioInterrupt`, `AdcChannel`, `PwmOutput`,
+  `CanBus`, `MonotonicClock`, `BusyWait`, `LogSink`; vocabulary `Level`, `Edge`, `I2cFailure`, `CanFrame`,
+  `LogLevel`, `Duty`.
+- A type-erased `*Ref` per contract (context pointer and constant function table), each checked against its concept.
+- Host port `kb::interfaces_host`: fakes of every contract with fault injection.
+- Proof against the pinned drivers tmc5160, bno08x and pcal9555 (v0.1.0-rc.1 submodules): thin adapters satisfy
+  their port concepts over the fakes and over the `*Ref` values; compile-fail tests for misuse.
+- The asynchronous contract (`async.hpp`, ADR-0015): `I2cAsync`, `SpiAsync`, `AsyncOperation`, `NonBlocking`,
+  `AsyncPoll`; `AsyncFromSync<Bus, Clock>` serves it from a synchronous port with the same deadline rules. Host
+  fakes `FakeAsyncI2c` and `FakeAsyncSpi` inject latency, hangs, late completions, NACKs and the cancel race.
+
+- The host test port moves to `lib/interfaces/host/`; the interfaces part compiles no MCU code.
+
+### handlers
+
+- Handler core (`kb/handlers/common/`): `HandlerCore<Derived, Driver, Snapshot, Command, Reply>` (CRTP) with the
+  start-up pipeline runner over a declared `kStartupPlan` (sync and polled stages, deadlines from configuration,
+  optional stages, `StartupReport`, retry from the first stage), the health record (Unknown, Starting, Ready,
+  Degraded, Faulted, Recovering; counters, last error with the driver's code, last good time; a caller's
+  `InvalidArgument` is refused, not counted), `Recover()` with backoff and an attempt limit, a published snapshot
+  and a liveness beat. `EnsureInitialized()` is the one start; calls never start or recover a chip.
+- `ServiceKey`: every mutating call needs it, and only the facades can make one.
+- `BusDomain<Bus, ThreadModel::Owner>` (service pass with an owner check) and `BusDomain<Bus, ThreadModel::Guarded>`
+  (bus mutex, statistics, bus recovery), `BusHold`; `OwnerAccess<H>` (lock-free `Latest()`, bounded request queue
+  `RequestChannel`, start and recovery on the owner task) and `Guarded<H>` (handler lock then bus lock, bounded),
+  with one caller API; a wrong facade, a wrong bus kind or `Guarded` over a `kRequiresOwner` chip does not compile.
+- `Seqlock<T>`, `LivenessMonitor<N>`, the hook bases `I2cHooks`, `SpiHooks`, `UartHooks`, `AdcHooks`, `GpioHooks`
+  and `HookTiming` (the at-least delay split, clock narrowing), and the driver-result helpers.
+- One binding and handler per driver (`kb/handlers/bindings/<name>.hpp`) for all 22 pinned drivers and for se05x
+  (se05x is a pinned submodule at v0.1.0-rc.1 too): port over kb contracts, the error map, the
+  start-up plan, the thread model and a small typed app API. One page per handler under `docs/handlers/`.
+- Tests: unit tests of the core on the none backend, thread tests on the host backend (contention, timeouts,
+  recovery storms), compile-fail tests, a fuzz target of the request queue, integration tests of every binding
+  against the driver's own chip model in both thread models (`tests/integration/`, `KB_BUILD_INTEGRATION`), and a
+  mutation catalogue of the core (`tools/mutants/handlers.txt`).
+- CI: the MISRA scan covers the handler core (the bindings need the driver submodules, which the scan does not
+  check out yet: they are scanned locally); coverage, lizard and the standalone matrix cover `kb::handlers`; the
+  layering check compiles the integration tests; the catalogue records each binding.
+  `tools/preflight/misra.sh` no longer reports a failure when the scan has no blocking finding.
+- Configurator: canopen_client recorded as requiring an owner task; the catalogue shows the new driver pins.
+- `BusDomain::Hold(timeout)` returns a `[[nodiscard]]`, move-only `BusHold` on both models (the bus mutex, or the
+  owner pass flag, which a service pass then cannot take); `Release()`, `Bus()`, `IsOn()`, owner hold statistics.
+  `BusHold` is no longer built directly. `Guarded<H>::Hold(timeout)` (`GuardedHeld`: handler then bus lock) and
+  `OwnerAccess<H>::Held(hold)` (`OwnerHeld`: inline calls on the owner task) run a sequence of calls whole; the
+  at25040b app calls run under either, with an integration test of a record written whole against another writer.
+  Compile-fail tests: a copied hold, a discarded hold, the bus of a temporary hold, another bus's hold, a guarded
+  `Held`, a blocking hot path.
+- `AsyncPoller<Op, Bytes, Use>`: one asynchronous transfer per owner pass with its own buffers, never waiting;
+  `AsyncUse::NonBlocking` (default) refuses a port whose Start() waits.
+- Liveness: `LivenessBeat::Park()`, `Resume()`, `Parked()`; `LivenessMonitor::Verdict()` (stale and parked bits,
+  `kick` only when something is watched and nothing is stale).
+- `HealthJournal<Sink, N>`: the health path into the fault journal (entering Faulted, serving again, new liveness
+  stalls), retried when the sink refuses.
+- Tests: unit tests of each, thread tests of held calls under contention (TSan), mutation catalogue entries
+  `BH-*`, `GH-*`, `OH-*`, `AP-*`, `LV-02` to `LV-04`, `HJ-*`.
+
+### ports/esp32
+
+- New location `ports/esp32/` (from `lib/interfaces/ports/esp32/`), its own CMake project and ESP-IDF component,
+  its own deviation files; ESP-IDF examples move to `ports/esp32/examples/`.
+
+### Driver pins
+
+- tmc5160, bno08x and pcal9555 at v0.1.0-rc.1 (submodules under `drivers/`, recorded in `drivers.lock.yml`).
+- The other 19 published drivers at v0.1.0-rc.1: mcp9700, ntc_thermistor, at25040b, pca9685, ads7952, as5047u,
+  bmp581, ads9324, max22200, tle92466ed, sfm_flow_meter, pf1550, ws2812_rmt, fdo2, alicat_basis2, dynamixel,
+  canopen_client, isf15acp4 and tmc9660; `catalog/compat.yml` regenerated.

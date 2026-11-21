@@ -1,0 +1,129 @@
+---
+# The driver pins of this kb-core revision (ADR-0002, ADR-0012). One entry per submodule under components/drivers/; CI (pin
+# hygiene) checks that each entry's commit equals the gitlink, that the tag points at that commit and matches
+# vX.Y.Z or vX.Y.Z-rc.N (never a branch), that the tag's CI gate concluded success, and that the driver.yml at the
+# tag agrees (name, version, mcus, peripheral, kb_core_min). Each release copies these entries into its release
+# lock, next to kb-core's own commit SHA.
+#
+# Entry format:
+#   - name: pf1550                                   # driver.yml name and the KB_ENABLE_<NAME> switch
+#     repo: kokeb-labs-drivers/driver-pf1550
+#     tag: v0.1.0                                    # or v0.1.0-rc.1
+#     commit: <40-hex commit of the tag>
+#     kind: release                                  # release | rc, agrees with the tag
+drivers:
+  - name: mcp9700
+    repo: kokeb-labs-drivers/driver-mcp9700
+    tag: v0.1.0-rc.1
+    commit: f435359e4ca126d5cf0f1ba97f84ec7d0b41e571
+    kind: rc
+  - name: ntc_thermistor
+    repo: kokeb-labs-drivers/driver-ntc-thermistor
+    tag: v0.1.0-rc.1
+    commit: 731831ed59bff27a755db3a0df48b882ac43caa0
+    kind: rc
+  - name: at25040b
+    repo: kokeb-labs-drivers/driver-at25040b
+    tag: v0.1.0-rc.1
+    commit: a9a2e61dd984fcdb2e78580eb15331a913ae0bda
+    kind: rc
+  - name: pca9685
+    repo: kokeb-labs-drivers/driver-pca9685
+    tag: v0.1.0-rc.1
+    commit: ba554fcf9bfff462ea3e2d05e38f4e91753f1f97
+    kind: rc
+  - name: pcal9555
+    repo: kokeb-labs-drivers/driver-pcal9555
+    tag: v0.1.0-rc.1
+    commit: b9dabab24897cc5392c35e024e63fbc970fe7f19
+    kind: rc
+  - name: ads7952
+    repo: kokeb-labs-drivers/driver-ads7952
+    tag: v0.1.0-rc.1
+    commit: a1b977597782bde428df5cce1eaf763a6ef25dbb
+    kind: rc
+  - name: as5047u
+    repo: kokeb-labs-drivers/driver-as5047u
+    tag: v0.1.0-rc.1
+    commit: 714970c08c73bbf80a37a7f821419b59edec4a7d
+    kind: rc
+  - name: bmp581
+    repo: kokeb-labs-drivers/driver-bmp581
+    tag: v0.1.0-rc.1
+    commit: eda3237c8fc72a745411282acf46b387c0205430
+    kind: rc
+  - name: ads9324
+    repo: kokeb-labs-drivers/driver-ads9324
+    tag: v0.1.0-rc.1
+    commit: 8ade1b1e83c496e743517bcd055407f6f2d48d0c
+    kind: rc
+  - name: max22200
+    repo: kokeb-labs-drivers/driver-max22200
+    tag: v0.1.0-rc.1
+    commit: 31a0c217dca108073e3a5369dcb6c8e3c00a7fb4
+    kind: rc
+  - name: tle92466ed
+    repo: kokeb-labs-drivers/driver-tle92466ed
+    tag: v0.1.0-rc.1
+    commit: 4a33db170d1059e0a321819bdebf82777f77eb7f
+    kind: rc
+  - name: sfm_flow_meter
+    repo: kokeb-labs-drivers/driver-sfm-flow-meter
+    tag: v0.1.0-rc.1
+    commit: d7b75124f4e722b089f26d87acad611cb19e6e73
+    kind: rc
+  - name: pf1550
+    repo: kokeb-labs-drivers/driver-pf1550
+    tag: v0.1.0-rc.1
+    commit: c45f52351738a9107f65ad0d4bb895cb8e1ff5d3
+    kind: rc
+  - name: ws2812_rmt
+    repo: kokeb-labs-drivers/driver-ws2812-rmt
+    tag: v0.1.0-rc.1
+    commit: 2790be043fce5c620281aafa5b2bc2e0880af829
+    kind: rc
+  - name: fdo2
+    repo: kokeb-labs-drivers/driver-fdo2
+    tag: v0.1.0-rc.1
+    commit: 61218e3ebcb94066860a27b429b6928ed4524ac7
+    kind: rc
+  - name: alicat_basis2
+    repo: kokeb-labs-drivers/driver-alicat-basis2
+    tag: v0.1.0-rc.1
+    commit: 51b9d0c9550598f48d555cef74ea02a8f2eebf93
+    kind: rc
+  - name: dynamixel
+    repo: kokeb-labs-drivers/driver-dynamixel
+    tag: v0.1.0-rc.1
+    commit: 137d802cf1a47d5a37c0dc9553f32b7390825498
+    kind: rc
+  - name: canopen_client
+    repo: kokeb-labs-drivers/driver-canopen-client
+    tag: v0.1.0-rc.1
+    commit: 88c344eda4ee37162cd78edb36444fb44c727656
+    kind: rc
+  - name: isf15acp4
+    repo: kokeb-labs-drivers/driver-isf15acp4
+    tag: v0.1.0-rc.1
+    commit: 62260440dc5c53ccc6fd8b762cd76540ccaf7823
+    kind: rc
+  - name: tmc5160
+    repo: kokeb-labs-drivers/driver-tmc5160
+    tag: v0.1.0-rc.1
+    commit: 9ef0483e64ffe1bb1d6744a063c7577b992a4e51
+    kind: rc
+  - name: bno08x
+    repo: kokeb-labs-drivers/driver-bno08x
+    tag: v0.1.0-rc.1
+    commit: 0d032fc8feb545b8f3959f803a625877406c7bea
+    kind: rc
+  - name: se05x
+    repo: kokeb-labs-drivers/driver-se05x
+    tag: v0.1.0-rc.2
+    commit: 7538e10516f97b752c8c10e661b77e8b479163c2
+    kind: rc
+  - name: tmc9660
+    repo: kokeb-labs-drivers/driver-tmc9660
+    tag: v0.1.0-rc.1
+    commit: b0a125d222c09c35632f0803cd2e693be785a341
+    kind: rc

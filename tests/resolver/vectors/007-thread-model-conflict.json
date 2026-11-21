@@ -1,0 +1,50 @@
+{
+  "catalog": "catalogs/base.json",
+  "description": "One chip declared on two buses, and a thread model that does not exist.",
+  "expect": {
+    "errors": [
+      {
+        "code": "KB-RES-015",
+        "subject": "buses.spi1.model"
+      },
+      {
+        "code": "KB-RES-017",
+        "subject": "bmp581"
+      }
+    ],
+    "ok": false,
+    "warnings": []
+  },
+  "image": {
+    "buses": {
+      "i2c0": {
+        "devices": [
+          "bmp581",
+          "pcal9555"
+        ],
+        "model": "guarded"
+      },
+      "i2c1": {
+        "devices": [
+          "bmp581"
+        ],
+        "model": "owner"
+      },
+      "spi1": {
+        "devices": [],
+        "model": "shared"
+      }
+    },
+    "drivers": [
+      "bmp581",
+      "pcal9555"
+    ],
+    "kb_core": {
+      "version": "0.4.0"
+    },
+    "mcu": {
+      "family": "esp32"
+    },
+    "schema": 1
+  }
+}

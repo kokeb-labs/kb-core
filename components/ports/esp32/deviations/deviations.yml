@@ -1,0 +1,4 @@
+---
+# MISRA C++:2023 deviation records of the ESP32 port (format: deviations/README.md at the kb-core root; ids
+# DEV-KBP-ESP32-NNN). They name only files from boundary-files.yml next to this file. None yet: there is no source.
+deviations: []

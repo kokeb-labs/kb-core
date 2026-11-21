@@ -1,0 +1,76 @@
+{
+  "catalog": "catalogs/extracted-port.json",
+  "description": "An extracted port pinned to its release candidate.",
+  "expect": {
+    "errors": [],
+    "files": {
+      "CMakePresets.json": "{\n  \"configurePresets\": [\n    {\n      \"binaryDir\": \"${sourceDir}/build/port-rc\",\n      \"cacheVariables\": {\n        \"KB_MCU\": \"ESP32\",\n        \"KB_PARTS\": \"utils;rtos;interfaces\",\n        \"KB_RTOS\": \"FREERTOS\"\n      },\n      \"displayName\": \"kb image port-rc\",\n      \"name\": \"port-rc\"\n    }\n  ],\n  \"version\": 6\n}\n",
+      "kb-fetch.sh": "#!/bin/sh\n# kb-fetch.sh: adds kb-core, the MCU port and the drivers of the image \"port-rc\" to this git repository as\n# submodules under external/, each checked out at its tag (a kb-core development revision: at its commit) and\n# verified against the commit in kb-image.lock.yml (ADR-0012, ADR-0014). A tag that moved is refused. No branch\n# is recorded in .gitmodules and nothing is fetched recursively. Rerunning it is safe. Written by kb resolve.\n#\n#   sh kb-fetch.sh            add or update every pin\n#   sh kb-fetch.sh --verify   only check that every submodule is at its pinned commit\nset -eu\n\nmode=add\nif [ \"${1:-}\" = \"--verify\" ]; then mode=verify; fi\ntop=$(git rev-parse --show-toplevel 2>/dev/null) || { echo \"kb-fetch: run this inside a git repository\" >&2; exit 1; }\ncd \"$top\"\n\ndie() {\n  printf 'kb-fetch: error: %s\\n' \"$*\" >&2\n  exit 1\n}\n\n# pin <path> <url> <tag, empty for a commit pin> <commit>\npin() {\n  path=$1 url=$2 tag=$3 want=$4\n  if [ \"$mode\" = verify ]; then\n    [ -e \"$path/.git\" ] || die \"$path is missing; run without --verify\"\n  else\n    if [ ! -e \"$path/.git\" ]; then\n      git submodule add --quiet \"$url\" \"$path\" || die \"cannot add $url\"\n    fi\n    if [ -n \"$tag\" ]; then\n      git -C \"$path\" fetch --quiet origin \"+refs/tags/$tag:refs/tags/$tag\" || die \"cannot fetch $tag of $url\"\n      got=$(git -C \"$path\" rev-parse \"refs/tags/$tag^{commit}\")\n      [ \"$got\" = \"$want\" ] || die \"$path: tag $tag points at $got, expected $want (the tag moved; it is not used)\"\n    else\n      git -C \"$path\" fetch --quiet origin \"$want\" || die \"cannot fetch commit $want of $url\"\n    fi\n    git -C \"$path\" -c advice.detachedHead=false checkout --quiet \"$want\"\n    git config -f .gitmodules --unset \"submodule.$path.branch\" 2>/dev/null || true\n    git add .gitmodules \"$path\"\n  fi\n  head=$(git -C \"$path\" rev-parse HEAD)\n  [ \"$head\" = \"$want\" ] || die \"$path is at $head, expected $want\"\n  printf 'kb-fetch: %s at %s (%s)\\n' \"$path\" \"${tag:-commit}\" \"$want\"\n}\n\n# kb-core 0.4.0\npin 'external/kb-core' 'https://github.com/kokeb-labs/kb-core.git' 'v0.4.0' '080f7cfe7e98e006ac3b7c6695b3a9599a39f64d'\n# port-esp32 0.6.0-rc.1\npin 'external/port-esp32' 'https://github.com/kokeb-labs-drivers/port-esp32.git' 'v0.6.0-rc.1' 'b1e0c288ea63c49d136e5c1c2a50386914354744'\n\nif [ \"$mode\" = add ]; then\n  echo \"kb-fetch: done; review with git status and commit the submodules\"\nfi\n",
+      "kb-image.lock.yml": "# kb image lock (schema 1), written by kb resolve: do not edit.\n{\n  \"buses\": [],\n  \"cmake\": {\n    \"KB_MCU\": \"ESP32\",\n    \"KB_PARTS\": \"utils;rtos;interfaces\",\n    \"KB_RTOS\": \"FREERTOS\"\n  },\n  \"drivers\": [],\n  \"image\": \"port-rc\",\n  \"kb_core\": {\n    \"authors\": [\n      \"The kb-core authors\"\n    ],\n    \"commit\": \"080f7cfe7e98e006ac3b7c6695b3a9599a39f64d\",\n    \"kind\": \"release\",\n    \"license\": \"MIT\",\n    \"repo\": \"kokeb-labs/kb-core\",\n    \"tag\": \"v0.4.0\",\n    \"version\": \"0.4.0\"\n  },\n  \"mcu\": {\n    \"family\": \"esp32\",\n    \"target\": \"esp32\"\n  },\n  \"parts\": [\n    \"utils\",\n    \"rtos\",\n    \"interfaces\"\n  ],\n  \"ports\": [\n    {\n      \"commit\": \"b1e0c288ea63c49d136e5c1c2a50386914354744\",\n      \"in_tree\": false,\n      \"kind\": \"rc\",\n      \"name\": \"esp32\",\n      \"repo\": \"kokeb-labs-drivers/port-esp32\",\n      \"tag\": \"v0.6.0-rc.1\",\n      \"version\": \"0.6.0-rc.1\"\n    }\n  ],\n  \"rtos\": \"freertos\",\n  \"schema\": 1\n}\n",
+      "kb_image.cmake": "# kb image port-rc: written by kb resolve from kb-image.yml (schema 1); do not edit.\n# kb-core 0.4.0 at 080f7cfe7e98e006ac3b7c6695b3a9599a39f64d, MCU esp32/esp32, RTOS freertos.\nset(KB_MCU \"ESP32\")\nset(KB_RTOS \"FREERTOS\")\nset(KB_PARTS \"utils;rtos;interfaces\")\n"
+    },
+    "lock": {
+      "buses": [],
+      "cmake": {
+        "KB_MCU": "ESP32",
+        "KB_PARTS": "utils;rtos;interfaces",
+        "KB_RTOS": "FREERTOS"
+      },
+      "drivers": [],
+      "image": "port-rc",
+      "kb_core": {
+        "authors": [
+          "The kb-core authors"
+        ],
+        "commit": "080f7cfe7e98e006ac3b7c6695b3a9599a39f64d",
+        "kind": "release",
+        "license": "MIT",
+        "repo": "kokeb-labs/kb-core",
+        "tag": "v0.4.0",
+        "version": "0.4.0"
+      },
+      "mcu": {
+        "family": "esp32",
+        "target": "esp32"
+      },
+      "parts": [
+        "utils",
+        "rtos",
+        "interfaces"
+      ],
+      "ports": [
+        {
+          "commit": "b1e0c288ea63c49d136e5c1c2a50386914354744",
+          "in_tree": false,
+          "kind": "rc",
+          "name": "esp32",
+          "repo": "kokeb-labs-drivers/port-esp32",
+          "tag": "v0.6.0-rc.1",
+          "version": "0.6.0-rc.1"
+        }
+      ],
+      "rtos": "freertos",
+      "schema": 1
+    },
+    "ok": true,
+    "warnings": [
+      {
+        "code": "KB-RES-W01",
+        "subject": "port-esp32"
+      }
+    ]
+  },
+  "image": {
+    "image": "port-rc",
+    "kb_core": {
+      "version": "0.4.0"
+    },
+    "mcu": {
+      "family": "esp32",
+      "port": {
+        "version": "0.6.0-rc.1"
+      }
+    },
+    "schema": 1
+  }
+}

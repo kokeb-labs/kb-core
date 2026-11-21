@@ -1,0 +1,34 @@
+{
+  "catalog": "catalogs/base.json",
+  "description": "The driver version needs a newer kb-core than the one selected.",
+  "expect": {
+    "errors": [
+      {
+        "code": "KB-RES-014",
+        "subject": "bno08x"
+      }
+    ],
+    "ok": false,
+    "warnings": []
+  },
+  "image": {
+    "buses": {
+      "spi1": {
+        "devices": [
+          "bno08x"
+        ],
+        "model": "owner"
+      }
+    },
+    "drivers": [
+      "bno08x"
+    ],
+    "kb_core": {
+      "version": "0.3.0"
+    },
+    "mcu": {
+      "family": "esp32"
+    },
+    "schema": 1
+  }
+}

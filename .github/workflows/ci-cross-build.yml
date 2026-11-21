@@ -1,0 +1,53 @@
+---
+# The platform-free parts compiled for Cortex-M cores with Arm GCC, so a target build is proven and not only the
+# host one. Calls kokeb-labs/ci-tools ru-cross-build; the ThreadX job builds the ThreadX backend on the pinned
+# kernel.
+name: Cross-compile
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  cross:
+    name: Cortex-M
+    uses: kokeb-labs/ci-tools/.github/workflows/ru-cross-build.yml@v1
+    permissions:
+      contents: read
+    with:
+      build_target: kb_parts_cross
+      cmake_args: "-DKB_MCU=HOST -DKB_RTOS=NONE"
+
+  # The ThreadX backend on the real kernel's Cortex-M ports (ADR-0015): it needs the pinned third_party/threadx
+  # submodule, which ru-cross-build does not check out. Same toolchain pin as ru-cross-build.
+  threadx:
+    name: ThreadX Cortex-M
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Check out the pinned ThreadX kernel only
+        run: git submodule update --init --depth 1 third_party/threadx
+      - name: Install the Arm GNU toolchain 14.3.rel1 (pinned, hash-checked)
+        env:
+          VERSION: "14.3.rel1"
+          SHA256: "8f6903f8ceb084d9227b9ef991490413014d991874a1e34074443c2a72b14dbd"
+        run: |
+          set -euo pipefail
+          file="arm-gnu-toolchain-${VERSION}-x86_64-arm-none-eabi.tar.xz"
+          curl -fsSL --retry 6 --retry-all-errors --retry-delay 10 --connect-timeout 30 --max-time 600 \
+            "https://developer.arm.com/-/media/Files/downloads/gnu/${VERSION}/binrel/${file}" -o "$RUNNER_TEMP/$file"
+          echo "${SHA256}  $RUNNER_TEMP/$file" | sha256sum -c -
+          mkdir -p "$RUNNER_TEMP/arm"
+          tar -xJf "$RUNNER_TEMP/$file" -C "$RUNNER_TEMP/arm" --strip-components=1
+          rm "$RUNNER_TEMP/$file"
+          echo "$RUNNER_TEMP/arm/bin" >> "$GITHUB_PATH"
+          command -v ninja >/dev/null || { sudo apt-get update -q && sudo apt-get install -y -q ninja-build; }
+      - name: Backend and kernel for cortex_m0, cortex_m4, cortex_m7
+        run: tools/preflight/threadx_cross.sh .

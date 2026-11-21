@@ -1,0 +1,26 @@
+{
+  "catalog": "catalogs/base.json",
+  "description": "The in-tree port has kb-core's version; another port version is refused.",
+  "expect": {
+    "errors": [
+      {
+        "code": "KB-RES-020",
+        "subject": "mcu.port.version"
+      }
+    ],
+    "ok": false,
+    "warnings": []
+  },
+  "image": {
+    "kb_core": {
+      "version": "0.4.0"
+    },
+    "mcu": {
+      "family": "esp32",
+      "port": {
+        "version": "0.1.0"
+      }
+    },
+    "schema": 1
+  }
+}

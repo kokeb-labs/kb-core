@@ -1,0 +1,24 @@
+---
+# Coverage, sanitizers, libFuzzer and complexity gates of kb-core's own parts at level high (ADR-0011). Calls
+# kokeb-labs/ci-tools ru-host-quality. Driver sources are outside library_paths on purpose (ADR-0004).
+name: Host quality
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    name: Quality gates
+    uses: kokeb-labs/ci-tools/.github/workflows/ru-host-quality.yml@v1
+    permissions:
+      contents: read
+    with:
+      level: high
+      cmake_args: "-DKB_BUILD_TESTS=ON"
+      fuzz_cmake_args: "-DKB_BUILD_FUZZERS=ON"
+      # One line: tools/preflight reads this value with sed.
+      # yamllint disable-line rule:line-length
+      library_paths: "components/lib/utils/inc components/lib/rtos/inc components/lib/rtos/backends components/lib/interfaces/inc components/lib/dma/inc components/lib/handlers/inc/kb/handlers"

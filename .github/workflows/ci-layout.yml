@@ -1,0 +1,34 @@
+---
+# The repository layout and the examples (tools/layout/paths.yml, examples/examples.yml): no unexpected top-level
+# entry, no reference to a retired location, and the example index in step with the folders, the README table, the
+# documentation snippets, the ESP-IDF app matrix and the configurator catalogue. The same checks run as ctest tests
+# in the host job and in tools/preflight.sh; this job is the fast failure that needs no build.
+name: Layout and examples
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  layout:
+    name: Layout and example index
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Top-level allowlist
+        run: python3 -I tools/layout/layout.py root
+      - name: Retired locations
+        run: python3 -I tools/layout/layout.py stale
+      - name: Example index
+        run: python3 tools/examples/examples.py check
+      - name: Tool tests
+        run: |
+          python3 tools/layout/tests/run.py
+          python3 tools/examples/tests/run.py

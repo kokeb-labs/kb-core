@@ -1,0 +1,71 @@
+{
+ "schema": 1,
+ "name": "bus-instance-missing",
+ "description": "ESP32-C3 has one I2C controller",
+ "catalog": "../catalog-fixture.json",
+ "image": {
+  "image": "v",
+  "kb_core": "0.4.0",
+  "port": "0.4.0",
+  "mcu": {
+   "family": "esp32",
+   "target": "esp32c3",
+   "board": "esp32c3-devkitm"
+  },
+  "rtos": "freertos",
+  "drivers": [
+   {
+    "name": "bmp581",
+    "version": "0.1.0",
+    "via": "i2c",
+    "bus": "i2c1"
+   }
+  ],
+  "buses": {
+   "i2c1": {
+    "model": "guarded"
+   }
+  }
+ },
+ "expect": {
+  "ok": false,
+  "errors": [
+   "CFG-BUS-003"
+  ],
+  "warnings": [
+   "CFG-SET-001"
+  ],
+  "infos": [],
+  "resolved": {
+   "kb_mcu": "ESP32",
+   "kb_rtos": "FREERTOS",
+   "parts": [
+    "utils",
+    "rtos",
+    "interfaces",
+    "handlers"
+   ],
+   "drivers": [
+    "bmp581"
+   ],
+   "buses": {
+    "i2c1": {
+     "kind": "i2c",
+     "via": [
+      "i2c"
+     ],
+     "model": "guarded",
+     "devices": [
+      "bmp581"
+     ]
+    }
+   },
+   "pins": {
+    "min": 2,
+    "optional": 0,
+    "budget": 14
+   },
+   "tested_sets": []
+  }
+ }
+}

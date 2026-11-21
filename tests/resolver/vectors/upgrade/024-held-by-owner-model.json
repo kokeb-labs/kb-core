@@ -1,0 +1,674 @@
+{
+  "catalog": {
+    "drivers": [
+      {
+        "folder": "driver-bmp581",
+        "name": "bmp581",
+        "pinned": "0.1.0",
+        "repo": "kokeb-labs-drivers/driver-bmp581",
+        "versions": [
+          {
+            "authors": [
+              "The driver-bmp581 authors"
+            ],
+            "bus": [
+              "i2c",
+              "spi"
+            ],
+            "commit": "9ae5346bc12d999cd27f7bd0dbfac08632df2ea6",
+            "kb_core_min": "0.5.0-rc.1",
+            "kind": "release",
+            "license": "MIT",
+            "mcus": [
+              "any"
+            ],
+            "peripheral": null,
+            "requires_owner": false,
+            "tag": "v1.0.0",
+            "version": "1.0.0"
+          },
+          {
+            "authors": [
+              "The driver-bmp581 authors"
+            ],
+            "bus": [
+              "i2c",
+              "spi"
+            ],
+            "commit": "1671f9f12669fe928c539076554fdd132063902b",
+            "kb_core_min": null,
+            "kind": "release",
+            "license": "MIT",
+            "mcus": [
+              "any"
+            ],
+            "osv": {
+              "database": "osv 2026-11-01",
+              "findings": [],
+              "scanned_at": "2026-11-01"
+            },
+            "peripheral": null,
+            "requires_owner": true,
+            "tag": "v0.2.1",
+            "version": "0.2.1"
+          },
+          {
+            "authors": [
+              "The driver-bmp581 authors"
+            ],
+            "bus": [
+              "i2c",
+              "spi"
+            ],
+            "commit": "05c0484e290901d646347a15279de7afbb87ba13",
+            "kb_core_min": null,
+            "kind": "release",
+            "license": "MIT",
+            "mcus": [
+              "any"
+            ],
+            "osv": {
+              "database": "osv 2026-11-01",
+              "findings": [
+                {
+                  "id": "GHSA-bmp5-0002",
+                  "severity": "high"
+                }
+              ],
+              "scanned_at": "2026-11-01"
+            },
+            "peripheral": null,
+            "requires_owner": false,
+            "tag": "v0.2.0",
+            "version": "0.2.0"
+          },
+          {
+            "authors": [
+              "The driver-bmp581 authors"
+            ],
+            "bus": [
+              "i2c",
+              "spi"
+            ],
+            "commit": "87f441c106d3d39767cda106455416d8a9c43316",
+            "kb_core_min": null,
+            "kind": "release",
+            "license": "MIT",
+            "mcus": [
+              "any"
+            ],
+            "osv": {
+              "database": "osv 2026-11-01",
+              "findings": [
+                {
+                  "id": "CVE-2026-0001",
+                  "severity": "high"
+                }
+              ],
+              "scanned_at": "2026-11-01"
+            },
+            "peripheral": null,
+            "requires_owner": false,
+            "tag": "v0.1.0",
+            "version": "0.1.0"
+          }
+        ]
+      },
+      {
+        "folder": "driver-bno08x",
+        "name": "bno08x",
+        "pinned": null,
+        "repo": "kokeb-labs-drivers/driver-bno08x",
+        "versions": [
+          {
+            "authors": [
+              "The driver-bno08x authors"
+            ],
+            "bus": [
+              "i2c",
+              "uart"
+            ],
+            "commit": "3d6783503e861d247bbac98301ceb572169f66a1",
+            "kb_core_min": "0.4.0",
+            "kind": "release",
+            "license": "MIT",
+            "mcus": [
+              "any"
+            ],
+            "peripheral": null,
+            "requires_owner": true,
+            "tag": "v0.2.0",
+            "version": "0.2.0"
+          },
+          {
+            "authors": [
+              "The driver-bno08x authors"
+            ],
+            "bus": [
+              "i2c",
+              "spi",
+              "uart"
+            ],
+            "commit": "5e5b6995c0f6a8b5dddf618a529ab6b7784cb92a",
+            "kb_core_min": "0.4.0",
+            "kind": "release",
+            "license": "MIT",
+            "mcus": [
+              "any"
+            ],
+            "peripheral": null,
+            "requires_owner": true,
+            "tag": "v0.1.1",
+            "version": "0.1.1"
+          },
+          {
+            "authors": [
+              "The driver-bno08x authors"
+            ],
+            "bus": [
+              "i2c",
+              "spi",
+              "uart"
+            ],
+            "commit": "9629f903d21b7dd820b10af8f0bd430e5d965dec",
+            "kb_core_min": "0.4.0",
+            "kind": "release",
+            "license": "MIT",
+            "mcus": [
+              "any"
+            ],
+            "peripheral": null,
+            "requires_owner": true,
+            "tag": "v0.1.0",
+            "version": "0.1.0"
+          }
+        ]
+      },
+      {
+        "folder": "driver-pcal9555",
+        "name": "pcal9555",
+        "pinned": null,
+        "repo": "kokeb-labs-drivers/driver-pcal9555",
+        "versions": [
+          {
+            "authors": [
+              "The driver-pcal9555 authors"
+            ],
+            "bus": [
+              "i2c"
+            ],
+            "commit": "0bd7f19e476629da693659368a29484e44a2ba89",
+            "kb_core_min": null,
+            "kind": "rc",
+            "license": "MIT",
+            "mcus": [
+              "any"
+            ],
+            "peripheral": null,
+            "requires_owner": false,
+            "tag": "v0.2.0-rc.1",
+            "version": "0.2.0-rc.1"
+          },
+          {
+            "authors": [
+              "The driver-pcal9555 authors"
+            ],
+            "bus": [
+              "i2c"
+            ],
+            "commit": "9622a9d730b297005d1d300baab0d984860d7bea",
+            "kb_core_min": null,
+            "kind": "release",
+            "license": "MIT",
+            "mcus": [
+              "any"
+            ],
+            "peripheral": null,
+            "requires_owner": false,
+            "tag": "v0.1.0",
+            "version": "0.1.0"
+          }
+        ]
+      },
+      {
+        "folder": "driver-tmc5160",
+        "name": "tmc5160",
+        "pinned": null,
+        "repo": "kokeb-labs-drivers/driver-tmc5160",
+        "versions": [
+          {
+            "authors": [
+              "The driver-tmc5160 authors"
+            ],
+            "bus": [
+              "spi",
+              "uart"
+            ],
+            "commit": "87805bc54d9e54be18e00ac217f56679adb2b5da",
+            "kb_core_min": null,
+            "kind": "release",
+            "license": "MIT",
+            "mcus": [
+              "any"
+            ],
+            "peripheral": null,
+            "requires_owner": false,
+            "tag": "v0.1.0",
+            "version": "0.1.0"
+          },
+          {
+            "authors": [
+              "The driver-tmc5160 authors"
+            ],
+            "bus": [
+              "spi",
+              "uart"
+            ],
+            "commit": "5155c4552c4aed0dcffb5082c114012fe53304dd",
+            "kb_core_min": null,
+            "kind": "rc",
+            "license": "MIT",
+            "mcus": [
+              "any"
+            ],
+            "peripheral": null,
+            "requires_owner": false,
+            "tag": "v0.1.0-rc.2",
+            "version": "0.1.0-rc.2"
+          },
+          {
+            "authors": [
+              "The driver-tmc5160 authors"
+            ],
+            "bus": [
+              "spi",
+              "uart"
+            ],
+            "commit": "e1bffe1b5f57ebbd68505a3eee334e4271ef335c",
+            "kb_core_min": null,
+            "kind": "rc",
+            "license": "MIT",
+            "mcus": [
+              "any"
+            ],
+            "peripheral": null,
+            "requires_owner": false,
+            "tag": "v0.1.0-rc.1",
+            "version": "0.1.0-rc.1"
+          }
+        ]
+      },
+      {
+        "folder": "driver-ws2812-rmt",
+        "name": "ws2812_rmt",
+        "pinned": null,
+        "repo": "kokeb-labs-drivers/driver-ws2812-rmt",
+        "versions": [
+          {
+            "authors": [
+              "The driver-ws2812-rmt authors"
+            ],
+            "bus": [
+              "pio"
+            ],
+            "commit": "776f290539e9c43f8b43c880624ff53aed4162af",
+            "kb_core_min": null,
+            "kind": "release",
+            "license": "MIT",
+            "mcus": [
+              "stm32"
+            ],
+            "peripheral": "pio",
+            "requires_owner": false,
+            "tag": "v0.2.0",
+            "version": "0.2.0"
+          },
+          {
+            "authors": [
+              "The driver-ws2812-rmt authors"
+            ],
+            "bus": [
+              "pio"
+            ],
+            "commit": "a775db4aa67269f7329d7f4a0a21ce3f24900247",
+            "kb_core_min": null,
+            "kind": "release",
+            "license": "MIT",
+            "mcus": [
+              "esp32"
+            ],
+            "peripheral": "rmt",
+            "requires_owner": false,
+            "tag": "v0.1.0",
+            "version": "0.1.0"
+          }
+        ]
+      }
+    ],
+    "kb_core": {
+      "authors": [
+        "The kb-core authors"
+      ],
+      "license": "MIT",
+      "repo": "kokeb-labs/kb-core",
+      "versions": [
+        {
+          "commit": "ff2bb4fa96924d1e608b3bff414cc082fdd6812d",
+          "kind": "rc",
+          "tag": "v0.5.0-rc.1",
+          "version": "0.5.0-rc.1"
+        },
+        {
+          "commit": "83518d7664b87cabd87681c5835cc32c4c78ab49",
+          "kind": "release",
+          "osv": {
+            "database": "osv 2026-11-01",
+            "findings": [],
+            "scanned_at": "2026-11-01"
+          },
+          "tag": "v0.4.1",
+          "version": "0.4.1"
+        },
+        {
+          "commit": "2e5ea51e8dddfee964669bddf2ae0896a2716b32",
+          "kind": "release",
+          "tag": "v0.4.0",
+          "version": "0.4.0"
+        },
+        {
+          "commit": "1db0b82914767ef3059455486bc204393bcef314",
+          "kind": "release",
+          "osv": {
+            "database": "osv 2026-11-01",
+            "findings": [
+              {
+                "id": "GHSA-kb03-0001",
+                "severity": "high"
+              }
+            ],
+            "scanned_at": "2026-11-01"
+          },
+          "tag": "v0.3.0",
+          "version": "0.3.0"
+        }
+      ]
+    },
+    "mcus": [
+      {
+        "default_rtos": "freertos",
+        "family": "esp32",
+        "port": {
+          "name": "esp32",
+          "path": "components/ports/esp32",
+          "repo": "kokeb-labs-drivers/port-esp32",
+          "versions": []
+        },
+        "rtos": [
+          "freertos"
+        ],
+        "status": "supported",
+        "targets": [
+          "esp32",
+          "esp32c3",
+          "esp32c5",
+          "esp32c6",
+          "esp32h2",
+          "esp32p4",
+          "esp32s2",
+          "esp32s3"
+        ]
+      },
+      {
+        "default_rtos": "none",
+        "family": "host",
+        "port": {
+          "name": "host",
+          "path": "components/lib/interfaces/host",
+          "repo": "kokeb-labs/kb-core",
+          "versions": []
+        },
+        "rtos": [
+          "host",
+          "none"
+        ],
+        "status": "supported",
+        "targets": [
+          "host"
+        ]
+      },
+      {
+        "default_rtos": "freertos",
+        "family": "stm32",
+        "port": null,
+        "rtos": [
+          "freertos",
+          "none",
+          "threadx"
+        ],
+        "status": "planned",
+        "targets": [
+          "stm32"
+        ]
+      }
+    ],
+    "parts": [
+      "utils",
+      "rtos",
+      "interfaces",
+      "handlers"
+    ],
+    "rtos": [
+      {
+        "name": "freertos",
+        "status": "supported"
+      },
+      {
+        "name": "host",
+        "status": "supported"
+      },
+      {
+        "name": "none",
+        "status": "supported"
+      },
+      {
+        "name": "threadx",
+        "status": "planned"
+      }
+    ],
+    "schema": 1
+  },
+  "description": "bmp581 0.2.1 requires the owner-task model and the project's i2c0 is guarded: it is held back (KB-RES-018), 0.2.0 is taken and its known vulnerability is warned (KB-UPG-W03).",
+  "expect": {
+    "errors": [],
+    "files": {
+      "CMakePresets.json": "{\n  \"configurePresets\": [\n    {\n      \"binaryDir\": \"${sourceDir}/build/owner-gate\",\n      \"cacheVariables\": {\n        \"KB_DRIVER_BMP581_DIR\": \"${sourceDir}/external/drivers/driver-bmp581\",\n        \"KB_ENABLE_BMP581\": \"ON\",\n        \"KB_MCU\": \"ESP32\",\n        \"KB_PARTS\": \"utils;rtos;interfaces;handlers\",\n        \"KB_RTOS\": \"FREERTOS\"\n      },\n      \"displayName\": \"kb image owner-gate\",\n      \"name\": \"owner-gate\"\n    }\n  ],\n  \"version\": 6\n}\n",
+      "kb-fetch.sh": "#!/bin/sh\n# kb-fetch.sh: adds kb-core, the MCU port and the drivers of the image \"owner-gate\" to this git repository as\n# submodules under external/, each checked out at its tag (a kb-core development revision: at its commit) and\n# verified against the commit in kb-image.lock.yml (ADR-0012, ADR-0014). A tag that moved is refused. No branch\n# is recorded in .gitmodules and nothing is fetched recursively. Rerunning it is safe. Written by kb resolve.\n#\n#   sh kb-fetch.sh            add or update every pin\n#   sh kb-fetch.sh --verify   only check that every submodule is at its pinned commit\nset -eu\n\nmode=add\nif [ \"${1:-}\" = \"--verify\" ]; then mode=verify; fi\ntop=$(git rev-parse --show-toplevel 2>/dev/null) || { echo \"kb-fetch: run this inside a git repository\" >&2; exit 1; }\ncd \"$top\"\n\ndie() {\n  printf 'kb-fetch: error: %s\\n' \"$*\" >&2\n  exit 1\n}\n\n# pin <path> <url> <tag, empty for a commit pin> <commit>\npin() {\n  path=$1 url=$2 tag=$3 want=$4\n  if [ \"$mode\" = verify ]; then\n    [ -e \"$path/.git\" ] || die \"$path is missing; run without --verify\"\n  else\n    if [ ! -e \"$path/.git\" ]; then\n      git submodule add --quiet \"$url\" \"$path\" || die \"cannot add $url\"\n    fi\n    if [ -n \"$tag\" ]; then\n      git -C \"$path\" fetch --quiet origin \"+refs/tags/$tag:refs/tags/$tag\" || die \"cannot fetch $tag of $url\"\n      got=$(git -C \"$path\" rev-parse \"refs/tags/$tag^{commit}\")\n      [ \"$got\" = \"$want\" ] || die \"$path: tag $tag points at $got, expected $want (the tag moved; it is not used)\"\n    else\n      git -C \"$path\" fetch --quiet origin \"$want\" || die \"cannot fetch commit $want of $url\"\n    fi\n    git -C \"$path\" -c advice.detachedHead=false checkout --quiet \"$want\"\n    git config -f .gitmodules --unset \"submodule.$path.branch\" 2>/dev/null || true\n    git add .gitmodules \"$path\"\n  fi\n  head=$(git -C \"$path\" rev-parse HEAD)\n  [ \"$head\" = \"$want\" ] || die \"$path is at $head, expected $want\"\n  printf 'kb-fetch: %s at %s (%s)\\n' \"$path\" \"${tag:-commit}\" \"$want\"\n}\n\n# kb-core 0.4.1\npin 'external/kb-core' 'https://github.com/kokeb-labs/kb-core.git' 'v0.4.1' '83518d7664b87cabd87681c5835cc32c4c78ab49'\n# driver bmp581 0.2.0\npin 'external/drivers/driver-bmp581' 'https://github.com/kokeb-labs-drivers/driver-bmp581.git' 'v0.2.0' '05c0484e290901d646347a15279de7afbb87ba13'\n\nif [ \"$mode\" = add ]; then\n  echo \"kb-fetch: done; review with git status and commit the submodules\"\nfi\n",
+      "kb-image.lock.yml": "# kb image lock (schema 1), written by kb resolve: do not edit.\n{\n  \"buses\": [\n    {\n      \"devices\": [\n        \"bmp581\"\n      ],\n      \"kind\": \"i2c\",\n      \"model\": \"guarded\",\n      \"name\": \"i2c0\"\n    }\n  ],\n  \"cmake\": {\n    \"KB_ENABLE_BMP581\": \"ON\",\n    \"KB_MCU\": \"ESP32\",\n    \"KB_PARTS\": \"utils;rtos;interfaces;handlers\",\n    \"KB_RTOS\": \"FREERTOS\"\n  },\n  \"drivers\": [\n    {\n      \"authors\": [\n        \"The driver-bmp581 authors\"\n      ],\n      \"commit\": \"05c0484e290901d646347a15279de7afbb87ba13\",\n      \"folder\": \"driver-bmp581\",\n      \"kind\": \"release\",\n      \"license\": \"MIT\",\n      \"name\": \"bmp581\",\n      \"repo\": \"kokeb-labs-drivers/driver-bmp581\",\n      \"tag\": \"v0.2.0\",\n      \"version\": \"0.2.0\"\n    }\n  ],\n  \"image\": \"owner-gate\",\n  \"kb_core\": {\n    \"authors\": [\n      \"The kb-core authors\"\n    ],\n    \"commit\": \"83518d7664b87cabd87681c5835cc32c4c78ab49\",\n    \"kind\": \"release\",\n    \"license\": \"MIT\",\n    \"repo\": \"kokeb-labs/kb-core\",\n    \"tag\": \"v0.4.1\",\n    \"version\": \"0.4.1\"\n  },\n  \"mcu\": {\n    \"family\": \"esp32\",\n    \"target\": \"esp32\"\n  },\n  \"parts\": [\n    \"utils\",\n    \"rtos\",\n    \"interfaces\",\n    \"handlers\"\n  ],\n  \"ports\": [\n    {\n      \"commit\": \"83518d7664b87cabd87681c5835cc32c4c78ab49\",\n      \"in_tree\": true,\n      \"name\": \"esp32\",\n      \"path\": \"components/ports/esp32\"\n    }\n  ],\n  \"rtos\": \"freertos\",\n  \"schema\": 1\n}\n",
+      "kb-image.yml": "# kb-image.yml: the selection of one firmware build (schema 1, docs/design/assembler.md).\n# Written by an upgrade (kb upgrade or the configurator); resolve it with: kb resolve kb-image.yml\nschema: 1\nimage: \"owner-gate\"\nkb_core: {version: \"0.4.1\"}\nmcu: {family: \"esp32\"}\ndrivers:\n  - {name: \"bmp581\", version: \"0.2.0\"}\nbuses:\n  i2c0: {model: \"guarded\", devices: [\"bmp581\"]}\n",
+      "kb-upgrade.md": "# Upgrade report: owner-gate\n\nkb-core 0.4.1 to 0.4.1, MCU esp32/esp32, RTOS freertos. Release candidates not picked unless named.\n\n1 of 2 component(s) change.\n\n| Component | From | To | Change | Breaking | Newest release | Newer rc | Known vulnerabilities |\n| --- | --- | --- | --- | --- | --- | --- | --- |\n| kb-core | 0.4.1 | 0.4.1 | none | no | 0.4.1 | 0.5.0-rc.1 | none |\n| bmp581 | 0.1.0 | 0.2.0 | minor | yes | 1.0.0 | - | CVE-2026-0001 -> GHSA-bmp5-0002 |\n\n## Breaking changes\n\n- bmp581 0.1.0 -> 0.2.0: read its release notes and CHANGELOG before building: https://github.com/kokeb-labs-drivers/driver-bmp581/releases/tag/v0.2.0\n\n## Held back\n\n- bmp581 1.0.0: needs a newer kb-core (KB-RES-014)\n- bmp581 0.2.1: requires an owner-task bus (KB-RES-018)\n\n## Known vulnerabilities\n\n- fixed by this upgrade: CVE-2026-0001 (bmp581)\n- still present: GHSA-bmp5-0002 (bmp581 0.2.0)\n\n## Warnings\n\n- KB-UPG-W01 bmp581: breaking change\n- KB-UPG-W02 bmp581: newer version held back\n- KB-UPG-W03 bmp581: known vulnerabilities remain\n\n## Next steps\n\n1. Review the changes to `kb-image.yml` and `kb-image.lock.yml` with `git diff`.\n2. Run `sh kb-fetch.sh` to move every submodule to its new tag, then build and run your tests.\n3. Check the compatibility of the new set: a tested version set, or an untested combination.\n",
+      "kb_image.cmake": "# kb image owner-gate: written by kb resolve from kb-image.yml (schema 1); do not edit.\n# kb-core 0.4.1 at 83518d7664b87cabd87681c5835cc32c4c78ab49, MCU esp32/esp32, RTOS freertos.\nset(KB_MCU \"ESP32\")\nset(KB_RTOS \"FREERTOS\")\nset(KB_PARTS \"utils;rtos;interfaces;handlers\")\nset(KB_ENABLE_BMP581 ON)\nset(KB_DRIVER_BMP581_DIR \"${CMAKE_CURRENT_LIST_DIR}/external/drivers/driver-bmp581\")\n"
+    },
+    "image": {
+      "buses": {
+        "i2c0": {
+          "devices": [
+            "bmp581"
+          ],
+          "model": "guarded"
+        }
+      },
+      "drivers": [
+        {
+          "name": "bmp581",
+          "version": "0.2.0"
+        }
+      ],
+      "image": "owner-gate",
+      "kb_core": {
+        "version": "0.4.1"
+      },
+      "mcu": {
+        "family": "esp32"
+      },
+      "schema": 1
+    },
+    "lock": {
+      "buses": [
+        {
+          "devices": [
+            "bmp581"
+          ],
+          "kind": "i2c",
+          "model": "guarded",
+          "name": "i2c0"
+        }
+      ],
+      "cmake": {
+        "KB_ENABLE_BMP581": "ON",
+        "KB_MCU": "ESP32",
+        "KB_PARTS": "utils;rtos;interfaces;handlers",
+        "KB_RTOS": "FREERTOS"
+      },
+      "drivers": [
+        {
+          "authors": [
+            "The driver-bmp581 authors"
+          ],
+          "commit": "05c0484e290901d646347a15279de7afbb87ba13",
+          "folder": "driver-bmp581",
+          "kind": "release",
+          "license": "MIT",
+          "name": "bmp581",
+          "repo": "kokeb-labs-drivers/driver-bmp581",
+          "tag": "v0.2.0",
+          "version": "0.2.0"
+        }
+      ],
+      "image": "owner-gate",
+      "kb_core": {
+        "authors": [
+          "The kb-core authors"
+        ],
+        "commit": "83518d7664b87cabd87681c5835cc32c4c78ab49",
+        "kind": "release",
+        "license": "MIT",
+        "repo": "kokeb-labs/kb-core",
+        "tag": "v0.4.1",
+        "version": "0.4.1"
+      },
+      "mcu": {
+        "family": "esp32",
+        "target": "esp32"
+      },
+      "parts": [
+        "utils",
+        "rtos",
+        "interfaces",
+        "handlers"
+      ],
+      "ports": [
+        {
+          "commit": "83518d7664b87cabd87681c5835cc32c4c78ab49",
+          "in_tree": true,
+          "name": "esp32",
+          "path": "components/ports/esp32"
+        }
+      ],
+      "rtos": "freertos",
+      "schema": 1
+    },
+    "ok": true,
+    "rows": [
+      {
+        "breaking": false,
+        "change": "none",
+        "fixed": [],
+        "from": "0.4.1",
+        "from_kind": "release",
+        "held": [],
+        "kind": "kb-core",
+        "lock_differs": false,
+        "name": "kb-core",
+        "newest_rc": "0.5.0-rc.1",
+        "newest_release": "0.4.1",
+        "notes": null,
+        "osv_from": [],
+        "osv_to": [],
+        "to": "0.4.1",
+        "to_kind": "release"
+      },
+      {
+        "breaking": true,
+        "change": "minor",
+        "fixed": [
+          "CVE-2026-0001"
+        ],
+        "from": "0.1.0",
+        "from_kind": "release",
+        "held": [
+          {
+            "code": "KB-RES-014",
+            "version": "1.0.0"
+          },
+          {
+            "code": "KB-RES-018",
+            "version": "0.2.1"
+          }
+        ],
+        "kind": "driver",
+        "lock_differs": false,
+        "name": "bmp581",
+        "newest_rc": null,
+        "newest_release": "1.0.0",
+        "notes": "https://github.com/kokeb-labs-drivers/driver-bmp581/releases/tag/v0.2.0",
+        "osv_from": [
+          "CVE-2026-0001"
+        ],
+        "osv_to": [
+          "GHSA-bmp5-0002"
+        ],
+        "to": "0.2.0",
+        "to_kind": "release"
+      }
+    ],
+    "warnings": [
+      {
+        "code": "KB-UPG-W01",
+        "subject": "bmp581"
+      },
+      {
+        "code": "KB-UPG-W02",
+        "subject": "bmp581"
+      },
+      {
+        "code": "KB-UPG-W03",
+        "subject": "bmp581"
+      }
+    ]
+  },
+  "image": {
+    "buses": {
+      "i2c0": {
+        "devices": [
+          "bmp581"
+        ],
+        "model": "guarded"
+      }
+    },
+    "drivers": [
+      {
+        "name": "bmp581",
+        "version": "0.1.0"
+      }
+    ],
+    "image": "owner-gate",
+    "kb_core": {
+      "version": "0.4.1"
+    },
+    "mcu": {
+      "family": "esp32"
+    },
+    "schema": 1
+  },
+  "options": {}
+}

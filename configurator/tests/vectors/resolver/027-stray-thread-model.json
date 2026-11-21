@@ -1,0 +1,52 @@
+{
+ "schema": 1,
+ "name": "stray-thread-model",
+ "description": "A thread model for a bus nothing uses",
+ "catalog": "../catalog-fixture.json",
+ "image": {
+  "image": "v",
+  "kb_core": "0.4.0",
+  "port": "0.4.0",
+  "mcu": {
+   "family": "esp32",
+   "target": "esp32s3",
+   "board": "esp32s3-devkitc"
+  },
+  "rtos": "freertos",
+  "drivers": [],
+  "buses": {
+   "spi1": {
+    "model": "owner"
+   }
+  }
+ },
+ "expect": {
+  "ok": true,
+  "errors": [],
+  "warnings": [
+   "CFG-BUS-008"
+  ],
+  "infos": [
+   "CFG-SET-002"
+  ],
+  "resolved": {
+   "kb_mcu": "ESP32",
+   "kb_rtos": "FREERTOS",
+   "parts": [
+    "utils",
+    "rtos",
+    "interfaces"
+   ],
+   "drivers": [],
+   "buses": {},
+   "pins": {
+    "min": 0,
+    "optional": 0,
+    "budget": 33
+   },
+   "tested_sets": [
+    "kb 2026.1"
+   ]
+  }
+ }
+}

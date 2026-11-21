@@ -1,0 +1,34 @@
+---
+# Calls ci-tools ru-cmake-matrix (v1.19).
+# Integration of the pinned drivers (ADR-0004): compile and link every binding over every port and MCU/RTOS
+# configuration the catalogue allows, then run the host integration tests that drive each driver through its kb
+# binding with the driver's chip model. The drivers' own unit tests are not repeated.
+name: Integration
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  matrix:
+    name: Bindings x ports x configurations
+    uses: kokeb-labs/ci-tools/.github/workflows/ru-cmake-matrix.yml@v1
+    permissions:
+      contents: read
+    with:
+      matrix_from: catalog/compat.yml
+      submodules: "true"
+      # No driver binding has integration tests yet (M4); the configure and build still run for every entry.
+      no_tests: ignore
+  host-integration:
+    name: Drivers through kb bindings (host)
+    uses: kokeb-labs/ci-tools/.github/workflows/ru-host-ci.yml@v1
+    permissions:
+      contents: read
+    with:
+      submodules: "true"
+      cmake_args: "-DKB_BUILD_INTEGRATION=ON -DKB_BUILD_TESTS=ON"
+      run_clang_tidy: false
+      run_cppcheck: false

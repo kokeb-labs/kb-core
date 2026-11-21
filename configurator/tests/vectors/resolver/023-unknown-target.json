@@ -1,0 +1,46 @@
+{
+ "schema": 1,
+ "name": "unknown-target",
+ "description": "A target the family does not have",
+ "catalog": "../catalog-fixture.json",
+ "image": {
+  "image": "v",
+  "kb_core": "0.4.0",
+  "port": "0.4.0",
+  "mcu": {
+   "family": "esp32",
+   "target": "esp32x9",
+   "board": null
+  },
+  "rtos": "freertos",
+  "drivers": [],
+  "buses": {}
+ },
+ "expect": {
+  "ok": false,
+  "errors": [
+   "CFG-MCU-002"
+  ],
+  "warnings": [
+   "CFG-SET-001"
+  ],
+  "infos": [],
+  "resolved": {
+   "kb_mcu": "ESP32",
+   "kb_rtos": "FREERTOS",
+   "parts": [
+    "utils",
+    "rtos",
+    "interfaces"
+   ],
+   "drivers": [],
+   "buses": {},
+   "pins": {
+    "min": 0,
+    "optional": 0,
+    "budget": null
+   },
+   "tested_sets": []
+  }
+ }
+}

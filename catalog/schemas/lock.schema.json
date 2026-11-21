@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kokeb-labs.github.io/kb-core/schemas/lock.schema.json",
+  "title": "kb lock (schema 1)",
+  "description": "Exactly what an image or a kb-core release contains, every part named by tag and commit: the image lock written by `kb resolve` and the release lock of ADR-0012 (which adds toolchain, soup and files). SPDX-License-Identifier: MIT. Copyright (c) 2026 The kb-core authors.",
+  "type": "object",
+  "required": ["schema", "kb_core", "ports", "drivers"],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {"const": 1},
+    "image": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,62}$"},
+    "kb_core": {
+      "type": "object",
+      "required": ["version", "tag", "commit"],
+      "additionalProperties": false,
+      "properties": {
+        "version": {"$ref": "#/$defs/version"},
+        "repo": {"$ref": "#/$defs/repo"},
+        "tag": {"anyOf": [{"$ref": "#/$defs/tag"}, {"type": "null"}]},
+        "commit": {"$ref": "#/$defs/commit"},
+        "kind": {"enum": ["release", "rc", "dev"]},
+        "license": {"type": "string"},
+        "authors": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "mcu": {
+      "type": "object",
+      "required": ["family", "target"],
+      "additionalProperties": false,
+      "properties": {"family": {"type": "string"}, "target": {"type": "string"}}
+    },
+    "rtos": {"type": "string"},
+    "parts": {"type": "array", "items": {"enum": ["utils", "rtos", "dma", "interfaces", "handlers"]}},
+    "ports": {
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "type": "object",
+            "description": "A port inside kb-core (in_tree may be left out, as in the ADR-0012 release lock)",
+            "required": ["name", "path", "commit"],
+            "additionalProperties": false,
+            "properties": {
+              "name": {"type": "string"},
+              "in_tree": {"const": true},
+              "path": {"type": "string"},
+              "commit": {"$ref": "#/$defs/commit"}
+            }
+          },
+          {
+            "type": "object",
+            "required": ["name", "in_tree", "repo", "version", "tag", "commit", "kind"],
+            "additionalProperties": false,
+            "properties": {
+              "name": {"type": "string"},
+              "in_tree": {"const": false},
+              "repo": {"$ref": "#/$defs/repo"},
+              "version": {"$ref": "#/$defs/version"},
+              "tag": {"$ref": "#/$defs/tag"},
+              "commit": {"$ref": "#/$defs/commit"},
+              "kind": {"enum": ["release", "rc"]}
+            }
+          }
+        ]
+      }
+    },
+    "drivers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "repo", "tag", "commit", "kind"],
+        "additionalProperties": false,
+        "properties": {
+          "name": {"type": "string"},
+          "version": {"$ref": "#/$defs/version"},
+          "repo": {"$ref": "#/$defs/repo"},
+          "folder": {"type": "string"},
+          "tag": {"$ref": "#/$defs/tag"},
+          "commit": {"$ref": "#/$defs/commit"},
+          "kind": {"enum": ["release", "rc"]},
+          "license": {"type": "string"},
+          "authors": {"type": "array", "items": {"type": "string"}}
+        }
+      }
+    },
+    "buses": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "model", "kind", "devices"],
+        "additionalProperties": false,
+        "properties": {
+          "name": {"type": "string"},
+          "model": {"enum": ["owner", "guarded"]},
+          "kind": {"type": ["string", "null"]},
+          "devices": {"type": "array", "items": {"type": "string"}}
+        }
+      }
+    },
+    "cmake": {"type": "object", "additionalProperties": {"type": "string"}},
+    "toolchain": {"type": "object", "additionalProperties": {"type": "string"}},
+    "soup": {"type": "array", "items": {"type": "object", "required": ["name", "version"]}},
+    "files": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "sha256"],
+        "properties": {"name": {"type": "string"}, "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
+      }
+    }
+  },
+  "$defs": {
+    "repo": {"type": "string", "pattern": "^[A-Za-z0-9-]+/[A-Za-z0-9._-]+$"},
+    "commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "version": {"type": "string", "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-rc\\.(0|[1-9][0-9]*))?$"},
+    "tag": {"type": "string", "pattern": "^v(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-rc\\.(0|[1-9][0-9]*))?$"}
+  }
+}

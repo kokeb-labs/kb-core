@@ -1,0 +1,194 @@
+# Mutation catalogue of kb::dma (ci-tools mutate.py format: "id | file | what", then the old text as "- " lines and the new text as "+ " lines).
+# Each mutant removes one rule of the DMA design (cache maintenance by owned lines, the lease state machine, exactly-once
+# completion, the stream's overrun and stall checks) that a test must catch. Run by the Mutation workflow (ci-mutation.yml).
+
+DM-01 | components/lib/dma/inc/kb/dma/buffer.hpp | a transmit lend cleans the used lines before the device reads
+-       ops.Clean(std::span<const std::byte>(base, RoundUp(used, R::kLineBytes)));
++       static_cast<void>(used);
+
+DM-02 | components/lib/dma/inc/kb/dma/buffer.hpp | a receive lend invalidates the whole buffer before the device writes
+-       ops.Invalidate(std::span<std::byte>(base, capacity));
++       static_cast<void>(capacity);
+
+DM-03 | components/lib/dma/inc/kb/dma/buffer.hpp | a receive lend cleans dirty lines first, so an eviction cannot overwrite the DMA data
+-       ops.Clean(std::span<const std::byte>(base, capacity));
++       static_cast<void>(base);
+
+DM-04 | components/lib/dma/inc/kb/dma/buffer.hpp | a receive that returns invalidates the lines the DMA wrote
+-     if (dir == Direction::FromDevice) {
+-       ops.Invalidate(std::span<std::byte>(base, span_bytes));
++     if (false) {
++       ops.Invalidate(std::span<std::byte>(base, span_bytes));
+
+DM-05 | components/lib/dma/inc/kb/dma/buffer.hpp | the lend ends with a barrier
+-     static_cast<void>(capacity);
+-   }
+-   ops.Barrier();
++     static_cast<void>(capacity);
++   }
++   static_cast<void>(ops);
+
+DM-06 | components/lib/dma/inc/kb/dma/buffer.hpp | the CPU gets no view while the device owns the buffer
+-     if (header_.state_.load(std::memory_order_acquire) == BufferState::Cpu) {
+-       view = std::span<std::byte>(bytes_.data(), Bytes);
++     if (true) {
++       view = std::span<std::byte>(bytes_.data(), Bytes);
+
+DM-07 | components/lib/dma/inc/kb/dma/buffer.hpp | a denied CPU access is counted
+-       BufferHeader::bump(header_.cpu_denied_);
++       static_cast<void>(header_.cpu_denied_);
+
+DM-08 | components/lib/dma/inc/kb/dma/buffer.hpp | a quarantined buffer cannot be lent
+-     } else if (state == BufferState::Quarantined) {
+-       status = kb::Status::Fault;
+-     } else {
+-       detail::MaintainOnLend
++     } else if (false) {
++       status = kb::Status::Fault;
++     } else {
++       detail::MaintainOnLend
+
+DM-09 | components/lib/dma/inc/kb/dma/buffer.hpp | a buffer on the device cannot be lent again
+-     } else if (state == BufferState::Device) {
+-       status = kb::Status::Busy;
+-     } else if (state == BufferState::Quarantined) {
+-       status = kb::Status::Fault;
++     } else if (false) {
++       status = kb::Status::Busy;
++     } else if (state == BufferState::Quarantined) {
++       status = kb::Status::Fault;
+
+DM-10 | components/lib/dma/inc/kb/dma/buffer.hpp | a transfer length of zero is refused
+- (used == 0U) || (used > Bytes)
++ (used > Bytes)
+
+DM-11 | components/lib/dma/inc/kb/dma/buffer.hpp | an unconfirmed abort quarantines the buffer
+-       if (evidence == StopEvidence::Confirmed) {
+-         detail::MaintainOnReturn<R>(dir_, header->base_, header->capacity_, ops);
++       if ((evidence == StopEvidence::Confirmed) || (evidence == StopEvidence::NotConfirmed)) {
++         detail::MaintainOnReturn<R>(dir_, header->base_, header->capacity_, ops);
+
+DM-12 | components/lib/dma/inc/kb/dma/buffer.hpp | an unconfirmed abort reports the fault
+-         BufferHeader::bump(header->quarantines_);
+-         status = kb::Status::Fault;
++         BufferHeader::bump(header->quarantines_);
++         status = kb::Status::Ok;
+
+DM-13 | components/lib/dma/inc/kb/dma/buffer.hpp | a lease destroyed while active quarantines the buffer
+-       header_->state_.store(BufferState::Quarantined, std::memory_order_release);
+-       BufferHeader::bump(header_->quarantines_);
+-       BufferHeader::bump(header_->dropped_);
++       BufferHeader::bump(header_->dropped_);
+
+DM-14 | components/lib/dma/inc/kb/dma/buffer.hpp | recovery needs proof that the master stopped
+-       if (evidence == StopEvidence::Confirmed) {
+-         detail::MaintainOnReturn<R>(Direction::FromDevice, bytes_.data(), kCapacity, ops);
++       if ((evidence == StopEvidence::Confirmed) || (evidence == StopEvidence::NotConfirmed)) {
++         detail::MaintainOnReturn<R>(Direction::FromDevice, bytes_.data(), kCapacity, ops);
+
+DM-15 | components/lib/dma/inc/kb/dma/buffer.hpp | recovery invalidates the whole buffer
+-         detail::MaintainOnReturn<R>(Direction::FromDevice, bytes_.data(), kCapacity, ops);
++         static_cast<void>(ops);
+
+DM-16 | components/lib/dma/inc/kb/dma/buffer.hpp | placement check: the buffer must lie inside the region
+-     } else if ((address < region_base) || (kCapacity > region_size) ||
++     } else if ((address < region_base) || false ||
+
+DM-17 | components/lib/dma/inc/kb/dma/completion.hpp | a second arm of a pending transfer fails
+-     uint8_t expected = kIdle;
+-     return state_.compare_exchange_strong(expected, kPending
++     uint8_t expected = kPending;
++     return state_.compare_exchange_strong(expected, kPending
+
+DM-18 | components/lib/dma/inc/kb/dma/completion.hpp | a cancel after a completion drops the report
+-       expected = kCompleted;
+-       if (state_.compare_exchange_strong(expected, kCancelling
++       expected = kCompleted;
++       if (false && state_.compare_exchange_strong(expected, kCancelling
+
+DM-19 | components/lib/dma/inc/kb/dma/completion.hpp | a completion reports exactly once
+-   [[nodiscard]] bool TakeReport() noexcept {
+-     uint8_t expected = kCompleted;
+-     return state_.compare_exchange_strong(expected, kIdle
++   [[nodiscard]] bool TakeReport() noexcept {
++     uint8_t expected = kCompleted;
++     return state_.compare_exchange_strong(expected, kCompleted
+
+DM-20 | components/lib/dma/inc/kb/dma/stream.hpp | a held slot is never overwritten
+-     if ((head - given) >= Frames) {
++     if ((head - given) > Frames) {
+
+DM-21 | components/lib/dma/inc/kb/dma/stream.hpp | the frame after a drop is flagged
+-       slot.gap = pending_gap_;
++       slot.gap = false;
+
+DM-22 | components/lib/dma/inc/kb/dma/stream.hpp | a hardware overrun flags the next frame
+-     bump(hw_overruns_);
+-     last_hw_flags_.store(hw_flags, std::memory_order_relaxed);
+-     pending_gap_ = true;
++     bump(hw_overruns_);
++     last_hw_flags_.store(hw_flags, std::memory_order_relaxed);
+
+DM-23 | components/lib/dma/inc/kb/dma/stream.hpp | a lapped copy is delivered as torn
+-       slot.torn = (integrity == Integrity::Torn);
++       slot.torn = (integrity == Integrity::Torn) && false;
+
+DM-24 | components/lib/dma/inc/kb/dma/stream.hpp | the stall check uses signed elapsed time
+-       stalled = (elapsed > 0) && std::cmp_greater_equal(elapsed, budget);
++       stalled = (static_cast<uint64_t>(elapsed) >= budget);
+
+DM-25 | components/lib/dma/inc/kb/dma/stream.hpp | a stall episode is counted once
+-     if (stalled && !stall_reported_) {
++     if (stalled) {
+
+DM-26 | components/lib/dma/inc/kb/dma/stream.hpp | the stall budget is stall_periods periods
+- static_cast<uint64_t>(config_.frame_period.Count()) * config_.stall_periods;
+-       stalled
++ static_cast<uint64_t>(config_.frame_period.Count());
++       stalled
+
+DM-27 | components/lib/dma/inc/kb/dma/stream.hpp | a restart too soon after the last waits
+-       } else if (restartTooRecent(now)) {
++       } else if (false) {
+
+DM-28 | components/lib/dma/inc/kb/dma/stream.hpp | repeated restarts end in the declared fallback
+-       const bool fallback_due = (config_.restarts_before_fallback != 0U) &&
++       const bool fallback_due = false && (config_.restarts_before_fallback != 0U) &&
+
+DM-29 | components/lib/dma/inc/kb/dma/stream.hpp | a good frame resets the bad-frame count
+-       bad_in_row_ = 0U;
+-       restarts_since_good_ = 0U;
++       restarts_since_good_ = 0U;
+
+DM-30 | components/lib/dma/inc/kb/dma/stream.hpp | a frame published in fallback mode says so
+-       slot.fallback = (mode_.load(std::memory_order_relaxed) == StreamMode::Fallback);
++       slot.fallback = false;
+
+DM-31 | components/lib/dma/inc/kb/dma/stream.hpp | a restart starts a new epoch
+-     ++restarts_since_good_;
+-     bump(restarts_);
+-     rearm(now);
++     ++restarts_since_good_;
++     bump(restarts_);
+
+DM-32 | components/lib/dma/inc/kb/dma/stream.hpp | a view is not handed out while the previous one is held
+-     if (held_.load(std::memory_order_relaxed)) {
+-       status = kb::Status::Busy;
++     if (false) {
++       status = kb::Status::Busy;
+
+DM-33 | components/lib/dma/inc/kb/dma/stream.hpp | a released frame frees its slot
+-     given_.store(taken_, std::memory_order_release);
++     static_cast<void>(taken_);
+
+DM-34 | components/lib/dma/inc/kb/dma/stream.hpp | PublishFromDevice only takes a receive lease
+- (lease.Dir() == Direction::FromDevice) &&
++ true &&
+
+DM-35 | components/lib/dma/inc/kb/dma/stream.hpp | PublishFromDevice invalidates the frame's lines
+-         ops.Invalidate(window);
++         static_cast<void>(window);
+
+DM-36 | components/lib/dma/inc/kb/dma/stream.hpp | the sequence number counts every reported frame
+-     published_.store(seq + 1U, std::memory_order_relaxed);
++     published_.store(seq, std::memory_order_relaxed);

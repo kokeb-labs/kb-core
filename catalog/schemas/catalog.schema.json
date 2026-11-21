@@ -1,0 +1,450 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kokeb-labs.github.io/kb-core/schemas/catalog.schema.json",
+  "title": "kb catalogue (schema 1)",
+  "description": "What a kb-core release can assemble: its own versions, parts, RTOS backends, MCU families with their ports, and every driver version with its gates. Written by `kb catalog build`; read by `kb resolve` and the configurator (ADR-0014). SPDX-License-Identifier: MIT. Copyright (c) 2026 The kb-core authors.",
+  "type": "object",
+  "required": [
+    "schema",
+    "kb_core",
+    "parts",
+    "rtos",
+    "mcus",
+    "drivers"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": 1
+    },
+    "kb_core": {
+      "type": "object",
+      "required": [
+        "repo",
+        "license",
+        "authors",
+        "versions"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "repo": {
+          "$ref": "#/$defs/repo"
+        },
+        "license": {
+          "type": "string"
+        },
+        "authors": {
+          "$ref": "#/$defs/authors"
+        },
+        "versions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/kbVersion"
+          }
+        }
+      }
+    },
+    "parts": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "utils",
+          "rtos",
+          "dma",
+          "interfaces",
+          "handlers"
+        ]
+      }
+    },
+    "rtos": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "status"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "$ref": "#/$defs/lowerName"
+          },
+          "status": {
+            "$ref": "#/$defs/status"
+          }
+        }
+      }
+    },
+    "mcus": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/mcu"
+      }
+    },
+    "drivers": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/driver"
+      }
+    }
+  },
+  "$defs": {
+    "repo": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9-]+/[A-Za-z0-9._-]+$"
+    },
+    "commit": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-rc\\.(0|[1-9][0-9]*))?$"
+    },
+    "tag": {
+      "type": "string",
+      "pattern": "^v(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(-rc\\.(0|[1-9][0-9]*))?$"
+    },
+    "lowerName": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$"
+    },
+    "status": {
+      "enum": [
+        "supported",
+        "planned"
+      ]
+    },
+    "authors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "bus": {
+      "enum": [
+        "adc",
+        "can",
+        "canopen",
+        "gpio",
+        "i2c",
+        "modbus",
+        "onewire",
+        "pio",
+        "spi",
+        "uart"
+      ]
+    },
+    "pinVersion": {
+      "type": "object",
+      "required": [
+        "version",
+        "tag",
+        "commit",
+        "kind"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "$ref": "#/$defs/version"
+        },
+        "tag": {
+          "$ref": "#/$defs/tag"
+        },
+        "commit": {
+          "$ref": "#/$defs/commit"
+        },
+        "kind": {
+          "enum": [
+            "release",
+            "rc"
+          ]
+        },
+        "osv": {
+          "$ref": "#/$defs/osv"
+        }
+      }
+    },
+    "kbVersion": {
+      "type": "object",
+      "required": [
+        "version",
+        "tag",
+        "commit",
+        "kind"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "$ref": "#/$defs/version"
+        },
+        "tag": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/tag"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "commit": {
+          "$ref": "#/$defs/commit"
+        },
+        "kind": {
+          "enum": [
+            "release",
+            "rc",
+            "dev"
+          ]
+        },
+        "osv": {
+          "$ref": "#/$defs/osv"
+        },
+        "bindings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/lowerName"
+          },
+          "description": "Drivers this kb-core version has a handler binding for (kb/handlers/bindings/<chip>.hpp); absent: not recorded"
+        }
+      }
+    },
+    "mcu": {
+      "type": "object",
+      "required": [
+        "family",
+        "status",
+        "targets",
+        "rtos",
+        "default_rtos",
+        "port"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "family": {
+          "$ref": "#/$defs/lowerName"
+        },
+        "status": {
+          "$ref": "#/$defs/status"
+        },
+        "targets": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/lowerName"
+          }
+        },
+        "rtos": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/lowerName"
+          }
+        },
+        "default_rtos": {
+          "$ref": "#/$defs/lowerName"
+        },
+        "port": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "required": [
+                "name",
+                "repo",
+                "path",
+                "versions"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "name": {
+                  "$ref": "#/$defs/lowerName"
+                },
+                "repo": {
+                  "$ref": "#/$defs/repo"
+                },
+                "path": {
+                  "type": "string"
+                },
+                "versions": {
+                  "description": "Tags of the extracted port-<family> repository; empty while the port is inside kb-core",
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/pinVersion"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "driverVersion": {
+      "type": "object",
+      "required": [
+        "version",
+        "tag",
+        "commit",
+        "kind",
+        "bus",
+        "mcus",
+        "peripheral",
+        "kb_core_min",
+        "requires_owner",
+        "license",
+        "authors"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "$ref": "#/$defs/version"
+        },
+        "tag": {
+          "$ref": "#/$defs/tag"
+        },
+        "commit": {
+          "$ref": "#/$defs/commit"
+        },
+        "kind": {
+          "enum": [
+            "release",
+            "rc"
+          ]
+        },
+        "bus": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/bus"
+          }
+        },
+        "mcus": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "peripheral": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "kb_core_min": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/version"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "requires_owner": {
+          "type": "boolean",
+          "description": "kRequiresOwner: the chip must be on an owner-task bus (driver.yml requires_owner, or the binding facts of the platform file)"
+        },
+        "license": {
+          "type": "string"
+        },
+        "authors": {
+          "$ref": "#/$defs/authors"
+        },
+        "osv": {
+          "$ref": "#/$defs/osv"
+        },
+        "bindings": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "driver.yml bindings, when it names them"
+        }
+      }
+    },
+    "driver": {
+      "type": "object",
+      "required": [
+        "name",
+        "repo",
+        "folder",
+        "pinned",
+        "versions"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "$ref": "#/$defs/lowerName"
+        },
+        "repo": {
+          "$ref": "#/$defs/repo"
+        },
+        "folder": {
+          "type": "string",
+          "pattern": "^driver-[a-z0-9-]+$"
+        },
+        "pinned": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/version"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "The version kb-core's drivers.lock.yml pins; the default when an image names none"
+        },
+        "versions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/driverVersion"
+          }
+        }
+      }
+    },
+    "osv": {
+      "description": "A known-vulnerability scan of this version (OSV database); null or absent: not scanned",
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "required": [
+            "scanned_at",
+            "database",
+            "findings"
+          ],
+          "properties": {
+            "scanned_at": {
+              "type": "string"
+            },
+            "database": {
+              "type": "string"
+            },
+            "findings": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "id"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "severity": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

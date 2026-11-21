@@ -1,0 +1,74 @@
+{
+ "schema": 1,
+ "name": "mcu-gate",
+ "description": "ws2812_rmt needs the ESP32 RMT peripheral",
+ "catalog": "../catalog-fixture.json",
+ "image": {
+  "image": "v",
+  "kb_core": "0.4.0",
+  "port": null,
+  "mcu": {
+   "family": "host",
+   "target": "host",
+   "board": "host"
+  },
+  "rtos": "none",
+  "drivers": [
+   {
+    "name": "ws2812_rmt",
+    "version": "0.1.0",
+    "via": "pio",
+    "bus": "pio0"
+   }
+  ],
+  "buses": {
+   "pio0": {
+    "model": "owner"
+   }
+  }
+ },
+ "expect": {
+  "ok": false,
+  "errors": [
+   "CFG-DRV-010"
+  ],
+  "warnings": [
+   "CFG-SET-001"
+  ],
+  "infos": [
+   "CFG-CVE-002",
+   "CFG-THR-003"
+  ],
+  "resolved": {
+   "kb_mcu": "HOST",
+   "kb_rtos": "NONE",
+   "parts": [
+    "utils",
+    "rtos",
+    "interfaces",
+    "handlers"
+   ],
+   "drivers": [
+    "ws2812_rmt"
+   ],
+   "buses": {
+    "pio0": {
+     "kind": "pio",
+     "via": [
+      "pio"
+     ],
+     "model": "owner",
+     "devices": [
+      "ws2812_rmt"
+     ]
+    }
+   },
+   "pins": {
+    "min": 1,
+    "optional": 1,
+    "budget": null
+   },
+   "tested_sets": []
+  }
+ }
+}

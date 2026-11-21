@@ -1,0 +1,46 @@
+{
+ "schema": 1,
+ "name": "in-tree-port-version",
+ "description": "An in-tree port (host) cannot take a version of its own",
+ "catalog": "../catalog-fixture.json",
+ "image": {
+  "image": "v",
+  "kb_core": "0.4.0",
+  "port": "0.3.0",
+  "mcu": {
+   "family": "host",
+   "target": "host",
+   "board": "host"
+  },
+  "rtos": "none",
+  "drivers": [],
+  "buses": {}
+ },
+ "expect": {
+  "ok": false,
+  "errors": [
+   "CFG-PORT-002"
+  ],
+  "warnings": [
+   "CFG-SET-001"
+  ],
+  "infos": [],
+  "resolved": {
+   "kb_mcu": "HOST",
+   "kb_rtos": "NONE",
+   "parts": [
+    "utils",
+    "rtos",
+    "interfaces"
+   ],
+   "drivers": [],
+   "buses": {},
+   "pins": {
+    "min": 0,
+    "optional": 0,
+    "budget": null
+   },
+   "tested_sets": []
+  }
+ }
+}

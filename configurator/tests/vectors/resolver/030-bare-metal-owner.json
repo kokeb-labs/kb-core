@@ -1,0 +1,72 @@
+{
+ "schema": 1,
+ "name": "bare-metal-owner",
+ "description": "With no RTOS the owner of a bus is the main loop",
+ "catalog": "../catalog-fixture.json",
+ "image": {
+  "image": "v",
+  "kb_core": "0.4.0",
+  "port": null,
+  "mcu": {
+   "family": "host",
+   "target": "host",
+   "board": "host"
+  },
+  "rtos": "none",
+  "drivers": [
+   {
+    "name": "bno08x",
+    "version": "0.1.0",
+    "via": "spi",
+    "bus": "spi0"
+   }
+  ],
+  "buses": {
+   "spi0": {
+    "model": "owner"
+   }
+  }
+ },
+ "expect": {
+  "ok": true,
+  "errors": [],
+  "warnings": [
+   "CFG-SET-001"
+  ],
+  "infos": [
+   "CFG-CVE-002",
+   "CFG-THR-003"
+  ],
+  "resolved": {
+   "kb_mcu": "HOST",
+   "kb_rtos": "NONE",
+   "parts": [
+    "utils",
+    "rtos",
+    "interfaces",
+    "handlers"
+   ],
+   "drivers": [
+    "bno08x"
+   ],
+   "buses": {
+    "spi0": {
+     "kind": "spi",
+     "via": [
+      "spi"
+     ],
+     "model": "owner",
+     "devices": [
+      "bno08x"
+     ]
+    }
+   },
+   "pins": {
+    "min": 4,
+    "optional": 4,
+    "budget": null
+   },
+   "tested_sets": []
+  }
+ }
+}

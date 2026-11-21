@@ -1,0 +1,27 @@
+---
+# Calls ci-tools ru-cmake-matrix (v1.19).
+# Each part configures, builds and tests alone with only its declared dependencies, and each installed package
+# works through find_package (tests/standalone/, tests/install_consumer/).
+name: Standalone parts
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  parts:
+    name: One part at a time
+    uses: kokeb-labs/ci-tools/.github/workflows/ru-cmake-matrix.yml@v1
+    permissions:
+      contents: read
+    with:
+      matrix: >-
+        [{"name": "utils", "cmake_args": "-DKB_PARTS=utils -DKB_BUILD_TESTS=ON"},
+         {"name": "rtos", "cmake_args": "-DKB_PARTS=rtos -DKB_BUILD_TESTS=ON"},
+         {"name": "interfaces", "cmake_args": "-DKB_PARTS=interfaces -DKB_BUILD_TESTS=ON"},
+         {"name": "dma", "cmake_args": "-DKB_PARTS=dma -DKB_BUILD_TESTS=ON"},
+         {"name": "handlers", "cmake_args": "-DKB_PARTS=handlers -DKB_BUILD_TESTS=ON"}]
+      # handlers joins the matrix with its first tests (a part without tests is an error).
+      install_consumer: tests/install_consumer

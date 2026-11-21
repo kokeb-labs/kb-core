@@ -1,0 +1,47 @@
+{
+ "schema": 1,
+ "name": "unknown-versions",
+ "description": "kb-core and port versions that were never released",
+ "catalog": "../catalog-fixture.json",
+ "image": {
+  "image": "v",
+  "kb_core": "9.9.9",
+  "port": "9.9.9",
+  "mcu": {
+   "family": "esp32",
+   "target": "esp32s3",
+   "board": "esp32s3-devkitc"
+  },
+  "rtos": "freertos",
+  "drivers": [],
+  "buses": {}
+ },
+ "expect": {
+  "ok": false,
+  "errors": [
+   "CFG-KB-002",
+   "CFG-PORT-002"
+  ],
+  "warnings": [
+   "CFG-SET-001"
+  ],
+  "infos": [],
+  "resolved": {
+   "kb_mcu": "ESP32",
+   "kb_rtos": "FREERTOS",
+   "parts": [
+    "utils",
+    "rtos",
+    "interfaces"
+   ],
+   "drivers": [],
+   "buses": {},
+   "pins": {
+    "min": 0,
+    "optional": 0,
+    "budget": 33
+   },
+   "tested_sets": []
+  }
+ }
+}

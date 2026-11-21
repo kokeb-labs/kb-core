@@ -1,0 +1,81 @@
+{
+ "schema": 1,
+ "name": "pin-budget-exceeded",
+ "description": "More pins than the board has free",
+ "catalog": "../catalog-fixture.json",
+ "image": {
+  "image": "v",
+  "kb_core": "0.4.0",
+  "port": "0.4.0",
+  "mcu": {
+   "family": "esp32",
+   "target": "esp32c3",
+   "board": "fixture-tiny"
+  },
+  "rtos": "freertos",
+  "drivers": [
+   {
+    "name": "bmp581",
+    "version": "0.1.0",
+    "via": "spi",
+    "bus": "spi0"
+   },
+   {
+    "name": "tmc9660",
+    "version": "0.1.0",
+    "via": "spi",
+    "bus": "spi0"
+   }
+  ],
+  "buses": {
+   "spi0": {
+    "model": "owner"
+   }
+  }
+ },
+ "expect": {
+  "ok": false,
+  "errors": [
+   "CFG-GPIO-001"
+  ],
+  "warnings": [
+   "CFG-SET-001"
+  ],
+  "infos": [
+   "CFG-CVE-002"
+  ],
+  "resolved": {
+   "kb_mcu": "ESP32",
+   "kb_rtos": "FREERTOS",
+   "parts": [
+    "utils",
+    "rtos",
+    "interfaces",
+    "handlers"
+   ],
+   "drivers": [
+    "bmp581",
+    "tmc9660"
+   ],
+   "buses": {
+    "spi0": {
+     "kind": "spi",
+     "via": [
+      "spi"
+     ],
+     "model": "owner",
+     "devices": [
+      "bmp581",
+      "tmc9660"
+     ]
+    }
+   },
+   "pins": {
+    "min": 5,
+    "optional": 3,
+    "budget": 4
+   },
+   "tested_sets": []
+  }
+ }
+}

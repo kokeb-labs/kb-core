@@ -1,0 +1,46 @@
+{
+ "schema": 1,
+ "name": "unknown-platform",
+ "description": "Unknown family",
+ "catalog": "../catalog-fixture.json",
+ "image": {
+  "image": "v",
+  "kb_core": "0.4.0",
+  "port": "0.4.0",
+  "mcu": {
+   "family": "avr",
+   "target": "atmega328p",
+   "board": null
+  },
+  "rtos": "freertos",
+  "drivers": [],
+  "buses": {}
+ },
+ "expect": {
+  "ok": false,
+  "errors": [
+   "CFG-MCU-001"
+  ],
+  "warnings": [
+   "CFG-SET-001"
+  ],
+  "infos": [],
+  "resolved": {
+   "kb_mcu": null,
+   "kb_rtos": "FREERTOS",
+   "parts": [
+    "utils",
+    "rtos",
+    "interfaces"
+   ],
+   "drivers": [],
+   "buses": {},
+   "pins": {
+    "min": 0,
+    "optional": 0,
+    "budget": null
+   },
+   "tested_sets": []
+  }
+ }
+}

@@ -1,0 +1,37 @@
+{
+  "catalog": "catalogs/base.json",
+  "description": "A version the driver never tagged, and a version that is not X.Y.Z[-rc.N].",
+  "expect": {
+    "errors": [
+      {
+        "code": "KB-RES-011",
+        "subject": "pcal9555"
+      },
+      {
+        "code": "KB-RES-012",
+        "subject": "bmp581"
+      }
+    ],
+    "ok": false,
+    "warnings": []
+  },
+  "image": {
+    "drivers": [
+      {
+        "name": "pcal9555",
+        "version": "9.9.9"
+      },
+      {
+        "name": "bmp581",
+        "version": "latest"
+      }
+    ],
+    "kb_core": {
+      "version": "0.4.0"
+    },
+    "mcu": {
+      "family": "esp32"
+    },
+    "schema": 1
+  }
+}

@@ -1,0 +1,36 @@
+---
+# MISRA C++:2023 and the KB-CPP20 profile on traced host and Cortex-M builds of kb-core's own parts, against the
+# handbook's records and kb-core's records in deviations/deviations.yml, at level high: the CodeQL MISRA C++:2023 pack
+# plus the compliance matrix (ADR-0011). Calls kokeb-labs/ci-tools ru-misra. The ESP32 port gets its own scan with
+# its own records (paths: components/ports/esp32, repo_deviations:
+# components/ports/esp32/deviations/deviations.yml) once it has source.
+name: MISRA
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  misra:
+    name: MISRA C++:2023
+    uses: kokeb-labs/ci-tools/.github/workflows/ru-misra.yml@v1
+    permissions:
+      contents: read
+    # The bindings (components/lib/handlers/inc/kb/handlers/bindings/) need the driver submodules, which this scan
+    # does not check out: they are scanned by the local pre-flight (tools/preflight/misra.sh with
+    # KB_CHECK_BINDINGS=ON and the bindings added to `paths`) until ru-misra takes a submodules input.
+    with:
+      level: high
+      scan_timeout_minutes: 120  # the host scan took 52 to 61 minutes once the dma part and the M5 handlers joined
+      # kb-core's own target code: public headers and the RTOS boundary files. Tests, fuzzers and the host test port
+      # are test code, outside the MISRA claim (docs/design/assurance.md).
+      paths: >-
+        components/lib/utils/inc components/lib/rtos/inc components/lib/rtos/backends/none
+        components/lib/rtos/backends/freertos components/lib/rtos/backends/threadx components/lib/interfaces/inc components/lib/dma/inc
+        components/lib/handlers/inc/kb/handlers/handlers.hpp components/lib/handlers/inc/kb/handlers/common
+      cmake_args: "-DKB_BUILD_TESTS=ON"
+      cross_build_target: kb_parts_cross
+      repo_deviations: deviations/deviations.yml
+      open_source_prerelease: true

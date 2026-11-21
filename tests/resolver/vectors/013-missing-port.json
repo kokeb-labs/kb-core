@@ -1,0 +1,26 @@
+{
+  "catalog": "catalogs/no-esp32-port.json",
+  "description": "A catalogue in which the ESP32 family has no port.",
+  "expect": {
+    "errors": [
+      {
+        "code": "KB-RES-004",
+        "subject": "mcu.family"
+      }
+    ],
+    "ok": false,
+    "warnings": []
+  },
+  "image": {
+    "drivers": [
+      "pcal9555"
+    ],
+    "kb_core": {
+      "version": "0.4.0"
+    },
+    "mcu": {
+      "family": "esp32"
+    },
+    "schema": 1
+  }
+}

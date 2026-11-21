@@ -1,0 +1,73 @@
+{
+ "schema": 1,
+ "name": "requires-owner-on-guarded",
+ "description": "bno08x must be serviced continuously; a guarded bus is refused",
+ "catalog": "../catalog-fixture.json",
+ "image": {
+  "image": "v",
+  "kb_core": "0.4.0",
+  "port": "0.4.0",
+  "mcu": {
+   "family": "esp32",
+   "target": "esp32s3",
+   "board": "esp32s3-devkitc"
+  },
+  "rtos": "freertos",
+  "drivers": [
+   {
+    "name": "bno08x",
+    "version": "0.1.0",
+    "via": "i2c",
+    "bus": "i2c0"
+   }
+  ],
+  "buses": {
+   "i2c0": {
+    "model": "guarded"
+   }
+  }
+ },
+ "expect": {
+  "ok": false,
+  "errors": [
+   "CFG-THR-002"
+  ],
+  "warnings": [
+   "CFG-SET-001"
+  ],
+  "infos": [
+   "CFG-CVE-002"
+  ],
+  "resolved": {
+   "kb_mcu": "ESP32",
+   "kb_rtos": "FREERTOS",
+   "parts": [
+    "utils",
+    "rtos",
+    "interfaces",
+    "handlers"
+   ],
+   "drivers": [
+    "bno08x"
+   ],
+   "buses": {
+    "i2c0": {
+     "kind": "i2c",
+     "via": [
+      "i2c"
+     ],
+     "model": "guarded",
+     "devices": [
+      "bno08x"
+     ]
+    }
+   },
+   "pins": {
+    "min": 2,
+    "optional": 4,
+    "budget": 33
+   },
+   "tested_sets": []
+  }
+ }
+}

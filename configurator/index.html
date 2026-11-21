@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'none'; font-src 'none'; object-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<meta name="description" content="Pick an MCU, an RTOS and chip drivers, and download a pinned, repeatable kb-core project with its SBOM and evidence.">
+<meta name="color-scheme" content="light dark">
+<title>kb configurator</title>
+<link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+<link rel="modulepreload" href="resolver.mjs" integrity="sha384-tvzUD+SUERagwoJkEjoCiM30HUBp1gbSh4wuwFaEZhk7+3O49G0wCIFW0E9kAeek">
+<link rel="stylesheet" href="css/app.css" integrity="sha384-Lq0xihy27CCJldmy39VZuAk2eQJVkD/2lSv0A/lUsR/LlmI+nLjZkfR3J+FCLLJb">
+</head>
+<body class="booting">
+<a class="skip" href="#main">Skip to the configurator</a>
+<header class="top">
+  <div class="brand">
+    <img src="assets/icon.svg" alt="" width="32" height="32">
+    <div>
+      <h1>kb configurator</h1>
+      <p>Pick a platform and drivers; get a pinned, repeatable project with its evidence.</p>
+    </div>
+  </div>
+  <div class="top-actions">
+    <button type="button" id="share">Copy share link</button>
+    <button type="button" id="reset" class="ghost">Start over</button>
+    <div class="segmented" role="group" aria-label="Colour theme">
+      <button type="button" data-theme-choice="system" aria-pressed="true">Auto</button>
+      <button type="button" data-theme-choice="light" aria-pressed="false">Light</button>
+      <button type="button" data-theme-choice="dark" aria-pressed="false">Dark</button>
+    </div>
+  </div>
+</header>
+
+<p class="file-notice" id="file-notice">If this page stays unstyled, it was opened from a file: browsers refuse
+  integrity-checked scripts there. Open <a href="offline.html">offline.html</a> instead, the same configurator in one
+  self-contained file, or serve this folder over http.</p>
+<noscript><p>This configurator needs JavaScript (it runs entirely in your browser; nothing is sent anywhere). The
+catalogue it reads is <a href="data/catalog.json">data/catalog.json</a>.</p></noscript>
+
+<main id="main" class="layout" tabindex="-1">
+  <div class="steps">
+    <section class="panel" id="step-open" aria-labelledby="h-open">
+      <h2 id="h-open">Open an existing project</h2>
+      <p class="lead">Pick your project's <code>kb-image.yml</code> and, if it has one, its <code>kb-image.lock.yml</code>
+        (both at once). They are read in this browser only: nothing is uploaded or stored, and the address bar gets only
+        catalogue identifiers (not the project's name or drivers this catalogue lacks). The page then shows the
+        project as the selection below and every upgrade the catalogue offers, with the rules of <code>kb upgrade</code>.</p>
+      <div class="row">
+        <div class="field"><label for="open-files">Project files</label>
+          <input type="file" id="open-files" multiple accept=".yml,.yaml,.json" aria-describedby="open-status"></div>
+        <div class="field"><label class="check"><input type="checkbox" id="allow-rc"> Offer release candidates</label>
+          <span class="hint">The same switch as "Show release candidates" in step 3.</span></div>
+      </div>
+      <p class="note" id="open-status" role="status" aria-live="polite"></p>
+      <div id="upgrade" hidden>
+        <h3 id="h-upgrade">Available upgrades</h3>
+        <div class="summary-line" id="upgrade-summary"></div>
+        <div id="upgrade-table"></div>
+        <ul class="findings" id="upgrade-findings" aria-label="Upgrade findings"></ul>
+        <div class="download-row upgrade-actions">
+          <button type="button" class="primary" id="upgrade-apply">Use the upgraded versions</button>
+          <button type="button" id="upgrade-report">Download kb-upgrade.md</button>
+          <button type="button" id="upgrade-image">Download kb-image.yml</button>
+          <button type="button" id="upgrade-lock">Download kb-image.lock.yml</button>
+          <button type="button" class="ghost" id="upgrade-clear" hidden>Clear chosen versions</button>
+        </div>
+        <p class="note">The same files, byte for byte, as <code>kb upgrade kb-image.yml --catalog data/catalog.json -o .</code>
+          run on this page's catalogue (<a href="data/catalog.json">data/catalog.json</a>).</p>
+      </div>
+    </section>
+
+    <section class="panel" id="step-platform" aria-labelledby="h-platform">
+      <h2 id="h-platform"><span class="num" aria-hidden="true">1</span> Platform</h2>
+      <p class="lead">The MCU family selects the port; the target and board set how many buses and pins there are.</p>
+      <fieldset class="choices" id="families"><legend>MCU family</legend></fieldset>
+      <div class="row">
+        <div class="field"><label for="target">Target</label><select id="target"></select></div>
+        <div class="field"><label for="board">Board</label><select id="board" aria-describedby="board-hint"></select>
+          <span class="hint" id="board-hint"></span></div>
+      </div>
+    </section>
+
+    <section class="panel" id="step-rtos" aria-labelledby="h-rtos">
+      <h2 id="h-rtos"><span class="num" aria-hidden="true">2</span> RTOS and versions</h2>
+      <p class="lead" id="rtos-note">The RTOS backend of kb::rtos.</p>
+      <fieldset class="choices" id="rtos"><legend>RTOS backend</legend></fieldset>
+      <div class="row">
+        <div class="field"><label for="kb-version">kb-core version</label><select id="kb-version"></select></div>
+        <div class="field"><label for="port-version">Port version</label><select id="port-version"></select></div>
+        <div class="field"><label for="image-name">Image name</label>
+          <input type="text" id="image-name" autocomplete="off" spellcheck="false" maxlength="40" aria-describedby="image-hint">
+          <span class="hint" id="image-hint">Lower-case letters, digits and dashes; names the folder and the preset.</span></div>
+      </div>
+    </section>
+
+    <section class="panel" id="step-drivers" aria-labelledby="h-drivers">
+      <h2 id="h-drivers"><span class="num" aria-hidden="true">3</span> Drivers</h2>
+      <p class="lead">Every chip driver with each published version. The newest final release is the default. Release
+        candidates (<span class="badge rc">rc</span>) are hidden until you turn them on; a driver with only release
+        candidates can then be added.</p>
+      <div class="toolbar">
+        <div class="field"><label for="search">Search</label>
+          <input type="search" id="search" placeholder="Chip, bus or capability, e.g. pressure, spi, PMIC" autocomplete="off"></div>
+        <div class="field"><label class="check"><input type="checkbox" id="show-rc"> Show release candidates</label></div>
+        <div class="field"><span class="visually-hidden" id="filters-label">Filter by bus</span>
+          <div class="filters" id="bus-filters" role="group" aria-labelledby="filters-label"></div></div>
+      </div>
+      <p class="count" id="count" role="status" aria-live="polite"></p>
+      <p class="count" id="request-chip" hidden></p>
+      <ul class="grid" id="catalogue" aria-label="Driver catalogue"></ul>
+    </section>
+
+    <section class="panel" id="step-buses" aria-labelledby="h-buses">
+      <h2 id="h-buses"><span class="num" aria-hidden="true">4</span> Buses, handlers and thread models</h2>
+      <p class="lead">Wire each driver to a bus; kb-core's handler wraps every driver. Give each bus one thread model
+        (ADR-0009): an <strong>owner task</strong> that serves every device on it, or a <strong>guarded facade</strong>
+        that locks around each call.</p>
+      <div id="assign"></div>
+      <div class="buses" id="buses"></div>
+      <div class="pins" id="pins"></div>
+    </section>
+  </div>
+
+  <aside class="side" aria-label="Result">
+    <section class="panel" aria-labelledby="h-check">
+      <h2 id="h-check">Check</h2>
+      <div class="summary-line" id="summary" role="status" aria-live="polite"></div>
+      <dl class="evidence" id="evidence"></dl>
+      <ul class="findings" id="findings" aria-label="Findings"></ul>
+    </section>
+    <section class="panel outputs" aria-labelledby="h-out">
+      <h2 id="h-out">Files</h2>
+      <div class="tabs" role="tablist" id="tabs" aria-labelledby="h-out"></div>
+      <div id="tabpanels"></div>
+      <div class="download-row">
+        <button type="button" class="primary" id="zip">Download starter project (.zip)</button>
+        <p class="note" id="zip-note"></p>
+      </div>
+    </section>
+  </aside>
+</main>
+
+<dialog id="figure-dialog" aria-labelledby="figure-title">
+  <header><h2 id="figure-title">Figures</h2><button type="button" id="figure-close">Close</button></header>
+  <div class="figs" id="figure-body"></div>
+</dialog>
+
+<footer class="foot">
+  <p>Static page: it runs only in your browser, sends nothing, sets no cookie and keeps no analytics. Your selection
+    lives in the address bar, so a copied link reproduces it.</p>
+  <p id="catalog-meta"></p>
+  <p>Missing a chip? <a href="https://github.com/kokeb-labs-drivers/driver-requests/issues/new?template=request-driver.yml" target="_blank" rel="noopener noreferrer">Request a driver</a>
+    or <a href="https://github.com/kokeb-labs-drivers/driver-requests/issues/new?template=request-port.yml" target="_blank" rel="noopener noreferrer">request a port or target</a>.</p>
+  <p>MIT licence, copyright the kb-core authors. Contact: <a href="mailto:kokeblabs@gmail.com">kokeblabs@gmail.com</a></p>
+</footer>
+
+<script src="vendor/fflate-0.8.2/fflate.umd.js" integrity="sha384-DT0Ls0mO7JmjTnT+oBuMhEJzYJO1zUqzuuMXNdnOmOQRIpN2BgSjvBV/j50NngIT"></script>
+<script src="data/catalog.js" integrity="sha384-VbsiBVzqpAy5ubkBmbducbBidkV+NoJVSg12hfTloGMwOZwMjHR/U0ORDvK/UR7Z"></script>
+<script src="js/core.js" integrity="sha384-w90ycptWLHSy39vTbREpkFzJL/XHhRYhRUMOJiuptwKUQVWagUynVy4NblwC3TFy"></script>
+<script src="js/resolver.js" integrity="sha384-IXgZ1EoqJZ55co37pFfSWfK3u3XsbWS5pkz9lxQx2tl05Pe7rlLfVQVvg3fckQ7v"></script>
+<script src="js/generate.js" integrity="sha384-6oPM4UYVZCfPrZl6cSgvovoRbzI2zOcNl78rr71ykvL1UIFppFCVpoxFUQaP3poA"></script>
+<script src="js/state.js" integrity="sha384-y5SRO7FFt7NaqmZEjHVyROPO5P1LbLfgYlezpqB8pf7B2Zciv5O+LmluGtji+/UY"></script>
+<script src="js/shared.js" integrity="sha384-NpkslvNQIkHmXOUghQySGQHi9YktdFKprBfqkT/oQPjpWuekZKyAdlVFLDos4hDT"></script>
+<script src="js/project.js" integrity="sha384-biBwrhj0QTlQZXmkDLTixR84d97x30XLKvky8NRrR7KwVgZASRzFIw2VUTQ5NSsR"></script>
+<script src="js/ui.js" integrity="sha384-5Zx22ZuJe6IsUclHZWbs3/jAoPjGGUVeRgsaRqeIfsG7Jsfui9iCtBWfQrp9Q+Kp"></script>
+<script type="module" src="js/boot.mjs" integrity="sha384-xQwFO3CxtutDfQdOosbkKnYCNCVSi2sjJpWJF5ljlTVnCe2dQ1N7O1Edt9a/rzZY"></script>
+</body>
+</html>

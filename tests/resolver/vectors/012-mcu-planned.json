@@ -1,0 +1,24 @@
+{
+  "catalog": "catalogs/base.json",
+  "description": "STM32 is a planned family with no port yet.",
+  "expect": {
+    "errors": [
+      {
+        "code": "KB-RES-004",
+        "subject": "mcu.family"
+      }
+    ],
+    "ok": false,
+    "warnings": []
+  },
+  "image": {
+    "kb_core": {
+      "version": "0.4.0"
+    },
+    "mcu": {
+      "family": "stm32"
+    },
+    "rtos": "freertos",
+    "schema": 1
+  }
+}

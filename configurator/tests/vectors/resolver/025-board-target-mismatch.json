@@ -1,0 +1,48 @@
+{
+ "schema": 1,
+ "name": "board-target-mismatch",
+ "description": "A board that carries another target",
+ "catalog": "../catalog-fixture.json",
+ "image": {
+  "image": "v",
+  "kb_core": "0.4.0",
+  "port": "0.4.0",
+  "mcu": {
+   "family": "esp32",
+   "target": "esp32s3",
+   "board": "esp32c3-devkitm"
+  },
+  "rtos": "freertos",
+  "drivers": [],
+  "buses": {}
+ },
+ "expect": {
+  "ok": false,
+  "errors": [
+   "CFG-MCU-003"
+  ],
+  "warnings": [],
+  "infos": [
+   "CFG-SET-002"
+  ],
+  "resolved": {
+   "kb_mcu": "ESP32",
+   "kb_rtos": "FREERTOS",
+   "parts": [
+    "utils",
+    "rtos",
+    "interfaces"
+   ],
+   "drivers": [],
+   "buses": {},
+   "pins": {
+    "min": 0,
+    "optional": 0,
+    "budget": 14
+   },
+   "tested_sets": [
+    "kb 2026.1"
+   ]
+  }
+ }
+}

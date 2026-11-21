@@ -1,0 +1,24 @@
+{
+  "catalog": "catalogs/base.json",
+  "description": "ESP-IDF needs FreeRTOS: the none backend is refused on ESP32.",
+  "expect": {
+    "errors": [
+      {
+        "code": "KB-RES-008",
+        "subject": "rtos"
+      }
+    ],
+    "ok": false,
+    "warnings": []
+  },
+  "image": {
+    "kb_core": {
+      "version": "0.4.0"
+    },
+    "mcu": {
+      "family": "esp32"
+    },
+    "rtos": "none",
+    "schema": 1
+  }
+}

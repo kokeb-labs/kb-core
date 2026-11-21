@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kokeb-labs.github.io/kb-core/schemas/driver-yml.schema.json",
+  "title": "driver.yml of a kb driver repository",
+  "description": "What `kb catalog build` reads from each driver at each vX.Y.Z and vX.Y.Z-rc.N tag (handbook KB-REPO-018, ADR-0014). An rc tag carries the version it is a candidate for. SPDX-License-Identifier: MIT. Copyright (c) 2026 The kb-core authors.",
+  "type": "object",
+  "required": [
+    "name",
+    "version",
+    "bus",
+    "mcus"
+  ],
+  "properties": {
+    "name": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+    },
+    "bus": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "enum": [
+          "adc",
+          "can",
+          "canopen",
+          "gpio",
+          "i2c",
+          "modbus",
+          "onewire",
+          "pio",
+          "spi",
+          "uart"
+        ]
+      }
+    },
+    "mcus": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "peripheral": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "kb_core_min": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+        }
+      ]
+    },
+    "authors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "license": {
+      "type": "string",
+      "description": "SPDX id; absent: read from the LICENSE file"
+    },
+    "requires_owner": {
+      "type": "boolean",
+      "description": "Optional. kRequiresOwner: the chip must be on an owner-task bus (ADR-0009)"
+    },
+    "bindings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Optional. The kb-core handler bindings that serve this driver (header names under kb/handlers/bindings/); informative, carried into the catalogue"
+    }
+  }
+}

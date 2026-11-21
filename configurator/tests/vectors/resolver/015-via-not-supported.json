@@ -1,0 +1,64 @@
+{
+ "schema": 1,
+ "name": "via-not-supported",
+ "description": "pf1550 has no SPI interface",
+ "catalog": "../catalog-fixture.json",
+ "image": {
+  "image": "v",
+  "kb_core": "0.4.0",
+  "port": "0.4.0",
+  "mcu": {
+   "family": "esp32",
+   "target": "esp32s3",
+   "board": "esp32s3-devkitc"
+  },
+  "rtos": "freertos",
+  "drivers": [
+   {
+    "name": "pf1550",
+    "version": "0.1.0",
+    "via": "spi",
+    "bus": "spi0"
+   }
+  ],
+  "buses": {
+   "spi0": {
+    "model": "owner"
+   }
+  }
+ },
+ "expect": {
+  "ok": false,
+  "errors": [
+   "CFG-BUS-001"
+  ],
+  "warnings": [
+   "CFG-BUS-008"
+  ],
+  "infos": [
+   "CFG-SET-002"
+  ],
+  "resolved": {
+   "kb_mcu": "ESP32",
+   "kb_rtos": "FREERTOS",
+   "parts": [
+    "utils",
+    "rtos",
+    "interfaces",
+    "handlers"
+   ],
+   "drivers": [
+    "pf1550"
+   ],
+   "buses": {},
+   "pins": {
+    "min": 0,
+    "optional": 0,
+    "budget": 33
+   },
+   "tested_sets": [
+    "kb 2026.1"
+   ]
+  }
+ }
+}

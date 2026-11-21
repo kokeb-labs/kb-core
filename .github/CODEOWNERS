@@ -1,0 +1,6 @@
+# Default reviewers for every path in this repository.
+* @N3b3x
+# Boundary files and deviation records need a second reviewer once one exists (docs/deviations.md).
+/deviations/ @N3b3x
+/components/lib/rtos/backends/ @N3b3x
+/components/ports/ @N3b3x

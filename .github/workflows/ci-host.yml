@@ -1,0 +1,28 @@
+---
+# Own parts at full rigor: configure, build and test with GCC and Clang, then clang-tidy and cppcheck over the same
+# compile database. Calls kokeb-labs/ci-tools ru-host-ci. Only components/lib/ is analysed; driver headers
+# compiled into kb translation units are not reported (each driver's own CI analysed them).
+name: Host
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  host:
+    name: Host build, tests and analysis
+    uses: kokeb-labs/ci-tools/.github/workflows/ru-host-ci.yml@v1
+    permissions:
+      contents: read
+    with:
+      cmake_args: "-DKB_BUILD_TESTS=ON -DKB_BUILD_EXAMPLES=ON -DKB_THREADX_HOST_TESTS=ON"
+      # The pinned driver submodules, for the proofs that the contracts serve their ports
+      # (components/lib/interfaces/tests).
+      submodules: "true"
+      tidy_paths: "^components/lib/"
+      clang_tidy_config: "_config/.clang-tidy"
+      # Driver headers are analysed by each driver's own CI; compile-fail tests are wrong on purpose.
+      exclude_paths: "(^|/)(drivers|compile_fail)/"
+      fail_on_findings: true

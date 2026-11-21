@@ -1,0 +1,85 @@
+{
+ "schema": 1,
+ "name": "i2c-address-resolvable",
+ "description": "Overlapping address ranges that can still be told apart",
+ "catalog": "../catalog-fixture.json",
+ "image": {
+  "image": "v",
+  "kb_core": "0.4.0",
+  "port": "0.4.0",
+  "mcu": {
+   "family": "esp32",
+   "target": "esp32s3",
+   "board": "esp32s3-devkitc"
+  },
+  "rtos": "freertos",
+  "drivers": [
+   {
+    "name": "pca9685",
+    "version": "0.1.0-rc.1",
+    "via": "i2c",
+    "bus": "i2c0"
+   },
+   {
+    "name": "se05x",
+    "version": "0.1.0",
+    "via": "i2c",
+    "bus": "i2c0"
+   }
+  ],
+  "buses": {
+   "i2c0": {
+    "model": "guarded"
+   }
+  }
+ },
+ "expect": {
+  "ok": true,
+  "errors": [],
+  "warnings": [
+   "CFG-RC-001",
+   "CFG-SET-001"
+  ],
+  "infos": [
+   "CFG-BUS-011",
+   "CFG-CVE-002"
+  ],
+  "resolved": {
+   "kb_mcu": "ESP32",
+   "kb_rtos": "FREERTOS",
+   "parts": [
+    "utils",
+    "rtos",
+    "interfaces",
+    "handlers"
+   ],
+   "drivers": [
+    "pca9685",
+    "se05x"
+   ],
+   "buses": {
+    "i2c0": {
+     "kind": "i2c",
+     "via": [
+      "i2c"
+     ],
+     "model": "guarded",
+     "devices": [
+      "pca9685",
+      "se05x"
+     ],
+     "addresses": {
+      "se05x": 72,
+      "pca9685": 64
+     }
+    }
+   },
+   "pins": {
+    "min": 2,
+    "optional": 1,
+    "budget": 33
+   },
+   "tested_sets": []
+  }
+ }
+}

@@ -1,0 +1,83 @@
+{
+ "schema": 1,
+ "name": "uart-mixed-protocols",
+ "description": "One UART cannot run Modbus and a plain serial protocol at once",
+ "catalog": "../catalog-fixture.json",
+ "image": {
+  "image": "v",
+  "kb_core": "0.4.0",
+  "port": "0.4.0",
+  "mcu": {
+   "family": "esp32",
+   "target": "esp32s3",
+   "board": "esp32s3-devkitc"
+  },
+  "rtos": "freertos",
+  "drivers": [
+   {
+    "name": "alicat_basis2",
+    "version": "0.1.0",
+    "via": "modbus",
+    "bus": "uart1"
+   },
+   {
+    "name": "fdo2",
+    "version": "0.1.0",
+    "via": "uart",
+    "bus": "uart1"
+   }
+  ],
+  "buses": {
+   "uart1": {
+    "model": "owner"
+   }
+  }
+ },
+ "expect": {
+  "ok": false,
+  "errors": [
+   "CFG-BUS-004",
+   "CFG-BUS-005"
+  ],
+  "warnings": [
+   "CFG-SET-001"
+  ],
+  "infos": [
+   "CFG-CVE-002"
+  ],
+  "resolved": {
+   "kb_mcu": "ESP32",
+   "kb_rtos": "FREERTOS",
+   "parts": [
+    "utils",
+    "rtos",
+    "interfaces",
+    "handlers"
+   ],
+   "drivers": [
+    "alicat_basis2",
+    "fdo2"
+   ],
+   "buses": {
+    "uart1": {
+     "kind": "uart",
+     "via": [
+      "modbus",
+      "uart"
+     ],
+     "model": "owner",
+     "devices": [
+      "alicat_basis2",
+      "fdo2"
+     ]
+    }
+   },
+   "pins": {
+    "min": 3,
+    "optional": 0,
+    "budget": 33
+   },
+   "tested_sets": []
+  }
+ }
+}

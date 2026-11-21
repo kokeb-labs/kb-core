@@ -1,0 +1,23 @@
+---
+# Documentation: strict MkDocs build, figure and generated-region checks, Doxygen per part under /api/, link check,
+# publish on main and tags. Calls kokeb-labs/ci-tools ru-mkdocs-publish.
+name: Docs
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  docs:
+    uses: kokeb-labs/ci-tools/.github/workflows/ru-mkdocs-publish.yml@v1
+    permissions:
+      contents: write  # the publish job pushes gh-pages; pull requests never publish
+    with:
+      mkdocs_config: _config/mkdocs.yml
+      deploy: true  # publishes to gh-pages on main and tags; pull requests never publish
+      check_commands: |
+        kokeb-docs check
+        python3 tools/docs/check_figures.py
+      doxygen_config: _config/Doxyfile  # paths inside are relative to the root, where Doxygen runs

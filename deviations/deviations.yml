@@ -1,0 +1,80 @@
+---
+# Deviation records of kb-core against MISRA C++:2023 (format: deviations/README.md), read by the MISRA workflow
+# (ci-misra.yml, input repo_deviations). Each record names only boundary files (deviations/boundary-files.yml); a
+# marker in code cites the id at the line it covers.
+deviations:
+  - id: DEV-KBC-001
+    check: misra/Rule 8.2.6
+    where: >-
+      components/lib/rtos/backends/freertos/freertos_boundary.cpp
+      components/lib/rtos/backends/freertos/freertos_isr.cpp
+      components/lib/rtos/backends/none/none_backend.cpp
+      components/lib/rtos/backends/threadx/threadx_boundary.cpp
+    reason: >-
+      An RTOS backend keeps each native object in the opaque, aligned byte storage of its kb object
+      (kb/rtos/backend.hpp) and the native handle as void*, because no RTOS type may appear in kb-core's public
+      headers. Turning that storage or handle back into the native type (StaticSemaphore_t*, QueueHandle_t, the
+      FreeRTOS timer ID and task parameter, the ThreadX control blocks) is a conversion from void* to an object
+      pointer. The FreeRTOS API itself passes contexts as void* (task parameter, timer ID); ThreadX hands out its
+      stack bounds as VOID*, and the running thread is found from its TX_THREAD, the first member of the kb block.
+    mitigation: >-
+      Each conversion is in one small helper per type (Buffer, AsBuffer, Semaphore/Queue/Group/TimerOf, As, the
+      queue copy and TaskEntry; ThreadX: Construct, Block, MessageBytes, ThreadEntry and the stack scan); the
+      storage is only ever written by the same backend's Create, with a
+      static_assert that the native object fits its size and alignment; the link-seam tests (fake kernel) and the
+      none-backend tests exercise every helper; no conversion exists above the backends (the thread entry uses the
+      typed ThreadCore).
+    approved_by: maintainer
+    date: 2026-11-14
+    review_by: 2027-11-14
+  - id: DEV-KBC-002
+    check: misra/Rule 6.7.1
+    where: >-
+      components/lib/rtos/backends/freertos/freertos_boundary.cpp
+      components/lib/rtos/backends/none/none_backend.cpp
+      components/lib/rtos/backends/threadx/threadx_boundary.cpp
+    reason: >-
+      A backend needs one piece of process-wide state that a kernel would hold: the none backend's fake clock and
+      timer table, the FreeRTOS backend's 64-bit extension of the 32-bit tick count, and the ThreadX backend's
+      tick extension, critical-section nesting and timer table (a ThreadX timer callback gets one ULONG, too
+      narrow for a pointer on a 64-bit host). A function-local static
+      is the form with a defined initialisation point (constant initialisation, no static-order dependency).
+    mitigation: >-
+      One object per backend, constant-initialised, reached only through one accessor in an anonymous namespace;
+      the FreeRTOS and ThreadX ones are written only inside a critical section (the ThreadX nesting count with
+      interrupts masked). One read is outside it: a ThreadX timer's expiry reads its own table slot, which was
+      written before the timer could be activated and is never cleared while the timer exists. The ThreadX
+      object-name array is constant after its initialisation. The none backend is single-context by definition.
+    approved_by: maintainer
+    date: 2026-11-14
+    review_by: 2027-11-14
+  - id: DEV-KBC-003
+    check: misra/Rule 21.6.3
+    where: >-
+      components/lib/rtos/backends/none/none_backend.cpp
+    reason: >-
+      The none backend constructs its native objects with placement new in the kb object's opaque storage, the
+      way a kernel's static API constructs a control block in a caller buffer. No memory is allocated.
+    mitigation: >-
+      Placement new into storage whose size and alignment are static_asserted; every native type is trivially
+      destructible, so no destructor is ever owed; one call site (Construct).
+    approved_by: maintainer
+    date: 2026-11-14
+    review_by: 2027-11-14
+  - id: DEV-KBC-004
+    check: misra/Rule 8.2.6
+    where: >-
+      components/lib/interfaces/inc/kb/interfaces/refs.hpp
+    reason: >-
+      ADR-0006 rule 5 makes run-time choice a type-erased *Ref: a context pointer and a constant table of function
+      pointers, because kb-core has no virtual functions. Erasing the implementation type needs the context as
+      void*, and each table entry gets it back as the one type the table was built for. The only library-level
+      deviation (ADR-0011, amendment of 2026-11-14).
+    mitigation: >-
+      One conversion helper (detail::ContextAs<T>, two overloads) in one header, called only from the function
+      tables generated for T; the context and the table are set together by one constructor template constrained
+      by the concept, which static_asserts the concept again, so a context reaches only its own type's functions;
+      every *Ref is static_asserted against its concept and exercised through every member in the host tests.
+    approved_by: owner (2026-11-14)
+    date: 2026-11-14
+    review_by: 2027-11-14

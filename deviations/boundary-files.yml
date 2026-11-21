@@ -1,0 +1,26 @@
+---
+# The only files of kb-core that may include an RTOS header (ADR-0001, design: docs/design/assurance.md). MCU
+# ports keep their own list in components/ports/<mcu>/deviations/boundary-files.yml (ADR-0007). The include checker
+# (tools/include_checker) fails on an SDK or RTOS include anywhere else, and on a listed file that is missing.
+boundary_files:
+  - path: components/lib/rtos/backends/freertos/freertos_boundary.cpp
+    sdk: freertos
+    status: present
+  - path: components/lib/rtos/backends/freertos/freertos_isr.cpp
+    sdk: freertos
+    status: present
+  # The ThreadX backend (ADR-0015): one boundary file; threadx_isr.cpp includes no ThreadX header.
+  - path: components/lib/rtos/backends/threadx/threadx_boundary.cpp
+    sdk: threadx
+    status: present
+  # The test runner of the threaded suite on the real ThreadX kernel (Linux port): it is the kernel's start-up
+  # (tx_kernel_enter, tx_application_define). Test code, outside the MISRA claim.
+  - path: tests/harness/kb_test_main_threadx.cpp
+    sdk: threadx
+    status: present
+  # The RTOS-free backend is the RTOS layer's implementation for builds without a scheduler: it holds the state a
+  # kernel would (one static clock and timer table) and the same opaque-storage conversions, so it is treated as
+  # a boundary file and its findings are recorded like the FreeRTOS ones.
+  - path: components/lib/rtos/backends/none/none_backend.cpp
+    sdk: none
+    status: present

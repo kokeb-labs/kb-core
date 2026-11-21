@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kokeb-labs.github.io/kb-core/schemas/kb-image.schema.json",
+  "title": "kb image selection (kb-image.yml, schema 1)",
+  "description": "The selection one firmware build uses: kb-core version, MCU family and target, port version, RTOS, drivers with optional versions, and the thread model of each bus (ADR-0009, ADR-0014). SPDX-License-Identifier: MIT. Copyright (c) 2026 The kb-core authors.",
+  "type": "object",
+  "required": ["schema", "kb_core", "mcu"],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {"const": 1},
+    "image": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,62}$", "default": "kb-image"},
+    "kb_core": {
+      "type": "object",
+      "required": ["version"],
+      "additionalProperties": false,
+      "properties": {"version": {"type": "string"}}
+    },
+    "mcu": {
+      "type": "object",
+      "required": ["family"],
+      "additionalProperties": false,
+      "properties": {
+        "family": {"type": "string", "examples": ["esp32", "host"]},
+        "target": {"type": "string", "description": "Default: the family's first target", "examples": ["esp32s3"]},
+        "port": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {"version": {"type": "string"}}
+        }
+      }
+    },
+    "rtos": {"type": "string", "description": "Default: the family's default RTOS", "examples": ["freertos", "none"]},
+    "drivers": {
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {"type": "string"},
+          {
+            "type": "object",
+            "required": ["name"],
+            "additionalProperties": false,
+            "properties": {
+              "name": {"type": "string"},
+              "version": {"type": "string", "description": "X.Y.Z or X.Y.Z-rc.N; default: kb-core's pin, else the newest release, else the newest rc"}
+            }
+          }
+        ]
+      }
+    },
+    "buses": {
+      "type": "object",
+      "propertyNames": {"pattern": "^[a-z][a-z0-9_]{0,31}$"},
+      "additionalProperties": {
+        "type": "object",
+        "required": ["model", "devices"],
+        "additionalProperties": false,
+        "properties": {
+          "model": {"enum": ["owner", "guarded"]},
+          "kind": {"enum": ["adc", "can", "canopen", "gpio", "i2c", "modbus", "onewire", "pio", "spi", "uart"],
+                   "description": "Default: from the bus name (i2c0, spi1, uart2, ...)"},
+          "devices": {"type": "array", "items": {"type": "string"}}
+        }
+      }
+    }
+  }
+}

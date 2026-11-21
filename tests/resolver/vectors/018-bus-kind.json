@@ -1,0 +1,51 @@
+{
+  "catalog": "catalogs/base.json",
+  "description": "A chip on a bus kind it does not support, an unknown device, and an unknown explicit kind.",
+  "expect": {
+    "errors": [
+      {
+        "code": "KB-RES-016",
+        "subject": "spi0/ghost"
+      },
+      {
+        "code": "KB-RES-019",
+        "subject": "spi0/pcal9555"
+      },
+      {
+        "code": "KB-RES-023",
+        "subject": "buses.sensors.kind"
+      }
+    ],
+    "ok": false,
+    "warnings": []
+  },
+  "image": {
+    "buses": {
+      "sensors": {
+        "devices": [
+          "bmp581"
+        ],
+        "kind": "i3c",
+        "model": "guarded"
+      },
+      "spi0": {
+        "devices": [
+          "pcal9555",
+          "ghost"
+        ],
+        "model": "owner"
+      }
+    },
+    "drivers": [
+      "pcal9555",
+      "bmp581"
+    ],
+    "kb_core": {
+      "version": "0.4.0"
+    },
+    "mcu": {
+      "family": "esp32"
+    },
+    "schema": 1
+  }
+}

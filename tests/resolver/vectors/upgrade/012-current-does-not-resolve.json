@@ -1,0 +1,34 @@
+{
+  "catalog": "../catalogs/upgrade.json",
+  "description": "The current image must resolve first; its resolver errors are passed on.",
+  "expect": {
+    "errors": [
+      {
+        "code": "KB-RES-009",
+        "subject": "nosuch"
+      },
+      {
+        "code": "KB-UPG-001",
+        "subject": "image"
+      }
+    ],
+    "image": null,
+    "lock": null,
+    "ok": false,
+    "rows": [],
+    "warnings": []
+  },
+  "image": {
+    "drivers": [
+      "nosuch"
+    ],
+    "kb_core": {
+      "version": "0.3.0"
+    },
+    "mcu": {
+      "family": "esp32"
+    },
+    "schema": 1
+  },
+  "options": {}
+}

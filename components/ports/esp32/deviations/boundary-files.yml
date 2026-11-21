@@ -1,0 +1,13 @@
+---
+# The only files of the ESP32 port that may include an ESP-IDF header (ADR-0001, ADR-0007). The include checker
+# fails on such an include anywhere else, and on a listed file that is missing once its status is present.
+boundary_files:
+  - path: components/ports/esp32/src/esp32_bus_boundary.cpp
+    sdk: esp-idf
+    status: planned
+  - path: components/ports/esp32/src/esp32_io_boundary.cpp
+    sdk: esp-idf
+    status: planned
+  - path: components/ports/esp32/src/esp32_time_boundary.cpp
+    sdk: esp-idf
+    status: planned

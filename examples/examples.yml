@@ -1,0 +1,55 @@
+# The example index: the ONE list of kb-core's examples. examples/README.md (the table), the documentation pages that
+# include example source, the configurator catalogue and the CMake build are all checked against it by
+# tools/examples/examples.py (run by tools/preflight.sh, ctest and CI); `examples.py write` regenerates the README
+# table from it.
+#
+# One record per example, flat `key: value` lines:
+#   id        folder name (host) or ESP-IDF app name
+#   kind      host   a program for a PC, in <examples folder>/host/<id>/ with main.cpp, CMakeLists.txt, README.md;
+#                    built with KB_BUILD_EXAMPLES and run as the ctest test example_<id>
+#             esp-idf an ESP-IDF app of a port, in <ports folder>/<port>/examples/main/<source>; listed in that
+#                    port's app_config.yml and built by ci-esp32.yml
+#   parts     kb-core parts it uses
+#   source    the main file, relative to its folder (host) or to the example project's main/ (esp-idf)
+#   doc       the documentation page that shows it, with one snippet include per entry of `snippets`
+#   snippets  the `// --8<-- [start:<name>]` sections of `source` the page includes
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 The kb-core authors
+- id: utils_checks
+  title: "utils: checks"
+  kind: host
+  parts: [utils]
+  source: main.cpp
+  summary: "CRC check values, byte packing, saturating arithmetic and wrap-safe time"
+  doc: docs/parts/utils.md
+  snippets: [checks]
+- id: rtos_thread
+  title: "rtos: thread, queue, timer"
+  kind: host
+  parts: [rtos, utils]
+  source: main.cpp
+  summary: "A CRTP thread on a 10 ms grid, a queue, a mutex, event flags, a timer, a sleep (std::thread backend)"
+  doc: docs/parts/rtos.md
+  snippets: [objects, checks]
+- id: interfaces_fakes
+  title: "interfaces: fake I2C bus"
+  kind: host
+  parts: [interfaces]
+  source: main.cpp
+  summary: "A register-file device on the fake I2C bus: write, write-read, a missing device, an injected fault"
+  doc: docs/parts/interfaces.md
+  snippets: [checks]
+- id: kb_utils_smoke
+  title: "utils on ESP32"
+  kind: esp-idf
+  port: esp32
+  parts: [utils]
+  source: kb_utils_smoke.cpp
+  summary: "The utils_checks checks on a target, logged once"
+- id: kb_rtos_smoke
+  title: "rtos on ESP32"
+  kind: esp-idf
+  port: esp32
+  parts: [rtos, utils]
+  source: kb_rtos_smoke.cpp
+  summary: "The rtos_thread checks over FreeRTOS on a target, logged once"

@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="782" viewBox="0 0 1200 782" role="img" aria-labelledby="handler-health-title handler-health-desc" font-family="Inter, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
+<title id="handler-health-title">Handler lifecycle and health</title>
+<desc id="handler-health-desc">State machine: Unknown to Starting to Ready; Ready and Degraded swap on a failing and a passing call; Starting, Degraded and Ready can go to Faulted; Faulted goes to Recovering and back to Ready or Faulted; Deinitialize returns Ready or Faulted to Unknown.</desc>
+<defs><marker id="fk-arrow-amber-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#FBBF24"/></marker><marker id="fk-arrow-green-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#4ADE80"/></marker><marker id="fk-arrow-ink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#E8EDF3"/></marker><marker id="fk-arrow-rail" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#6C7889"/></marker><marker id="fk-arrow-rose-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#FB7185"/></marker><marker id="fk-arrow-violet-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#A78BFA"/></marker></defs>
+<rect x="0.5" y="0.5" width="1199" height="781" rx="16" fill="#0E131A" stroke="#283241"/>
+<text x="32" y="44" font-size="12.5" font-weight="700" letter-spacing="1.2" fill="#F8D27A">HANDLERS</text>
+<text x="32" y="77.3" font-size="26" font-weight="700" fill="#E8EDF3">Handler lifecycle and health</text>
+<text x="32" y="103.8" font-size="15" fill="#9AA6B5">Only EnsureInitialized, StartStep, Deinitialize and Recover change the lifecycle. A call never starts or restarts the chip.</text>
+<rect x="32" y="119.8" width="1136" height="1" fill="#252F3C"/>
+<path d="M17 259.8 L29 259.8" fill="none" stroke="#E8EDF3" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-ink)"/>
+<path d="M225 259.8 L345 259.8" fill="none" stroke="#6C7889" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rail)"/>
+<path d="M431 203.8 L431 193.8 Q431 185.8 439 185.8 L447 185.8 Q455 185.8 455 193.8 L455 203.8" fill="none" stroke="#6C7889" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rail)"/>
+<path d="M541 259.8 L661 259.8" fill="none" stroke="#4ADE80" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-green-strong)"/>
+<path d="M857 237.8 L975 237.8" fill="none" stroke="#FBBF24" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-amber-strong)"/>
+<path d="M975 281.8 L857 281.8" fill="none" stroke="#4ADE80" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-green-strong)"/>
+<path d="M403 314.8 L403 464.8" fill="none" stroke="#FB7185" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rose-strong)"/>
+<path d="M699 314.8 L699 419.8 Q699 427.8 691 427.8 L491 427.8 Q483 427.8 483 435.8 L483 464.8" fill="none" stroke="#FB7185" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rose-strong)"/>
+<path d="M1073 314.8 L1073 607.8 Q1073 615.8 1065 615.8 L451 615.8 Q443 615.8 443 607.8 L443 574.8" fill="none" stroke="#FB7185" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rose-strong)"/>
+<path d="M541 499.8 L661 499.8" fill="none" stroke="#A78BFA" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-violet-strong)"/>
+<path d="M661 539.8 L541 539.8" fill="none" stroke="#FB7185" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rose-strong)"/>
+<path d="M779 464.8 L779 314.8" fill="none" stroke="#4ADE80" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-green-strong)"/>
+<path d="M759 204.8 L759 181.8 Q759 173.8 751 173.8 L135 173.8 Q127 173.8 127 181.8 L127 204.8" fill="none" stroke="#6C7889" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rail)"/>
+<path d="M345 519.8 L135 519.8 Q127 519.8 127 511.8 L127 314.8" fill="none" stroke="#6C7889" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rail)"/>
+<rect x="32" y="207.8" width="190" height="104" rx="10" fill="#1B232E" stroke="#94A3B8" stroke-width="1.4"/>
+<rect x="32" y="215.8" width="4" height="88" rx="2" fill="#94A3B8"/>
+<rect x="348" y="207.8" width="190" height="104" rx="10" fill="#2C2310" stroke="#FBBF24" stroke-width="1.4"/>
+<rect x="348" y="215.8" width="4" height="88" rx="2" fill="#FBBF24"/>
+<rect x="664" y="207.8" width="190" height="104" rx="10" fill="#11281A" stroke="#4ADE80" stroke-width="1.4"/>
+<rect x="664" y="215.8" width="4" height="88" rx="2" fill="#4ADE80"/>
+<rect x="978" y="207.8" width="190" height="104" rx="10" fill="#2C2310" stroke="#FBBF24" stroke-width="1.4"/>
+<rect x="978" y="215.8" width="4" height="88" rx="2" fill="#FBBF24"/>
+<rect x="348" y="467.8" width="190" height="104" rx="10" fill="#321820" stroke="#FB7185" stroke-width="1.4"/>
+<rect x="348" y="475.8" width="4" height="88" rx="2" fill="#FB7185"/>
+<rect x="664" y="467.8" width="190" height="104" rx="10" fill="#221A3A" stroke="#A78BFA" stroke-width="1.4"/>
+<rect x="664" y="475.8" width="4" height="88" rx="2" fill="#A78BFA"/>
+<circle cx="10" cy="259.8" r="7" fill="#E8EDF3"/>
+<rect x="32" y="641.8" width="1136" height="79.3" rx="10" fill="#1B232E" stroke="#3A4656" stroke-width="1"/>
+<text x="52" y="234.6" font-size="15" font-weight="700" fill="#E2E8F0">Unknown</text>
+<text x="52" y="259.4" font-size="13" fill="#D2DAE4">constructed, no I/O</text>
+<text x="368" y="234.6" font-size="15" font-weight="700" fill="#FDE68A">Starting</text>
+<text x="368" y="259.4" font-size="13" fill="#D2DAE4">walks the declared</text>
+<text x="368" y="278.2" font-size="13" fill="#D2DAE4">stages</text>
+<text x="684" y="234.6" font-size="15" font-weight="700" fill="#BBF7D0">Ready</text>
+<text x="684" y="259.4" font-size="13" fill="#D2DAE4">all calls allowed</text>
+<text x="998" y="234.6" font-size="15" font-weight="700" fill="#FDE68A">Degraded</text>
+<text x="998" y="259.4" font-size="13" fill="#D2DAE4">a call failed, below</text>
+<text x="998" y="278.2" font-size="13" fill="#D2DAE4">fault_after</text>
+<text x="368" y="494.6" font-size="15" font-weight="700" fill="#FECDD3">Faulted</text>
+<text x="368" y="519.4" font-size="13" fill="#D2DAE4">chip lost or fault_after</text>
+<text x="368" y="538.2" font-size="13" fill="#D2DAE4">reached</text>
+<text x="684" y="494.6" font-size="15" font-weight="700" fill="#DDD6FE">Recovering</text>
+<text x="684" y="519.4" font-size="13" fill="#D2DAE4">Recover() running, with</text>
+<text x="684" y="538.2" font-size="13" fill="#D2DAE4">backoff</text>
+<rect x="265.2" y="249.8" width="39.7" height="20" rx="10" fill="#0E131A"/>
+<text x="285" y="264.1" font-size="12" font-weight="500" text-anchor="middle" fill="#9AA6B5">start</text>
+<rect x="405.2" y="161.8" width="75.7" height="20" rx="10" fill="#0E131A"/>
+<text x="443" y="176.1" font-size="12" font-weight="500" text-anchor="middle" fill="#9AA6B5">next stage</text>
+<rect x="556.5" y="249.8" width="88.9" height="20" rx="10" fill="#0E131A"/>
+<text x="601" y="264.1" font-size="12" font-weight="500" text-anchor="middle" fill="#9AA6B5">last stage ok</text>
+<rect x="885.2" y="227.8" width="61.7" height="20" rx="10" fill="#0E131A"/>
+<text x="916" y="242.1" font-size="12" font-weight="500" text-anchor="middle" fill="#9AA6B5">call fails</text>
+<rect x="890.4" y="271.8" width="51.2" height="20" rx="10" fill="#0E131A"/>
+<text x="916" y="286.1" font-size="12" font-weight="500" text-anchor="middle" fill="#9AA6B5">call ok</text>
+<rect x="303.8" y="379.8" width="74.5" height="20" rx="10" fill="#0E131A"/>
+<text x="341" y="394.1" font-size="12" font-weight="500" text-anchor="middle" fill="#9AA6B5">stage fails</text>
+<rect x="637.8" y="417.8" width="72.1" height="20" rx="10" fill="#0E131A"/>
+<text x="673.9" y="432.1" font-size="12" font-weight="500" text-anchor="middle" fill="#9AA6B5">fatal error</text>
+<rect x="776.8" y="605.8" width="125.3" height="20" rx="10" fill="#0E131A"/>
+<text x="839.4" y="620.1" font-size="12" font-weight="500" text-anchor="middle" fill="#9AA6B5">fault_after in a row</text>
+<rect x="565.1" y="489.8" width="71.8" height="20" rx="10" fill="#0E131A"/>
+<text x="601" y="504.1" font-size="12" font-weight="500" text-anchor="middle" fill="#9AA6B5">Recover()</text>
+<rect x="582.3" y="529.8" width="37.3" height="20" rx="10" fill="#0E131A"/>
+<text x="601" y="544.1" font-size="12" font-weight="500" text-anchor="middle" fill="#9AA6B5">fails</text>
+<rect x="787.6" y="379.8" width="26.8" height="20" rx="10" fill="#0E131A"/>
+<text x="801" y="394.1" font-size="12" font-weight="500" text-anchor="middle" fill="#9AA6B5">ok</text>
+<rect x="399.1" y="163.8" width="87.8" height="20" rx="10" fill="#0E131A"/>
+<text x="443" y="178.1" font-size="12" font-weight="500" text-anchor="middle" fill="#9AA6B5">Deinitialize()</text>
+<rect x="110.7" y="509.8" width="87.8" height="20" rx="10" fill="#0E131A"/>
+<text x="154.7" y="524.1" font-size="12" font-weight="500" text-anchor="middle" fill="#9AA6B5">Deinitialize()</text>
+<text x="46" y="668.5" font-size="15" font-weight="700" fill="#E2E8F0">Details</text>
+<text x="46" y="686.3" font-size="13" fill="#E2E8F0">Recovery backoff doubles on each failure and the handler refuses Recover() after max_attempts. A failed start leaves the driver destroyed and the next start begins again</text>
+<text x="46" y="705.2" font-size="13" fill="#E2E8F0">from the first stage.</text>
+<rect x="32" y="736.5" width="14" height="14" rx="4" fill="#1B232E" stroke="#94A3B8" stroke-width="1.4"/>
+<text x="54" y="748.2" font-size="12.5" fill="#9AA6B5">not started</text>
+<rect x="145.8" y="736.5" width="14" height="14" rx="4" fill="#2C2310" stroke="#FBBF24" stroke-width="1.4"/>
+<text x="167.8" y="748.2" font-size="12.5" fill="#9AA6B5">in progress or degraded</text>
+<rect x="343.1" y="736.5" width="14" height="14" rx="4" fill="#11281A" stroke="#4ADE80" stroke-width="1.4"/>
+<text x="365.1" y="748.2" font-size="12.5" fill="#9AA6B5">healthy</text>
+<rect x="434.9" y="736.5" width="14" height="14" rx="4" fill="#321820" stroke="#FB7185" stroke-width="1.4"/>
+<text x="456.9" y="748.2" font-size="12.5" fill="#9AA6B5">failed</text>
+<rect x="515.5" y="736.5" width="14" height="14" rx="4" fill="#221A3A" stroke="#A78BFA" stroke-width="1.4"/>
+<text x="537.5" y="748.2" font-size="12.5" fill="#9AA6B5">recovering</text>
+</svg>

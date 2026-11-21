@@ -1,0 +1,419 @@
+{
+  "catalog": "../catalogs/upgrade.json",
+  "description": "With release candidates allowed, kb-core moves to its rc, which also releases the held driver version 1.0.0 (a new major).",
+  "expect": {
+    "errors": [],
+    "files": {
+      "CMakePresets.json": "{\n  \"configurePresets\": [\n    {\n      \"binaryDir\": \"${sourceDir}/build/old-board\",\n      \"cacheVariables\": {\n        \"KB_DRIVER_BMP581_DIR\": \"${sourceDir}/external/drivers/driver-bmp581\",\n        \"KB_DRIVER_TMC5160_DIR\": \"${sourceDir}/external/drivers/driver-tmc5160\",\n        \"KB_DRIVER_WS2812_RMT_DIR\": \"${sourceDir}/external/drivers/driver-ws2812-rmt\",\n        \"KB_ENABLE_BMP581\": \"ON\",\n        \"KB_ENABLE_TMC5160\": \"ON\",\n        \"KB_ENABLE_WS2812_RMT\": \"ON\",\n        \"KB_MCU\": \"ESP32\",\n        \"KB_PARTS\": \"utils;rtos;interfaces;handlers\",\n        \"KB_RTOS\": \"FREERTOS\"\n      },\n      \"displayName\": \"kb image old-board\",\n      \"name\": \"old-board\"\n    }\n  ],\n  \"version\": 6\n}\n",
+      "kb-fetch.sh": "#!/bin/sh\n# kb-fetch.sh: adds kb-core, the MCU port and the drivers of the image \"old-board\" to this git repository as\n# submodules under external/, each checked out at its tag (a kb-core development revision: at its commit) and\n# verified against the commit in kb-image.lock.yml (ADR-0012, ADR-0014). A tag that moved is refused. No branch\n# is recorded in .gitmodules and nothing is fetched recursively. Rerunning it is safe. Written by kb resolve.\n#\n#   sh kb-fetch.sh            add or update every pin\n#   sh kb-fetch.sh --verify   only check that every submodule is at its pinned commit\nset -eu\n\nmode=add\nif [ \"${1:-}\" = \"--verify\" ]; then mode=verify; fi\ntop=$(git rev-parse --show-toplevel 2>/dev/null) || { echo \"kb-fetch: run this inside a git repository\" >&2; exit 1; }\ncd \"$top\"\n\ndie() {\n  printf 'kb-fetch: error: %s\\n' \"$*\" >&2\n  exit 1\n}\n\n# pin <path> <url> <tag, empty for a commit pin> <commit>\npin() {\n  path=$1 url=$2 tag=$3 want=$4\n  if [ \"$mode\" = verify ]; then\n    [ -e \"$path/.git\" ] || die \"$path is missing; run without --verify\"\n  else\n    if [ ! -e \"$path/.git\" ]; then\n      git submodule add --quiet \"$url\" \"$path\" || die \"cannot add $url\"\n    fi\n    if [ -n \"$tag\" ]; then\n      git -C \"$path\" fetch --quiet origin \"+refs/tags/$tag:refs/tags/$tag\" || die \"cannot fetch $tag of $url\"\n      got=$(git -C \"$path\" rev-parse \"refs/tags/$tag^{commit}\")\n      [ \"$got\" = \"$want\" ] || die \"$path: tag $tag points at $got, expected $want (the tag moved; it is not used)\"\n    else\n      git -C \"$path\" fetch --quiet origin \"$want\" || die \"cannot fetch commit $want of $url\"\n    fi\n    git -C \"$path\" -c advice.detachedHead=false checkout --quiet \"$want\"\n    git config -f .gitmodules --unset \"submodule.$path.branch\" 2>/dev/null || true\n    git add .gitmodules \"$path\"\n  fi\n  head=$(git -C \"$path\" rev-parse HEAD)\n  [ \"$head\" = \"$want\" ] || die \"$path is at $head, expected $want\"\n  printf 'kb-fetch: %s at %s (%s)\\n' \"$path\" \"${tag:-commit}\" \"$want\"\n}\n\n# kb-core 0.5.0-rc.1\npin 'external/kb-core' 'https://github.com/kokeb-labs/kb-core.git' 'v0.5.0-rc.1' 'ff2bb4fa96924d1e608b3bff414cc082fdd6812d'\n# driver bmp581 1.0.0\npin 'external/drivers/driver-bmp581' 'https://github.com/kokeb-labs-drivers/driver-bmp581.git' 'v1.0.0' '9ae5346bc12d999cd27f7bd0dbfac08632df2ea6'\n# driver tmc5160 0.1.0\npin 'external/drivers/driver-tmc5160' 'https://github.com/kokeb-labs-drivers/driver-tmc5160.git' 'v0.1.0' '87805bc54d9e54be18e00ac217f56679adb2b5da'\n# driver ws2812_rmt 0.1.0\npin 'external/drivers/driver-ws2812-rmt' 'https://github.com/kokeb-labs-drivers/driver-ws2812-rmt.git' 'v0.1.0' 'a775db4aa67269f7329d7f4a0a21ce3f24900247'\n\nif [ \"$mode\" = add ]; then\n  echo \"kb-fetch: done; review with git status and commit the submodules\"\nfi\n",
+      "kb-image.lock.yml": "# kb image lock (schema 1), written by kb resolve: do not edit.\n{\n  \"buses\": [\n    {\n      \"devices\": [\n        \"bmp581\"\n      ],\n      \"kind\": \"i2c\",\n      \"model\": \"guarded\",\n      \"name\": \"i2c0\"\n    },\n    {\n      \"devices\": [\n        \"ws2812_rmt\"\n      ],\n      \"kind\": \"pio\",\n      \"model\": \"owner\",\n      \"name\": \"pio0\"\n    },\n    {\n      \"devices\": [\n        \"tmc5160\"\n      ],\n      \"kind\": \"spi\",\n      \"model\": \"owner\",\n      \"name\": \"spi2\"\n    }\n  ],\n  \"cmake\": {\n    \"KB_ENABLE_BMP581\": \"ON\",\n    \"KB_ENABLE_TMC5160\": \"ON\",\n    \"KB_ENABLE_WS2812_RMT\": \"ON\",\n    \"KB_MCU\": \"ESP32\",\n    \"KB_PARTS\": \"utils;rtos;interfaces;handlers\",\n    \"KB_RTOS\": \"FREERTOS\"\n  },\n  \"drivers\": [\n    {\n      \"authors\": [\n        \"The driver-bmp581 authors\"\n      ],\n      \"commit\": \"9ae5346bc12d999cd27f7bd0dbfac08632df2ea6\",\n      \"folder\": \"driver-bmp581\",\n      \"kind\": \"release\",\n      \"license\": \"MIT\",\n      \"name\": \"bmp581\",\n      \"repo\": \"kokeb-labs-drivers/driver-bmp581\",\n      \"tag\": \"v1.0.0\",\n      \"version\": \"1.0.0\"\n    },\n    {\n      \"authors\": [\n        \"The driver-tmc5160 authors\"\n      ],\n      \"commit\": \"87805bc54d9e54be18e00ac217f56679adb2b5da\",\n      \"folder\": \"driver-tmc5160\",\n      \"kind\": \"release\",\n      \"license\": \"MIT\",\n      \"name\": \"tmc5160\",\n      \"repo\": \"kokeb-labs-drivers/driver-tmc5160\",\n      \"tag\": \"v0.1.0\",\n      \"version\": \"0.1.0\"\n    },\n    {\n      \"authors\": [\n        \"The driver-ws2812-rmt authors\"\n      ],\n      \"commit\": \"a775db4aa67269f7329d7f4a0a21ce3f24900247\",\n      \"folder\": \"driver-ws2812-rmt\",\n      \"kind\": \"release\",\n      \"license\": \"MIT\",\n      \"name\": \"ws2812_rmt\",\n      \"repo\": \"kokeb-labs-drivers/driver-ws2812-rmt\",\n      \"tag\": \"v0.1.0\",\n      \"version\": \"0.1.0\"\n    }\n  ],\n  \"image\": \"old-board\",\n  \"kb_core\": {\n    \"authors\": [\n      \"The kb-core authors\"\n    ],\n    \"commit\": \"ff2bb4fa96924d1e608b3bff414cc082fdd6812d\",\n    \"kind\": \"rc\",\n    \"license\": \"MIT\",\n    \"repo\": \"kokeb-labs/kb-core\",\n    \"tag\": \"v0.5.0-rc.1\",\n    \"version\": \"0.5.0-rc.1\"\n  },\n  \"mcu\": {\n    \"family\": \"esp32\",\n    \"target\": \"esp32s3\"\n  },\n  \"parts\": [\n    \"utils\",\n    \"rtos\",\n    \"interfaces\",\n    \"handlers\"\n  ],\n  \"ports\": [\n    {\n      \"commit\": \"ff2bb4fa96924d1e608b3bff414cc082fdd6812d\",\n      \"in_tree\": true,\n      \"name\": \"esp32\",\n      \"path\": \"components/ports/esp32\"\n    }\n  ],\n  \"rtos\": \"freertos\",\n  \"schema\": 1\n}\n",
+      "kb-image.yml": "# kb-image.yml: the selection of one firmware build (schema 1, docs/design/assembler.md).\n# Written by an upgrade (kb upgrade or the configurator); resolve it with: kb resolve kb-image.yml\nschema: 1\nimage: \"old-board\"\nkb_core: {version: \"0.5.0-rc.1\"}\nmcu: {family: \"esp32\", target: \"esp32s3\"}\ndrivers:\n  - {name: \"bmp581\", version: \"1.0.0\"}\n  - {name: \"tmc5160\", version: \"0.1.0\"}\n  - {name: \"ws2812_rmt\", version: \"0.1.0\"}\nbuses:\n  i2c0: {model: \"guarded\", devices: [\"bmp581\"]}\n  pio0: {model: \"owner\", devices: [\"ws2812_rmt\"]}\n  spi2: {model: \"owner\", devices: [\"tmc5160\"]}\n",
+      "kb-upgrade.md": "# Upgrade report: old-board\n\nkb-core 0.3.0 to 0.5.0-rc.1, MCU esp32/esp32s3, RTOS freertos. Release candidates allowed.\n\n3 of 4 component(s) change.\n\n| Component | From | To | Change | Breaking | Newest release | Newer rc | Known vulnerabilities |\n| --- | --- | --- | --- | --- | --- | --- | --- |\n| kb-core | 0.3.0 | 0.5.0-rc.1 | minor | yes | 0.4.1 | 0.5.0-rc.1 | GHSA-kb03-0001 -> not scanned |\n| bmp581 | 0.1.0 | 1.0.0 | major | yes | 1.0.0 | - | CVE-2026-0001 -> not scanned |\n| tmc5160 | 0.1.0-rc.1 | 0.1.0 | prerelease | no | 0.1.0 | - | not scanned -> not scanned |\n| ws2812_rmt | 0.1.0 | 0.1.0 | none | no | 0.2.0 | - | not scanned |\n\n## Breaking changes\n\n- kb-core 0.3.0 -> 0.5.0-rc.1: read its release notes and CHANGELOG before building: https://github.com/kokeb-labs/kb-core/releases/tag/v0.5.0-rc.1\n- bmp581 0.1.0 -> 1.0.0: read its release notes and CHANGELOG before building: https://github.com/kokeb-labs-drivers/driver-bmp581/releases/tag/v1.0.0\n\n## Held back\n\n- ws2812_rmt 0.2.0: needs another MCU family (KB-RES-013)\n\n## Known vulnerabilities\n\n- none known in the scanned components\n- not scanned: kb-core, bmp581, tmc5160, ws2812_rmt\n\n## Warnings\n\n- KB-RES-W01 kb-core: release candidate\n- KB-UPG-W01 bmp581: breaking change\n- KB-UPG-W01 kb-core: breaking change\n- KB-UPG-W02 ws2812_rmt: newer version held back\n\n## Next steps\n\n1. Review the changes to `kb-image.yml` and `kb-image.lock.yml` with `git diff`.\n2. Run `sh kb-fetch.sh` to move every submodule to its new tag, then build and run your tests.\n3. Check the compatibility of the new set: a tested version set, or an untested combination.\n",
+      "kb_image.cmake": "# kb image old-board: written by kb resolve from kb-image.yml (schema 1); do not edit.\n# kb-core 0.5.0-rc.1 at ff2bb4fa96924d1e608b3bff414cc082fdd6812d, MCU esp32/esp32s3, RTOS freertos.\nset(KB_MCU \"ESP32\")\nset(KB_RTOS \"FREERTOS\")\nset(KB_PARTS \"utils;rtos;interfaces;handlers\")\nset(KB_ENABLE_BMP581 ON)\nset(KB_ENABLE_TMC5160 ON)\nset(KB_ENABLE_WS2812_RMT ON)\nset(KB_DRIVER_BMP581_DIR \"${CMAKE_CURRENT_LIST_DIR}/external/drivers/driver-bmp581\")\nset(KB_DRIVER_TMC5160_DIR \"${CMAKE_CURRENT_LIST_DIR}/external/drivers/driver-tmc5160\")\nset(KB_DRIVER_WS2812_RMT_DIR \"${CMAKE_CURRENT_LIST_DIR}/external/drivers/driver-ws2812-rmt\")\n"
+    },
+    "image": {
+      "buses": {
+        "i2c0": {
+          "devices": [
+            "bmp581"
+          ],
+          "model": "guarded"
+        },
+        "pio0": {
+          "devices": [
+            "ws2812_rmt"
+          ],
+          "model": "owner"
+        },
+        "spi2": {
+          "devices": [
+            "tmc5160"
+          ],
+          "model": "owner"
+        }
+      },
+      "drivers": [
+        {
+          "name": "bmp581",
+          "version": "1.0.0"
+        },
+        {
+          "name": "tmc5160",
+          "version": "0.1.0"
+        },
+        {
+          "name": "ws2812_rmt",
+          "version": "0.1.0"
+        }
+      ],
+      "image": "old-board",
+      "kb_core": {
+        "version": "0.5.0-rc.1"
+      },
+      "mcu": {
+        "family": "esp32",
+        "target": "esp32s3"
+      },
+      "schema": 1
+    },
+    "lock": {
+      "buses": [
+        {
+          "devices": [
+            "bmp581"
+          ],
+          "kind": "i2c",
+          "model": "guarded",
+          "name": "i2c0"
+        },
+        {
+          "devices": [
+            "ws2812_rmt"
+          ],
+          "kind": "pio",
+          "model": "owner",
+          "name": "pio0"
+        },
+        {
+          "devices": [
+            "tmc5160"
+          ],
+          "kind": "spi",
+          "model": "owner",
+          "name": "spi2"
+        }
+      ],
+      "cmake": {
+        "KB_ENABLE_BMP581": "ON",
+        "KB_ENABLE_TMC5160": "ON",
+        "KB_ENABLE_WS2812_RMT": "ON",
+        "KB_MCU": "ESP32",
+        "KB_PARTS": "utils;rtos;interfaces;handlers",
+        "KB_RTOS": "FREERTOS"
+      },
+      "drivers": [
+        {
+          "authors": [
+            "The driver-bmp581 authors"
+          ],
+          "commit": "9ae5346bc12d999cd27f7bd0dbfac08632df2ea6",
+          "folder": "driver-bmp581",
+          "kind": "release",
+          "license": "MIT",
+          "name": "bmp581",
+          "repo": "kokeb-labs-drivers/driver-bmp581",
+          "tag": "v1.0.0",
+          "version": "1.0.0"
+        },
+        {
+          "authors": [
+            "The driver-tmc5160 authors"
+          ],
+          "commit": "87805bc54d9e54be18e00ac217f56679adb2b5da",
+          "folder": "driver-tmc5160",
+          "kind": "release",
+          "license": "MIT",
+          "name": "tmc5160",
+          "repo": "kokeb-labs-drivers/driver-tmc5160",
+          "tag": "v0.1.0",
+          "version": "0.1.0"
+        },
+        {
+          "authors": [
+            "The driver-ws2812-rmt authors"
+          ],
+          "commit": "a775db4aa67269f7329d7f4a0a21ce3f24900247",
+          "folder": "driver-ws2812-rmt",
+          "kind": "release",
+          "license": "MIT",
+          "name": "ws2812_rmt",
+          "repo": "kokeb-labs-drivers/driver-ws2812-rmt",
+          "tag": "v0.1.0",
+          "version": "0.1.0"
+        }
+      ],
+      "image": "old-board",
+      "kb_core": {
+        "authors": [
+          "The kb-core authors"
+        ],
+        "commit": "ff2bb4fa96924d1e608b3bff414cc082fdd6812d",
+        "kind": "rc",
+        "license": "MIT",
+        "repo": "kokeb-labs/kb-core",
+        "tag": "v0.5.0-rc.1",
+        "version": "0.5.0-rc.1"
+      },
+      "mcu": {
+        "family": "esp32",
+        "target": "esp32s3"
+      },
+      "parts": [
+        "utils",
+        "rtos",
+        "interfaces",
+        "handlers"
+      ],
+      "ports": [
+        {
+          "commit": "ff2bb4fa96924d1e608b3bff414cc082fdd6812d",
+          "in_tree": true,
+          "name": "esp32",
+          "path": "components/ports/esp32"
+        }
+      ],
+      "rtos": "freertos",
+      "schema": 1
+    },
+    "ok": true,
+    "rows": [
+      {
+        "breaking": true,
+        "change": "minor",
+        "fixed": [],
+        "from": "0.3.0",
+        "from_kind": "release",
+        "held": [],
+        "kind": "kb-core",
+        "lock_differs": false,
+        "name": "kb-core",
+        "newest_rc": "0.5.0-rc.1",
+        "newest_release": "0.4.1",
+        "notes": "https://github.com/kokeb-labs/kb-core/releases/tag/v0.5.0-rc.1",
+        "osv_from": [
+          "GHSA-kb03-0001"
+        ],
+        "osv_to": null,
+        "to": "0.5.0-rc.1",
+        "to_kind": "rc"
+      },
+      {
+        "breaking": true,
+        "change": "major",
+        "fixed": [],
+        "from": "0.1.0",
+        "from_kind": "release",
+        "held": [],
+        "kind": "driver",
+        "lock_differs": false,
+        "name": "bmp581",
+        "newest_rc": null,
+        "newest_release": "1.0.0",
+        "notes": "https://github.com/kokeb-labs-drivers/driver-bmp581/releases/tag/v1.0.0",
+        "osv_from": [
+          "CVE-2026-0001"
+        ],
+        "osv_to": null,
+        "to": "1.0.0",
+        "to_kind": "release"
+      },
+      {
+        "breaking": false,
+        "change": "prerelease",
+        "fixed": [],
+        "from": "0.1.0-rc.1",
+        "from_kind": "rc",
+        "held": [],
+        "kind": "driver",
+        "lock_differs": false,
+        "name": "tmc5160",
+        "newest_rc": null,
+        "newest_release": "0.1.0",
+        "notes": "https://github.com/kokeb-labs-drivers/driver-tmc5160/releases/tag/v0.1.0",
+        "osv_from": null,
+        "osv_to": null,
+        "to": "0.1.0",
+        "to_kind": "release"
+      },
+      {
+        "breaking": false,
+        "change": "none",
+        "fixed": [],
+        "from": "0.1.0",
+        "from_kind": "release",
+        "held": [
+          {
+            "code": "KB-RES-013",
+            "version": "0.2.0"
+          }
+        ],
+        "kind": "driver",
+        "lock_differs": false,
+        "name": "ws2812_rmt",
+        "newest_rc": null,
+        "newest_release": "0.2.0",
+        "notes": null,
+        "osv_from": null,
+        "osv_to": null,
+        "to": "0.1.0",
+        "to_kind": "release"
+      }
+    ],
+    "warnings": [
+      {
+        "code": "KB-RES-W01",
+        "subject": "kb-core"
+      },
+      {
+        "code": "KB-UPG-W01",
+        "subject": "bmp581"
+      },
+      {
+        "code": "KB-UPG-W01",
+        "subject": "kb-core"
+      },
+      {
+        "code": "KB-UPG-W02",
+        "subject": "ws2812_rmt"
+      }
+    ]
+  },
+  "image": {
+    "buses": {
+      "i2c0": {
+        "devices": [
+          "bmp581"
+        ],
+        "model": "guarded"
+      },
+      "pio0": {
+        "devices": [
+          "ws2812_rmt"
+        ],
+        "model": "owner"
+      },
+      "spi2": {
+        "devices": [
+          "tmc5160"
+        ],
+        "model": "owner"
+      }
+    },
+    "drivers": [
+      "bmp581",
+      "tmc5160",
+      "ws2812_rmt"
+    ],
+    "image": "old-board",
+    "kb_core": {
+      "version": "0.3.0"
+    },
+    "mcu": {
+      "family": "esp32",
+      "target": "esp32s3"
+    },
+    "schema": 1
+  },
+  "lock": {
+    "buses": [
+      {
+        "devices": [
+          "bmp581"
+        ],
+        "kind": "i2c",
+        "model": "guarded",
+        "name": "i2c0"
+      },
+      {
+        "devices": [
+          "ws2812_rmt"
+        ],
+        "kind": "pio",
+        "model": "owner",
+        "name": "pio0"
+      },
+      {
+        "devices": [
+          "tmc5160"
+        ],
+        "kind": "spi",
+        "model": "owner",
+        "name": "spi2"
+      }
+    ],
+    "cmake": {
+      "KB_ENABLE_BMP581": "ON",
+      "KB_ENABLE_TMC5160": "ON",
+      "KB_ENABLE_WS2812_RMT": "ON",
+      "KB_MCU": "ESP32",
+      "KB_PARTS": "utils;rtos;interfaces;handlers",
+      "KB_RTOS": "FREERTOS"
+    },
+    "drivers": [
+      {
+        "authors": [
+          "The driver-bmp581 authors"
+        ],
+        "commit": "87f441c106d3d39767cda106455416d8a9c43316",
+        "folder": "driver-bmp581",
+        "kind": "release",
+        "license": "MIT",
+        "name": "bmp581",
+        "repo": "kokeb-labs-drivers/driver-bmp581",
+        "tag": "v0.1.0",
+        "version": "0.1.0"
+      },
+      {
+        "authors": [
+          "The driver-tmc5160 authors"
+        ],
+        "commit": "e1bffe1b5f57ebbd68505a3eee334e4271ef335c",
+        "folder": "driver-tmc5160",
+        "kind": "rc",
+        "license": "MIT",
+        "name": "tmc5160",
+        "repo": "kokeb-labs-drivers/driver-tmc5160",
+        "tag": "v0.1.0-rc.1",
+        "version": "0.1.0-rc.1"
+      },
+      {
+        "authors": [
+          "The driver-ws2812-rmt authors"
+        ],
+        "commit": "a775db4aa67269f7329d7f4a0a21ce3f24900247",
+        "folder": "driver-ws2812-rmt",
+        "kind": "release",
+        "license": "MIT",
+        "name": "ws2812_rmt",
+        "repo": "kokeb-labs-drivers/driver-ws2812-rmt",
+        "tag": "v0.1.0",
+        "version": "0.1.0"
+      }
+    ],
+    "image": "old-board",
+    "kb_core": {
+      "authors": [
+        "The kb-core authors"
+      ],
+      "commit": "1db0b82914767ef3059455486bc204393bcef314",
+      "kind": "release",
+      "license": "MIT",
+      "repo": "kokeb-labs/kb-core",
+      "tag": "v0.3.0",
+      "version": "0.3.0"
+    },
+    "mcu": {
+      "family": "esp32",
+      "target": "esp32s3"
+    },
+    "parts": [
+      "utils",
+      "rtos",
+      "interfaces",
+      "handlers"
+    ],
+    "ports": [
+      {
+        "commit": "1db0b82914767ef3059455486bc204393bcef314",
+        "in_tree": true,
+        "name": "esp32",
+        "path": "components/ports/esp32"
+      }
+    ],
+    "rtos": "freertos",
+    "schema": 1
+  },
+  "options": {
+    "allow_rc": true
+  }
+}

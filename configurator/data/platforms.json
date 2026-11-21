@@ -1,0 +1,107 @@
+{
+  "_comment": "Input of tools/build_catalog.py: MCU families, targets, boards, RTOS backends, bus kinds and kb-core facts that no driver.yml carries. Peripheral counts are the general-purpose instances a port can hand to drivers (from the vendor's SoC capability tables); usable_gpio is an approximate count for the named board and null where it is not known.",
+  "kb_core": {
+    "repo": "kokeb-labs/kb-core",
+    "url": "https://github.com/kokeb-labs/kb-core.git",
+    "parts": ["utils", "rtos", "interfaces", "handlers"]
+  },
+  "rtos": [
+    {"id": "freertos", "label": "FreeRTOS", "kb_rtos": "FREERTOS", "status": "supported"},
+    {"id": "threadx", "label": "ThreadX (Eclipse ThreadX)", "kb_rtos": "THREADX", "status": "supported"},
+    {"id": "none", "label": "None (bare metal, one context)", "kb_rtos": "NONE", "status": "supported"},
+    {"id": "host", "label": "Host threads (std::thread)", "kb_rtos": "HOST", "status": "supported"}
+  ],
+  "bus_kinds": {
+    "i2c":     {"instance": "i2c",  "shared": true,  "bus_pins": 2, "pins_per_device": 0, "default_model": "guarded", "label": "I2C"},
+    "spi":     {"instance": "spi",  "shared": true,  "bus_pins": 3, "pins_per_device": 1, "default_model": "owner",   "label": "SPI"},
+    "uart":    {"instance": "uart", "shared": false, "bus_pins": 2, "pins_per_device": 0, "default_model": "owner",   "label": "UART"},
+    "modbus":  {"instance": "uart", "shared": true,  "bus_pins": 3, "pins_per_device": 0, "default_model": "owner",   "label": "Modbus RTU (UART, RS-485)"},
+    "can":     {"instance": "can",  "shared": true,  "bus_pins": 2, "pins_per_device": 0, "default_model": "owner",   "label": "CAN"},
+    "canopen": {"instance": "can",  "shared": true,  "bus_pins": 2, "pins_per_device": 0, "default_model": "owner",   "label": "CANopen (CAN)"},
+    "adc":     {"instance": "adc",  "shared": true,  "bus_pins": 0, "pins_per_device": 1, "default_model": "guarded", "label": "ADC channel"},
+    "pio":     {"instance": "pio",  "shared": false, "bus_pins": 1, "pins_per_device": 0, "default_model": "owner",   "label": "Timed pulse output (PIO, RMT on ESP32)"},
+    "gpio":    {"instance": "gpio", "shared": true,  "bus_pins": 0, "pins_per_device": 1, "default_model": "guarded", "label": "GPIO"}
+  },
+  "families": [
+    {
+      "id": "esp32",
+      "label": "ESP32 (ESP-IDF)",
+      "kb_mcu": "ESP32",
+      "status": "supported",
+      "rtos": ["freertos"],
+      "default_rtos": "freertos",
+      "rtos_note": "ESP-IDF runs FreeRTOS; no other backend is possible on this family.",
+      "port": {"name": "esp32", "repo": "kokeb-labs-drivers/port-esp32", "url": "https://github.com/kokeb-labs-drivers/port-esp32.git", "path": "components/ports/esp32"},
+      "targets": [
+        {"id": "esp32",   "label": "ESP32",    "buses": {"i2c": 2, "spi": 2, "uart": 3, "can": 1, "pio": 8, "adc": 18, "gpio": 34}},
+        {"id": "esp32s2", "label": "ESP32-S2", "buses": {"i2c": 2, "spi": 2, "uart": 2, "can": 1, "pio": 4, "adc": 20, "gpio": 43}},
+        {"id": "esp32s3", "label": "ESP32-S3", "buses": {"i2c": 2, "spi": 2, "uart": 3, "can": 1, "pio": 4, "adc": 20, "gpio": 45}},
+        {"id": "esp32c3", "label": "ESP32-C3", "buses": {"i2c": 1, "spi": 1, "uart": 2, "can": 1, "pio": 2, "adc": 6,  "gpio": 22}},
+        {"id": "esp32c5", "label": "ESP32-C5",  "buses": {"i2c": 1, "spi": 1, "uart": 2, "can": 2, "pio": 2, "adc": 6,  "gpio": 29}},
+        {"id": "esp32c6", "label": "ESP32-C6", "buses": {"i2c": 1, "spi": 1, "uart": 2, "can": 2, "pio": 2, "adc": 7,  "gpio": 31}},
+        {"id": "esp32h2", "label": "ESP32-H2", "buses": {"i2c": 2, "spi": 1, "uart": 2, "can": 1, "pio": 2, "adc": 5,  "gpio": 28}},
+        {"id": "esp32p4", "label": "ESP32-P4", "buses": {"i2c": 2, "spi": 2, "uart": 5, "can": 3, "pio": 4, "adc": 14, "gpio": 55}}
+      ],
+      "boards": [
+        {"id": "generic-esp32",   "label": "Any ESP32 module",          "target": "esp32",   "usable_gpio": null},
+        {"id": "esp32-devkitc",   "label": "ESP32-DevKitC",             "target": "esp32",   "usable_gpio": 26},
+        {"id": "generic-esp32s3", "label": "Any ESP32-S3 module",       "target": "esp32s3", "usable_gpio": null},
+        {"id": "esp32s3-devkitc", "label": "ESP32-S3-DevKitC-1",        "target": "esp32s3", "usable_gpio": 33},
+        {"id": "generic-esp32s2", "label": "Any ESP32-S2 module",       "target": "esp32s2", "usable_gpio": null},
+        {"id": "generic-esp32c3", "label": "Any ESP32-C3 module",       "target": "esp32c3", "usable_gpio": null},
+        {"id": "esp32c3-devkitm", "label": "ESP32-C3-DevKitM-1",        "target": "esp32c3", "usable_gpio": 14},
+        {"id": "generic-esp32c6", "label": "Any ESP32-C6 module",       "target": "esp32c6", "usable_gpio": null},
+        {"id": "esp32c6-devkitc", "label": "ESP32-C6-DevKitC-1",        "target": "esp32c6", "usable_gpio": 21},
+        {"id": "generic-esp32c5", "label": "Any ESP32-C5 module",       "target": "esp32c5", "usable_gpio": null},
+        {"id": "generic-esp32h2", "label": "Any ESP32-H2 module",       "target": "esp32h2", "usable_gpio": null},
+        {"id": "generic-esp32p4", "label": "Any ESP32-P4 module",       "target": "esp32p4", "usable_gpio": null}
+      ]
+    },
+    {
+      "id": "stm32",
+      "label": "STM32 (STM32Cube)",
+      "kb_mcu": "STM32",
+      "status": "planned",
+      "rtos": ["freertos", "threadx", "none"],
+      "default_rtos": "freertos",
+      "rtos_note": "STM32Cube offers FreeRTOS and ThreadX; bare metal is possible.",
+      "port": null,
+      "port_planned": "kokeb-labs-drivers/port-stm32",
+      "targets": [
+        {"id": "stm32f4", "label": "STM32F4", "buses": {"i2c": 3, "spi": 4, "uart": 6, "can": 2, "pio": 0, "adc": 16, "gpio": 50}},
+        {"id": "stm32g4", "label": "STM32G4", "buses": {"i2c": 4, "spi": 3, "uart": 5, "can": 3, "pio": 0, "adc": 16, "gpio": 52}},
+        {"id": "stm32h7", "label": "STM32H7", "buses": {"i2c": 4, "spi": 6, "uart": 8, "can": 2, "pio": 0, "adc": 20, "gpio": 114}},
+        {"id": "stm32l4", "label": "STM32L4", "buses": {"i2c": 3, "spi": 3, "uart": 5, "can": 1, "pio": 0, "adc": 16, "gpio": 51}},
+        {"id": "stm32u5", "label": "STM32U5", "buses": {"i2c": 4, "spi": 3, "uart": 5, "can": 1, "pio": 0, "adc": 20, "gpio": 110}}
+      ],
+      "boards": [
+        {"id": "nucleo-f446re",  "label": "NUCLEO-F446RE",  "target": "stm32f4", "usable_gpio": null},
+        {"id": "nucleo-g474re",  "label": "NUCLEO-G474RE",  "target": "stm32g4", "usable_gpio": null},
+        {"id": "nucleo-h743zi",  "label": "NUCLEO-H743ZI",  "target": "stm32h7", "usable_gpio": null},
+        {"id": "nucleo-l476rg",  "label": "NUCLEO-L476RG",  "target": "stm32l4", "usable_gpio": null},
+        {"id": "nucleo-u575zi",  "label": "NUCLEO-U575ZI-Q", "target": "stm32u5", "usable_gpio": null}
+      ]
+    },
+    {
+      "id": "host",
+      "label": "Host (Linux, macOS, Windows)",
+      "kb_mcu": "HOST",
+      "status": "supported",
+      "rtos": ["host", "none"],
+      "default_rtos": "none",
+      "rtos_note": "The host port is kb-core's test doubles with fault injection; the host backend runs std::thread.",
+      "port": {"name": "host", "repo": "kokeb-labs/kb-core", "url": "https://github.com/kokeb-labs/kb-core.git", "path": "components/lib/interfaces/host"},
+      "targets": [
+        {"id": "host", "label": "Host computer", "buses": {"i2c": 8, "spi": 8, "uart": 8, "can": 8, "pio": 8, "adc": 64, "gpio": null}}
+      ],
+      "boards": [
+        {"id": "host", "label": "Host computer (simulated buses)", "target": "host", "usable_gpio": null}
+      ]
+    }
+  ],
+  "bindings": {
+    "_comment": "Facts of kb-core's handler bindings (kb/handlers/bindings/<chip>.hpp) until the catalogue job reads them from a kb-core release.",
+    "bno08x": {"requires_owner": true},
+    "canopen_client": {"requires_owner": true}
+  }
+}

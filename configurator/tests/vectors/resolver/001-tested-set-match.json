@@ -1,0 +1,84 @@
+{
+ "schema": 1,
+ "name": "tested-set-match",
+ "description": "Two I2C drivers in a tested set: no error, no warning, the addresses get set apart",
+ "catalog": "../catalog-fixture.json",
+ "image": {
+  "image": "v",
+  "kb_core": "0.4.0",
+  "port": "0.4.0",
+  "mcu": {
+   "family": "esp32",
+   "target": "esp32s3",
+   "board": "esp32s3-devkitc"
+  },
+  "rtos": "freertos",
+  "drivers": [
+   {
+    "name": "bmp581",
+    "version": "0.1.0",
+    "via": "i2c",
+    "bus": "i2c0"
+   },
+   {
+    "name": "pf1550",
+    "version": "0.1.0",
+    "via": "i2c",
+    "bus": "i2c0"
+   }
+  ],
+  "buses": {
+   "i2c0": {
+    "model": "guarded"
+   }
+  }
+ },
+ "expect": {
+  "ok": true,
+  "errors": [],
+  "warnings": [],
+  "infos": [
+   "CFG-BUS-011",
+   "CFG-SET-002"
+  ],
+  "resolved": {
+   "kb_mcu": "ESP32",
+   "kb_rtos": "FREERTOS",
+   "parts": [
+    "utils",
+    "rtos",
+    "interfaces",
+    "handlers"
+   ],
+   "drivers": [
+    "bmp581",
+    "pf1550"
+   ],
+   "buses": {
+    "i2c0": {
+     "kind": "i2c",
+     "via": [
+      "i2c"
+     ],
+     "model": "guarded",
+     "devices": [
+      "bmp581",
+      "pf1550"
+     ],
+     "addresses": {
+      "bmp581": 70,
+      "pf1550": 8
+     }
+    }
+   },
+   "pins": {
+    "min": 2,
+    "optional": 2,
+    "budget": 33
+   },
+   "tested_sets": [
+    "kb 2026.1"
+   ]
+  }
+ }
+}

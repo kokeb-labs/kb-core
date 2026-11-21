@@ -1,0 +1,33 @@
+---
+# DCO, the org standard, Markdown and YAML lint, the handbook check (kind library, level high), template drift of
+# the shared files (.kokeb/template.yml) and cppcheck of components/lib/, as steps of one job. Calls kokeb-labs/ci-tools
+# ru-repo-checks.
+name: Repository checks
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    name: Repository checks
+    uses: kokeb-labs/ci-tools/.github/workflows/ru-repo-checks.yml@v1
+    permissions:
+      contents: read
+      pull-requests: read
+    with:
+      markdown_globs: 'docs/** *.md **/*.md #components/drivers #third_party #components/ports/esp32/examples/scripts'
+      markdown_config_file: '_config/.markdownlint.json'
+      yaml_paths: '.github/workflows/*.yml,**/*.yml,**/*.yaml'
+      yaml_config_file: '_config/.yamllint'
+      yaml_exclude_patterns: '.git/**,venv/**,.venv/**,components/drivers/**,third_party/**,components/ports/esp32/examples/scripts/**'
+      cppcheck_paths: "components/lib"
+      # Compile-fail tests are wrong on purpose (they must not build).
+      cppcheck_exclude: >-
+        components/lib/utils/tests/compile_fail components/lib/rtos/tests/compile_fail
+        components/lib/interfaces/tests/compile_fail components/lib/handlers/tests/compile_fail
+        components/lib/dma/tests/compile_fail
+      cppcheck_std: "c++20"
+      cppcheck_strict: true

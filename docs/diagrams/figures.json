@@ -1,0 +1,204 @@
+{
+  "assembler-flow": {
+    "title": "From tags to a project",
+    "alt": "Driver and kb-core tags feed kb catalog build, which writes catalog.json; the resolver reads it and kb-image.yml and writes the lock and the project files; kb sbom turns the lock into SBOMs.",
+    "description": "Left to right. kb catalog build reads each driver's driver.yml at its tags and the kb-core tags with their platform table and pins, and writes catalog.json. The resolver, one specification with a Python and a JavaScript implementation, reads kb-image.yml and the catalogue and writes the lock kb-image.lock.yml and three project files: CMakePresets.json, kb_image.cmake and kb-fetch.sh. kb sbom turns the lock into CycloneDX 1.6 and SPDX 2.3 documents.",
+    "profile": "detail",
+    "width": 1200,
+    "source": "docs/diagrams/figures/assembler-flow.py",
+    "sources": []
+  },
+  "async-poll": {
+    "title": "One asynchronous read",
+    "alt": "Sequence: the owner task starts a read through the poller and the port in pass n; the poller polls and gets Pending; the interrupt completes the transfer; in pass n+1 the poll returns Done with the byte count and the completion is Ok. Past the deadline the result is Timeout; Cancel releases the buffers.",
+    "description": "The owner task starts the transfer in one service pass and collects the result in a later one; no pass waits. AsyncPoller owns the buffers and asks the port to start; a Poll in the next pass reports Pending until the peripheral interrupt has set the owner's event flag and the transfer is complete, then Done with the count. Past the deadline the result is Done with Timeout, late data included; Cancel makes the poller Idle and releases the buffers.",
+    "profile": "detail",
+    "width": 1200,
+    "source": "docs/diagrams/figures/async-poll.py",
+    "sources": []
+  },
+  "bus-hold": {
+    "title": "Held transactions",
+    "alt": "Two side by side models. Guarded bus: task X takes the handler mutex, then the bus mutex, and makes several calls while task Y's plain request waits or times out. Owner bus: the owner task takes the hold between passes and runs inline calls; the service pass reports Busy while the hold is held.",
+    "description": "On a guarded bus a task takes the handler mutex first and then the bus mutex, both bounded, and holds the bus for several calls with nothing in between; another task's plain request waits (bounded) or times out. On an owner bus the owner task takes the hold between passes, which never waits, and runs inline calls for several handlers; the service pass reports Busy while the hold is held and the violation is counted.",
+    "profile": "detail",
+    "width": 1200,
+    "source": "docs/diagrams/figures/bus-hold.py",
+    "sources": []
+  },
+  "call-sequence": {
+    "title": "One call through the layers",
+    "alt": "Sequence: the HAL calls a guarded handler, which locks and calls the pf1550 driver; the driver calls the kb binding's WriteRead, which calls the ESP32 I2C device; results return the same way. Only the I2C device knows it is an ESP32.",
+    "description": "A HAL reads a register of a PF1550 power IC. The HAL calls the guarded handler (its bus is declared guarded), which takes the handler lock and then the bus lock, both bounded, and calls the driver. The driver calls its own WriteRead hook, implemented by the kb binding, which calls the ESP32 I2C device of the port. The port answers ok or an I2cFailure (AddressNack, DataNack, Bus, Timeout, BusStuck); the binding returns a bool and keeps the failure for GetLastFailure; the driver returns its Result; the handler returns a kb::Result carrying the driver's error in detail. Only the last step knows it runs on an ESP32.",
+    "profile": "detail",
+    "width": 1200,
+    "source": "docs/diagrams/figures/call-sequence.py",
+    "sources": []
+  },
+  "ci-flow": {
+    "title": "The CI flow",
+    "alt": "Flow: local preflight, then a pull request; always-run checks, path-gated checks and the drivers that are never re-run feed one required gate; a tag then produces the release assets and a schedule re-scans them.",
+    "description": "From the left. Every change first passes tools/preflight.sh on a workstation, then reaches CI as a pull request or push. Always run: repository checks, layering, layout and examples, own parts, MISRA and pin hygiene. Run when the paths match, and on main and tags: quality, integration, the ESP-IDF port job and the catalogue. Never re-run for components/drivers: the drivers' own tests, which are trusted through pin hygiene. Everything ends in one required gate; a tag adds the release assets, and a schedule re-scans releases for known vulnerabilities.",
+    "profile": "detail",
+    "width": 1200,
+    "source": "docs/diagrams/figures/ci-flow.py",
+    "sources": []
+  },
+  "components-map": {
+    "title": "Parts, ports and drivers",
+    "alt": "Map of the repository: the lib parts utils, rtos, interfaces and handlers, each depending on the next down; MCU ports that satisfy the interface contracts; and the pinned drivers that handlers bind.",
+    "description": "Three bands read from the folders of the repository, so the figure cannot drift. components/lib holds the parts: kb::utils at the bottom, kb::rtos on it, kb::interfaces on that, and kb::handlers on top. components/ports holds the MCU ports, which satisfy the interface contracts (the host port is for tests). components/drivers holds the pinned drivers, each a submodule at a release tag; kb::handlers binds them and nothing else may use them.",
+    "profile": "detail",
+    "width": 1200,
+    "source": "docs/diagrams/figures/components-map.py",
+    "sources": [
+      "components/lib",
+      "components/ports",
+      "components/drivers"
+    ]
+  },
+  "dependency-rules": {
+    "title": "Which layer may depend on which",
+    "alt": "Two lists of dependency arrows between layers. Allowed: twelve, from the application down to kb::utils. Forbidden: seven, each labelled with the check that catches it.",
+    "description": "Two columns. On the left, the allowed dependencies: the application uses the board HAL, kb::rtos and kb::utils; the board HAL uses kb::handlers, kb::interfaces and one MCU port; the MCU port uses installed interface headers and, in boundary files, the vendor SDK; handlers use drivers and interfaces; interfaces use kb::rtos; kb::rtos uses kb::utils. On the right, the forbidden dependencies, each with the check that catches it: the application using interfaces or the SDK directly, handlers using the SDK or an MCU port, interfaces using an MCU port, a driver using kb::utils, and kb::utils using kb::rtos.",
+    "profile": "detail",
+    "width": 1200,
+    "source": "docs/diagrams/figures/dependency-rules.py",
+    "sources": []
+  },
+  "dma-lease": {
+    "title": "Ownership of a DMA buffer",
+    "alt": "State machine with the states Cpu, Device and Quarantined: Lend moves a buffer from Cpu to Device, Complete or a proven Abort returns it to Cpu, an unproven Abort moves it to Quarantined, and Recover with proof returns it to Cpu.",
+    "description": "Three states. A buffer is constructed in Cpu: static, line-aligned and padded. Lend moves it from Cpu to Device after the owned cache lines are cleaned or invalidated and a barrier ran. Complete moves it from Device back to Cpu after a receive is invalidated and a barrier ran. Abort with proof that the bus master stopped also returns it to Cpu. Abort without proof, or a lease destroyed while the device owns the buffer, moves it from Device to Quarantined. Recover with proof, after the peripheral was re-initialised, moves it from Quarantined to Cpu. In Quarantined a Lend is refused with a Fault and the CPU view is empty. Only the port holds the key that moves a buffer between states (ADR-0030).",
+    "profile": "detail",
+    "width": 1200,
+    "source": "docs/diagrams/figures/dma-lease.py",
+    "sources": []
+  },
+  "dma-stream": {
+    "title": "The DMA copy-out stream",
+    "alt": "Flow: the DMA ring raises an interrupt that copies each finished frame into a slot; the task takes a slot as a FrameView, a content check feeds the supervisor, which can switch to a declared fallback producer; a full ring drops the frame and flags the next one with Gap.",
+    "description": "Two rows of three steps. The DMA ring in the buffer holds two halves or N frames. A half or complete interrupt makes PublishFromDevice invalidate the lines, copy the finished frame out and stamp a sequence number, a time and a torn flag. It copies into a slot of a ring of at least two slots; when every slot is held the frame is dropped, counted as Full, and the next frame carries Gap(). The task takes a slot with TryTake and reads it through a move-only FrameView that releases on its end. Judge checks the content, and Supervise answers None, Restart, BackOff or UseFallback. EnterFallback switches to the declared fallback producer, whose frames carry Fallback(). The ring is never lent to the task (ADR-0031).",
+    "profile": "detail",
+    "width": 1200,
+    "source": "docs/diagrams/figures/dma-stream.py",
+    "sources": []
+  },
+  "fault-journal": {
+    "title": "Fault evidence path",
+    "alt": "Flow: handler health edges and the liveness verdict go to the health journal, which appends one record to a CRC-checked ring in a port-provided store that survives a reset; the boot reset reason is recorded too; the watchdog is kicked only when nothing is stale; after a reset Open finds the newest record.",
+    "description": "Handler health is read lock-free and only its edges go to the HealthJournal. The LivenessMonitor's verdict goes there too, and the watchdog owner is kicked only when nothing is stale. The journal appends with one bounded store write into a FaultJournal ring of 32-byte CRC-32 records with a sequence number; at boot the port's reset reason is recorded. The store (RTC or no-init RAM, NVS, FRAM, flash) belongs to the port; after a reset Open() finds the newest record and skips a torn slot.",
+    "profile": "detail",
+    "width": 1200,
+    "source": "docs/diagrams/figures/fault-journal.py",
+    "sources": []
+  },
+  "generator-flow": {
+    "title": "Generators and the configurator",
+    "alt": "Three columns. Inputs: driver.yml files, the release lock, evidence, tested version sets and later board.yml. Middle: the kb command line and the configurator site, both using one resolver. Outputs: kb-image.yml, git commands, CMake presets, evidence for the selection and later a project archive.",
+    "description": "Left to right. Inputs are single sources published with each kb-core release: each pinned driver's driver.yml, the release lock with its tags and SHAs, the evidence (SBOM, CVE scan, licence report), the tested version sets and, later, board.yml. One resolver specification has two front ends, the kb command line and the static configurator site; it resolves drivers to handlers to interfaces to parts, applies the MCU gates, kb_core_min and the thread model per bus. It produces byte-for-byte repeatable downloads: kb-image.yml, git commands, a CMake presets fragment with kb_image.cmake, the evidence for the selection and, later, a project archive.",
+    "profile": "detail",
+    "width": 1200,
+    "source": "docs/diagrams/figures/generator-flow.py",
+    "sources": []
+  },
+  "handler-health": {
+    "title": "Handler lifecycle and health",
+    "alt": "State machine: Unknown to Starting to Ready; Ready and Degraded swap on a failing and a passing call; Starting, Degraded and Ready can go to Faulted; Faulted goes to Recovering and back to Ready or Faulted; Deinitialize returns Ready or Faulted to Unknown.",
+    "description": "Seven states. A handler starts Unknown (constructed, no I/O). EnsureInitialized or StartStep moves it to Starting, which walks the declared stages, each bounded by its deadline; the last stage makes it Ready. A failing call makes a Ready handler Degraded until the next call succeeds; fault_after failures in a row, or one fatal error (the chip reset or lost its state), make it Faulted. Recover() moves Faulted to Recovering with a backoff that doubles on each failure and is refused after max_attempts. Deinitialize() returns Ready or Faulted to Unknown. Only EnsureInitialized, StartStep, Deinitialize and Recover change the lifecycle: calls never start or restart the chip.",
+    "profile": "detail",
+    "width": 1200,
+    "source": "docs/diagrams/figures/handler-health.py",
+    "sources": []
+  },
+  "handler-pieces": {
+    "title": "The pieces of a handler",
+    "alt": "Stack: a HAL manager calls an access facade, OwnerAccess or Guarded; the facade calls the handler core with a service key and owns the bus domain; the core holds the start-up runner, health, snapshot and liveness beat and builds the driver, which reaches the HAL's bus through the binding's port and the kb::iface contract.",
+    "description": "Top to bottom. A HAL manager or application task calls an access facade with EnsureStarted, Request, Sample, Latest or Health; there is one facade per handler, chosen by the bus's thread model: OwnerAccess (request queue and a lock-free snapshot) or Guarded (handler lock, then bus lock). Only a facade can make the ServiceKey that the handler core needs. The core, HandlerCore of the handler, the driver, the snapshot, the command and the reply, holds the start-up plan runner, the health record, the snapshot and a liveness beat. It builds the driver in a std::optional; the driver reaches the bus through the binding's Port, hooks over the kb::iface contract that the HAL supplies. The facade also owns the BusDomain of its bus.",
+    "profile": "detail",
+    "width": 1200,
+    "source": "docs/diagrams/figures/handler-pieces.py",
+    "sources": []
+  },
+  "handler-startup": {
+    "title": "The handler start-up pipeline",
+    "alt": "Pipeline of eight start-up stages in order, Power, HostReset, Boot, Link, Identify, Secure, Configure and Verify, ending in Ready; beside it the plans of most drivers, the bno08x and the se05x, each using only some of the stages.",
+    "description": "One runner and a declared plan of stages per chip, in a fixed order: Power, HostReset, Boot, Link, Identify, Secure, Configure, Verify, then Ready. A plan lists only the stages its chip needs; an optional stage is skipped when the HAL supplies no pin, rail or key for it. Every stage is synchronous or polled, and bounded by a deadline. Most drivers declare one step that calls the driver's EnsureInitialized. The bno08x resets and boots with polled steps; the se05x sets platform keys, opens the secure link and optionally checks the lifecycle state.",
+    "profile": "detail",
+    "width": 1200,
+    "source": "docs/diagrams/figures/handler-startup.py",
+    "sources": []
+  },
+  "handler-threading": {
+    "title": "Handler thread models",
+    "alt": "Two side by side models. Owner task: other tasks read a lock-free snapshot or post requests to a queue that the owner task publishes to and drains, and the owner task steps the handlers on an unlocked bus domain. Guarded facade: tasks call a guarded handler that takes the handler lock then a bounded bus lock.",
+    "description": "Two models, declared per bus; callers on other tasks use one access API in both. In the owner-task model, one real-time task calls Service(now) at a fixed rate, steps the single-threaded handlers on a bus domain without a mutex, publishes each step to a lock-free seqlock snapshot and drains a bounded command queue. Other tasks read the latest snapshot (a lock-free copy) or post a request and wait with a timeout. In the guarded model, each calling task takes the handler lock and then, within a bounded wait, the bus lock of a mutex-protected bus domain. An interrupt service routine only sets event flags or notifies the owner task.",
+    "profile": "detail",
+    "width": 1200,
+    "source": "docs/diagrams/figures/handler-threading.py",
+    "sources": []
+  },
+  "layer-stack": {
+    "title": "The layer stack",
+    "alt": "Layer stack, top to bottom: the product application; the board HAL repository; kb-core with kb::handlers, kb::interfaces, kb::rtos and kb::utils, each depending on the next; below it the drivers used by handlers, the MCU ports that satisfy the interface contracts, and the vendor SOUP reached only through boundary files.",
+    "description": "From top to bottom. The product application calls the board HAL. The board HAL talks to kb::handlers and picks one MCU port; handlers use the driver of each chip and the interface contracts, the contracts rest on kb::rtos, and kb::rtos rests on kb::utils. The MCU port satisfies the interface contracts and touches the vendor SDK in its boundary files only; the RTOS backends touch the kernel in theirs. The vendor SDK, kernels and mbedTLS are SOUP: never analysed, never edited.",
+    "profile": "detail",
+    "width": 1200,
+    "source": "docs/diagrams/figures/layer-stack.py",
+    "sources": []
+  },
+  "misra-scope": {
+    "title": "MISRA C++:2023 scope",
+    "alt": "Four zones from strongest claim to none: kb-core own code claimed compliant with zero deviations; boundary files compliant with recorded deviations; drivers covered by their own evidence; SOUP out of scope and never reported.",
+    "description": "Four zones, from strongest claim to none. kb-core's own code under components/lib is claimed compliant with zero repository deviations: utils, interface contracts and host port, the rtos public API, and handlers with bindings. Boundary files, the RTOS backends' and the ports' files that touch vendor code, are compliant with recorded deviations. Each driver at its pinned tag is covered by its own MISRA run at level high. SOUP (ESP-IDF, STM32 HAL, FreeRTOS, ThreadX, mbedTLS) is out of scope, listed with versions, included with -isystem and never reported.",
+    "profile": "detail",
+    "width": 1200,
+    "source": "docs/diagrams/figures/misra-scope.py",
+    "sources": []
+  },
+  "repo-family": {
+    "title": "The kb repository family",
+    "alt": "Repository graph with consumers on top: the product application uses a product board HAL, which uses kb-hal-common and an MCU port; both depend on kb-core, which pins the drivers. The configurator reads kb-core releases and fills the application template; tested version sets list sets of kb-core.",
+    "description": "Five levels, consumers on top. A product organisation owns the product application and its board HAL. The kokeb-labs organisation holds kb-core (utils, rtos, interfaces, handlers and the driver pins), kb-hal-common (shared HAL bases), the reference board HALs and, planned, the configurator, an application template and tested version sets. The kokeb-labs-drivers organisation holds each driver and each MCU port. The board HAL builds on kb-hal-common and one port; both rest on kb-core, which pins the drivers. The configurator reads kb-core releases and fills the application template. Only kb-core exists today; the other names are planned.",
+    "profile": "detail",
+    "width": 1200,
+    "source": "docs/diagrams/figures/repo-family.py",
+    "sources": []
+  },
+  "roadmap": {
+    "title": "Phase roadmap",
+    "alt": "Two rows of four phases, M0 to M7, in order: decisions, utils, rtos, interfaces, ESP32 port and bindings, handler rollout, breadth and generators, each with its exit criteria.",
+    "description": "Eight phases, M0 to M7, in order; there are no calendar dates, each phase ends on its exit criteria. M0 fixes decisions and guardrails. M1 to M3 deliver kb::utils, kb::rtos and kb::interfaces, each with MISRA zero findings, the coverage floor, the mutation gate and fuzzing. M4 adds the ESP32 port and the first bindings. M5 rolls out handlers for all drivers, simplest to hardest. M6 adds breadth: a second port, the ThreadX backend, tested version sets and release evidence in the configurator. M7 adds the generators: pin tables from board.yml, a project archive and HIL in CI.",
+    "profile": "detail",
+    "width": 1200,
+    "source": "docs/diagrams/figures/roadmap.py",
+    "sources": []
+  },
+  "rtos-backends": {
+    "title": "kb::rtos backends",
+    "alt": "The kb::rtos API reaches one backend through a single seam: none, FreeRTOS, host (tests only) or ThreadX; FreeRTOS and ThreadX reach their kernel, which is SOUP, through boundary files and are tested on fake kernels.",
+    "description": "One API, one seam, four backends. The kb::rtos API (components/lib/rtos/inc) reaches a backend through kb::rtos::backend (backend.hpp). The none backend is for host tests and bare-metal bring-up; FreeRTOS and ThreadX each have boundary files that reach the kernel, which is SOUP, either a product's copy or the pinned or ESP-IDF one; the host backend (std::thread) is for tests only. FreeRTOS and ThreadX tests run against a fake kernel.",
+    "profile": "detail",
+    "width": 1200,
+    "source": "docs/diagrams/figures/rtos-backends.py",
+    "sources": []
+  },
+  "rtos-threadx": {
+    "title": "The ThreadX backend",
+    "alt": "The kb::rtos API and seam lead to two ThreadX backend files; the boundary file reaches the ThreadX kernel, which comes either from a product's copy or the pinned submodule; tests run it on a fake kernel and on the Linux port.",
+    "description": "The kb::rtos API reaches the seam, kb::rtos::backend. The ThreadX backend is two files: threadx_isr.cpp, where every FromIsr call is the same call with TX_NO_WAIT, and threadx_boundary.cpp, the only boundary file, which creates ThreadX objects on kb-owned control blocks and stacks. The kernel is SOUP and never edited; it comes from a product's copy (KB_THREADX_INCLUDE_DIRS, for STM32Cube or a vendor SDK) or from the pinned submodule third_party/threadx at a release tag, with KB_THREADX_PORT choosing cortex_m0, cortex_m4, cortex_m7 or linux. Tests run the boundary on a fake kernel (contract and seam, exact ticks) and, on the pinned kernel's Linux port, as a threaded suite with priority inheritance.",
+    "profile": "detail",
+    "width": 1200,
+    "source": "docs/diagrams/figures/rtos-threadx.py",
+    "sources": []
+  },
+  "update-path": {
+    "title": "The update path",
+    "alt": "Five steps: read the lock, catalogue and image; order kb-core, port and drivers; apply the driver gates and hold back what fails; write one row per component; write the new image, lock, CMake files, fetch script and report, then review, fetch, build and test.",
+    "description": "Left to right. kb outdated, or the configurator's Open an existing project view, plans from the current lock, the catalogue and the image: kb-core moves first, then an extracted port, then each driver in name order. Each candidate must pass the driver gates in order (MCU family, kb_core_min, owner-task rule, bus kind in use); a newer version that fails is held back with the code of its first failing gate. The plan lists one row per component with the SemVer change, whether it breaks, and known vulnerabilities fixed and remaining. kb upgrade writes a new image and lock, the CMake files, the fetch script and kb-upgrade.md; the user reviews the diff and runs the fetch script, builds and tests.",
+    "profile": "detail",
+    "width": 1200,
+    "source": "docs/diagrams/figures/update-path.py",
+    "sources": []
+  }
+}

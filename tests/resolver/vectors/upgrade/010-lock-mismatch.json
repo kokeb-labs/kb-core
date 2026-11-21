@@ -1,0 +1,159 @@
+{
+  "catalog": "../catalogs/upgrade.json",
+  "description": "A lock that does not belong to the image is refused, every difference named.",
+  "expect": {
+    "errors": [
+      {
+        "code": "KB-UPG-002",
+        "subject": "bmp581"
+      },
+      {
+        "code": "KB-UPG-002",
+        "subject": "kb_core.version"
+      },
+      {
+        "code": "KB-UPG-002",
+        "subject": "pcal9555"
+      },
+      {
+        "code": "KB-UPG-002",
+        "subject": "ws2812_rmt"
+      }
+    ],
+    "image": null,
+    "lock": null,
+    "ok": false,
+    "rows": [],
+    "warnings": []
+  },
+  "image": {
+    "buses": {},
+    "drivers": [
+      {
+        "name": "bmp581",
+        "version": "0.2.0"
+      },
+      "pcal9555",
+      "tmc5160"
+    ],
+    "image": "old-board",
+    "kb_core": {
+      "version": "0.4.0"
+    },
+    "mcu": {
+      "family": "esp32",
+      "target": "esp32s3"
+    },
+    "schema": 1
+  },
+  "lock": {
+    "buses": [
+      {
+        "devices": [
+          "bmp581"
+        ],
+        "kind": "i2c",
+        "model": "guarded",
+        "name": "i2c0"
+      },
+      {
+        "devices": [
+          "ws2812_rmt"
+        ],
+        "kind": "pio",
+        "model": "owner",
+        "name": "pio0"
+      },
+      {
+        "devices": [
+          "tmc5160"
+        ],
+        "kind": "spi",
+        "model": "owner",
+        "name": "spi2"
+      }
+    ],
+    "cmake": {
+      "KB_ENABLE_BMP581": "ON",
+      "KB_ENABLE_TMC5160": "ON",
+      "KB_ENABLE_WS2812_RMT": "ON",
+      "KB_MCU": "ESP32",
+      "KB_PARTS": "utils;rtos;interfaces;handlers",
+      "KB_RTOS": "FREERTOS"
+    },
+    "drivers": [
+      {
+        "authors": [
+          "The driver-bmp581 authors"
+        ],
+        "commit": "87f441c106d3d39767cda106455416d8a9c43316",
+        "folder": "driver-bmp581",
+        "kind": "release",
+        "license": "MIT",
+        "name": "bmp581",
+        "repo": "kokeb-labs-drivers/driver-bmp581",
+        "tag": "v0.1.0",
+        "version": "0.1.0"
+      },
+      {
+        "authors": [
+          "The driver-tmc5160 authors"
+        ],
+        "commit": "e1bffe1b5f57ebbd68505a3eee334e4271ef335c",
+        "folder": "driver-tmc5160",
+        "kind": "rc",
+        "license": "MIT",
+        "name": "tmc5160",
+        "repo": "kokeb-labs-drivers/driver-tmc5160",
+        "tag": "v0.1.0-rc.1",
+        "version": "0.1.0-rc.1"
+      },
+      {
+        "authors": [
+          "The driver-ws2812-rmt authors"
+        ],
+        "commit": "a775db4aa67269f7329d7f4a0a21ce3f24900247",
+        "folder": "driver-ws2812-rmt",
+        "kind": "release",
+        "license": "MIT",
+        "name": "ws2812_rmt",
+        "repo": "kokeb-labs-drivers/driver-ws2812-rmt",
+        "tag": "v0.1.0",
+        "version": "0.1.0"
+      }
+    ],
+    "image": "old-board",
+    "kb_core": {
+      "authors": [
+        "The kb-core authors"
+      ],
+      "commit": "1db0b82914767ef3059455486bc204393bcef314",
+      "kind": "release",
+      "license": "MIT",
+      "repo": "kokeb-labs/kb-core",
+      "tag": "v0.3.0",
+      "version": "0.3.0"
+    },
+    "mcu": {
+      "family": "esp32",
+      "target": "esp32s3"
+    },
+    "parts": [
+      "utils",
+      "rtos",
+      "interfaces",
+      "handlers"
+    ],
+    "ports": [
+      {
+        "commit": "1db0b82914767ef3059455486bc204393bcef314",
+        "in_tree": true,
+        "name": "esp32",
+        "path": "components/ports/esp32"
+      }
+    ],
+    "rtos": "freertos",
+    "schema": 1
+  },
+  "options": {}
+}

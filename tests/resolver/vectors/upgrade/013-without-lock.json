@@ -1,0 +1,58 @@
+{
+  "catalog": "../catalogs/upgrade.json",
+  "description": "Without a lock an unnamed version means the resolver's default today: here the default ws2812_rmt (0.2.0) is for another MCU, so the current image does not resolve. Keep the lock beside the image.",
+  "expect": {
+    "errors": [
+      {
+        "code": "KB-RES-013",
+        "subject": "ws2812_rmt"
+      },
+      {
+        "code": "KB-UPG-001",
+        "subject": "image"
+      }
+    ],
+    "image": null,
+    "lock": null,
+    "ok": false,
+    "rows": [],
+    "warnings": []
+  },
+  "image": {
+    "buses": {
+      "i2c0": {
+        "devices": [
+          "bmp581"
+        ],
+        "model": "guarded"
+      },
+      "pio0": {
+        "devices": [
+          "ws2812_rmt"
+        ],
+        "model": "owner"
+      },
+      "spi2": {
+        "devices": [
+          "tmc5160"
+        ],
+        "model": "owner"
+      }
+    },
+    "drivers": [
+      "bmp581",
+      "tmc5160",
+      "ws2812_rmt"
+    ],
+    "image": "old-board",
+    "kb_core": {
+      "version": "0.3.0"
+    },
+    "mcu": {
+      "family": "esp32",
+      "target": "esp32s3"
+    },
+    "schema": 1
+  },
+  "options": {}
+}

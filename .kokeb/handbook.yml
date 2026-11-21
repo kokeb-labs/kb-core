@@ -1,0 +1,8 @@
+---
+# What this repository is, for the handbook check (kokeb-labs/ci-tools ru-handbook-check, handbook KB-REPO-002).
+# kb-core is a library at level high (ADR-0011): drivers and handlers are not a product's safety layer; level
+# safety is a later option per component. No virtual-function boundary folder is listed (ADR-0006), so `virtual`
+# is rejected everywhere in kb-core.
+handbook: "1.0"
+kind: library
+level: high

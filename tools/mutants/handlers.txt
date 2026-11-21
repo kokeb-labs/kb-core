@@ -1,0 +1,287 @@
+# Mutation catalogue of the kb::handlers core (ci-tools mutate.py format: "id | file | what", then the old text as
+# "- " lines and the new text as "+ " lines). Each mutant removes one rule of ADR-0009 or ADR-0010 that a test must
+# catch. Run by the Mutation workflow (ci-mutation.yml) with the handler tests.
+
+HC-01 | components/lib/handlers/inc/kb/handlers/common/handler_core.hpp | StartStep on a started handler is idempotent (no second run)
+-     if (IsServing(state)) {
+-       result = kb::Result<StartProgress>::Success(StartProgress::Done);
++     if (false) {
++       result = kb::Result<StartProgress>::Success(StartProgress::Done);
+
+HC-02 | components/lib/handlers/inc/kb/handlers/common/handler_core.hpp | a handler faulted while running is not restarted by StartStep
+-     } else if ((state == HealthState::Faulted) && driver_.has_value()) {
++     } else if (false) {
+
+HC-03 | components/lib/handlers/inc/kb/handlers/common/handler_core.hpp | Pending from a sync stage is a failure
+-     } else if ((stage.mode == StageMode::Sync) || late) {
++     } else if (late) {
+
+HC-04 | components/lib/handlers/inc/kb/handlers/common/handler_core.hpp | a polled stage fails at its deadline
+-     } else if ((stage.mode == StageMode::Sync) || late) {
++     } else if ((stage.mode == StageMode::Sync) || (late && false)) {
+
+HC-05 | components/lib/handlers/inc/kb/handlers/common/handler_core.hpp | a required stage is never skipped
+-       on = (!Derived::kStartupPlan[index].optional) || derived().StageEnabled(index);
++       on = derived().StageEnabled(index);
+
+HC-06 | components/lib/handlers/inc/kb/handlers/common/handler_core.hpp | a failed start destroys the driver
+-     if (driver_.has_value()) {
+-       abort(*driver_);
+-       driver_.reset();
+-     }
++     if (driver_.has_value()) {
++       abort(*driver_);
++     }
+
+HC-07 | components/lib/handlers/inc/kb/handlers/common/handler_core.hpp | recovery attempts are limited
+-     const bool exhausted = (policy.max_attempts != 0U) && (attempts_ >= policy.max_attempts);
++     const bool exhausted = (policy.max_attempts != 0U) && false;
+
+HC-08 | components/lib/handlers/inc/kb/handlers/common/handler_core.hpp | recovery honours the backoff
+-     } else if ((attempts_ != 0U) && (!backoff_.Expired(now))) {
++     } else if (false) {
+
+HC-09 | components/lib/handlers/inc/kb/handlers/common/handler_core.hpp | the backoff doubles
+-       wait = (wait >= cap) ? wait : (wait * 2U);
++       wait = (wait >= cap) ? wait : (wait * 1U);
+
+HC-10 | components/lib/handlers/inc/kb/handlers/common/handler_core.hpp | commands before a start (or when faulted) send nothing
+-     if (!Runs()) {
+-       result = kb::Result<ReplyT>::Failure(kb::Status::Unsupported);
+-     } else if (serving() && driver_.has_value()) {
++     if (!Runs()) {
++       result = kb::Result<ReplyT>::Failure(kb::Status::Unsupported);
++     } else if (driver_.has_value()) {
+
+HC-11 | components/lib/handlers/inc/kb/handlers/common/handler_core.hpp | a caller's mistake is not counted against the chip
+-     bool counted = status != kb::Status::InvalidArgument;
++     bool counted = true;
+
+HC-12 | components/lib/handlers/inc/kb/handlers/common/handler_core.hpp | EnsureInitialized is bounded by the stage budget
+-       if (bound.Expired(kb::rtos::Now())) {
++       if (bound.Expired(kb::rtos::Now()) && false) {
+
+HC-13 | components/lib/handlers/inc/kb/handlers/common/handler_core.hpp | the start budget counts only enabled stages
+-       if (enabled(i)) {
+-         total +=
++       if (true) {
++         total +=
+
+HE-01 | components/lib/handlers/inc/kb/handlers/common/health.hpp | the threshold faults at exactly fault_after failures
+-       const bool threshold = record_.consecutive >= policy_.fault_after;
++       const bool threshold = record_.consecutive > policy_.fault_after;
+
+HE-02 | components/lib/handlers/inc/kb/handlers/common/health.hpp | a fatal failure faults at once
+-       record_.state = (fatal || threshold) ? HealthState::Faulted : HealthState::Degraded;
++       record_.state = ((fatal && false) || threshold) ? HealthState::Faulted : HealthState::Degraded;
+
+HE-03 | components/lib/handlers/inc/kb/handlers/common/health.hpp | a success clears the failures in a row
+-   void RecordOk(kb::Instant now) noexcept {
+-     record_.consecutive = 0U;
++   void RecordOk(kb::Instant now) noexcept {
+
+SQ-01 | components/lib/handlers/inc/kb/handlers/common/seqlock.hpp | a read during a write is rejected
+-     const bool clean = ((before & 1U) == 0U) && (before == after);
++     const bool clean = (before == after);
+
+SQ-02 | components/lib/handlers/inc/kb/handlers/common/seqlock.hpp | a read overlapped by a write is rejected
+-     const bool clean = ((before & 1U) == 0U) && (before == after);
++     const bool clean = ((before & 1U) == 0U) && ((before == after) || true);
+
+RC-01 | components/lib/handlers/inc/kb/handlers/common/request_channel.hpp | a completion that raced the timeout is delivered
+-       done = !abandon(s);
++       done = false;
+
+RC-02 | components/lib/handlers/inc/kb/handlers/common/request_channel.hpp | the owner frees an abandoned queued request
+-         s.state.store(static_cast<uint8_t>(SlotState::Free), std::memory_order_release);
+-           static_cast<void>(skipped_.fetch_add(1U, std::memory_order_relaxed));
++           static_cast<void>(skipped_.fetch_add(1U, std::memory_order_relaxed));
+
+RC-03 | components/lib/handlers/inc/kb/handlers/common/request_channel.hpp | a completion of an abandoned request frees its slot
+-       if (s.state.compare_exchange_strong(expected, static_cast<uint8_t>(SlotState::Done),
+-                                           std::memory_order_acq_rel)) {
+-         flags_.Set(bitOf(slot));
+-       } else {
+-         s.state.store(static_cast<uint8_t>(SlotState::Free), std::memory_order_release);
+-       }
++       if (s.state.compare_exchange_strong(expected, static_cast<uint8_t>(SlotState::Done),
++                                           std::memory_order_acq_rel)) {
++         flags_.Set(bitOf(slot));
++       }
+
+BD-01 | components/lib/handlers/inc/kb/handlers/common/bus_domain.hpp | a second concurrent service pass is refused
+-     if (!in_service_.compare_exchange_strong(idle, true, std::memory_order_acq_rel)) {
++     if ((!in_service_.compare_exchange_strong(idle, true, std::memory_order_acq_rel)) && false) {
+
+GU-01 | components/lib/handlers/inc/kb/handlers/common/guarded.hpp | nothing is sent without the bus lock
+-       if (bus_lock.OwnsLock()) {
++       if (true) {
+
+GU-02 | components/lib/handlers/inc/kb/handlers/common/guarded.hpp | nothing is sent without the handler lock
+-     if (handler_lock.OwnsLock()) {
++     if (true) {
+
+OA-01 | components/lib/handlers/inc/kb/handlers/common/owner_access.hpp | the owner runs the start-up when asked
+-     if (start_wanted_.load(std::memory_order_acquire)) {
+-       startStep(key, now);
++     if (false) {
++       startStep(key, now);
+
+OA-02 | components/lib/handlers/inc/kb/handlers/common/owner_access.hpp | a failed start completes the waiting callers
+-     const bool ended = (!step.IsOk()) || (step.Value() == StartProgress::Done);
++     const bool ended = (step.Value() == StartProgress::Done);
+
+OA-03 | components/lib/handlers/inc/kb/handlers/common/owner_access.hpp | the first sample is taken at once
+-     const bool due = (!sampled_) || (period.Count() == 0U) ||
++     const bool due = (period.Count() == 0U) ||
+
+HK-01 | components/lib/handlers/inc/kb/handlers/common/hooks.hpp | 1 ms and more sleeps
+-     if (us < kSpinBelowUs) {
+-       spin_.WaitUs(kb::Microseconds{us});
++     if (us <= kSpinBelowUs) {
++       spin_.WaitUs(kb::Microseconds{us});
+
+HK-02 | components/lib/handlers/inc/kb/handlers/common/hooks.hpp | control pin polarity is applied
+-       const bool high = asserted != p.active_low;
++       const bool high = asserted;
+
+LV-01 | components/lib/handlers/inc/kb/handlers/common/liveness.hpp | a beat exactly at the window is alive
+-         } else if (kb::utils::ElapsedUs(now, kb::Instant{w.since_us}) > w.window_us) {
++         } else if (kb::utils::ElapsedUs(now, kb::Instant{w.since_us}) >= w.window_us) {
+
+TY-01 | components/lib/handlers/inc/kb/handlers/common/types.hpp | a plan's stages are in kind order
+-     const bool ordered = known && (LowestKind(s.kinds) > previous);
++     const bool ordered = known;
+
+# Held transactions and non-blocking reads (ADR-0015).
+
+BH-01 | components/lib/handlers/inc/kb/handlers/common/bus_domain.hpp | an owner hold excludes a running pass or hold
+-     const bool owned = in_service_.compare_exchange_strong(idle, true, std::memory_order_acq_rel);
++     const bool owned = in_service_.compare_exchange_strong(idle, true, std::memory_order_acq_rel) || true;
+
+BH-02 | components/lib/handlers/inc/kb/handlers/common/bus_domain.hpp | an owner hold frees the pass flag on release
+-     static_cast<void>(held_us); // an owner bus keeps no hold times
+-     in_service_.store(false, std::memory_order_release);
++     static_cast<void>(held_us); // an owner bus keeps no hold times
+
+BH-03 | components/lib/handlers/inc/kb/handlers/common/bus_domain.hpp | a moved-from hold owns nothing
+-     other.owns_ = false;
++     static_cast<void>(other.owns_);
+
+BH-04 | components/lib/handlers/inc/kb/handlers/common/bus_domain.hpp | a hold is released once
+-     if (owns_) {
+-       owns_ = false;
+-       domain_->release(kb::utils::ElapsedUs(kb::rtos::Now(), start_));
++     if (owns_) {
++       domain_->release(kb::utils::ElapsedUs(kb::rtos::Now(), start_));
+
+BH-05 | components/lib/handlers/inc/kb/handlers/common/bus_domain.hpp | the bus is given only while held
+-     return owns_ ? &domain_->bus_ : nullptr;
++     return &domain_->bus_;
+
+BH-06 | components/lib/handlers/inc/kb/handlers/common/bus_domain.hpp | a guarded hold takes the bus mutex
+-     const bool owned = lock(timeout);
++     const bool owned = lock(timeout) || true;
+
+GH-01 | components/lib/handlers/inc/kb/handlers/common/guarded.hpp | a guarded hold takes the handler lock first
+-     if (g_.mutex_.TryLockFor(timeout)) {
++     if (true) {
+
+GH-02 | components/lib/handlers/inc/kb/handlers/common/guarded.hpp | a guarded hold without the bus gives the handler lock back
+-       if (!owns_) {
+-         bus_.reset();
+-         g_.mutex_.Unlock();
+-       }
++       if (!owns_) {
++         bus_.reset();
++       }
+
+GH-03 | components/lib/handlers/inc/kb/handlers/common/guarded.hpp | a guarded hold that was not had sends nothing
+-     kb::Result<typename H::ReplyType> result = refused<typename H::ReplyType>();
+-     if (owns_) {
++     kb::Result<typename H::ReplyType> result = refused<typename H::ReplyType>();
++     if (true) {
+
+GH-04 | components/lib/handlers/inc/kb/handlers/common/guarded.hpp | releasing a guarded hold unlocks the handler
+-       bus_.reset();
+-       g_.mutex_.Unlock();
+-     }
+-   }
++       bus_.reset();
++     }
++   }
+
+GH-05 | components/lib/handlers/inc/kb/handlers/common/guarded.hpp | a hold not had is Timeout, a released one NotReady
+-     return kb::Result<T>::Failure(acquired_ ? kb::Status::NotReady : kb::Status::Timeout);
++     return kb::Result<T>::Failure(kb::Status::NotReady);
+
+OH-01 | components/lib/handlers/inc/kb/handlers/common/owner_access.hpp | owner held calls need a hold that is owned
+-     return hold_.OwnsLock() && hold_.IsOn(o_.domain_);
++     return hold_.IsOn(o_.domain_);
+
+OH-02 | components/lib/handlers/inc/kb/handlers/common/owner_access.hpp | owner held calls need a hold of this domain object
+-     return hold_.OwnsLock() && hold_.IsOn(o_.domain_);
++     return hold_.OwnsLock();
+
+AP-01 | components/lib/handlers/inc/kb/handlers/common/async_poller.hpp | one transfer in flight at a time
+-     if (in_flight_) {
+-       s = kb::Status::Busy;
++     if (false) {
++       s = kb::Status::Busy;
+
+AP-02 | components/lib/handlers/inc/kb/handlers/common/async_poller.hpp | a pending poll keeps the transfer in flight
+-       if (p.state != kb::iface::AsyncState::Pending) {
++       if (true) {
+
+AP-03 | components/lib/handlers/inc/kb/handlers/common/async_poller.hpp | a new transfer empties the received bytes
+-       received_ = 0U; // the buffer now belongs to the new transfer
++       static_cast<void>(received_); // the buffer now belongs to the new transfer
+
+AP-04 | components/lib/handlers/inc/kb/handlers/common/async_poller.hpp | the destructor cancels a transfer in flight
+-   ~AsyncPoller() {
+-     static_cast<void>(Cancel());
+-   }
++   ~AsyncPoller() {}
+
+AP-05 | components/lib/handlers/inc/kb/handlers/common/async_poller.hpp | an idle poller does not poll the port
+-     if (in_flight_) {
+-       p = op_.Poll(now);
++     if (true) {
++       p = op_.Poll(now);
+
+AP-06 | components/lib/handlers/inc/kb/handlers/common/async_poller.hpp | lengths above the buffer are refused
+-     } else if ((tx.size() > Bytes) || (rx_len > Bytes)) {
++     } else if ((tx.size() > Bytes) || (rx_len > (Bytes + 1U))) {
+
+LV-02 | components/lib/handlers/inc/kb/handlers/common/liveness.hpp | a parked beat is never stale
+-         if (w.beat->Parked()) {
+-           w.started = false; // the window starts again after the park
+-         } else if ((!w.started) || (beats != w.seen)) {
++         if (false) {
++           w.started = false; // the window starts again after the park
++         } else if ((!w.started) || (beats != w.seen)) {
+
+LV-03 | components/lib/handlers/inc/kb/handlers/common/liveness.hpp | the verdict needs a watched beat to kick
+-     v.kick = (v.watched != 0U) && (v.stale == 0U);
++     v.kick = (v.stale == 0U);
+
+LV-04 | components/lib/handlers/inc/kb/handlers/common/liveness.hpp | a beat ends a park
+-     last_us_.store(now.Us(), std::memory_order_relaxed);
+-     parked_.store(false, std::memory_order_relaxed);
++     last_us_.store(now.Us(), std::memory_order_relaxed);
+
+HJ-01 | components/lib/handlers/inc/kb/handlers/common/health_journal.hpp | entering Faulted is written once
+-       if (faulted && (!faulted_[index])) {
++       if (faulted) {
+
+HJ-02 | components/lib/handlers/inc/kb/handlers/common/health_journal.hpp | a refused record keeps the edge for a retry
+-       if (result.IsOk() && (faulted || IsServing(h.state))) {
++       if (faulted || IsServing(h.state)) {
+
+HJ-03 | components/lib/handlers/inc/kb/handlers/common/health_journal.hpp | only newly stale watches are written
+-     const uint32_t fresh = verdict.stale & (~stale_);
++     const uint32_t fresh = verdict.stale;
+
+HJ-04 | components/lib/handlers/inc/kb/handlers/common/health_journal.hpp | a transient state does not clear the fault edge
+-       if (result.IsOk() && (faulted || IsServing(h.state))) {
++       if (result.IsOk()) {

@@ -1,0 +1,138 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="774" viewBox="0 0 1200 774" role="img" aria-labelledby="dependency-rules-title dependency-rules-desc" font-family="Inter, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
+<title id="dependency-rules-title">Which layer may depend on which</title>
+<desc id="dependency-rules-desc">Two lists of dependency arrows between layers. Allowed: twelve, from the application down to kb::utils. Forbidden: seven, each labelled with the check that catches it.</desc>
+<defs><marker id="fk-arrow-green-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#4ADE80"/></marker><marker id="fk-arrow-rose-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#FB7185"/></marker></defs>
+<rect x="0.5" y="0.5" width="1199" height="773" rx="16" fill="#0E131A" stroke="#283241"/>
+<text x="32" y="44" font-size="12.5" font-weight="700" letter-spacing="1.2" fill="#F8D27A">LAYERING</text>
+<text x="32" y="77.3" font-size="26" font-weight="700" fill="#E8EDF3">Which layer may depend on which</text>
+<text x="32" y="103.8" font-size="15" fill="#9AA6B5">Every forbidden edge is caught by a named check before it can merge.</text>
+<rect x="32" y="119.8" width="1136" height="1" fill="#252F3C"/>
+<rect x="32" y="137.8" width="548" height="562" rx="14" fill="#11281A" stroke="#285A3A" stroke-width="1.2"/>
+<rect x="620" y="137.8" width="548" height="472" rx="14" fill="#321820" stroke="#6E3141" stroke-width="1.2"/>
+<path d="M223.2 208.6 L301.2 208.6" fill="none" stroke="#4ADE80" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-green-strong)"/>
+<path d="M223.2 246.6 L301.2 246.6" fill="none" stroke="#4ADE80" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-green-strong)"/>
+<path d="M223.2 284.6 L301.2 284.6" fill="none" stroke="#4ADE80" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-green-strong)"/>
+<path d="M223.2 322.6 L301.2 322.6" fill="none" stroke="#4ADE80" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-green-strong)"/>
+<path d="M223.2 360.6 L301.2 360.6" fill="none" stroke="#4ADE80" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-green-strong)"/>
+<path d="M223.2 398.6 L301.2 398.6" fill="none" stroke="#4ADE80" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-green-strong)"/>
+<path d="M223.2 436.6 L301.2 436.6" fill="none" stroke="#4ADE80" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-green-strong)"/>
+<path d="M223.2 494.6 L301.2 494.6" fill="none" stroke="#4ADE80" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-green-strong)"/>
+<path d="M223.2 552.5 L301.2 552.5" fill="none" stroke="#4ADE80" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-green-strong)"/>
+<path d="M223.2 590.5 L301.2 590.5" fill="none" stroke="#4ADE80" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-green-strong)"/>
+<path d="M223.2 628.5 L301.2 628.5" fill="none" stroke="#4ADE80" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-green-strong)"/>
+<path d="M223.2 666.5 L301.2 666.5" fill="none" stroke="#4ADE80" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-green-strong)"/>
+<path d="M811.2 208.6 L889.2 208.6" fill="none" stroke="#FB7185" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 5" marker-end="url(#fk-arrow-rose-strong)"/>
+<path d="M811.2 266.6 L889.2 266.6" fill="none" stroke="#FB7185" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 5" marker-end="url(#fk-arrow-rose-strong)"/>
+<path d="M811.2 324.6 L889.2 324.6" fill="none" stroke="#FB7185" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 5" marker-end="url(#fk-arrow-rose-strong)"/>
+<path d="M811.2 382.6 L889.2 382.6" fill="none" stroke="#FB7185" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 5" marker-end="url(#fk-arrow-rose-strong)"/>
+<path d="M811.2 440.6 L889.2 440.6" fill="none" stroke="#FB7185" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 5" marker-end="url(#fk-arrow-rose-strong)"/>
+<path d="M811.2 498.6 L889.2 498.6" fill="none" stroke="#FB7185" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 5" marker-end="url(#fk-arrow-rose-strong)"/>
+<path d="M811.2 556.5 L889.2 556.5" fill="none" stroke="#FB7185" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 5" marker-end="url(#fk-arrow-rose-strong)"/>
+<rect x="620" y="633.8" width="548" height="79.3" rx="10" fill="#1B232E" stroke="#3A4656" stroke-width="1"/>
+<rect x="52" y="197.8" width="84.2" height="21.5" rx="10.8" fill="#2E1533" stroke="#6B2E73" stroke-width="1"/>
+<text x="60" y="212.2" font-size="11.5" font-weight="700" fill="#F5D0FE">Application</text>
+<rect x="309.2" y="197.8" width="79.3" height="21.5" rx="10.8" fill="#2E1533" stroke="#6B2E73" stroke-width="1"/>
+<text x="317.2" y="212.2" font-size="11.5" font-weight="700" fill="#F5D0FE">Board HAL</text>
+<rect x="52" y="235.8" width="84.2" height="21.5" rx="10.8" fill="#2E1533" stroke="#6B2E73" stroke-width="1"/>
+<text x="60" y="250.2" font-size="11.5" font-weight="700" fill="#F5D0FE">Application</text>
+<rect x="309.2" y="235.8" width="62.6" height="21.5" rx="10.8" fill="#2C2310" stroke="#6A5220" stroke-width="1"/>
+<text x="317.2" y="250.2" font-size="11.5" font-weight="700" fill="#FDE68A">kb::rtos</text>
+<rect x="52" y="273.8" width="84.2" height="21.5" rx="10.8" fill="#2E1533" stroke="#6B2E73" stroke-width="1"/>
+<text x="60" y="288.2" font-size="11.5" font-weight="700" fill="#F5D0FE">Application</text>
+<rect x="309.2" y="273.8" width="64.4" height="21.5" rx="10.8" fill="#2A2113" stroke="#6B5424" stroke-width="1"/>
+<text x="317.2" y="288.2" font-size="11.5" font-weight="700" fill="#F8D27A">kb::utils</text>
+<rect x="52" y="311.8" width="79.3" height="21.5" rx="10.8" fill="#2E1533" stroke="#6B2E73" stroke-width="1"/>
+<text x="60" y="326.2" font-size="11.5" font-weight="700" fill="#F5D0FE">Board HAL</text>
+<rect x="309.2" y="311.8" width="91.2" height="21.5" rx="10.8" fill="#221A3A" stroke="#4B3A82" stroke-width="1"/>
+<text x="317.2" y="326.2" font-size="11.5" font-weight="700" fill="#DDD6FE">kb::handlers</text>
+<rect x="52" y="349.8" width="79.3" height="21.5" rx="10.8" fill="#2E1533" stroke="#6B2E73" stroke-width="1"/>
+<text x="60" y="364.2" font-size="11.5" font-weight="700" fill="#F5D0FE">Board HAL</text>
+<rect x="309.2" y="349.8" width="99.7" height="21.5" rx="10.8" fill="#13233A" stroke="#2B4C78" stroke-width="1"/>
+<text x="317.2" y="364.2" font-size="11.5" font-weight="700" fill="#BFDBFE">kb::interfaces</text>
+<rect x="52" y="387.8" width="79.3" height="21.5" rx="10.8" fill="#2E1533" stroke="#6B2E73" stroke-width="1"/>
+<text x="60" y="402.2" font-size="11.5" font-weight="700" fill="#F5D0FE">Board HAL</text>
+<rect x="309.2" y="387.8" width="72.8" height="21.5" rx="10.8" fill="#0F2A28" stroke="#215A54" stroke-width="1"/>
+<text x="317.2" y="402.2" font-size="11.5" font-weight="700" fill="#A7F3E6">MCU port</text>
+<rect x="52" y="425.8" width="72.8" height="21.5" rx="10.8" fill="#0F2A28" stroke="#215A54" stroke-width="1"/>
+<text x="60" y="440.2" font-size="11.5" font-weight="700" fill="#A7F3E6">MCU port</text>
+<rect x="309.2" y="425.8" width="99.7" height="21.5" rx="10.8" fill="#13233A" stroke="#2B4C78" stroke-width="1"/>
+<text x="317.2" y="440.2" font-size="11.5" font-weight="700" fill="#BFDBFE">kb::interfaces</text>
+<text x="56" y="465.3" font-size="12" fill="#9AA6B5">installed headers only</text>
+<rect x="52" y="483.8" width="72.8" height="21.5" rx="10.8" fill="#0F2A28" stroke="#215A54" stroke-width="1"/>
+<text x="60" y="498.2" font-size="11.5" font-weight="700" fill="#A7F3E6">MCU port</text>
+<rect x="309.2" y="483.8" width="93.1" height="21.5" rx="10.8" fill="#1B232E" stroke="#3A4656" stroke-width="1"/>
+<text x="317.2" y="498.2" font-size="11.5" font-weight="700" fill="#E2E8F0">SDK headers</text>
+<text x="56" y="523.3" font-size="12" fill="#9AA6B5">boundary files only</text>
+<rect x="52" y="541.8" width="91.2" height="21.5" rx="10.8" fill="#221A3A" stroke="#4B3A82" stroke-width="1"/>
+<text x="60" y="556.2" font-size="11.5" font-weight="700" fill="#DDD6FE">kb::handlers</text>
+<rect x="309.2" y="541.8" width="99.5" height="21.5" rx="10.8" fill="#11281A" stroke="#285A3A" stroke-width="1"/>
+<text x="317.2" y="556.2" font-size="11.5" font-weight="700" fill="#BBF7D0">driver-&lt;chip&gt;</text>
+<rect x="52" y="579.8" width="91.2" height="21.5" rx="10.8" fill="#221A3A" stroke="#4B3A82" stroke-width="1"/>
+<text x="60" y="594.2" font-size="11.5" font-weight="700" fill="#DDD6FE">kb::handlers</text>
+<rect x="309.2" y="579.8" width="99.7" height="21.5" rx="10.8" fill="#13233A" stroke="#2B4C78" stroke-width="1"/>
+<text x="317.2" y="594.2" font-size="11.5" font-weight="700" fill="#BFDBFE">kb::interfaces</text>
+<rect x="52" y="617.8" width="99.7" height="21.5" rx="10.8" fill="#13233A" stroke="#2B4C78" stroke-width="1"/>
+<text x="60" y="632.2" font-size="11.5" font-weight="700" fill="#BFDBFE">kb::interfaces</text>
+<rect x="309.2" y="617.8" width="62.6" height="21.5" rx="10.8" fill="#2C2310" stroke="#6A5220" stroke-width="1"/>
+<text x="317.2" y="632.2" font-size="11.5" font-weight="700" fill="#FDE68A">kb::rtos</text>
+<rect x="52" y="655.8" width="62.6" height="21.5" rx="10.8" fill="#2C2310" stroke="#6A5220" stroke-width="1"/>
+<text x="60" y="670.2" font-size="11.5" font-weight="700" fill="#FDE68A">kb::rtos</text>
+<rect x="309.2" y="655.8" width="64.4" height="21.5" rx="10.8" fill="#2A2113" stroke="#6B5424" stroke-width="1"/>
+<text x="317.2" y="670.2" font-size="11.5" font-weight="700" fill="#F8D27A">kb::utils</text>
+<rect x="640" y="197.8" width="84.2" height="21.5" rx="10.8" fill="#2E1533" stroke="#6B2E73" stroke-width="1"/>
+<text x="648" y="212.2" font-size="11.5" font-weight="700" fill="#F5D0FE">Application</text>
+<rect x="897.2" y="197.8" width="99.7" height="21.5" rx="10.8" fill="#13233A" stroke="#2B4C78" stroke-width="1"/>
+<text x="905.2" y="212.2" font-size="11.5" font-weight="700" fill="#BFDBFE">kb::interfaces</text>
+<text x="644" y="237.3" font-size="12" fill="#9AA6B5">caught by the include checker and the symbol lint</text>
+<rect x="640" y="255.8" width="84.2" height="21.5" rx="10.8" fill="#2E1533" stroke="#6B2E73" stroke-width="1"/>
+<text x="648" y="270.2" font-size="11.5" font-weight="700" fill="#F5D0FE">Application</text>
+<rect x="897.2" y="255.8" width="93.1" height="21.5" rx="10.8" fill="#1B232E" stroke="#3A4656" stroke-width="1"/>
+<text x="905.2" y="270.2" font-size="11.5" font-weight="700" fill="#E2E8F0">SDK headers</text>
+<text x="644" y="295.3" font-size="12" fill="#9AA6B5">caught by the include checker and the symbol lint</text>
+<rect x="640" y="313.8" width="91.2" height="21.5" rx="10.8" fill="#221A3A" stroke="#4B3A82" stroke-width="1"/>
+<text x="648" y="328.2" font-size="11.5" font-weight="700" fill="#DDD6FE">kb::handlers</text>
+<rect x="897.2" y="313.8" width="93.1" height="21.5" rx="10.8" fill="#1B232E" stroke="#3A4656" stroke-width="1"/>
+<text x="905.2" y="328.2" font-size="11.5" font-weight="700" fill="#E2E8F0">SDK headers</text>
+<text x="644" y="353.3" font-size="12" fill="#9AA6B5">caught by the poison build and the include checker</text>
+<rect x="640" y="371.8" width="91.2" height="21.5" rx="10.8" fill="#221A3A" stroke="#4B3A82" stroke-width="1"/>
+<text x="648" y="386.2" font-size="11.5" font-weight="700" fill="#DDD6FE">kb::handlers</text>
+<rect x="897.2" y="371.8" width="72.8" height="21.5" rx="10.8" fill="#0F2A28" stroke="#215A54" stroke-width="1"/>
+<text x="905.2" y="386.2" font-size="11.5" font-weight="700" fill="#A7F3E6">MCU port</text>
+<text x="644" y="411.3" font-size="12" fill="#9AA6B5">caught by the CMake DAG check</text>
+<rect x="640" y="429.8" width="99.7" height="21.5" rx="10.8" fill="#13233A" stroke="#2B4C78" stroke-width="1"/>
+<text x="648" y="444.2" font-size="11.5" font-weight="700" fill="#BFDBFE">kb::interfaces</text>
+<rect x="897.2" y="429.8" width="72.8" height="21.5" rx="10.8" fill="#0F2A28" stroke="#215A54" stroke-width="1"/>
+<text x="905.2" y="444.2" font-size="11.5" font-weight="700" fill="#A7F3E6">MCU port</text>
+<text x="644" y="469.3" font-size="12" fill="#9AA6B5">caught by the include checker (LAY-010)</text>
+<rect x="640" y="487.8" width="99.5" height="21.5" rx="10.8" fill="#11281A" stroke="#285A3A" stroke-width="1"/>
+<text x="648" y="502.2" font-size="11.5" font-weight="700" fill="#BBF7D0">driver-&lt;chip&gt;</text>
+<rect x="897.2" y="487.8" width="64.4" height="21.5" rx="10.8" fill="#2A2113" stroke="#6B5424" stroke-width="1"/>
+<text x="905.2" y="502.2" font-size="11.5" font-weight="700" fill="#F8D27A">kb::utils</text>
+<text x="644" y="527.3" font-size="12" fill="#9AA6B5">caught by the driver CI and the include checker</text>
+<rect x="640" y="545.8" width="64.4" height="21.5" rx="10.8" fill="#2A2113" stroke="#6B5424" stroke-width="1"/>
+<text x="648" y="560.2" font-size="11.5" font-weight="700" fill="#F8D27A">kb::utils</text>
+<rect x="897.2" y="545.8" width="62.6" height="21.5" rx="10.8" fill="#2C2310" stroke="#6A5220" stroke-width="1"/>
+<text x="905.2" y="560.2" font-size="11.5" font-weight="700" fill="#FDE68A">kb::rtos</text>
+<text x="644" y="585.3" font-size="12" fill="#9AA6B5">caught by the CMake target graph</text>
+<text x="48" y="162.8" font-size="13" font-weight="700" fill="#BBF7D0">ALLOWED</text>
+<text x="636" y="162.8" font-size="13" font-weight="700" fill="#FECDD3">FORBIDDEN</text>
+<text x="634" y="660.5" font-size="15" font-weight="700" fill="#E2E8F0">Reading the arrows</text>
+<text x="634" y="678.3" font-size="13" fill="#E2E8F0">A dashed arrow is a forbidden edge and a solid one is allowed, so the meaning</text>
+<text x="634" y="697.2" font-size="13" fill="#E2E8F0">does not rest on colour alone.</text>
+<rect x="32" y="728.5" width="14" height="14" rx="4" fill="#2E1533" stroke="#F0ABFC" stroke-width="1.4"/>
+<text x="54" y="740.2" font-size="12.5" fill="#9AA6B5">product and board HAL</text>
+<rect x="224.5" y="728.5" width="14" height="14" rx="4" fill="#221A3A" stroke="#A78BFA" stroke-width="1.4"/>
+<text x="246.5" y="740.2" font-size="12.5" fill="#9AA6B5">handlers</text>
+<rect x="324.7" y="728.5" width="14" height="14" rx="4" fill="#13233A" stroke="#60A5FA" stroke-width="1.4"/>
+<text x="346.7" y="740.2" font-size="12.5" fill="#9AA6B5">interfaces and contracts</text>
+<rect x="523.2" y="728.5" width="14" height="14" rx="4" fill="#2C2310" stroke="#FBBF24" stroke-width="1.4"/>
+<text x="545.2" y="740.2" font-size="12.5" fill="#9AA6B5">kb::rtos</text>
+<rect x="616.5" y="728.5" width="14" height="14" rx="4" fill="#2A2113" stroke="#F4B942" stroke-width="1.4"/>
+<text x="638.5" y="740.2" font-size="12.5" fill="#9AA6B5">kb::utils</text>
+<rect x="711.1" y="728.5" width="14" height="14" rx="4" fill="#0F2A28" stroke="#2BB3A3" stroke-width="1.4"/>
+<text x="733.1" y="740.2" font-size="12.5" fill="#9AA6B5">MCU ports</text>
+<rect x="824.7" y="728.5" width="14" height="14" rx="4" fill="#11281A" stroke="#4ADE80" stroke-width="1.4"/>
+<text x="846.7" y="740.2" font-size="12.5" fill="#9AA6B5">drivers</text>
+<rect x="914.2" y="728.5" width="14" height="14" rx="4" fill="#1B232E" stroke="#94A3B8" stroke-width="1.4"/>
+<text x="936.2" y="740.2" font-size="12.5" fill="#9AA6B5">SOUP and planned</text>
+</svg>

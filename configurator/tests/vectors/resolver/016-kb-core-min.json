@@ -1,0 +1,73 @@
+{
+ "schema": 1,
+ "name": "kb-core-min",
+ "description": "pf1550 0.2.0 needs kb-core 0.5.0",
+ "catalog": "../catalog-fixture.json",
+ "image": {
+  "image": "v",
+  "kb_core": "0.4.0",
+  "port": "0.4.0",
+  "mcu": {
+   "family": "esp32",
+   "target": "esp32s3",
+   "board": "esp32s3-devkitc"
+  },
+  "rtos": "freertos",
+  "drivers": [
+   {
+    "name": "pf1550",
+    "version": "0.2.0",
+    "via": "i2c",
+    "bus": "i2c0"
+   }
+  ],
+  "buses": {
+   "i2c0": {
+    "model": "guarded"
+   }
+  }
+ },
+ "expect": {
+  "ok": false,
+  "errors": [
+   "CFG-DRV-011"
+  ],
+  "warnings": [
+   "CFG-SET-001"
+  ],
+  "infos": [
+   "CFG-CVE-002"
+  ],
+  "resolved": {
+   "kb_mcu": "ESP32",
+   "kb_rtos": "FREERTOS",
+   "parts": [
+    "utils",
+    "rtos",
+    "interfaces",
+    "handlers"
+   ],
+   "drivers": [
+    "pf1550"
+   ],
+   "buses": {
+    "i2c0": {
+     "kind": "i2c",
+     "via": [
+      "i2c"
+     ],
+     "model": "guarded",
+     "devices": [
+      "pf1550"
+     ]
+    }
+   },
+   "pins": {
+    "min": 2,
+    "optional": 2,
+    "budget": 33
+   },
+   "tested_sets": []
+  }
+ }
+}

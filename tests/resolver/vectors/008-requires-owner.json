@@ -1,0 +1,34 @@
+{
+  "catalog": "catalogs/base.json",
+  "description": "A chip with kRequiresOwner on a guarded bus.",
+  "expect": {
+    "errors": [
+      {
+        "code": "KB-RES-018",
+        "subject": "i2c0/bno08x"
+      }
+    ],
+    "ok": false,
+    "warnings": []
+  },
+  "image": {
+    "buses": {
+      "i2c0": {
+        "devices": [
+          "bno08x"
+        ],
+        "model": "guarded"
+      }
+    },
+    "drivers": [
+      "bno08x"
+    ],
+    "kb_core": {
+      "version": "0.4.0"
+    },
+    "mcu": {
+      "family": "esp32"
+    },
+    "schema": 1
+  }
+}

@@ -1,0 +1,386 @@
+{
+  "drivers": [
+    {
+      "binding": "kb/handlers/bindings/ads7952.hpp",
+      "bus": [
+        "spi"
+      ],
+      "commit": "a1b977597782bde428df5cce1eaf763a6ef25dbb",
+      "configs": [],
+      "kb_core_min": null,
+      "mcus": [
+        "any"
+      ],
+      "name": "ads7952",
+      "peripheral": null,
+      "repo": "kokeb-labs-drivers/driver-ads7952",
+      "tag": "v0.1.0-rc.1",
+      "version": "0.1.0"
+    },
+    {
+      "binding": "kb/handlers/bindings/ads9324.hpp",
+      "bus": [
+        "spi"
+      ],
+      "commit": "8ade1b1e83c496e743517bcd055407f6f2d48d0c",
+      "configs": [],
+      "kb_core_min": null,
+      "mcus": [
+        "any"
+      ],
+      "name": "ads9324",
+      "peripheral": null,
+      "repo": "kokeb-labs-drivers/driver-ads9324",
+      "tag": "v0.1.0-rc.1",
+      "version": "0.1.0"
+    },
+    {
+      "binding": "kb/handlers/bindings/alicat_basis2.hpp",
+      "bus": [
+        "uart",
+        "modbus"
+      ],
+      "commit": "51b9d0c9550598f48d555cef74ea02a8f2eebf93",
+      "configs": [],
+      "kb_core_min": null,
+      "mcus": [
+        "any"
+      ],
+      "name": "alicat_basis2",
+      "peripheral": null,
+      "repo": "kokeb-labs-drivers/driver-alicat-basis2",
+      "tag": "v0.1.0-rc.1",
+      "version": "0.1.0"
+    },
+    {
+      "binding": "kb/handlers/bindings/as5047u.hpp",
+      "bus": [
+        "spi"
+      ],
+      "commit": "714970c08c73bbf80a37a7f821419b59edec4a7d",
+      "configs": [],
+      "kb_core_min": null,
+      "mcus": [
+        "any"
+      ],
+      "name": "as5047u",
+      "peripheral": null,
+      "repo": "kokeb-labs-drivers/driver-as5047u",
+      "tag": "v0.1.0-rc.1",
+      "version": "0.1.0"
+    },
+    {
+      "binding": "kb/handlers/bindings/at25040b.hpp",
+      "bus": [
+        "spi"
+      ],
+      "commit": "a9a2e61dd984fcdb2e78580eb15331a913ae0bda",
+      "configs": [],
+      "kb_core_min": null,
+      "mcus": [
+        "any"
+      ],
+      "name": "at25040b",
+      "peripheral": null,
+      "repo": "kokeb-labs-drivers/driver-at25040b",
+      "tag": "v0.1.0-rc.1",
+      "version": "0.1.0"
+    },
+    {
+      "binding": "kb/handlers/bindings/bmp581.hpp",
+      "bus": [
+        "i2c",
+        "spi"
+      ],
+      "commit": "eda3237c8fc72a745411282acf46b387c0205430",
+      "configs": [],
+      "kb_core_min": null,
+      "mcus": [
+        "any"
+      ],
+      "name": "bmp581",
+      "peripheral": null,
+      "repo": "kokeb-labs-drivers/driver-bmp581",
+      "tag": "v0.1.0-rc.1",
+      "version": "0.1.0"
+    },
+    {
+      "binding": "kb/handlers/bindings/bno08x.hpp",
+      "bus": [
+        "i2c",
+        "spi",
+        "uart"
+      ],
+      "commit": "0d032fc8feb545b8f3959f803a625877406c7bea",
+      "configs": [],
+      "kb_core_min": null,
+      "mcus": [
+        "any"
+      ],
+      "name": "bno08x",
+      "peripheral": null,
+      "repo": "kokeb-labs-drivers/driver-bno08x",
+      "tag": "v0.1.0-rc.1",
+      "version": "0.1.0"
+    },
+    {
+      "binding": "kb/handlers/bindings/canopen_client.hpp",
+      "bus": [
+        "canopen"
+      ],
+      "commit": "88c344eda4ee37162cd78edb36444fb44c727656",
+      "configs": [],
+      "kb_core_min": null,
+      "mcus": [
+        "any"
+      ],
+      "name": "canopen_client",
+      "peripheral": null,
+      "repo": "kokeb-labs-drivers/driver-canopen-client",
+      "tag": "v0.1.0-rc.1",
+      "version": "0.1.0"
+    },
+    {
+      "binding": "kb/handlers/bindings/dynamixel.hpp",
+      "bus": [
+        "uart"
+      ],
+      "commit": "137d802cf1a47d5a37c0dc9553f32b7390825498",
+      "configs": [],
+      "kb_core_min": null,
+      "mcus": [
+        "any"
+      ],
+      "name": "dynamixel",
+      "peripheral": null,
+      "repo": "kokeb-labs-drivers/driver-dynamixel",
+      "tag": "v0.1.0-rc.1",
+      "version": "0.1.0"
+    },
+    {
+      "binding": "kb/handlers/bindings/fdo2.hpp",
+      "bus": [
+        "uart"
+      ],
+      "commit": "61218e3ebcb94066860a27b429b6928ed4524ac7",
+      "configs": [],
+      "kb_core_min": null,
+      "mcus": [
+        "any"
+      ],
+      "name": "fdo2",
+      "peripheral": null,
+      "repo": "kokeb-labs-drivers/driver-fdo2",
+      "tag": "v0.1.0-rc.1",
+      "version": "0.1.0"
+    },
+    {
+      "binding": "kb/handlers/bindings/isf15acp4.hpp",
+      "bus": [
+        "spi"
+      ],
+      "commit": "62260440dc5c53ccc6fd8b762cd76540ccaf7823",
+      "configs": [],
+      "kb_core_min": null,
+      "mcus": [
+        "any"
+      ],
+      "name": "isf15acp4",
+      "peripheral": null,
+      "repo": "kokeb-labs-drivers/driver-isf15acp4",
+      "tag": "v0.1.0-rc.1",
+      "version": "0.1.0"
+    },
+    {
+      "binding": "kb/handlers/bindings/max22200.hpp",
+      "bus": [
+        "spi"
+      ],
+      "commit": "31a0c217dca108073e3a5369dcb6c8e3c00a7fb4",
+      "configs": [],
+      "kb_core_min": null,
+      "mcus": [
+        "any"
+      ],
+      "name": "max22200",
+      "peripheral": null,
+      "repo": "kokeb-labs-drivers/driver-max22200",
+      "tag": "v0.1.0-rc.1",
+      "version": "0.1.0"
+    },
+    {
+      "binding": "kb/handlers/bindings/mcp9700.hpp",
+      "bus": [
+        "adc"
+      ],
+      "commit": "f435359e4ca126d5cf0f1ba97f84ec7d0b41e571",
+      "configs": [],
+      "kb_core_min": null,
+      "mcus": [
+        "any"
+      ],
+      "name": "mcp9700",
+      "peripheral": null,
+      "repo": "kokeb-labs-drivers/driver-mcp9700",
+      "tag": "v0.1.0-rc.1",
+      "version": "0.1.0"
+    },
+    {
+      "binding": "kb/handlers/bindings/ntc_thermistor.hpp",
+      "bus": [
+        "adc"
+      ],
+      "commit": "731831ed59bff27a755db3a0df48b882ac43caa0",
+      "configs": [],
+      "kb_core_min": null,
+      "mcus": [
+        "any"
+      ],
+      "name": "ntc_thermistor",
+      "peripheral": null,
+      "repo": "kokeb-labs-drivers/driver-ntc-thermistor",
+      "tag": "v0.1.0-rc.1",
+      "version": "0.1.0"
+    },
+    {
+      "binding": "kb/handlers/bindings/pca9685.hpp",
+      "bus": [
+        "i2c"
+      ],
+      "commit": "ba554fcf9bfff462ea3e2d05e38f4e91753f1f97",
+      "configs": [],
+      "kb_core_min": null,
+      "mcus": [
+        "any"
+      ],
+      "name": "pca9685",
+      "peripheral": null,
+      "repo": "kokeb-labs-drivers/driver-pca9685",
+      "tag": "v0.1.0-rc.1",
+      "version": "0.1.0"
+    },
+    {
+      "binding": "kb/handlers/bindings/pcal9555.hpp",
+      "bus": [
+        "i2c"
+      ],
+      "commit": "b9dabab24897cc5392c35e024e63fbc970fe7f19",
+      "configs": [],
+      "kb_core_min": null,
+      "mcus": [
+        "any"
+      ],
+      "name": "pcal9555",
+      "peripheral": null,
+      "repo": "kokeb-labs-drivers/driver-pcal9555",
+      "tag": "v0.1.0-rc.1",
+      "version": "0.1.0"
+    },
+    {
+      "binding": "kb/handlers/bindings/pf1550.hpp",
+      "bus": [
+        "i2c"
+      ],
+      "commit": "c45f52351738a9107f65ad0d4bb895cb8e1ff5d3",
+      "configs": [],
+      "kb_core_min": null,
+      "mcus": [
+        "any"
+      ],
+      "name": "pf1550",
+      "peripheral": null,
+      "repo": "kokeb-labs-drivers/driver-pf1550",
+      "tag": "v0.1.0-rc.1",
+      "version": "0.1.0"
+    },
+    {
+      "binding": "kb/handlers/bindings/sfm_flow_meter.hpp",
+      "bus": [
+        "i2c"
+      ],
+      "commit": "d7b75124f4e722b089f26d87acad611cb19e6e73",
+      "configs": [],
+      "kb_core_min": null,
+      "mcus": [
+        "any"
+      ],
+      "name": "sfm_flow_meter",
+      "peripheral": null,
+      "repo": "kokeb-labs-drivers/driver-sfm-flow-meter",
+      "tag": "v0.1.0-rc.1",
+      "version": "0.1.0"
+    },
+    {
+      "binding": "kb/handlers/bindings/tle92466ed.hpp",
+      "bus": [
+        "spi"
+      ],
+      "commit": "4a33db170d1059e0a321819bdebf82777f77eb7f",
+      "configs": [],
+      "kb_core_min": null,
+      "mcus": [
+        "any"
+      ],
+      "name": "tle92466ed",
+      "peripheral": null,
+      "repo": "kokeb-labs-drivers/driver-tle92466ed",
+      "tag": "v0.1.0-rc.1",
+      "version": "0.1.0"
+    },
+    {
+      "binding": "kb/handlers/bindings/tmc5160.hpp",
+      "bus": [
+        "spi",
+        "uart"
+      ],
+      "commit": "9ef0483e64ffe1bb1d6744a063c7577b992a4e51",
+      "configs": [],
+      "kb_core_min": null,
+      "mcus": [
+        "any"
+      ],
+      "name": "tmc5160",
+      "peripheral": null,
+      "repo": "kokeb-labs-drivers/driver-tmc5160",
+      "tag": "v0.1.0-rc.1",
+      "version": "0.1.0"
+    },
+    {
+      "binding": "kb/handlers/bindings/tmc9660.hpp",
+      "bus": [
+        "spi",
+        "uart"
+      ],
+      "commit": "b0a125d222c09c35632f0803cd2e693be785a341",
+      "configs": [],
+      "kb_core_min": null,
+      "mcus": [
+        "any"
+      ],
+      "name": "tmc9660",
+      "peripheral": null,
+      "repo": "kokeb-labs-drivers/driver-tmc9660",
+      "tag": "v0.1.0-rc.1",
+      "version": "0.1.0"
+    },
+    {
+      "binding": "kb/handlers/bindings/ws2812_rmt.hpp",
+      "bus": [
+        "pio"
+      ],
+      "commit": "2790be043fce5c620281aafa5b2bc2e0880af829",
+      "configs": [],
+      "kb_core_min": null,
+      "mcus": [
+        "esp32"
+      ],
+      "name": "ws2812_rmt",
+      "peripheral": "rmt",
+      "repo": "kokeb-labs-drivers/driver-ws2812-rmt",
+      "tag": "v0.1.0-rc.1",
+      "version": "0.1.0"
+    }
+  ],
+  "kb_core": "0.0.0",
+  "schema": 1
+}

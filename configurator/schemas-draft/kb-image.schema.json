@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kokeb-labs.github.io/kb-configurator/schemas/image-selection-1.json",
+  "title": "kb image selection, schema 1",
+  "description": "Draft. The selection the resolver takes: the JSON form of what kb-image.yml records, before versions are expanded to tags and commits. kb_core and port are null while no release is published.",
+  "type": "object",
+  "required": ["image", "kb_core", "mcu", "rtos", "drivers", "buses"],
+  "additionalProperties": false,
+  "properties": {
+    "image": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,39}$"},
+    "kb_core": {"anyOf": [{"$ref": "#/$defs/version"}, {"type": "null"}]},
+    "port": {"anyOf": [{"$ref": "#/$defs/version"}, {"type": "null"}]},
+    "mcu": {
+      "type": "object",
+      "required": ["family", "target"],
+      "additionalProperties": false,
+      "properties": {
+        "family": {"type": "string"},
+        "target": {"type": "string"},
+        "board": {"type": ["string", "null"]}
+      }
+    },
+    "rtos": {"type": "string"},
+    "drivers": {"type": "array", "items": {
+      "type": "object",
+      "required": ["name", "version", "via", "bus"],
+      "additionalProperties": false,
+      "properties": {
+        "name": {"type": "string"},
+        "version": {"type": "string"},
+        "via": {"type": "string", "description": "The driver bus value this image uses (one of the driver's bus list), e.g. i2c or modbus."},
+        "bus": {"type": "string", "pattern": "^[a-z][a-z0-9]*?\\d+$", "description": "The bus instance, <instance kind><index>, e.g. i2c0, spi1, uart1, rmt0, adc0."},
+        "handler": {"type": "boolean", "default": true, "description": "Wrap the driver in kb-core's handler (KB_ENABLE_<NAME>)."}
+      }
+    }},
+    "buses": {"type": "object", "additionalProperties": {
+      "type": "object", "required": ["model"], "additionalProperties": false,
+      "properties": {"model": {"type": ["string", "null"]}}
+    }}
+  },
+  "$defs": {
+    "version": {"type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+(-rc\\.\\d+)?$"}
+  }
+}

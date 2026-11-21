@@ -1,0 +1,75 @@
+# Driver submodules (ADR-0002, ADR-0012): components/drivers/driver-<chip>, url
+# https://github.com/kokeb-labs-drivers/driver-<chip>.git, each pinned to the commit of a vX.Y.Z or vX.Y.Z-rc.N tag
+# recorded in components/drivers/drivers.lock.yml. Never a `branch =` entry.
+[submodule "components/drivers/driver-mcp9700"]
+	path = components/drivers/driver-mcp9700
+	url = https://github.com/kokeb-labs-drivers/driver-mcp9700.git
+[submodule "components/drivers/driver-ntc-thermistor"]
+	path = components/drivers/driver-ntc-thermistor
+	url = https://github.com/kokeb-labs-drivers/driver-ntc-thermistor.git
+[submodule "components/drivers/driver-at25040b"]
+	path = components/drivers/driver-at25040b
+	url = https://github.com/kokeb-labs-drivers/driver-at25040b.git
+[submodule "components/drivers/driver-pca9685"]
+	path = components/drivers/driver-pca9685
+	url = https://github.com/kokeb-labs-drivers/driver-pca9685.git
+[submodule "components/drivers/driver-pcal9555"]
+	path = components/drivers/driver-pcal9555
+	url = https://github.com/kokeb-labs-drivers/driver-pcal9555.git
+[submodule "components/drivers/driver-ads7952"]
+	path = components/drivers/driver-ads7952
+	url = https://github.com/kokeb-labs-drivers/driver-ads7952.git
+[submodule "components/drivers/driver-as5047u"]
+	path = components/drivers/driver-as5047u
+	url = https://github.com/kokeb-labs-drivers/driver-as5047u.git
+[submodule "components/drivers/driver-bmp581"]
+	path = components/drivers/driver-bmp581
+	url = https://github.com/kokeb-labs-drivers/driver-bmp581.git
+[submodule "components/drivers/driver-ads9324"]
+	path = components/drivers/driver-ads9324
+	url = https://github.com/kokeb-labs-drivers/driver-ads9324.git
+[submodule "components/drivers/driver-max22200"]
+	path = components/drivers/driver-max22200
+	url = https://github.com/kokeb-labs-drivers/driver-max22200.git
+[submodule "components/drivers/driver-tle92466ed"]
+	path = components/drivers/driver-tle92466ed
+	url = https://github.com/kokeb-labs-drivers/driver-tle92466ed.git
+[submodule "components/drivers/driver-sfm-flow-meter"]
+	path = components/drivers/driver-sfm-flow-meter
+	url = https://github.com/kokeb-labs-drivers/driver-sfm-flow-meter.git
+[submodule "components/drivers/driver-pf1550"]
+	path = components/drivers/driver-pf1550
+	url = https://github.com/kokeb-labs-drivers/driver-pf1550.git
+[submodule "components/drivers/driver-ws2812-rmt"]
+	path = components/drivers/driver-ws2812-rmt
+	url = https://github.com/kokeb-labs-drivers/driver-ws2812-rmt.git
+[submodule "components/drivers/driver-fdo2"]
+	path = components/drivers/driver-fdo2
+	url = https://github.com/kokeb-labs-drivers/driver-fdo2.git
+[submodule "components/drivers/driver-alicat-basis2"]
+	path = components/drivers/driver-alicat-basis2
+	url = https://github.com/kokeb-labs-drivers/driver-alicat-basis2.git
+[submodule "components/drivers/driver-dynamixel"]
+	path = components/drivers/driver-dynamixel
+	url = https://github.com/kokeb-labs-drivers/driver-dynamixel.git
+[submodule "components/drivers/driver-canopen-client"]
+	path = components/drivers/driver-canopen-client
+	url = https://github.com/kokeb-labs-drivers/driver-canopen-client.git
+[submodule "components/drivers/driver-isf15acp4"]
+	path = components/drivers/driver-isf15acp4
+	url = https://github.com/kokeb-labs-drivers/driver-isf15acp4.git
+[submodule "components/drivers/driver-tmc5160"]
+	path = components/drivers/driver-tmc5160
+	url = https://github.com/kokeb-labs-drivers/driver-tmc5160.git
+[submodule "components/drivers/driver-bno08x"]
+	path = components/drivers/driver-bno08x
+	url = https://github.com/kokeb-labs-drivers/driver-bno08x.git
+[submodule "components/drivers/driver-tmc9660"]
+	path = components/drivers/driver-tmc9660
+	url = https://github.com/kokeb-labs-drivers/driver-tmc9660.git
+[submodule "third_party/threadx"]
+	path = third_party/threadx
+	url = https://github.com/eclipse-threadx/threadx.git
+[submodule "components/drivers/driver-se05x"]
+	path = components/drivers/driver-se05x
+	url = https://github.com/kokeb-labs-drivers/driver-se05x.git

@@ -1,0 +1,28 @@
+# find_package(kb CONFIG REQUIRED COMPONENTS utils rtos dma interfaces handlers)
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 The kb-core authors
+@PACKAGE_INIT@
+
+# Dependencies are listed bottom-up: a targets file may only be included after the targets it references.
+
+set(_kb_all utils rtos dma interfaces handlers)
+set(_kb_deps_rtos utils)
+set(_kb_deps_dma utils)
+set(_kb_deps_interfaces utils rtos)
+set(_kb_deps_handlers utils rtos interfaces)
+if(NOT kb_FIND_COMPONENTS)
+  set(kb_FIND_COMPONENTS utils rtos)
+endif()
+foreach(_c IN LISTS kb_FIND_COMPONENTS)
+  foreach(_d IN LISTS _kb_deps_${_c} ITEMS ${_c})
+    if(NOT TARGET kb::${_d} AND EXISTS "${CMAKE_CURRENT_LIST_DIR}/kb_${_d}Targets.cmake")
+      include("${CMAKE_CURRENT_LIST_DIR}/kb_${_d}Targets.cmake")
+    endif()
+  endforeach()
+  if(TARGET kb::${_c})
+    set(kb_${_c}_FOUND TRUE)
+  else()
+    set(kb_${_c}_FOUND FALSE)
+  endif()
+endforeach()
+check_required_components(kb)

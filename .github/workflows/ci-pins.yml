@@ -1,0 +1,29 @@
+---
+# Calls ci-tools ru-pin-hygiene (v1.21: ignore_paths).
+# Pin hygiene (tools/pins/README.md): every driver gitlink equals components/drivers/drivers.lock.yml, is the commit
+# of a vX.Y.Z or vX.Y.Z-rc.N tag whose CI gate passed (never a branch, ADR-0012), and the driver.yml at that tag agrees
+# with the lock, the MCU gate table and this kb-core version. This is the evidence that lets kb-core skip the
+# drivers' own checks.
+name: Pin hygiene
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  pins:
+    name: Driver pins
+    uses: kokeb-labs/ci-tools/.github/workflows/ru-pin-hygiene.yml@v1
+    permissions:
+      contents: read
+    with:
+      lock_file: components/drivers/drivers.lock.yml
+      gates_file: cmake/kb_mcu_gates.cmake
+      version_file: cmake/kb_version.cmake
+      required_check: "CI gate / gate"
+      tag_pattern: '^v[0-9]+\.[0-9]+\.[0-9]+(-rc\.[0-9]+)?$'
+      forbid_branch_entries: true
+      # The RTOS kernel submodule is SOUP, not a driver pin (ADR-0015, docs/assurance/soup.md): no lock entry.
+      ignore_paths: "third_party/**"

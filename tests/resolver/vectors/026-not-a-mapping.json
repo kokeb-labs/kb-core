@@ -1,0 +1,18 @@
+{
+  "catalog": "catalogs/base.json",
+  "description": "An image that is not a mapping.",
+  "expect": {
+    "errors": [
+      {
+        "code": "KB-RES-001",
+        "subject": "$"
+      }
+    ],
+    "ok": false,
+    "warnings": []
+  },
+  "image": [
+    "schema",
+    1
+  ]
+}

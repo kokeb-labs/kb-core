@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="991" viewBox="0 0 1200 991" role="img" aria-labelledby="handler-pieces-title handler-pieces-desc" font-family="Inter, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
+<title id="handler-pieces-title">The pieces of a handler</title>
+<desc id="handler-pieces-desc">Stack: a HAL manager calls an access facade, OwnerAccess or Guarded; the facade calls the handler core with a service key and owns the bus domain; the core holds the start-up runner, health, snapshot and liveness beat and builds the driver, which reaches the HAL's bus through the binding's port and the kb::iface contract.</desc>
+<defs><marker id="fk-arrow-green-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#15803D"/></marker><marker id="fk-arrow-magenta-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#A21CAF"/></marker><marker id="fk-arrow-teal-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#0B7A72"/></marker><marker id="fk-arrow-violet-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#7C3AED"/></marker></defs>
+<rect x="0.5" y="0.5" width="1199" height="990" rx="16" fill="#FFFFFF" stroke="#E2E7EE"/>
+<text x="32" y="44" font-size="12.5" font-weight="700" letter-spacing="1.2" fill="#7A360E">HANDLERS</text>
+<text x="32" y="77.3" font-size="26" font-weight="700" fill="#0E1726">The pieces of a handler</text>
+<text x="32" y="103.8" font-size="15" fill="#566070">One facade per handler, chosen by the bus's thread model. Only a facade can run the core.</text>
+<rect x="32" y="119.8" width="1136" height="1" fill="#E2E7EE"/>
+<rect x="32" y="262.8" width="727" height="126" rx="14" fill="#F3EEFF" stroke="#D5C5FA" stroke-width="1.2"/>
+<rect x="32" y="444.8" width="727" height="126" rx="14" fill="#F3EEFF" stroke="#D5C5FA" stroke-width="1.2"/>
+<path d="M395.5 209.8 L395.5 259.8" fill="none" stroke="#A21CAF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-magenta-strong)"/>
+<path d="M633.3 391.8 L633.3 441.8" fill="none" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-violet-strong)"/>
+<path d="M395.5 573.8 L395.5 623.8" fill="none" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-violet-strong)"/>
+<path d="M395.5 698.8 L395.5 740.8" fill="none" stroke="#15803D" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-green-strong)"/>
+<path d="M395.5 815.8 L395.5 857.8" fill="none" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-violet-strong)"/>
+<path d="M762 344.3 L816 338.3" fill="none" stroke="#0B7A72" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-teal-strong)"/>
+<rect x="32" y="137.8" width="727" height="69" rx="10" fill="#FDF0FF" stroke="#A21CAF" stroke-width="1.4"/>
+<rect x="32" y="145.8" width="4" height="53" rx="2" fill="#A21CAF"/>
+<rect x="48" y="303.8" width="339.5" height="69" rx="10" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1.4"/>
+<rect x="48" y="311.8" width="4" height="53" rx="2" fill="#7C3AED"/>
+<rect x="403.5" y="303.8" width="339.5" height="69" rx="10" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1.4"/>
+<rect x="403.5" y="311.8" width="4" height="53" rx="2" fill="#7C3AED"/>
+<rect x="48" y="485.8" width="164.8" height="69" rx="10" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1.4"/>
+<rect x="48" y="493.8" width="4" height="53" rx="2" fill="#7C3AED"/>
+<rect x="224.8" y="485.8" width="164.8" height="69" rx="10" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1.4"/>
+<rect x="224.8" y="493.8" width="4" height="53" rx="2" fill="#7C3AED"/>
+<rect x="401.5" y="485.8" width="164.8" height="69" rx="10" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1.4"/>
+<rect x="401.5" y="493.8" width="4" height="53" rx="2" fill="#7C3AED"/>
+<rect x="578.3" y="485.8" width="164.8" height="69" rx="10" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1.4"/>
+<rect x="578.3" y="493.8" width="4" height="53" rx="2" fill="#7C3AED"/>
+<rect x="32" y="626.8" width="727" height="69" rx="10" fill="#EAF7EF" stroke="#15803D" stroke-width="1.4"/>
+<rect x="32" y="634.8" width="4" height="53" rx="2" fill="#15803D"/>
+<rect x="32" y="743.8" width="727" height="69" rx="10" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1.4"/>
+<rect x="32" y="751.8" width="4" height="53" rx="2" fill="#7C3AED"/>
+<rect x="32" y="860.8" width="727" height="69" rx="10" fill="#EAF2FF" stroke="#2563EB" stroke-width="1.4"/>
+<rect x="32" y="868.8" width="4" height="53" rx="2" fill="#2563EB"/>
+<rect x="819" y="303.8" width="349" height="69" rx="10" fill="#E6F6F4" stroke="#0B7A72" stroke-width="1.4"/>
+<rect x="819" y="311.8" width="4" height="53" rx="2" fill="#0B7A72"/>
+<text x="52" y="164.6" font-size="15" font-weight="700" fill="#86198F">HAL manager or application task</text>
+<text x="52" y="189.4" font-size="13" fill="#2B3442">EnsureStarted, Request, Sample, Latest, Health</text>
+<text x="68" y="330.6" font-size="15" font-weight="700" fill="#5B21B6">OwnerAccess&lt;H&gt;</text>
+<text x="68" y="355.4" font-size="13" fill="#2B3442">request queue, lock-free snapshot</text>
+<text x="423.5" y="330.6" font-size="15" font-weight="700" fill="#5B21B6">Guarded&lt;H&gt;</text>
+<text x="423.5" y="355.4" font-size="13" fill="#2B3442">handler lock, then bus lock</text>
+<text x="48" y="287.8" font-size="13" font-weight="700" fill="#5B21B6">ACCESS FACADE</text>
+<text x="177.5" y="287.8" font-size="12" fill="#5B21B6">one per handler</text>
+<rect x="375.6" y="224.8" width="39.8" height="20" rx="10" fill="#FFFFFF"/>
+<text x="395.5" y="239.1" font-size="12" font-weight="500" text-anchor="middle" fill="#566070">calls</text>
+<text x="68" y="512.5" font-size="15" font-weight="700" fill="#5B21B6">Start-up runner</text>
+<text x="68" y="537.4" font-size="13" fill="#2B3442">kStartupPlan</text>
+<text x="244.8" y="512.5" font-size="15" font-weight="700" fill="#5B21B6">Health</text>
+<text x="244.8" y="537.4" font-size="13" fill="#2B3442">record, seqlock</text>
+<text x="421.5" y="512.5" font-size="15" font-weight="700" fill="#5B21B6">Snapshot</text>
+<text x="421.5" y="537.4" font-size="13" fill="#2B3442">seqlock</text>
+<text x="598.3" y="512.5" font-size="15" font-weight="700" fill="#5B21B6">Liveness</text>
+<text x="598.3" y="537.4" font-size="13" fill="#2B3442">beat</text>
+<text x="48" y="469.8" font-size="13" font-weight="700" fill="#5B21B6">HANDLER CORE</text>
+<text x="167.7" y="469.8" font-size="12" fill="#5B21B6">HandlerCore&lt;Handler, Driver, Snapshot, Command, Reply&gt;</text>
+<rect x="592.5" y="406.8" width="81.5" height="20" rx="10" fill="#FFFFFF"/>
+<text x="633.3" y="421.1" font-size="12" font-weight="500" text-anchor="middle" fill="#566070">ServiceKey</text>
+<text x="52" y="653.5" font-size="15" font-weight="700" fill="#14532D">Driver</text>
+<text x="52" y="678.4" font-size="13" fill="#2B3442">std::optional, built by the plan</text>
+<rect x="371.2" y="588.8" width="48.6" height="20" rx="10" fill="#FFFFFF"/>
+<text x="395.5" y="603.1" font-size="12" font-weight="500" text-anchor="middle" fill="#566070">builds</text>
+<text x="52" y="770.5" font-size="15" font-weight="700" fill="#5B21B6">Binding Port</text>
+<text x="52" y="795.4" font-size="13" fill="#2B3442">driver hooks over kb::iface: I2cHooks, SpiHooks, UartHooks, AdcHooks, GpioHooks</text>
+<text x="52" y="887.5" font-size="15" font-weight="700" fill="#1E429F">kb::iface contract</text>
+<text x="52" y="912.4" font-size="13" fill="#2B3442">the HAL's bus, pins and clock</text>
+<text x="839" y="330.6" font-size="15" font-weight="700" fill="#0B5F59">BusDomain&lt;Bus, ThreadModel&gt;</text>
+<text x="839" y="355.4" font-size="13" fill="#2B3442">one bus and its declared thread model</text>
+<rect x="766.7" y="331.3" width="44.7" height="20" rx="10" fill="#FFFFFF"/>
+<text x="789" y="345.6" font-size="12" font-weight="500" text-anchor="middle" fill="#566070">owns</text>
+<rect x="32" y="945.2" width="14" height="14" rx="4" fill="#FDF0FF" stroke="#A21CAF" stroke-width="1.4"/>
+<text x="54" y="956.8" font-size="12.5" fill="#566070">product and board HAL</text>
+<rect x="224.5" y="945.2" width="14" height="14" rx="4" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1.4"/>
+<text x="246.5" y="956.8" font-size="12.5" fill="#566070">handlers</text>
+<rect x="324.7" y="945.2" width="14" height="14" rx="4" fill="#EAF7EF" stroke="#15803D" stroke-width="1.4"/>
+<text x="346.7" y="956.8" font-size="12.5" fill="#566070">drivers</text>
+<rect x="414.1" y="945.2" width="14" height="14" rx="4" fill="#EAF2FF" stroke="#2563EB" stroke-width="1.4"/>
+<text x="436.1" y="956.8" font-size="12.5" fill="#566070">interfaces and contracts</text>
+<rect x="612.7" y="945.2" width="14" height="14" rx="4" fill="#E6F6F4" stroke="#0B7A72" stroke-width="1.4"/>
+<text x="634.7" y="956.8" font-size="12.5" fill="#566070">MCU ports</text>
+</svg>

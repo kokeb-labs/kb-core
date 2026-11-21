@@ -1,0 +1,69 @@
+{
+ "schema": 1,
+ "name": "missing-thread-model",
+ "description": "Every bus needs a thread model",
+ "catalog": "../catalog-fixture.json",
+ "image": {
+  "image": "v",
+  "kb_core": "0.4.0",
+  "port": "0.4.0",
+  "mcu": {
+   "family": "esp32",
+   "target": "esp32s3",
+   "board": "esp32s3-devkitc"
+  },
+  "rtos": "freertos",
+  "drivers": [
+   {
+    "name": "bmp581",
+    "version": "0.1.0",
+    "via": "i2c",
+    "bus": "i2c0"
+   }
+  ],
+  "buses": {}
+ },
+ "expect": {
+  "ok": false,
+  "errors": [
+   "CFG-THR-001"
+  ],
+  "warnings": [],
+  "infos": [
+   "CFG-SET-002"
+  ],
+  "resolved": {
+   "kb_mcu": "ESP32",
+   "kb_rtos": "FREERTOS",
+   "parts": [
+    "utils",
+    "rtos",
+    "interfaces",
+    "handlers"
+   ],
+   "drivers": [
+    "bmp581"
+   ],
+   "buses": {
+    "i2c0": {
+     "kind": "i2c",
+     "via": [
+      "i2c"
+     ],
+     "model": null,
+     "devices": [
+      "bmp581"
+     ]
+    }
+   },
+   "pins": {
+    "min": 2,
+    "optional": 0,
+    "budget": 33
+   },
+   "tested_sets": [
+    "kb 2026.1"
+   ]
+  }
+ }
+}

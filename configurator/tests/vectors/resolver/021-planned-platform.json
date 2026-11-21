@@ -1,0 +1,47 @@
+{
+ "schema": 1,
+ "name": "planned-platform",
+ "description": "STM32 and ThreadX are planned, not released",
+ "catalog": "../catalog-fixture.json",
+ "image": {
+  "image": "v",
+  "kb_core": "0.4.0",
+  "port": null,
+  "mcu": {
+   "family": "stm32",
+   "target": "stm32h7",
+   "board": "nucleo-h743zi"
+  },
+  "rtos": "threadx",
+  "drivers": [],
+  "buses": {}
+ },
+ "expect": {
+  "ok": false,
+  "errors": [
+   "CFG-MCU-004",
+   "CFG-RTOS-002"
+  ],
+  "warnings": [
+   "CFG-SET-001"
+  ],
+  "infos": [],
+  "resolved": {
+   "kb_mcu": "STM32",
+   "kb_rtos": "THREADX",
+   "parts": [
+    "utils",
+    "rtos",
+    "interfaces"
+   ],
+   "drivers": [],
+   "buses": {},
+   "pins": {
+    "min": 0,
+    "optional": 0,
+    "budget": null
+   },
+   "tested_sets": []
+  }
+ }
+}

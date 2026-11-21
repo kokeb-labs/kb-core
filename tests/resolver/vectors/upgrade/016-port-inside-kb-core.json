@@ -1,0 +1,53 @@
+{
+  "catalog": "../catalogs/upgrade.json",
+  "description": "An in-tree port cannot be targeted on its own: it moves with kb-core.",
+  "expect": {
+    "errors": [
+      {
+        "code": "KB-UPG-003",
+        "subject": "port-esp32"
+      }
+    ],
+    "image": null,
+    "lock": null,
+    "ok": false,
+    "rows": [],
+    "warnings": []
+  },
+  "image": {
+    "buses": {
+      "i2c0": {
+        "devices": [
+          "pcal9555"
+        ],
+        "model": "guarded"
+      },
+      "spi1": {
+        "devices": [
+          "bno08x"
+        ],
+        "model": "owner"
+      }
+    },
+    "drivers": [
+      {
+        "name": "bno08x",
+        "version": "0.1.0"
+      },
+      "pcal9555"
+    ],
+    "image": "imu-board",
+    "kb_core": {
+      "version": "0.4.0"
+    },
+    "mcu": {
+      "family": "esp32"
+    },
+    "schema": 1
+  },
+  "options": {
+    "to": {
+      "port-esp32": "0.4.1"
+    }
+  }
+}

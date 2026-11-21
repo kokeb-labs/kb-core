@@ -1,0 +1,84 @@
+# The repository layout: the ONE place that says where things live and what may sit at the root.
+#
+# Read by CMake (cmake/kb_layout.cmake), by the tools (tools/layout/layout.py: `get`, `root`, `stale`), by
+# tools/preflight.sh and by the tests. Nothing else spells out a moved location: scripts and CMake ask for a name
+# below. Prose, workflow files and other YAML cannot ask, so they carry the literal path; `layout.py stale` fails
+# when one still carries a retired location, and `layout.py stale --fix` rewrites it to the current one.
+#
+# Keep this file to flat `key: value` lines and `- item` lines: three small parsers read it (CMake, Python, Node).
+# To regroup (for example `components/lib` -> `lib`): git mv the folders, change the value under `layout`, add the
+# old value under `retired`, run `tools/layout/layout.py stale --fix`, then `tools/preflight.sh`.
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 The kb-core authors
+
+# name: path relative to the repository root.
+layout:
+  lib: components/lib
+  ports: components/ports
+  drivers: components/drivers
+  host_port: components/ports/host
+  schemas: catalog/schemas
+  examples: examples
+  tests: tests
+  tools: tools
+  cmake: cmake
+  catalog: catalog
+  docs: docs
+
+# old path: the layout name it became (older layouts keep their line here so stale references stay detectable).
+retired:
+  lib: lib
+  ports: ports
+  drivers: drivers
+  host/rtos: host_port
+  schemas: schemas
+
+# Files that describe the move itself and so name retired locations on purpose (and the folder of this tool).
+stale_skip:
+  - CHANGELOG.md
+  - docs/layout.md
+  - tools/layout
+
+# The files a consumer that vendors kb-core (a port or a HAL keeping a pinned copy) needs to configure and build the
+# parts utils, rtos and interfaces with the none and FreeRTOS backends and the host port; `{name}` is a layout entry.
+# `layout.py vendor` prints the list resolved; a test copies exactly these files into an empty folder and configures.
+vendor:
+  - LICENSE
+  - CMakeLists.txt
+  - cmake
+  - tools/layout/paths.yml
+  - "{lib}/utils/CMakeLists.txt"
+  - "{lib}/utils/inc"
+  - "{lib}/rtos/CMakeLists.txt"
+  - "{lib}/rtos/inc"
+  - "{lib}/rtos/backends/none"
+  - "{lib}/rtos/backends/freertos"
+  - "{lib}/interfaces/CMakeLists.txt"
+  - "{lib}/interfaces/inc"
+  - "{lib}/interfaces/host"
+  - "{host_port}"
+  - "{tests}/harness"
+
+# Every entry that may sit at the repository root; `layout.py root` (preflight, CI) fails on anything else.
+root_dirs:
+  - .github
+  - .kokeb
+  - _config
+  - catalog
+  - cmake
+  - components
+  - configurator
+  - deviations
+  - docs
+  - examples
+  - tests
+  - third_party
+  - tools
+root_files:
+  - .gitignore
+  - .gitmodules
+  - AGENTS.md
+  - CHANGELOG.md
+  - CMakeLists.txt
+  - LICENSE
+  - README.md

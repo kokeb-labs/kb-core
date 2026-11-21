@@ -1,0 +1,24 @@
+---
+# Calls ci-tools ru-catalog (v1.19).
+# Regenerate catalog/compat.yml from the pinned drivers' driver.yml files (tools/catalog/README.md) and fail when
+# the committed file differs; the release attaches it.
+name: Catalogue
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  catalog:
+    name: compat.yml
+    uses: kokeb-labs/ci-tools/.github/workflows/ru-catalog.yml@v1
+    permissions:
+      contents: read
+    with:
+      lock_file: components/drivers/drivers.lock.yml
+      gates_file: cmake/kb_mcu_gates.cmake
+      output: catalog/compat.yml
+      binding_pattern: "components/lib/handlers/inc/kb/handlers/bindings/{name}.hpp"
+      submodules: true

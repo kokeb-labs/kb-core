@@ -1,0 +1,25 @@
+{
+  "catalog": {
+    "schema": 2
+  },
+  "description": "A catalogue of an unknown schema is refused before the image is read.",
+  "expect": {
+    "errors": [
+      {
+        "code": "KB-RES-030",
+        "subject": "catalog"
+      }
+    ],
+    "ok": false,
+    "warnings": []
+  },
+  "image": {
+    "kb_core": {
+      "version": "0.4.0"
+    },
+    "mcu": {
+      "family": "host"
+    },
+    "schema": 1
+  }
+}

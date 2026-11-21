@@ -1,0 +1,64 @@
+# Build trees (host, ESP-IDF, scratch)
+/build/
+/build-*/
+/build_*/
+components/ports/*/examples/**/build/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+compile_commands.json
+CTestTestfile.cmake
+Testing/
+_deps/
+
+# Compiled output
+*.o
+*.obj
+*.a
+*.so
+*.dylib
+*.dll
+*.exe
+*.out
+*.gcda
+*.gcno
+*.profraw
+*.profdata
+*.elf
+*.map
+*.hex
+*.img
+*.ota
+*.bin
+# Fuzz seed corpora are inputs, not output: keep every file under any fuzz/corpus/ folder (.bin included).
+!components/lib/*/fuzz/corpus/**
+!tests/**/corpus/**
+
+# ESP-IDF: the generated sdkconfig is never committed (sdkconfig.defaults is)
+sdkconfig
+sdkconfig.old
+**/managed_components/
+**/dependencies.lock
+
+# Documentation output
+/site/
+docs/_doxygen/html/
+docs/_doxygen/xml/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Editors and OS
+.vscode/settings.json.user
+.idea/
+*.swp
+*~
+.DS_Store
+Thumbs.db
+
+# Local copies of _config/.clang-format and _config/.clang-tidy for editors
+/.clang-format
+/.clang-tidy

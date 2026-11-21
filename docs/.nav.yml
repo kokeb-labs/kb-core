@@ -1,0 +1,90 @@
+---
+# Site navigation (mkdocs-awesome-nav): the tabs and their pages, in reading order. Every page is listed, so the
+# strict build reports a page that is not.
+nav:
+  - Home: index.md
+  - Concepts:
+      - Architecture: architecture.md
+      - Repository layout: layout.md
+      - Layering rules: layering.md
+      - Figures: figures.md
+      - Port contracts: port-contracts.md
+      - RTOS boundary: rtos-boundary.md
+  - Parts:
+      - utils: parts/utils.md
+      - rtos: parts/rtos.md
+      - rtos on ThreadX: parts/rtos-threadx.md
+      - dma: parts/dma.md
+      - interfaces: parts/interfaces.md
+      - handlers: parts/handlers.md
+      - API reference: api-reference.md
+  - Examples: examples.md
+  - Configurator:
+      - User guide: configurator.md
+      - Checks: configurator-checks.md
+  - Handlers:
+      - Overview: handlers/index.md
+      - mcp9700: handlers/mcp9700.md
+      - ntc_thermistor: handlers/ntc_thermistor.md
+      - at25040b: handlers/at25040b.md
+      - pca9685: handlers/pca9685.md
+      - pcal9555: handlers/pcal9555.md
+      - ads7952: handlers/ads7952.md
+      - as5047u: handlers/as5047u.md
+      - bmp581: handlers/bmp581.md
+      - ads9324: handlers/ads9324.md
+      - max22200: handlers/max22200.md
+      - tle92466ed: handlers/tle92466ed.md
+      - sfm_flow_meter: handlers/sfm_flow_meter.md
+      - pf1550: handlers/pf1550.md
+      - ws2812_rmt: handlers/ws2812_rmt.md
+      - fdo2: handlers/fdo2.md
+      - alicat_basis2: handlers/alicat_basis2.md
+      - dynamixel: handlers/dynamixel.md
+      - canopen_client: handlers/canopen_client.md
+      - isf15acp4: handlers/isf15acp4.md
+      - tmc5160: handlers/tmc5160.md
+      - bno08x: handlers/bno08x.md
+      - se05x: handlers/se05x.md
+      - tmc9660: handlers/tmc9660.md
+  - Design:
+      - Plan: design/plan.md
+      - Handlers: design/handlers.md
+      - Bus access: design/bus-access.md
+      - Fault evidence: design/fault-journal.md
+      - MCU ports and repositories: design/ports.md
+      - Assurance: design/assurance.md
+      - Configurator: design/configurator.md
+      - Assembler and resolver: design/assembler.md
+      - The kb tool: kb-tool.md
+      - Design rules: design/rules.md
+      - Figure catalogue: diagrams/index.md
+  - Quality:
+      - Testing and CI: testing.md
+      - Deviations: deviations.md
+      - Assurance records: assurance/README.md
+      - SOUP list: assurance/soup.md
+  - Project:
+      - Versioning and release: versioning.md
+      - Contributing: contributing.md
+      - Decisions:
+          - Index: adr/README.md
+          - "ADR-0001 Layering": adr/ADR-0001-layering.md
+          - "ADR-0002 Driver consumption": adr/ADR-0002-driver-consumption.md
+          - "ADR-0003 Concepts vs CRTP (superseded)": adr/ADR-0003-concepts-vs-crtp.md
+          - "ADR-0004 CI strategy": adr/ADR-0004-ci-strategy.md
+          - "ADR-0005 No code port": adr/ADR-0005-no-code-port.md
+          - "ADR-0006 Concepts only": adr/ADR-0006-concepts-only.md
+          - "ADR-0007 MCU ports isolated": adr/ADR-0007-mcu-ports-isolated.md
+          - "ADR-0008 Repository naming": adr/ADR-0008-repository-naming.md
+          - "ADR-0009 Handler thread models": adr/ADR-0009-handler-thread-models.md
+          - "ADR-0010 Handler start-up pipeline": adr/ADR-0010-handler-startup-pipeline.md
+          - "ADR-0011 Assurance level high": adr/ADR-0011-assurance-level-high.md
+          - "ADR-0012 Pins and release lock": adr/ADR-0012-pins-and-release-lock.md
+          - "ADR-0013 Hosted configurator": adr/ADR-0013-hosted-configurator.md
+          - "ADR-0014 kb-core is the assembler": adr/ADR-0014-kb-core-is-the-assembler.md
+          - "ADR-0015 ThreadX backend": adr/ADR-0015-threadx-backend.md
+          - "ADR-0015 Async bus and held transactions": adr/ADR-0015-async-bus-and-held-transactions.md
+          - "ADR-0030 DMA buffers and leases": adr/ADR-0030-dma-buffers-and-leases.md
+          - "ADR-0031 DMA stream copy-out": adr/ADR-0031-dma-stream-copy-out.md
+          - "ADR-0032 DMA region policy": adr/ADR-0032-dma-region-policy.md

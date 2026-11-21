@@ -1,0 +1,43 @@
+---
+# Release of a pushed v* tag after its CI passed: per-part packages, SHA256SUMS and catalog/compat.yml
+# (docs/versioning.md), then signed build provenance. Calls kokeb-labs/ci-tools ru-release and ru-attest-release.
+# The per-part package artifacts come from a packaging job that arrives with the first part's source.
+# PENDING (ADR-0012, ADR-0013; needs ci-tools ru-release-evidence): a job before `release` that writes
+# kb-core-<version>.lock.yml (this tag's own commit SHA, every pin with tag and commit, toolchain and SOUP versions),
+# the SBOM (SPDX 2.3 and CycloneDX 1.6), the known-CVE scan and the licence report, and adds them to SHA256SUMS and
+# the attestation. A scheduled caller re-scans published releases for new CVEs.
+name: Release
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+
+permissions:
+  contents: read
+
+jobs:
+  release:
+    name: Create release
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'push' &&
+      startsWith(github.event.workflow_run.head_branch, 'v')
+    uses: kokeb-labs/ci-tools/.github/workflows/ru-release.yml@v1
+    permissions:
+      contents: write
+    with:
+      tag_name: ${{ github.event.workflow_run.head_branch }}
+      prerelease: ${{ contains(github.event.workflow_run.head_branch, '-') }}
+
+  attest:
+    name: Attest release files
+    needs: release
+    if: github.event.repository.visibility == 'public'
+    uses: kokeb-labs/ci-tools/.github/workflows/ru-attest-release.yml@v1
+    permissions:
+      contents: read
+      id-token: write
+      attestations: write
+    with:
+      tag_name: ${{ github.event.workflow_run.head_branch }}

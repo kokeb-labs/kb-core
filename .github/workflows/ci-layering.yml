@@ -1,0 +1,31 @@
+---
+# Calls ci-tools ru-layering (v1.19).
+# The include and dependency checker (tools/include_checker/README.md) on its fixtures and on the repository, and
+# the poison build (tests/poison/). HALs and kb-hal-common call the same reusable workflow with their zone file.
+name: Layering
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  layering:
+    name: Includes, links and poison build
+    uses: kokeb-labs/ci-tools/.github/workflows/ru-layering.yml@v1
+    permissions:
+      contents: read
+    with:
+      rules: tools/include_checker/rules.yml
+      boundary_files: deviations/boundary-files.yml
+      fixtures: tests/layering
+      # KB_BUILD_INTEGRATION: the bindings and their tests compiled with each driver on the include path, so the
+      # checker resolves the drivers' headers they include.
+      poison_cmake_args: "-DKB_BUILD_TESTS=ON -DKB_BUILD_INTEGRATION=ON"
+      # ESP-IDF example apps may call ESP-IDF in their own main/ (components/ports/esp32/examples/README.md);
+      # they are built by ci-esp32.yml, not by the poison build.
+      exclude: >-
+        components/ports/esp32/examples/** tests/fakes/freertos/freertos/** tests/fakes/threadx/tx_api.h third_party/**
+      # The driver submodules, so the driver-port proofs resolve their headers (drivers are an external zone).
+      submodules: true

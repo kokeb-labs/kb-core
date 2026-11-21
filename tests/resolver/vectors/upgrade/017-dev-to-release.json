@@ -1,0 +1,422 @@
+{
+  "catalog": {
+    "drivers": [
+      {
+        "folder": "driver-bmp581",
+        "name": "bmp581",
+        "pinned": "0.1.0",
+        "repo": "kokeb-labs-drivers/driver-bmp581",
+        "versions": [
+          {
+            "authors": [
+              "The driver-bmp581 authors"
+            ],
+            "bus": [
+              "i2c",
+              "spi"
+            ],
+            "commit": "11b4fd22a3778ccc355837b0db4c931467483e93",
+            "kb_core_min": null,
+            "kind": "release",
+            "license": "MIT",
+            "mcus": [
+              "any"
+            ],
+            "peripheral": null,
+            "requires_owner": false,
+            "tag": "v0.2.0",
+            "version": "0.2.0"
+          },
+          {
+            "authors": [
+              "The driver-bmp581 authors"
+            ],
+            "bus": [
+              "i2c",
+              "spi"
+            ],
+            "commit": "baff9763cfa1737e3603a8fb1b0e7991f8a5b88d",
+            "kb_core_min": null,
+            "kind": "release",
+            "license": "MIT",
+            "mcus": [
+              "any"
+            ],
+            "peripheral": null,
+            "requires_owner": false,
+            "tag": "v0.1.0",
+            "version": "0.1.0"
+          }
+        ]
+      },
+      {
+        "folder": "driver-bno08x",
+        "name": "bno08x",
+        "pinned": null,
+        "repo": "kokeb-labs-drivers/driver-bno08x",
+        "versions": [
+          {
+            "authors": [
+              "The driver-bno08x authors"
+            ],
+            "bus": [
+              "i2c",
+              "spi",
+              "uart"
+            ],
+            "commit": "d42ec62fc8f2ba33486b58fadf6cfbf475ca3cb7",
+            "kb_core_min": "0.4.0",
+            "kind": "release",
+            "license": "MIT",
+            "mcus": [
+              "any"
+            ],
+            "peripheral": null,
+            "requires_owner": true,
+            "tag": "v0.1.0",
+            "version": "0.1.0"
+          }
+        ]
+      },
+      {
+        "folder": "driver-pcal9555",
+        "name": "pcal9555",
+        "pinned": null,
+        "repo": "kokeb-labs-drivers/driver-pcal9555",
+        "versions": [
+          {
+            "authors": [
+              "The driver-pcal9555 authors"
+            ],
+            "bus": [
+              "i2c"
+            ],
+            "commit": "b456b5e8b4ca6037f431c53a915d3733602c90c2",
+            "kb_core_min": null,
+            "kind": "rc",
+            "license": "MIT",
+            "mcus": [
+              "any"
+            ],
+            "peripheral": null,
+            "requires_owner": false,
+            "tag": "v0.2.0-rc.1",
+            "version": "0.2.0-rc.1"
+          },
+          {
+            "authors": [
+              "The driver-pcal9555 authors"
+            ],
+            "bus": [
+              "i2c"
+            ],
+            "commit": "dbdbae3e67ebb0e729815f047f375c41b844058f",
+            "kb_core_min": null,
+            "kind": "release",
+            "license": "MIT",
+            "mcus": [
+              "any"
+            ],
+            "peripheral": null,
+            "requires_owner": false,
+            "tag": "v0.1.0",
+            "version": "0.1.0"
+          }
+        ]
+      },
+      {
+        "folder": "driver-tmc5160",
+        "name": "tmc5160",
+        "pinned": null,
+        "repo": "kokeb-labs-drivers/driver-tmc5160",
+        "versions": [
+          {
+            "authors": [
+              "The driver-tmc5160 authors"
+            ],
+            "bus": [
+              "spi",
+              "uart"
+            ],
+            "commit": "6e7dae3f1e329521a215f4d18c647872d4d1db89",
+            "kb_core_min": null,
+            "kind": "rc",
+            "license": "MIT",
+            "mcus": [
+              "any"
+            ],
+            "peripheral": null,
+            "requires_owner": false,
+            "tag": "v0.1.0-rc.2",
+            "version": "0.1.0-rc.2"
+          },
+          {
+            "authors": [
+              "The driver-tmc5160 authors"
+            ],
+            "bus": [
+              "spi",
+              "uart"
+            ],
+            "commit": "cc37d1b55047521f137997a70503e3815ad1b369",
+            "kb_core_min": null,
+            "kind": "rc",
+            "license": "MIT",
+            "mcus": [
+              "any"
+            ],
+            "peripheral": null,
+            "requires_owner": false,
+            "tag": "v0.1.0-rc.1",
+            "version": "0.1.0-rc.1"
+          }
+        ]
+      },
+      {
+        "folder": "driver-ws2812-rmt",
+        "name": "ws2812_rmt",
+        "pinned": null,
+        "repo": "kokeb-labs-drivers/driver-ws2812-rmt",
+        "versions": [
+          {
+            "authors": [
+              "The driver-ws2812-rmt authors"
+            ],
+            "bus": [
+              "pio"
+            ],
+            "commit": "660f98ae2c6bcf7c3ac01ad6b14f2ab6390ff5f6",
+            "kb_core_min": null,
+            "kind": "release",
+            "license": "MIT",
+            "mcus": [
+              "esp32"
+            ],
+            "peripheral": "rmt",
+            "requires_owner": false,
+            "tag": "v0.1.0",
+            "version": "0.1.0"
+          }
+        ]
+      }
+    ],
+    "kb_core": {
+      "authors": [
+        "The kb-core authors"
+      ],
+      "license": "MIT",
+      "repo": "kokeb-labs/kb-core",
+      "versions": [
+        {
+          "commit": "24b17fadb92753d55588afd172d459bac8e6f29d",
+          "kind": "dev",
+          "tag": null,
+          "version": "0.3.1"
+        },
+        {
+          "commit": "080f7cfe7e98e006ac3b7c6695b3a9599a39f64d",
+          "kind": "release",
+          "tag": "v0.4.0",
+          "version": "0.4.0"
+        },
+        {
+          "commit": "57c039089e7424940586b874906694a6610531dd",
+          "kind": "rc",
+          "tag": "v0.4.0-rc.1",
+          "version": "0.4.0-rc.1"
+        },
+        {
+          "commit": "0b28aa5cb288ea69e20e8580f7e1a77698b192b9",
+          "kind": "release",
+          "tag": "v0.3.0",
+          "version": "0.3.0"
+        }
+      ]
+    },
+    "mcus": [
+      {
+        "default_rtos": "freertos",
+        "family": "esp32",
+        "port": {
+          "name": "esp32",
+          "path": "components/ports/esp32",
+          "repo": "kokeb-labs-drivers/port-esp32",
+          "versions": []
+        },
+        "rtos": [
+          "freertos"
+        ],
+        "status": "supported",
+        "targets": [
+          "esp32",
+          "esp32c3",
+          "esp32c5",
+          "esp32c6",
+          "esp32h2",
+          "esp32p4",
+          "esp32s2",
+          "esp32s3"
+        ]
+      },
+      {
+        "default_rtos": "none",
+        "family": "host",
+        "port": {
+          "name": "host",
+          "path": "components/lib/interfaces/host",
+          "repo": "kokeb-labs/kb-core",
+          "versions": []
+        },
+        "rtos": [
+          "host",
+          "none"
+        ],
+        "status": "supported",
+        "targets": [
+          "host"
+        ]
+      },
+      {
+        "default_rtos": "freertos",
+        "family": "stm32",
+        "port": null,
+        "rtos": [
+          "freertos",
+          "none",
+          "threadx"
+        ],
+        "status": "planned",
+        "targets": [
+          "stm32"
+        ]
+      }
+    ],
+    "parts": [
+      "utils",
+      "rtos",
+      "interfaces",
+      "handlers"
+    ],
+    "rtos": [
+      {
+        "name": "freertos",
+        "status": "supported"
+      },
+      {
+        "name": "host",
+        "status": "supported"
+      },
+      {
+        "name": "none",
+        "status": "supported"
+      },
+      {
+        "name": "threadx",
+        "status": "planned"
+      }
+    ],
+    "schema": 1
+  },
+  "description": "A kb-core development revision is replaced by the newest release at or above it.",
+  "expect": {
+    "errors": [],
+    "files": {
+      "CMakePresets.json": "{\n  \"configurePresets\": [\n    {\n      \"binaryDir\": \"${sourceDir}/build/dev-board\",\n      \"cacheVariables\": {\n        \"KB_MCU\": \"HOST\",\n        \"KB_PARTS\": \"utils;rtos;interfaces\",\n        \"KB_RTOS\": \"NONE\"\n      },\n      \"displayName\": \"kb image dev-board\",\n      \"name\": \"dev-board\"\n    }\n  ],\n  \"version\": 6\n}\n",
+      "kb-fetch.sh": "#!/bin/sh\n# kb-fetch.sh: adds kb-core, the MCU port and the drivers of the image \"dev-board\" to this git repository as\n# submodules under external/, each checked out at its tag (a kb-core development revision: at its commit) and\n# verified against the commit in kb-image.lock.yml (ADR-0012, ADR-0014). A tag that moved is refused. No branch\n# is recorded in .gitmodules and nothing is fetched recursively. Rerunning it is safe. Written by kb resolve.\n#\n#   sh kb-fetch.sh            add or update every pin\n#   sh kb-fetch.sh --verify   only check that every submodule is at its pinned commit\nset -eu\n\nmode=add\nif [ \"${1:-}\" = \"--verify\" ]; then mode=verify; fi\ntop=$(git rev-parse --show-toplevel 2>/dev/null) || { echo \"kb-fetch: run this inside a git repository\" >&2; exit 1; }\ncd \"$top\"\n\ndie() {\n  printf 'kb-fetch: error: %s\\n' \"$*\" >&2\n  exit 1\n}\n\n# pin <path> <url> <tag, empty for a commit pin> <commit>\npin() {\n  path=$1 url=$2 tag=$3 want=$4\n  if [ \"$mode\" = verify ]; then\n    [ -e \"$path/.git\" ] || die \"$path is missing; run without --verify\"\n  else\n    if [ ! -e \"$path/.git\" ]; then\n      git submodule add --quiet \"$url\" \"$path\" || die \"cannot add $url\"\n    fi\n    if [ -n \"$tag\" ]; then\n      git -C \"$path\" fetch --quiet origin \"+refs/tags/$tag:refs/tags/$tag\" || die \"cannot fetch $tag of $url\"\n      got=$(git -C \"$path\" rev-parse \"refs/tags/$tag^{commit}\")\n      [ \"$got\" = \"$want\" ] || die \"$path: tag $tag points at $got, expected $want (the tag moved; it is not used)\"\n    else\n      git -C \"$path\" fetch --quiet origin \"$want\" || die \"cannot fetch commit $want of $url\"\n    fi\n    git -C \"$path\" -c advice.detachedHead=false checkout --quiet \"$want\"\n    git config -f .gitmodules --unset \"submodule.$path.branch\" 2>/dev/null || true\n    git add .gitmodules \"$path\"\n  fi\n  head=$(git -C \"$path\" rev-parse HEAD)\n  [ \"$head\" = \"$want\" ] || die \"$path is at $head, expected $want\"\n  printf 'kb-fetch: %s at %s (%s)\\n' \"$path\" \"${tag:-commit}\" \"$want\"\n}\n\n# kb-core 0.4.0\npin 'external/kb-core' 'https://github.com/kokeb-labs/kb-core.git' 'v0.4.0' '080f7cfe7e98e006ac3b7c6695b3a9599a39f64d'\n\nif [ \"$mode\" = add ]; then\n  echo \"kb-fetch: done; review with git status and commit the submodules\"\nfi\n",
+      "kb-image.lock.yml": "# kb image lock (schema 1), written by kb resolve: do not edit.\n{\n  \"buses\": [],\n  \"cmake\": {\n    \"KB_MCU\": \"HOST\",\n    \"KB_PARTS\": \"utils;rtos;interfaces\",\n    \"KB_RTOS\": \"NONE\"\n  },\n  \"drivers\": [],\n  \"image\": \"dev-board\",\n  \"kb_core\": {\n    \"authors\": [\n      \"The kb-core authors\"\n    ],\n    \"commit\": \"080f7cfe7e98e006ac3b7c6695b3a9599a39f64d\",\n    \"kind\": \"release\",\n    \"license\": \"MIT\",\n    \"repo\": \"kokeb-labs/kb-core\",\n    \"tag\": \"v0.4.0\",\n    \"version\": \"0.4.0\"\n  },\n  \"mcu\": {\n    \"family\": \"host\",\n    \"target\": \"host\"\n  },\n  \"parts\": [\n    \"utils\",\n    \"rtos\",\n    \"interfaces\"\n  ],\n  \"ports\": [\n    {\n      \"commit\": \"080f7cfe7e98e006ac3b7c6695b3a9599a39f64d\",\n      \"in_tree\": true,\n      \"name\": \"host\",\n      \"path\": \"components/lib/interfaces/host\"\n    }\n  ],\n  \"rtos\": \"none\",\n  \"schema\": 1\n}\n",
+      "kb-image.yml": "# kb-image.yml: the selection of one firmware build (schema 1, docs/design/assembler.md).\n# Written by an upgrade (kb upgrade or the configurator); resolve it with: kb resolve kb-image.yml\nschema: 1\nimage: \"dev-board\"\nkb_core: {version: \"0.4.0\"}\nmcu: {family: \"host\"}\ndrivers: []\n",
+      "kb-upgrade.md": "# Upgrade report: dev-board\n\nkb-core 0.3.1 to 0.4.0, MCU host/host, RTOS none. Release candidates not picked unless named.\n\n1 of 1 component(s) change.\n\n| Component | From | To | Change | Breaking | Newest release | Newer rc | Known vulnerabilities |\n| --- | --- | --- | --- | --- | --- | --- | --- |\n| kb-core | 0.3.1 | 0.4.0 | minor | yes | 0.4.0 | - | not scanned -> not scanned |\n\n## Breaking changes\n\n- kb-core 0.3.1 -> 0.4.0: read its release notes and CHANGELOG before building: https://github.com/kokeb-labs/kb-core/releases/tag/v0.4.0\n\n## Held back\n\nNone.\n\n## Known vulnerabilities\n\n- none known in the scanned components\n- not scanned: kb-core\n\n## Warnings\n\n- KB-UPG-W01 kb-core: breaking change\n\n## Next steps\n\n1. Review the changes to `kb-image.yml` and `kb-image.lock.yml` with `git diff`.\n2. Run `sh kb-fetch.sh` to move every submodule to its new tag, then build and run your tests.\n3. Check the compatibility of the new set: a tested version set, or an untested combination.\n",
+      "kb_image.cmake": "# kb image dev-board: written by kb resolve from kb-image.yml (schema 1); do not edit.\n# kb-core 0.4.0 at 080f7cfe7e98e006ac3b7c6695b3a9599a39f64d, MCU host/host, RTOS none.\nset(KB_MCU \"HOST\")\nset(KB_RTOS \"NONE\")\nset(KB_PARTS \"utils;rtos;interfaces\")\n"
+    },
+    "image": {
+      "drivers": [],
+      "image": "dev-board",
+      "kb_core": {
+        "version": "0.4.0"
+      },
+      "mcu": {
+        "family": "host"
+      },
+      "schema": 1
+    },
+    "lock": {
+      "buses": [],
+      "cmake": {
+        "KB_MCU": "HOST",
+        "KB_PARTS": "utils;rtos;interfaces",
+        "KB_RTOS": "NONE"
+      },
+      "drivers": [],
+      "image": "dev-board",
+      "kb_core": {
+        "authors": [
+          "The kb-core authors"
+        ],
+        "commit": "080f7cfe7e98e006ac3b7c6695b3a9599a39f64d",
+        "kind": "release",
+        "license": "MIT",
+        "repo": "kokeb-labs/kb-core",
+        "tag": "v0.4.0",
+        "version": "0.4.0"
+      },
+      "mcu": {
+        "family": "host",
+        "target": "host"
+      },
+      "parts": [
+        "utils",
+        "rtos",
+        "interfaces"
+      ],
+      "ports": [
+        {
+          "commit": "080f7cfe7e98e006ac3b7c6695b3a9599a39f64d",
+          "in_tree": true,
+          "name": "host",
+          "path": "components/lib/interfaces/host"
+        }
+      ],
+      "rtos": "none",
+      "schema": 1
+    },
+    "ok": true,
+    "rows": [
+      {
+        "breaking": true,
+        "change": "minor",
+        "fixed": [],
+        "from": "0.3.1",
+        "from_kind": "dev",
+        "held": [],
+        "kind": "kb-core",
+        "lock_differs": false,
+        "name": "kb-core",
+        "newest_rc": null,
+        "newest_release": "0.4.0",
+        "notes": "https://github.com/kokeb-labs/kb-core/releases/tag/v0.4.0",
+        "osv_from": null,
+        "osv_to": null,
+        "to": "0.4.0",
+        "to_kind": "release"
+      }
+    ],
+    "warnings": [
+      {
+        "code": "KB-UPG-W01",
+        "subject": "kb-core"
+      }
+    ]
+  },
+  "image": {
+    "drivers": [],
+    "image": "dev-board",
+    "kb_core": {
+      "version": "0.3.1"
+    },
+    "mcu": {
+      "family": "host"
+    },
+    "schema": 1
+  },
+  "options": {}
+}

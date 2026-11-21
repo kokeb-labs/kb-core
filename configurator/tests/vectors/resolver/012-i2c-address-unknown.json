@@ -1,0 +1,80 @@
+{
+ "schema": 1,
+ "name": "i2c-address-unknown",
+ "description": "A chip whose address the catalogue does not know",
+ "catalog": "../catalog-fixture.json",
+ "image": {
+  "image": "v",
+  "kb_core": "0.4.0",
+  "port": "0.4.0",
+  "mcu": {
+   "family": "esp32",
+   "target": "esp32s3",
+   "board": "esp32s3-devkitc"
+  },
+  "rtos": "freertos",
+  "drivers": [
+   {
+    "name": "bmp581",
+    "version": "0.1.0",
+    "via": "i2c",
+    "bus": "i2c0"
+   },
+   {
+    "name": "sfm_flow_meter",
+    "version": "0.1.0",
+    "via": "i2c",
+    "bus": "i2c0"
+   }
+  ],
+  "buses": {
+   "i2c0": {
+    "model": "guarded"
+   }
+  }
+ },
+ "expect": {
+  "ok": true,
+  "errors": [],
+  "warnings": [
+   "CFG-SET-001"
+  ],
+  "infos": [
+   "CFG-BUS-012",
+   "CFG-CVE-002"
+  ],
+  "resolved": {
+   "kb_mcu": "ESP32",
+   "kb_rtos": "FREERTOS",
+   "parts": [
+    "utils",
+    "rtos",
+    "interfaces",
+    "handlers"
+   ],
+   "drivers": [
+    "bmp581",
+    "sfm_flow_meter"
+   ],
+   "buses": {
+    "i2c0": {
+     "kind": "i2c",
+     "via": [
+      "i2c"
+     ],
+     "model": "guarded",
+     "devices": [
+      "bmp581",
+      "sfm_flow_meter"
+     ]
+    }
+   },
+   "pins": {
+    "min": 2,
+    "optional": 0,
+    "budget": 33
+   },
+   "tested_sets": []
+  }
+ }
+}

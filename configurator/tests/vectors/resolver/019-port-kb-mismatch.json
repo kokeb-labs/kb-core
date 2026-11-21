@@ -1,0 +1,49 @@
+{
+ "schema": 1,
+ "name": "port-kb-mismatch",
+ "description": "Port 0.5.0-rc.1 works with kb-core 0.5 only",
+ "catalog": "../catalog-fixture.json",
+ "image": {
+  "image": "v",
+  "kb_core": "0.4.0",
+  "port": "0.5.0-rc.1",
+  "mcu": {
+   "family": "esp32",
+   "target": "esp32s3",
+   "board": "esp32s3-devkitc"
+  },
+  "rtos": "freertos",
+  "drivers": [],
+  "buses": {}
+ },
+ "expect": {
+  "ok": false,
+  "errors": [
+   "CFG-PORT-003"
+  ],
+  "warnings": [
+   "CFG-RC-001",
+   "CFG-SET-001"
+  ],
+  "infos": [
+   "CFG-CVE-002"
+  ],
+  "resolved": {
+   "kb_mcu": "ESP32",
+   "kb_rtos": "FREERTOS",
+   "parts": [
+    "utils",
+    "rtos",
+    "interfaces"
+   ],
+   "drivers": [],
+   "buses": {},
+   "pins": {
+    "min": 0,
+    "optional": 0,
+    "budget": 33
+   },
+   "tested_sets": []
+  }
+ }
+}

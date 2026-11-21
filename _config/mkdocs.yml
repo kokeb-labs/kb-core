@@ -1,0 +1,23 @@
+# Documentation site on the shared MkDocs platform (kokeb-mkdocs-theme from kokeb-labs/ci-tools). From the root:
+#   mkdocs serve -f _config/mkdocs.yml               http://127.0.0.1:8000
+#   mkdocs build -f _config/mkdocs.yml --strict      what CI runs
+#   kokeb-docs figures && kokeb-docs gen && kokeb-docs check
+site_name: kb-core
+site_description: >-
+  Utilities, RTOS wrapper, bus and pin interfaces and driver handlers between the Kokeb Labs drivers and a board HAL.
+repo_url: https://github.com/kokeb-labs/kb-core
+copyright: Copyright (c) 2026 The kb-core authors
+docs_dir: ../docs
+site_dir: ../site
+
+theme:
+  name: kokeb
+
+plugins:
+  - kokeb
+  - search
+  - awesome-nav
+
+# Mermaid is not used: it does not render on phones. kokeb-docs check fails on a mermaid fence or a .mmd file.
+extra:
+  no_mermaid: true

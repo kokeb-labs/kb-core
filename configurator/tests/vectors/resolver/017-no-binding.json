@@ -1,0 +1,72 @@
+{
+ "schema": 1,
+ "name": "no-binding",
+ "description": "kb-core 0.4.0 has no handler binding for mcp9700",
+ "catalog": "../catalog-fixture.json",
+ "image": {
+  "image": "v",
+  "kb_core": "0.4.0",
+  "port": "0.4.0",
+  "mcu": {
+   "family": "esp32",
+   "target": "esp32s3",
+   "board": "esp32s3-devkitc"
+  },
+  "rtos": "freertos",
+  "drivers": [
+   {
+    "name": "mcp9700",
+    "version": "0.1.0",
+    "via": "adc",
+    "bus": "adc0"
+   }
+  ],
+  "buses": {
+   "adc0": {
+    "model": "guarded"
+   }
+  }
+ },
+ "expect": {
+  "ok": false,
+  "errors": [
+   "CFG-CVE-001",
+   "CFG-HND-001"
+  ],
+  "warnings": [
+   "CFG-SET-001"
+  ],
+  "infos": [],
+  "resolved": {
+   "kb_mcu": "ESP32",
+   "kb_rtos": "FREERTOS",
+   "parts": [
+    "utils",
+    "rtos",
+    "interfaces",
+    "handlers"
+   ],
+   "drivers": [
+    "mcp9700"
+   ],
+   "buses": {
+    "adc0": {
+     "kind": "adc",
+     "via": [
+      "adc"
+     ],
+     "model": "guarded",
+     "devices": [
+      "mcp9700"
+     ]
+    }
+   },
+   "pins": {
+    "min": 1,
+    "optional": 0,
+    "budget": 33
+   },
+   "tested_sets": []
+  }
+ }
+}

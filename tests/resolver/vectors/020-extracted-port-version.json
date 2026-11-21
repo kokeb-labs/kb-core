@@ -1,0 +1,26 @@
+{
+  "catalog": "catalogs/extracted-port.json",
+  "description": "An extracted port version that was never tagged.",
+  "expect": {
+    "errors": [
+      {
+        "code": "KB-RES-020",
+        "subject": "mcu.port.version"
+      }
+    ],
+    "ok": false,
+    "warnings": []
+  },
+  "image": {
+    "kb_core": {
+      "version": "0.4.0"
+    },
+    "mcu": {
+      "family": "esp32",
+      "port": {
+        "version": "0.9.0"
+      }
+    },
+    "schema": 1
+  }
+}

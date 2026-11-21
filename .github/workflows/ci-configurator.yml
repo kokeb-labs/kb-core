@@ -1,0 +1,57 @@
+---
+# The configurator (configurator/, ADR-0013, ADR-0014): the site's node tests (its own vectors and kb-core's shared
+# resolver vectors), the page in headless Chrome when the runner has it, and the freshness checks of the generated
+# files: the catalogue (read from the public driver repositories with gh), the SRI hashes and offline.html.
+name: Configurator
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  site:
+    name: Site tests and checks
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0  # build_catalog.py reads every tag
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1  # v7.1.0
+        with:
+          node-version: "22"
+      - name: Unit tests and vectors
+        run: node --test configurator/tests/*.test.mjs
+      - name: Headless browser check
+        run: |
+          set -uo pipefail
+          chrome=""
+          for c in google-chrome chromium chromium-browser; do command -v "$c" >/dev/null && chrome=$c && break; done
+          if [ -n "$chrome" ]; then
+            "$chrome" --version  # the runner's own Chrome: the version is in the log when a start fails
+            node configurator/tools/headless_check.mjs
+          else
+            echo "::notice::no Chrome or Chromium on this runner; headless_check.mjs skipped"
+          fi
+      - name: Driver clones for the catalogue check
+        run: |
+          set -euo pipefail
+          # build_catalog.py reads every tag of each driver from a clone next to kb-core (--drivers-root default).
+          repos=$(gh repo list kokeb-labs-drivers --limit 200 --json name --jq '.[].name' | grep '^driver-' | sort)
+          for repo in $repos; do
+            # A working tree, not --no-checkout: the builder reads driver.yml from each clone to find it.
+            git clone --quiet "https://github.com/kokeb-labs-drivers/$repo.git" "../$repo"
+          done
+      - name: Catalogue is current
+        run: python3 configurator/tools/build_catalog.py --check --online  # dev revision excluded from the comparison
+      - name: SRI hashes are current
+        run: python3 configurator/tools/sri.py --check
+      - name: offline.html is current
+        run: python3 configurator/tools/bundle_offline.py --check

@@ -1,0 +1,25 @@
+---
+# kb-core is not scaffolded from kokeb-labs/driver-template (it is a multi-part library, not a driver), but it shares
+# the template's managed tool files. The drift check (ci-tools ru-template-drift) compares only the files listed
+# under `shared` with the template at `template`; every other template file does not apply here.
+template: unknown          # the driver-template release the shared files were last synced from
+kind: "library"
+name: "kb"
+namespace: "kb"
+description: "kb-core: utilities, RTOS wrapper, bus and pin interfaces and driver handlers for the Kokeb Labs drivers"
+include_root: "kb"
+org: "kokeb-labs"
+repo: "kb-core"
+author: "The kb-core authors"
+license: "MIT"
+platforms: [host, esp32]
+shared:
+  - _config/.yamllint
+  - _config/.markdownlint.json
+  - _config/lychee.toml
+  - .github/SECURITY.md
+local:
+  - path: CMakeLists.txt
+    reason: "Four parts with one version (cmake/kb_build_settings.cmake), not the single-target driver layout"
+  - path: .github/workflows/
+    reason: "Callers for kb-core's own CI plan (ADR-0004), not the driver workflow set"

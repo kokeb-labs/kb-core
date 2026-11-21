@@ -1,0 +1,43 @@
+{
+  "catalog": "catalogs/base.json",
+  "description": "A driver listed twice, and a device listed twice on one bus.",
+  "expect": {
+    "errors": [
+      {
+        "code": "KB-RES-010",
+        "subject": "i2c0/pcal9555"
+      },
+      {
+        "code": "KB-RES-010",
+        "subject": "pcal9555"
+      }
+    ],
+    "ok": false,
+    "warnings": []
+  },
+  "image": {
+    "buses": {
+      "i2c0": {
+        "devices": [
+          "pcal9555",
+          "pcal9555"
+        ],
+        "model": "guarded"
+      }
+    },
+    "drivers": [
+      "pcal9555",
+      {
+        "name": "pcal9555",
+        "version": "0.1.0"
+      }
+    ],
+    "kb_core": {
+      "version": "0.4.0"
+    },
+    "mcu": {
+      "family": "esp32"
+    },
+    "schema": 1
+  }
+}

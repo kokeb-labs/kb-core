@@ -1,0 +1,140 @@
+---
+# kb-core CI (ADR-0004): every check, then the one gate the ruleset requires ("CI gate / gate"). Each check is its
+# own caller file of kokeb-labs/ci-tools reusable workflows at @v1 (v1.19 or later).
+# Level high (ADR-0011). Not run here on purpose: the drivers' own tests, fuzzing, mutation, coverage and MISRA
+# scans. Each pinned driver passed them in its own CI at the pinned tag; ci-pins.yml proves that.
+name: CI
+
+on:
+  push:
+    branches: [main, 'release/*']
+    tags: ['v*']
+  pull_request:
+    branches: [main, 'release/*']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  # MISRA and mutation are the long, billed jobs (kb-core is private). A pull request that only touches docs, the
+  # configurator site or Markdown cannot change their result, so they are skipped there; the gate below allows
+  # exactly those two to be skipped. Pushes to main, release branches and tags always run everything.
+  changes:
+    name: Changed files
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      native: ${{ steps.diff.outputs.native }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          fetch-depth: 0
+      - id: diff
+        env:
+          EVENT: ${{ github.event_name }}
+          BASE: ${{ github.event.pull_request.base.sha }}
+          HEAD: ${{ github.event.pull_request.head.sha }}
+        run: |
+          native=true
+          if [ "$EVENT" = "pull_request" ]; then
+            native=false
+            while IFS= read -r f; do
+              case "$f" in
+                docs/*|configurator/*|tools/docs/*|*.md|mkdocs.yml) ;;
+                *) native=true ;;
+              esac
+            done < <(git diff --name-only "$BASE...$HEAD")
+          fi
+          echo "native=$native" >> "$GITHUB_OUTPUT"
+
+  host:
+    name: Host build and tests
+    uses: ./.github/workflows/ci-host.yml
+
+  quality:
+    name: Host quality
+    uses: ./.github/workflows/ci-quality.yml
+
+  misra:
+    name: MISRA
+    needs: changes
+    if: needs.changes.outputs.native == 'true'
+    uses: ./.github/workflows/ci-misra.yml
+
+  cross:
+    name: Cross-compile
+    uses: ./.github/workflows/ci-cross-build.yml
+
+  esp32:
+    name: ESP32 port
+    uses: ./.github/workflows/ci-esp32.yml
+    permissions:
+      contents: read
+      pull-requests: write
+
+  docs:
+    name: Docs
+    uses: ./.github/workflows/ci-docs.yml
+    permissions:
+      contents: write  # the publish job pushes gh-pages on main and tags; pull requests never publish
+
+  configurator:
+    name: Configurator
+    uses: ./.github/workflows/ci-configurator.yml
+    permissions:
+      contents: read
+
+  checks:
+    name: Repository checks
+    uses: ./.github/workflows/ci-repo-checks.yml
+    permissions:
+      contents: read
+      pull-requests: read
+
+  # Callers of the ci-tools v1.19 workflows ru-cmake-matrix, ru-mutation, ru-pin-hygiene, ru-layering, ru-catalog.
+  standalone:
+    name: Standalone parts
+    uses: ./.github/workflows/ci-standalone.yml
+
+  integration:
+    name: Integration
+    uses: ./.github/workflows/ci-integration.yml
+
+  mutation:
+    name: Mutation
+    needs: changes
+    if: needs.changes.outputs.native == 'true'
+    uses: ./.github/workflows/ci-mutation.yml
+
+  pins:
+    name: Pin hygiene
+    uses: ./.github/workflows/ci-pins.yml
+
+  layering:
+    name: Layering
+    uses: ./.github/workflows/ci-layering.yml
+
+  catalog:
+    name: Catalogue
+    uses: ./.github/workflows/ci-catalog.yml
+
+  layout:
+    name: Layout and examples
+    uses: ./.github/workflows/ci-layout.yml
+
+  ci-gate:
+    name: CI gate
+    needs:
+      [changes, host, quality, misra, cross, esp32, docs, configurator, checks, standalone, integration, mutation, pins,
+       layering, catalog, layout]
+    if: always()
+    uses: kokeb-labs/ci-tools/.github/workflows/ru-ci-gate.yml@v1
+    permissions:
+      contents: read
+    with:
+      needs_json: ${{ toJSON(needs) }}
+      allow_skipped: misra, mutation

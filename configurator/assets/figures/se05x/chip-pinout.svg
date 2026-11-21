@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1020" height="1172" viewBox="0 0 1020 1172" role="img" aria-labelledby="chip-pinout-title chip-pinout-desc" font-family="Inter, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
+<title id="chip-pinout-title">SE05x pinout, HX2QFN20</title>
+<desc id="chip-pinout-desc">Pinout of the SE05x in HX2QFN20, top view: 20 pins and an exposed pad, each with its name, its electrical type as a colour and the driver hook that uses it.</desc>
+<rect x="0.5" y="0.5" width="1019" height="1171" rx="16" fill="#FFFFFF" stroke="#E2E7EE"/>
+<text x="32" y="44" font-size="12.5" font-weight="700" letter-spacing="1.2" fill="#7A360E">HARDWARE</text>
+<text x="32" y="77.3" font-size="26" font-weight="700" fill="#0E1726">SE05x pinout, HX2QFN20</text>
+<text x="32" y="103.8" font-size="15" fill="#566070">Top view, pin 1 marked. Colour is the pin's electrical type; the mono text outside is the port hook the driver uses for it.</text>
+<text x="32" y="125.5" font-size="15" fill="#566070">Datasheet: Table 5 Pin description HX2QFN20, p. 11.</text>
+<rect x="32" y="141.6" width="956" height="1" fill="#E2E7EE"/>
+<rect x="380" y="483.4" width="260" height="260" rx="8" fill="#F5F7FA" stroke="#2B3442" stroke-width="2"/>
+<circle cx="400" cy="503.4" r="6" fill="#2B3442"/>
+<rect x="455.4" y="643.4" width="109.2" height="54.6" rx="6" fill="#FFFFFF" stroke="#64748B" stroke-width="1.4" stroke-dasharray="5 4"/>
+<rect x="350" y="535.4" width="30" height="20" rx="3" fill="#FDF0FF" stroke="#A21CAF" stroke-width="1.4"/>
+<rect x="350" y="569.4" width="30" height="20" rx="3" fill="#F6F5F4" stroke="#B5AFA9" stroke-width="1.4"/>
+<rect x="350" y="603.4" width="30" height="20" rx="3" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1.4"/>
+<rect x="350" y="637.4" width="30" height="20" rx="3" fill="#F6F5F4" stroke="#B5AFA9" stroke-width="1.4"/>
+<rect x="350" y="671.4" width="30" height="20" rx="3" fill="#F6F5F4" stroke="#B5AFA9" stroke-width="1.4"/>
+<rect x="432" y="743.4" width="20" height="30" rx="3" fill="#F6F5F4" stroke="#B5AFA9" stroke-width="1.4"/>
+<rect x="466" y="743.4" width="20" height="30" rx="3" fill="#F6F5F4" stroke="#B5AFA9" stroke-width="1.4"/>
+<rect x="500" y="743.4" width="20" height="30" rx="3" fill="#F6F5F4" stroke="#B5AFA9" stroke-width="1.4"/>
+<rect x="534" y="743.4" width="20" height="30" rx="3" fill="#EAF2FF" stroke="#2563EB" stroke-width="1.4"/>
+<rect x="568" y="743.4" width="20" height="30" rx="3" fill="#EAF2FF" stroke="#2563EB" stroke-width="1.4"/>
+<rect x="640" y="535.4" width="30" height="20" rx="3" fill="#F8F1EA" stroke="#7C4A1E" stroke-width="1.4"/>
+<rect x="640" y="569.4" width="30" height="20" rx="3" fill="#E6F6F4" stroke="#0B7A72" stroke-width="1.4"/>
+<rect x="640" y="603.4" width="30" height="20" rx="3" fill="#E6F6F4" stroke="#0B7A72" stroke-width="1.4"/>
+<rect x="640" y="637.4" width="30" height="20" rx="3" fill="#FFEEF2" stroke="#DB2752" stroke-width="1.4"/>
+<rect x="640" y="671.4" width="30" height="20" rx="3" fill="#E6F6F4" stroke="#0B7A72" stroke-width="1.4"/>
+<rect x="432" y="453.4" width="20" height="30" rx="3" fill="#F6F5F4" stroke="#B5AFA9" stroke-width="1.4"/>
+<rect x="466" y="453.4" width="20" height="30" rx="3" fill="#F1F4F8" stroke="#64748B" stroke-width="1.4"/>
+<rect x="500" y="453.4" width="20" height="30" rx="3" fill="#FFEEF2" stroke="#DB2752" stroke-width="1.4"/>
+<rect x="534" y="453.4" width="20" height="30" rx="3" fill="#FDF0FF" stroke="#A21CAF" stroke-width="1.4"/>
+<rect x="568" y="453.4" width="20" height="30" rx="3" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1.4"/>
+<text x="510" y="603.4" font-size="20" font-weight="700" text-anchor="middle" fill="#0E1726">SE05x</text>
+<text x="510" y="627.4" font-size="13" text-anchor="middle" fill="#566070">HX2QFN20, top view</text>
+<text x="510" y="675.7" font-size="12.5" font-weight="700" text-anchor="middle" fill="#334155">EP: VSS_EP</text>
+<text x="365" y="549.5" font-size="11.5" font-weight="700" text-anchor="middle" fill="#86198F">1</text>
+<text x="340" y="550.4" font-size="14" font-weight="700" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" text-anchor="end" fill="#0E1726">LB</text>
+<text x="365" y="583.5" font-size="11.5" font-weight="700" text-anchor="middle" fill="#57534E">2</text>
+<text x="340" y="584.4" font-size="14" font-weight="700" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" text-anchor="end" fill="#0E1726">NC2</text>
+<text x="365" y="617.5" font-size="11.5" font-weight="700" text-anchor="middle" fill="#5B21B6">3</text>
+<text x="340" y="618.4" font-size="14" font-weight="700" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" text-anchor="end" fill="#0E1726">IO1</text>
+<text x="365" y="651.5" font-size="11.5" font-weight="700" text-anchor="middle" fill="#57534E">4</text>
+<text x="340" y="652.4" font-size="14" font-weight="700" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" text-anchor="end" fill="#0E1726">NC4</text>
+<text x="365" y="685.5" font-size="11.5" font-weight="700" text-anchor="middle" fill="#57534E">5</text>
+<text x="340" y="686.4" font-size="14" font-weight="700" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" text-anchor="end" fill="#0E1726">NC5</text>
+<text x="446.1" y="758.4" font-size="11.5" font-weight="700" text-anchor="middle" transform="rotate(-90 446.1 758.4)" fill="#57534E">6</text>
+<text x="447" y="783.4" font-size="14" font-weight="700" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" text-anchor="end" transform="rotate(-90 447 783.4)" fill="#0E1726">NC6</text>
+<text x="480.1" y="758.4" font-size="11.5" font-weight="700" text-anchor="middle" transform="rotate(-90 480.1 758.4)" fill="#57534E">7</text>
+<text x="481" y="783.4" font-size="14" font-weight="700" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" text-anchor="end" transform="rotate(-90 481 783.4)" fill="#0E1726">NC7</text>
+<text x="514.1" y="758.4" font-size="11.5" font-weight="700" text-anchor="middle" transform="rotate(-90 514.1 758.4)" fill="#57534E">8</text>
+<text x="515" y="783.4" font-size="14" font-weight="700" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" text-anchor="end" transform="rotate(-90 515 783.4)" fill="#0E1726">NC8</text>
+<text x="548.1" y="758.4" font-size="11.5" font-weight="700" text-anchor="middle" transform="rotate(-90 548.1 758.4)" fill="#1E429F">9</text>
+<text x="549" y="783.4" font-size="14" font-weight="700" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" text-anchor="end" transform="rotate(-90 549 783.4)" fill="#0E1726">SDA</text>
+<text x="548.3" y="854.8" font-size="12" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" text-anchor="end" transform="rotate(-90 548.3 854.8)" fill="#566070">Write() / Read()</text>
+<text x="582.1" y="758.4" font-size="11.5" font-weight="700" text-anchor="middle" transform="rotate(-90 582.1 758.4)" fill="#1E429F">10</text>
+<text x="583" y="783.4" font-size="14" font-weight="700" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" text-anchor="end" transform="rotate(-90 583 783.4)" fill="#0E1726">SCL</text>
+<text x="582.3" y="854.8" font-size="12" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" text-anchor="end" transform="rotate(-90 582.3 854.8)" fill="#566070">Write() / Read()</text>
+<text x="655" y="549.5" font-size="11.5" font-weight="700" text-anchor="middle" fill="#6B3F17">15</text>
+<text x="680" y="550.4" font-size="14" font-weight="700" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" fill="#0E1726">VOUT</text>
+<text x="655" y="583.5" font-size="11.5" font-weight="700" text-anchor="middle" fill="#0B5F59">14</text>
+<text x="680" y="584.4" font-size="14" font-weight="700" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" fill="#0E1726">RST_N</text>
+<text x="655" y="617.5" font-size="11.5" font-weight="700" text-anchor="middle" fill="#0B5F59">13</text>
+<text x="680" y="618.4" font-size="14" font-weight="700" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" fill="#0E1726">CLK</text>
+<text x="655" y="651.5" font-size="11.5" font-weight="700" text-anchor="middle" fill="#9F1239">12</text>
+<text x="680" y="652.4" font-size="14" font-weight="700" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" fill="#0E1726">VIN</text>
+<text x="655" y="685.5" font-size="11.5" font-weight="700" text-anchor="middle" fill="#0B5F59">11</text>
+<text x="680" y="686.4" font-size="14" font-weight="700" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" fill="#0E1726">ENA</text>
+<text x="751.4" y="685.7" font-size="12" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" fill="#566070">SetEnable() / PowerCycle()</text>
+<text x="446.1" y="468.4" font-size="11.5" font-weight="700" text-anchor="middle" transform="rotate(-90 446.1 468.4)" fill="#57534E">20</text>
+<text x="447" y="443.4" font-size="14" font-weight="700" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" transform="rotate(-90 447 443.4)" fill="#0E1726">NC20</text>
+<text x="480.1" y="468.4" font-size="11.5" font-weight="700" text-anchor="middle" transform="rotate(-90 480.1 468.4)" fill="#334155">19</text>
+<text x="481" y="443.4" font-size="14" font-weight="700" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" transform="rotate(-90 481 443.4)" fill="#0E1726">VSS</text>
+<text x="514.1" y="468.4" font-size="11.5" font-weight="700" text-anchor="middle" transform="rotate(-90 514.1 468.4)" fill="#9F1239">18</text>
+<text x="515" y="443.4" font-size="14" font-weight="700" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" transform="rotate(-90 515 443.4)" fill="#0E1726">VCC</text>
+<text x="548.1" y="468.4" font-size="11.5" font-weight="700" text-anchor="middle" transform="rotate(-90 548.1 468.4)" fill="#86198F">17</text>
+<text x="549" y="443.4" font-size="14" font-weight="700" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" transform="rotate(-90 549 443.4)" fill="#0E1726">LA</text>
+<text x="582.1" y="468.4" font-size="11.5" font-weight="700" text-anchor="middle" transform="rotate(-90 582.1 468.4)" fill="#5B21B6">16</text>
+<text x="583" y="443.4" font-size="14" font-weight="700" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" transform="rotate(-90 583 443.4)" fill="#0E1726">IO2*</text>
+<text x="32" y="1089.3" font-size="12.5" fill="#566070">* Not confirmed in the datasheet: pin 16 IO2: the data sheet gives VOUT (note under Table 5, p. 12) and VIN (Table 9 note 2, p. 13) as the reference of</text>
+<text x="32" y="1107.3" font-size="12.5" fill="#566070">IO2.</text>
+<rect x="32" y="1126.4" width="14" height="14" rx="4" fill="#FFEEF2" stroke="#DB2752" stroke-width="1.4"/>
+<text x="54" y="1138" font-size="12.5" fill="#566070">power</text>
+<rect x="117.6" y="1126.4" width="14" height="14" rx="4" fill="#F1F4F8" stroke="#64748B" stroke-width="1.4"/>
+<text x="139.6" y="1138" font-size="12.5" fill="#566070">ground</text>
+<rect x="208.5" y="1126.4" width="14" height="14" rx="4" fill="#EAF2FF" stroke="#2563EB" stroke-width="1.4"/>
+<text x="230.5" y="1138" font-size="12.5" fill="#566070">bus</text>
+<rect x="277.4" y="1126.4" width="14" height="14" rx="4" fill="#E6F6F4" stroke="#0B7A72" stroke-width="1.4"/>
+<text x="299.4" y="1138" font-size="12.5" fill="#566070">digital in</text>
+<rect x="375.8" y="1126.4" width="14" height="14" rx="4" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1.4"/>
+<text x="397.8" y="1138" font-size="12.5" fill="#566070">digital in/out</text>
+<rect x="499.1" y="1126.4" width="14" height="14" rx="4" fill="#FDF0FF" stroke="#A21CAF" stroke-width="1.4"/>
+<text x="521.1" y="1138" font-size="12.5" fill="#566070">analog</text>
+<rect x="587.1" y="1126.4" width="14" height="14" rx="4" fill="#F8F1EA" stroke="#7C4A1E" stroke-width="1.4"/>
+<text x="609.1" y="1138" font-size="12.5" fill="#566070">power output</text>
+<rect x="716.8" y="1126.4" width="14" height="14" rx="4" fill="#F6F5F4" stroke="#B5AFA9" stroke-width="1.4"/>
+<text x="738.8" y="1138" font-size="12.5" fill="#566070">not connected</text>
+</svg>

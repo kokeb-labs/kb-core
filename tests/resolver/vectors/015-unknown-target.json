@@ -1,0 +1,28 @@
+{
+  "catalog": "catalogs/base.json",
+  "description": "A target that is not one of the family's, with an unknown kb-core version.",
+  "expect": {
+    "errors": [
+      {
+        "code": "KB-RES-002",
+        "subject": "kb_core.version"
+      },
+      {
+        "code": "KB-RES-005",
+        "subject": "mcu.target"
+      }
+    ],
+    "ok": false,
+    "warnings": []
+  },
+  "image": {
+    "kb_core": {
+      "version": "9.0.0"
+    },
+    "mcu": {
+      "family": "esp32",
+      "target": "esp8266"
+    },
+    "schema": 1
+  }
+}

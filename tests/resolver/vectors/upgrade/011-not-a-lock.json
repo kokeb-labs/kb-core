@@ -1,0 +1,53 @@
+{
+  "catalog": "../catalogs/upgrade.json",
+  "description": "Something that is not a schema-1 lock is refused.",
+  "expect": {
+    "errors": [
+      {
+        "code": "KB-UPG-002",
+        "subject": "lock"
+      }
+    ],
+    "image": null,
+    "lock": null,
+    "ok": false,
+    "rows": [],
+    "warnings": []
+  },
+  "image": {
+    "buses": {
+      "i2c0": {
+        "devices": [
+          "pcal9555"
+        ],
+        "model": "guarded"
+      },
+      "spi1": {
+        "devices": [
+          "bno08x"
+        ],
+        "model": "owner"
+      }
+    },
+    "drivers": [
+      {
+        "name": "bno08x",
+        "version": "0.1.0"
+      },
+      "pcal9555"
+    ],
+    "image": "imu-board",
+    "kb_core": {
+      "version": "0.4.0"
+    },
+    "mcu": {
+      "family": "esp32"
+    },
+    "schema": 1
+  },
+  "lock": {
+    "drivers": [],
+    "schema": 2
+  },
+  "options": {}
+}

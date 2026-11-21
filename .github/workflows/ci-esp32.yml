@@ -1,0 +1,23 @@
+---
+# The ESP32 port's own job (ADR-0007): ESP-IDF v5.5 build of components/ports/esp32/examples, which build kb-core as
+# the kb component and the port as the kb_port_esp32 component. Calls kokeb-labs/ci-tools ru-build. When the port
+# moves to port-esp32 this caller moves with it.
+name: ESP32 port
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: ESP-IDF build
+    uses: kokeb-labs/ci-tools/.github/workflows/ru-build.yml@v1
+    permissions:
+      contents: read
+      pull-requests: write
+    with:
+      project_dir: components/ports/esp32/examples
+      # The ESP-IDF build scripts (a copy of kokeb-labs espidf-tools), next to app_config.yml as the scripts expect.
+      project_tools_dir: components/ports/esp32/examples/scripts

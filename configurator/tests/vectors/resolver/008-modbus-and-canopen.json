@@ -1,0 +1,91 @@
+{
+ "schema": 1,
+ "name": "modbus-and-canopen",
+ "description": "Modbus on a UART and CANopen on CAN resolve; the bus kind is written out for the shared resolver",
+ "catalog": "../catalog-fixture.json",
+ "image": {
+  "image": "v",
+  "kb_core": "0.4.0",
+  "port": "0.4.0",
+  "mcu": {
+   "family": "esp32",
+   "target": "esp32s3",
+   "board": "esp32s3-devkitc"
+  },
+  "rtos": "freertos",
+  "drivers": [
+   {
+    "name": "alicat_basis2",
+    "version": "0.1.0",
+    "via": "modbus",
+    "bus": "uart1"
+   },
+   {
+    "name": "canopen_client",
+    "version": "0.1.0",
+    "via": "canopen",
+    "bus": "can0"
+   }
+  ],
+  "buses": {
+   "uart1": {
+    "model": "owner"
+   },
+   "can0": {
+    "model": "owner"
+   }
+  }
+ },
+ "expect": {
+  "ok": true,
+  "errors": [],
+  "warnings": [
+   "CFG-SET-001"
+  ],
+  "infos": [
+   "CFG-CVE-002"
+  ],
+  "resolved": {
+   "kb_mcu": "ESP32",
+   "kb_rtos": "FREERTOS",
+   "parts": [
+    "utils",
+    "rtos",
+    "interfaces",
+    "handlers"
+   ],
+   "drivers": [
+    "alicat_basis2",
+    "canopen_client"
+   ],
+   "buses": {
+    "can0": {
+     "kind": "can",
+     "via": [
+      "canopen"
+     ],
+     "model": "owner",
+     "devices": [
+      "canopen_client"
+     ]
+    },
+    "uart1": {
+     "kind": "uart",
+     "via": [
+      "modbus"
+     ],
+     "model": "owner",
+     "devices": [
+      "alicat_basis2"
+     ]
+    }
+   },
+   "pins": {
+    "min": 5,
+    "optional": 0,
+    "budget": 33
+   },
+   "tested_sets": []
+  }
+ }
+}

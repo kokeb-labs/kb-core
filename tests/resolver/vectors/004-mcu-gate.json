@@ -1,0 +1,26 @@
+{
+  "catalog": "catalogs/base.json",
+  "description": "The RMT LED driver works only on ESP32: a host image that enables it fails the MCU gate.",
+  "expect": {
+    "errors": [
+      {
+        "code": "KB-RES-013",
+        "subject": "ws2812_rmt"
+      }
+    ],
+    "ok": false,
+    "warnings": []
+  },
+  "image": {
+    "drivers": [
+      "ws2812_rmt"
+    ],
+    "kb_core": {
+      "version": "0.4.0"
+    },
+    "mcu": {
+      "family": "host"
+    },
+    "schema": 1
+  }
+}

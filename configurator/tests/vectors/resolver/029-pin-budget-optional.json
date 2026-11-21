@@ -1,0 +1,160 @@
+{
+ "schema": 1,
+ "name": "pin-budget-optional",
+ "description": "The bus pins fit, the optional control pins do not",
+ "catalog": "../catalog-fixture.json",
+ "image": {
+  "image": "v",
+  "kb_core": "0.4.0",
+  "port": "0.4.0",
+  "mcu": {
+   "family": "esp32",
+   "target": "esp32c3",
+   "board": "esp32c3-devkitm"
+  },
+  "rtos": "freertos",
+  "drivers": [
+   {
+    "name": "bmp581",
+    "version": "0.1.0",
+    "via": "spi",
+    "bus": "spi0"
+   },
+   {
+    "name": "tmc9660",
+    "version": "0.1.0",
+    "via": "spi",
+    "bus": "spi0"
+   },
+   {
+    "name": "pf1550",
+    "version": "0.1.0",
+    "via": "i2c",
+    "bus": "i2c0"
+   },
+   {
+    "name": "ntc_thermistor",
+    "version": "0.1.0",
+    "via": "adc",
+    "bus": "adc0"
+   },
+   {
+    "name": "ws2812_rmt",
+    "version": "0.1.0",
+    "via": "pio",
+    "bus": "pio0"
+   },
+   {
+    "name": "dynamixel",
+    "version": "0.1.0",
+    "via": "uart",
+    "bus": "uart1"
+   }
+  ],
+  "buses": {
+   "spi0": {
+    "model": "owner"
+   },
+   "i2c0": {
+    "model": "guarded"
+   },
+   "adc0": {
+    "model": "guarded"
+   },
+   "pio0": {
+    "model": "owner"
+   },
+   "uart1": {
+    "model": "owner"
+   }
+  }
+ },
+ "expect": {
+  "ok": true,
+  "errors": [],
+  "warnings": [
+   "CFG-GPIO-002",
+   "CFG-SET-001"
+  ],
+  "infos": [
+   "CFG-CVE-002"
+  ],
+  "resolved": {
+   "kb_mcu": "ESP32",
+   "kb_rtos": "FREERTOS",
+   "parts": [
+    "utils",
+    "rtos",
+    "interfaces",
+    "handlers"
+   ],
+   "drivers": [
+    "bmp581",
+    "dynamixel",
+    "ntc_thermistor",
+    "pf1550",
+    "tmc9660",
+    "ws2812_rmt"
+   ],
+   "buses": {
+    "adc0": {
+     "kind": "adc",
+     "via": [
+      "adc"
+     ],
+     "model": "guarded",
+     "devices": [
+      "ntc_thermistor"
+     ]
+    },
+    "i2c0": {
+     "kind": "i2c",
+     "via": [
+      "i2c"
+     ],
+     "model": "guarded",
+     "devices": [
+      "pf1550"
+     ]
+    },
+    "pio0": {
+     "kind": "pio",
+     "via": [
+      "pio"
+     ],
+     "model": "owner",
+     "devices": [
+      "ws2812_rmt"
+     ]
+    },
+    "spi0": {
+     "kind": "spi",
+     "via": [
+      "spi"
+     ],
+     "model": "owner",
+     "devices": [
+      "bmp581",
+      "tmc9660"
+     ]
+    },
+    "uart1": {
+     "kind": "uart",
+     "via": [
+      "uart"
+     ],
+     "model": "owner",
+     "devices": [
+      "dynamixel"
+     ]
+    }
+   },
+   "pins": {
+    "min": 11,
+    "optional": 6,
+    "budget": 14
+   },
+   "tested_sets": []
+  }
+ }
+}

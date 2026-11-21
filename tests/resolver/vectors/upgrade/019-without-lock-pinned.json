@@ -1,0 +1,221 @@
+{
+  "catalog": "../catalogs/upgrade.json",
+  "description": "Without a lock, an unnamed version is kb-core's pin (bmp581 0.1.0) or the newest release; the new image names every version.",
+  "expect": {
+    "errors": [],
+    "files": {
+      "CMakePresets.json": "{\n  \"configurePresets\": [\n    {\n      \"binaryDir\": \"${sourceDir}/build/pinned\",\n      \"cacheVariables\": {\n        \"KB_DRIVER_BMP581_DIR\": \"${sourceDir}/external/drivers/driver-bmp581\",\n        \"KB_DRIVER_TMC5160_DIR\": \"${sourceDir}/external/drivers/driver-tmc5160\",\n        \"KB_ENABLE_BMP581\": \"ON\",\n        \"KB_ENABLE_TMC5160\": \"ON\",\n        \"KB_MCU\": \"ESP32\",\n        \"KB_PARTS\": \"utils;rtos;interfaces;handlers\",\n        \"KB_RTOS\": \"FREERTOS\"\n      },\n      \"displayName\": \"kb image pinned\",\n      \"name\": \"pinned\"\n    }\n  ],\n  \"version\": 6\n}\n",
+      "kb-fetch.sh": "#!/bin/sh\n# kb-fetch.sh: adds kb-core, the MCU port and the drivers of the image \"pinned\" to this git repository as\n# submodules under external/, each checked out at its tag (a kb-core development revision: at its commit) and\n# verified against the commit in kb-image.lock.yml (ADR-0012, ADR-0014). A tag that moved is refused. No branch\n# is recorded in .gitmodules and nothing is fetched recursively. Rerunning it is safe. Written by kb resolve.\n#\n#   sh kb-fetch.sh            add or update every pin\n#   sh kb-fetch.sh --verify   only check that every submodule is at its pinned commit\nset -eu\n\nmode=add\nif [ \"${1:-}\" = \"--verify\" ]; then mode=verify; fi\ntop=$(git rev-parse --show-toplevel 2>/dev/null) || { echo \"kb-fetch: run this inside a git repository\" >&2; exit 1; }\ncd \"$top\"\n\ndie() {\n  printf 'kb-fetch: error: %s\\n' \"$*\" >&2\n  exit 1\n}\n\n# pin <path> <url> <tag, empty for a commit pin> <commit>\npin() {\n  path=$1 url=$2 tag=$3 want=$4\n  if [ \"$mode\" = verify ]; then\n    [ -e \"$path/.git\" ] || die \"$path is missing; run without --verify\"\n  else\n    if [ ! -e \"$path/.git\" ]; then\n      git submodule add --quiet \"$url\" \"$path\" || die \"cannot add $url\"\n    fi\n    if [ -n \"$tag\" ]; then\n      git -C \"$path\" fetch --quiet origin \"+refs/tags/$tag:refs/tags/$tag\" || die \"cannot fetch $tag of $url\"\n      got=$(git -C \"$path\" rev-parse \"refs/tags/$tag^{commit}\")\n      [ \"$got\" = \"$want\" ] || die \"$path: tag $tag points at $got, expected $want (the tag moved; it is not used)\"\n    else\n      git -C \"$path\" fetch --quiet origin \"$want\" || die \"cannot fetch commit $want of $url\"\n    fi\n    git -C \"$path\" -c advice.detachedHead=false checkout --quiet \"$want\"\n    git config -f .gitmodules --unset \"submodule.$path.branch\" 2>/dev/null || true\n    git add .gitmodules \"$path\"\n  fi\n  head=$(git -C \"$path\" rev-parse HEAD)\n  [ \"$head\" = \"$want\" ] || die \"$path is at $head, expected $want\"\n  printf 'kb-fetch: %s at %s (%s)\\n' \"$path\" \"${tag:-commit}\" \"$want\"\n}\n\n# kb-core 0.4.1\npin 'external/kb-core' 'https://github.com/kokeb-labs/kb-core.git' 'v0.4.1' '83518d7664b87cabd87681c5835cc32c4c78ab49'\n# driver bmp581 0.2.1\npin 'external/drivers/driver-bmp581' 'https://github.com/kokeb-labs-drivers/driver-bmp581.git' 'v0.2.1' '1671f9f12669fe928c539076554fdd132063902b'\n# driver tmc5160 0.1.0\npin 'external/drivers/driver-tmc5160' 'https://github.com/kokeb-labs-drivers/driver-tmc5160.git' 'v0.1.0' '87805bc54d9e54be18e00ac217f56679adb2b5da'\n\nif [ \"$mode\" = add ]; then\n  echo \"kb-fetch: done; review with git status and commit the submodules\"\nfi\n",
+      "kb-image.lock.yml": "# kb image lock (schema 1), written by kb resolve: do not edit.\n{\n  \"buses\": [\n    {\n      \"devices\": [\n        \"bmp581\"\n      ],\n      \"kind\": \"i2c\",\n      \"model\": \"guarded\",\n      \"name\": \"i2c0\"\n    }\n  ],\n  \"cmake\": {\n    \"KB_ENABLE_BMP581\": \"ON\",\n    \"KB_ENABLE_TMC5160\": \"ON\",\n    \"KB_MCU\": \"ESP32\",\n    \"KB_PARTS\": \"utils;rtos;interfaces;handlers\",\n    \"KB_RTOS\": \"FREERTOS\"\n  },\n  \"drivers\": [\n    {\n      \"authors\": [\n        \"The driver-bmp581 authors\"\n      ],\n      \"commit\": \"1671f9f12669fe928c539076554fdd132063902b\",\n      \"folder\": \"driver-bmp581\",\n      \"kind\": \"release\",\n      \"license\": \"MIT\",\n      \"name\": \"bmp581\",\n      \"repo\": \"kokeb-labs-drivers/driver-bmp581\",\n      \"tag\": \"v0.2.1\",\n      \"version\": \"0.2.1\"\n    },\n    {\n      \"authors\": [\n        \"The driver-tmc5160 authors\"\n      ],\n      \"commit\": \"87805bc54d9e54be18e00ac217f56679adb2b5da\",\n      \"folder\": \"driver-tmc5160\",\n      \"kind\": \"release\",\n      \"license\": \"MIT\",\n      \"name\": \"tmc5160\",\n      \"repo\": \"kokeb-labs-drivers/driver-tmc5160\",\n      \"tag\": \"v0.1.0\",\n      \"version\": \"0.1.0\"\n    }\n  ],\n  \"image\": \"pinned\",\n  \"kb_core\": {\n    \"authors\": [\n      \"The kb-core authors\"\n    ],\n    \"commit\": \"83518d7664b87cabd87681c5835cc32c4c78ab49\",\n    \"kind\": \"release\",\n    \"license\": \"MIT\",\n    \"repo\": \"kokeb-labs/kb-core\",\n    \"tag\": \"v0.4.1\",\n    \"version\": \"0.4.1\"\n  },\n  \"mcu\": {\n    \"family\": \"esp32\",\n    \"target\": \"esp32\"\n  },\n  \"parts\": [\n    \"utils\",\n    \"rtos\",\n    \"interfaces\",\n    \"handlers\"\n  ],\n  \"ports\": [\n    {\n      \"commit\": \"83518d7664b87cabd87681c5835cc32c4c78ab49\",\n      \"in_tree\": true,\n      \"name\": \"esp32\",\n      \"path\": \"components/ports/esp32\"\n    }\n  ],\n  \"rtos\": \"freertos\",\n  \"schema\": 1\n}\n",
+      "kb-image.yml": "# kb-image.yml: the selection of one firmware build (schema 1, docs/design/assembler.md).\n# Written by an upgrade (kb upgrade or the configurator); resolve it with: kb resolve kb-image.yml\nschema: 1\nimage: \"pinned\"\nkb_core: {version: \"0.4.1\"}\nmcu: {family: \"esp32\"}\ndrivers:\n  - {name: \"bmp581\", version: \"0.2.1\"}\n  - {name: \"tmc5160\", version: \"0.1.0\"}\nbuses:\n  i2c0: {model: \"guarded\", devices: [\"bmp581\"]}\n",
+      "kb-upgrade.md": "# Upgrade report: pinned\n\nkb-core 0.4.0 to 0.4.1, MCU esp32/esp32, RTOS freertos. Release candidates not picked unless named.\n\n2 of 3 component(s) change.\n\n| Component | From | To | Change | Breaking | Newest release | Newer rc | Known vulnerabilities |\n| --- | --- | --- | --- | --- | --- | --- | --- |\n| kb-core | 0.4.0 | 0.4.1 | patch | no | 0.4.1 | 0.5.0-rc.1 | not scanned -> none |\n| bmp581 | 0.1.0 | 0.2.1 | minor | yes | 1.0.0 | - | CVE-2026-0001 -> none |\n| tmc5160 | 0.1.0 | 0.1.0 | none | no | 0.1.0 | - | not scanned |\n\n## Breaking changes\n\n- bmp581 0.1.0 -> 0.2.1: read its release notes and CHANGELOG before building: https://github.com/kokeb-labs-drivers/driver-bmp581/releases/tag/v0.2.1\n\n## Held back\n\n- bmp581 1.0.0: needs a newer kb-core (KB-RES-014)\n\n## Known vulnerabilities\n\n- fixed by this upgrade: CVE-2026-0001 (bmp581)\n- not scanned: tmc5160\n\n## Warnings\n\n- KB-UPG-W01 bmp581: breaking change\n- KB-UPG-W02 bmp581: newer version held back\n\n## Next steps\n\n1. Review the changes to `kb-image.yml` and `kb-image.lock.yml` with `git diff`.\n2. Run `sh kb-fetch.sh` to move every submodule to its new tag, then build and run your tests.\n3. Check the compatibility of the new set: a tested version set, or an untested combination.\n",
+      "kb_image.cmake": "# kb image pinned: written by kb resolve from kb-image.yml (schema 1); do not edit.\n# kb-core 0.4.1 at 83518d7664b87cabd87681c5835cc32c4c78ab49, MCU esp32/esp32, RTOS freertos.\nset(KB_MCU \"ESP32\")\nset(KB_RTOS \"FREERTOS\")\nset(KB_PARTS \"utils;rtos;interfaces;handlers\")\nset(KB_ENABLE_BMP581 ON)\nset(KB_ENABLE_TMC5160 ON)\nset(KB_DRIVER_BMP581_DIR \"${CMAKE_CURRENT_LIST_DIR}/external/drivers/driver-bmp581\")\nset(KB_DRIVER_TMC5160_DIR \"${CMAKE_CURRENT_LIST_DIR}/external/drivers/driver-tmc5160\")\n"
+    },
+    "image": {
+      "buses": {
+        "i2c0": {
+          "devices": [
+            "bmp581"
+          ],
+          "model": "guarded"
+        }
+      },
+      "drivers": [
+        {
+          "name": "bmp581",
+          "version": "0.2.1"
+        },
+        {
+          "name": "tmc5160",
+          "version": "0.1.0"
+        }
+      ],
+      "image": "pinned",
+      "kb_core": {
+        "version": "0.4.1"
+      },
+      "mcu": {
+        "family": "esp32"
+      },
+      "schema": 1
+    },
+    "lock": {
+      "buses": [
+        {
+          "devices": [
+            "bmp581"
+          ],
+          "kind": "i2c",
+          "model": "guarded",
+          "name": "i2c0"
+        }
+      ],
+      "cmake": {
+        "KB_ENABLE_BMP581": "ON",
+        "KB_ENABLE_TMC5160": "ON",
+        "KB_MCU": "ESP32",
+        "KB_PARTS": "utils;rtos;interfaces;handlers",
+        "KB_RTOS": "FREERTOS"
+      },
+      "drivers": [
+        {
+          "authors": [
+            "The driver-bmp581 authors"
+          ],
+          "commit": "1671f9f12669fe928c539076554fdd132063902b",
+          "folder": "driver-bmp581",
+          "kind": "release",
+          "license": "MIT",
+          "name": "bmp581",
+          "repo": "kokeb-labs-drivers/driver-bmp581",
+          "tag": "v0.2.1",
+          "version": "0.2.1"
+        },
+        {
+          "authors": [
+            "The driver-tmc5160 authors"
+          ],
+          "commit": "87805bc54d9e54be18e00ac217f56679adb2b5da",
+          "folder": "driver-tmc5160",
+          "kind": "release",
+          "license": "MIT",
+          "name": "tmc5160",
+          "repo": "kokeb-labs-drivers/driver-tmc5160",
+          "tag": "v0.1.0",
+          "version": "0.1.0"
+        }
+      ],
+      "image": "pinned",
+      "kb_core": {
+        "authors": [
+          "The kb-core authors"
+        ],
+        "commit": "83518d7664b87cabd87681c5835cc32c4c78ab49",
+        "kind": "release",
+        "license": "MIT",
+        "repo": "kokeb-labs/kb-core",
+        "tag": "v0.4.1",
+        "version": "0.4.1"
+      },
+      "mcu": {
+        "family": "esp32",
+        "target": "esp32"
+      },
+      "parts": [
+        "utils",
+        "rtos",
+        "interfaces",
+        "handlers"
+      ],
+      "ports": [
+        {
+          "commit": "83518d7664b87cabd87681c5835cc32c4c78ab49",
+          "in_tree": true,
+          "name": "esp32",
+          "path": "components/ports/esp32"
+        }
+      ],
+      "rtos": "freertos",
+      "schema": 1
+    },
+    "ok": true,
+    "rows": [
+      {
+        "breaking": false,
+        "change": "patch",
+        "fixed": [],
+        "from": "0.4.0",
+        "from_kind": "release",
+        "held": [],
+        "kind": "kb-core",
+        "lock_differs": false,
+        "name": "kb-core",
+        "newest_rc": "0.5.0-rc.1",
+        "newest_release": "0.4.1",
+        "notes": "https://github.com/kokeb-labs/kb-core/releases/tag/v0.4.1",
+        "osv_from": null,
+        "osv_to": [],
+        "to": "0.4.1",
+        "to_kind": "release"
+      },
+      {
+        "breaking": true,
+        "change": "minor",
+        "fixed": [
+          "CVE-2026-0001"
+        ],
+        "from": "0.1.0",
+        "from_kind": "release",
+        "held": [
+          {
+            "code": "KB-RES-014",
+            "version": "1.0.0"
+          }
+        ],
+        "kind": "driver",
+        "lock_differs": false,
+        "name": "bmp581",
+        "newest_rc": null,
+        "newest_release": "1.0.0",
+        "notes": "https://github.com/kokeb-labs-drivers/driver-bmp581/releases/tag/v0.2.1",
+        "osv_from": [
+          "CVE-2026-0001"
+        ],
+        "osv_to": [],
+        "to": "0.2.1",
+        "to_kind": "release"
+      },
+      {
+        "breaking": false,
+        "change": "none",
+        "fixed": [],
+        "from": "0.1.0",
+        "from_kind": "release",
+        "held": [],
+        "kind": "driver",
+        "lock_differs": false,
+        "name": "tmc5160",
+        "newest_rc": null,
+        "newest_release": "0.1.0",
+        "notes": null,
+        "osv_from": null,
+        "osv_to": null,
+        "to": "0.1.0",
+        "to_kind": "release"
+      }
+    ],
+    "warnings": [
+      {
+        "code": "KB-UPG-W01",
+        "subject": "bmp581"
+      },
+      {
+        "code": "KB-UPG-W02",
+        "subject": "bmp581"
+      }
+    ]
+  },
+  "image": {
+    "buses": {
+      "i2c0": {
+        "devices": [
+          "bmp581"
+        ],
+        "model": "guarded"
+      }
+    },
+    "drivers": [
+      "bmp581",
+      "tmc5160"
+    ],
+    "image": "pinned",
+    "kb_core": {
+      "version": "0.4.0"
+    },
+    "mcu": {
+      "family": "esp32"
+    },
+    "schema": 1
+  },
+  "options": {}
+}

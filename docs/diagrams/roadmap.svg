@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="540" viewBox="0 0 1200 540" role="img" aria-labelledby="roadmap-title roadmap-desc" font-family="Inter, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
+<title id="roadmap-title">Phase roadmap</title>
+<desc id="roadmap-desc">Two rows of four phases, M0 to M7, in order: decisions, utils, rtos, interfaces, ESP32 port and bindings, handler rollout, breadth and generators, each with its exit criteria.</desc>
+<defs><marker id="fk-arrow-rail" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#8893A2"/></marker></defs>
+<rect x="0.5" y="0.5" width="1199" height="539" rx="16" fill="#FFFFFF" stroke="#E2E7EE"/>
+<text x="32" y="44" font-size="12.5" font-weight="700" letter-spacing="1.2" fill="#7A360E">PLAN</text>
+<text x="32" y="77.3" font-size="26" font-weight="700" fill="#0E1726">Phase roadmap</text>
+<text x="32" y="103.8" font-size="15" fill="#566070">No calendar dates: a phase ends when its exit criteria are met.</text>
+<rect x="32" y="119.8" width="1136" height="1" fill="#E2E7EE"/>
+<path d="M293.5 209.8 L321.5 209.8" fill="none" stroke="#8893A2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rail)"/>
+<path d="M586 209.8 L614 209.8" fill="none" stroke="#8893A2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rail)"/>
+<path d="M878.5 209.8 L906.5 209.8" fill="none" stroke="#8893A2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rail)"/>
+<path d="M293.5 427.8 L321.5 427.8" fill="none" stroke="#8893A2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rail)"/>
+<path d="M586 427.8 L614 427.8" fill="none" stroke="#8893A2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rail)"/>
+<path d="M878.5 427.8 L906.5 427.8" fill="none" stroke="#8893A2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rail)"/>
+<path d="M1038.8 284.8 L1038.8 305.8 Q1038.8 313.8 1030.8 313.8 L169.2 313.8 Q161.2 313.8 161.2 321.8 L161.2 342.8" fill="none" stroke="#8893A2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rail)"/>
+<rect x="32" y="137.8" width="258.5" height="144" rx="10" fill="#FBEFE6" stroke="#9A4A17" stroke-width="1.4"/>
+<rect x="32" y="145.8" width="4" height="128" rx="2" fill="#9A4A17"/>
+<rect x="324.5" y="137.8" width="258.5" height="144" rx="10" fill="#FBEFE6" stroke="#9A4A17" stroke-width="1.4"/>
+<rect x="324.5" y="145.8" width="4" height="128" rx="2" fill="#9A4A17"/>
+<rect x="617" y="137.8" width="258.5" height="144" rx="10" fill="#FFF5E3" stroke="#C26A05" stroke-width="1.4"/>
+<rect x="617" y="145.8" width="4" height="128" rx="2" fill="#C26A05"/>
+<rect x="909.5" y="137.8" width="258.5" height="144" rx="10" fill="#EAF2FF" stroke="#2563EB" stroke-width="1.4"/>
+<rect x="909.5" y="145.8" width="4" height="128" rx="2" fill="#2563EB"/>
+<rect x="32" y="345.8" width="258.5" height="164" rx="10" fill="#E6F6F4" stroke="#0B7A72" stroke-width="1.4"/>
+<rect x="32" y="353.8" width="4" height="148" rx="2" fill="#0B7A72"/>
+<rect x="324.5" y="345.8" width="258.5" height="164" rx="10" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1.4"/>
+<rect x="324.5" y="353.8" width="4" height="148" rx="2" fill="#7C3AED"/>
+<rect x="617" y="345.8" width="258.5" height="164" rx="10" fill="#F8F1EA" stroke="#7C4A1E" stroke-width="1.4"/>
+<rect x="617" y="353.8" width="4" height="148" rx="2" fill="#7C4A1E"/>
+<rect x="909.5" y="345.8" width="258.5" height="164" rx="10" fill="#F8F1EA" stroke="#7C4A1E" stroke-width="1.4"/>
+<rect x="909.5" y="353.8" width="4" height="148" rx="2" fill="#7C4A1E"/>
+<text x="52" y="164.6" font-size="15" font-weight="700" fill="#7A360E">M0 Decisions and guardrails</text>
+<text x="52" y="189.4" font-size="13" fill="#2B3442">ADR-0006 to ADR-0013 recorded;</text>
+<text x="52" y="208.2" font-size="13" fill="#2B3442">include checker, poison build,</text>
+<text x="52" y="227.1" font-size="13" fill="#2B3442">symbol lint, preflight and CI</text>
+<text x="52" y="245.9" font-size="13" fill="#2B3442">skeleton green on empty parts.</text>
+<text x="344.5" y="164.6" font-size="15" font-weight="700" fill="#7A360E">M1 kb::utils v0.1</text>
+<text x="344.5" y="189.4" font-size="13" fill="#2B3442">MISRA (high) with 0 findings and</text>
+<text x="344.5" y="208.2" font-size="13" fill="#2B3442">0 deviations; coverage above the</text>
+<text x="344.5" y="227.1" font-size="13" fill="#2B3442">high floor; mutation gate; fuzz</text>
+<text x="344.5" y="245.9" font-size="13" fill="#2B3442">clean.</text>
+<text x="637" y="164.6" font-size="15" font-weight="700" fill="#8A3C0B">M2 kb::rtos v0.2</text>
+<text x="637" y="189.4" font-size="13" fill="#2B3442">none and FreeRTOS backends;</text>
+<text x="637" y="208.2" font-size="13" fill="#2B3442">at-least delays, bounded locks,</text>
+<text x="637" y="227.1" font-size="13" fill="#2B3442">CRTP threads with stats;</text>
+<text x="637" y="245.9" font-size="13" fill="#2B3442">boundary deviations approved;</text>
+<text x="637" y="264.8" font-size="13" fill="#2B3442">TSan clean.</text>
+<text x="929.5" y="164.6" font-size="15" font-weight="700" fill="#1E429F">M3 kb::interfaces v0.3</text>
+<text x="929.5" y="189.4" font-size="13" fill="#2B3442">Concepts and a host port with</text>
+<text x="929.5" y="208.2" font-size="13" fill="#2B3442">fault injection; BusDomain;</text>
+<text x="929.5" y="227.1" font-size="13" fill="#2B3442">conformance and compile-fail</text>
+<text x="929.5" y="245.9" font-size="13" fill="#2B3442">tests; 0 deviations.</text>
+<text x="52" y="372.6" font-size="15" font-weight="700" fill="#0B5F59">M4 ESP32 port and first</text>
+<text x="52" y="392.1" font-size="15" font-weight="700" fill="#0B5F59">bindings v0.4</text>
+<text x="52" y="416.9" font-size="13" fill="#2B3442">Boundary files reviewed; 3 simple</text>
+<text x="52" y="435.8" font-size="13" fill="#2B3442">drivers bound and handled;</text>
+<text x="52" y="454.6" font-size="13" fill="#2B3442">integration, compat.yml, kb image</text>
+<text x="52" y="473.5" font-size="13" fill="#2B3442">check; configurator P1; bench run.</text>
+<text x="344.5" y="372.6" font-size="15" font-weight="700" fill="#5B21B6">M5 Handler rollout v0.9 to</text>
+<text x="344.5" y="392.1" font-size="15" font-weight="700" fill="#5B21B6">v1.0</text>
+<text x="344.5" y="416.9" font-size="13" fill="#2B3442">All drivers bound, simplest to</text>
+<text x="344.5" y="435.8" font-size="13" fill="#2B3442">hardest (bno08x, se05x, tmc9660</text>
+<text x="344.5" y="454.6" font-size="13" fill="#2B3442">last); start-up plans, both thread</text>
+<text x="344.5" y="473.5" font-size="13" fill="#2B3442">models, health and recovery</text>
+<text x="344.5" y="492.3" font-size="13" fill="#2B3442">tests.</text>
+<text x="637" y="372.6" font-size="15" font-weight="700" fill="#6B3F17">M6 Breadth</text>
+<text x="637" y="397.4" font-size="13" fill="#2B3442">port-stm32, ThreadX backend,</text>
+<text x="637" y="416.3" font-size="13" fill="#2B3442">tested version sets, SBOM, CVE</text>
+<text x="637" y="435.1" font-size="13" fill="#2B3442">and licence evidence in the</text>
+<text x="637" y="454" font-size="13" fill="#2B3442">configurator (P2).</text>
+<text x="929.5" y="372.6" font-size="15" font-weight="700" fill="#6B3F17">M7 Generators+</text>
+<text x="929.5" y="397.4" font-size="13" fill="#2B3442">board.yml pin tables, project</text>
+<text x="929.5" y="416.3" font-size="13" fill="#2B3442">archive, HIL in scheduled CI.</text>
+</svg>

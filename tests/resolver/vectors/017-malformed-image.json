@@ -1,0 +1,118 @@
+{
+  "catalog": "catalogs/base.json",
+  "description": "Shape errors are reported together and stop resolution before any lookup.",
+  "expect": {
+    "errors": [
+      {
+        "code": "KB-RES-001",
+        "subject": "buses.I2C0"
+      },
+      {
+        "code": "KB-RES-001",
+        "subject": "buses.I2C0.devices[1]"
+      },
+      {
+        "code": "KB-RES-001",
+        "subject": "buses.spi1"
+      },
+      {
+        "code": "KB-RES-001",
+        "subject": "buses.uart0.devices"
+      },
+      {
+        "code": "KB-RES-001",
+        "subject": "buses.uart0.model"
+      },
+      {
+        "code": "KB-RES-001",
+        "subject": "drivers[1]"
+      },
+      {
+        "code": "KB-RES-001",
+        "subject": "drivers[2].version"
+      },
+      {
+        "code": "KB-RES-001",
+        "subject": "drivers[3].name"
+      },
+      {
+        "code": "KB-RES-001",
+        "subject": "image"
+      },
+      {
+        "code": "KB-RES-001",
+        "subject": "kb_core.version"
+      },
+      {
+        "code": "KB-RES-001",
+        "subject": "mcu.port"
+      },
+      {
+        "code": "KB-RES-001",
+        "subject": "mcu.target"
+      },
+      {
+        "code": "KB-RES-001",
+        "subject": "rtos"
+      },
+      {
+        "code": "KB-RES-021",
+        "subject": "schema"
+      },
+      {
+        "code": "KB-RES-022",
+        "subject": "buses.uart0.speed"
+      },
+      {
+        "code": "KB-RES-022",
+        "subject": "extra"
+      },
+      {
+        "code": "KB-RES-022",
+        "subject": "kb_core.channel"
+      }
+    ],
+    "ok": false,
+    "warnings": []
+  },
+  "image": {
+    "buses": {
+      "I2C0": {
+        "devices": [
+          "pcal9555",
+          5
+        ],
+        "model": "owner"
+      },
+      "spi1": [],
+      "uart0": {
+        "devices": "tmc5160",
+        "speed": 1
+      }
+    },
+    "drivers": [
+      "pcal9555",
+      7,
+      {
+        "name": "bmp581",
+        "version": 1
+      },
+      {
+        "version": "0.1.0"
+      }
+    ],
+    "extra": true,
+    "image": "Bad Name",
+    "kb_core": {
+      "channel": "beta",
+      "version": 4
+    },
+    "mcu": {
+      "family": "esp32",
+      "port": "0.1",
+      "target": 3
+    },
+    "rtos": false,
+    "schema": 2
+  }
+}

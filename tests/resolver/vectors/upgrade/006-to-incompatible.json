@@ -1,0 +1,53 @@
+{
+  "catalog": "../catalogs/upgrade.json",
+  "description": "A named driver target that fails a gate is an error with the gate's code.",
+  "expect": {
+    "errors": [
+      {
+        "code": "KB-RES-019",
+        "subject": "bno08x"
+      }
+    ],
+    "image": null,
+    "lock": null,
+    "ok": false,
+    "rows": [],
+    "warnings": []
+  },
+  "image": {
+    "buses": {
+      "i2c0": {
+        "devices": [
+          "pcal9555"
+        ],
+        "model": "guarded"
+      },
+      "spi1": {
+        "devices": [
+          "bno08x"
+        ],
+        "model": "owner"
+      }
+    },
+    "drivers": [
+      {
+        "name": "bno08x",
+        "version": "0.1.0"
+      },
+      "pcal9555"
+    ],
+    "image": "imu-board",
+    "kb_core": {
+      "version": "0.4.0"
+    },
+    "mcu": {
+      "family": "esp32"
+    },
+    "schema": 1
+  },
+  "options": {
+    "to": {
+      "bno08x": "0.2.0"
+    }
+  }
+}

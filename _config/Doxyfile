@@ -1,0 +1,38 @@
+# Doxygen API reference of kb-core's public headers, published under /api/ of the site (ci-docs.yml).
+#   doxygen _config/Doxyfile          from the repository root; HTML in build/doxygen/html
+# EXTRACT_ALL = NO with WARN_AS_ERROR = FAIL_ON_WARNINGS fails the build on any undocumented public symbol.
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 The kb-core authors
+PROJECT_NAME           = "kb-core"
+PROJECT_NUMBER         = 0.0.0
+PROJECT_BRIEF          = "API reference: utils, rtos, interfaces"
+OUTPUT_DIRECTORY       = build/doxygen
+INPUT                  = docs/_doxygen/mainpage.md components/lib/utils/inc/kb/utils components/lib/rtos/inc/kb/rtos components/lib/interfaces/inc/kb/interfaces
+FILE_PATTERNS          = *.hpp *.md
+RECURSIVE              = NO
+USE_MDFILE_AS_MAINPAGE = docs/_doxygen/mainpage.md
+EXCLUDE_SYMBOLS        = *::detail *::detail::* detail
+EXTRACT_ALL            = NO
+EXTRACT_PRIVATE        = NO
+EXTRACT_STATIC         = YES
+HIDE_UNDOC_MEMBERS     = NO
+HIDE_UNDOC_CLASSES     = NO
+QUIET                  = YES
+WARNINGS               = YES
+WARN_IF_UNDOCUMENTED   = YES
+WARN_IF_DOC_ERROR      = YES
+WARN_IF_INCOMPLETE_DOC = YES
+WARN_NO_PARAMDOC       = NO
+WARN_AS_ERROR          = FAIL_ON_WARNINGS
+WARN_FORMAT            = "$file:$line: $text"
+FULL_PATH_NAMES        = YES
+STRIP_FROM_PATH        = .
+ENABLE_PREPROCESSING   = YES
+MACRO_EXPANSION        = NO
+GENERATE_HTML          = YES
+HTML_OUTPUT            = html
+GENERATE_LATEX         = NO
+GENERATE_TREEVIEW      = NO
+SEARCHENGINE           = YES
+HAVE_DOT               = NO
+SHOW_NAMESPACES        = NO

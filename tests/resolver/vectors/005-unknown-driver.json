@@ -1,0 +1,27 @@
+{
+  "catalog": "catalogs/base.json",
+  "description": "A driver that is not in the catalogue.",
+  "expect": {
+    "errors": [
+      {
+        "code": "KB-RES-009",
+        "subject": "no_such_chip"
+      }
+    ],
+    "ok": false,
+    "warnings": []
+  },
+  "image": {
+    "drivers": [
+      "pcal9555",
+      "no_such_chip"
+    ],
+    "kb_core": {
+      "version": "0.4.0"
+    },
+    "mcu": {
+      "family": "esp32"
+    },
+    "schema": 1
+  }
+}

@@ -1,0 +1,73 @@
+{
+ "schema": 1,
+ "name": "dev-kb-core",
+ "description": "A development revision of kb-core: warned, resolvable, bindings not checkable",
+ "catalog": "../catalog-fixture.json",
+ "image": {
+  "image": "v",
+  "kb_core": "0.6.0",
+  "port": null,
+  "mcu": {
+   "family": "host",
+   "target": "host",
+   "board": "host"
+  },
+  "rtos": "host",
+  "drivers": [
+   {
+    "name": "bmp581",
+    "version": "0.1.0",
+    "via": "i2c",
+    "bus": "i2c0"
+   }
+  ],
+  "buses": {
+   "i2c0": {
+    "model": "guarded"
+   }
+  }
+ },
+ "expect": {
+  "ok": true,
+  "errors": [],
+  "warnings": [
+   "CFG-KB-003",
+   "CFG-SET-001"
+  ],
+  "infos": [
+   "CFG-CVE-002",
+   "CFG-HND-002"
+  ],
+  "resolved": {
+   "kb_mcu": "HOST",
+   "kb_rtos": "HOST",
+   "parts": [
+    "utils",
+    "rtos",
+    "interfaces",
+    "handlers"
+   ],
+   "drivers": [
+    "bmp581"
+   ],
+   "buses": {
+    "i2c0": {
+     "kind": "i2c",
+     "via": [
+      "i2c"
+     ],
+     "model": "guarded",
+     "devices": [
+      "bmp581"
+     ]
+    }
+   },
+   "pins": {
+    "min": 2,
+    "optional": 0,
+    "budget": null
+   },
+   "tested_sets": []
+  }
+ }
+}

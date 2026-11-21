@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kokeb-labs.github.io/kb-configurator/schemas/resolver-vector-1.json",
+  "title": "Resolver golden vector, schema 1",
+  "description": "Draft. One case of the configurator's site checks (docs/configurator-checks.md): a site catalogue, a selection, and the findings and resolved build the checks must produce. The shared resolver has its own vector format (tests/resolver/vectors, ADR-0014). errors, warnings and infos are rule codes sorted by code, repeated once per finding. resolved is compared key by key for the keys present.",
+  "type": "object",
+  "required": ["schema", "name", "catalog", "image", "expect"],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {"const": 1},
+    "name": {"type": "string", "pattern": "^[a-z0-9-]+$"},
+    "description": {"type": "string"},
+    "catalog": {"type": "string", "description": "Path of the catalogue, relative to the vector file."},
+    "image": {"type": "object"},
+    "expect": {
+      "type": "object",
+      "required": ["ok", "errors", "warnings"],
+      "additionalProperties": false,
+      "properties": {
+        "ok": {"type": "boolean"},
+        "errors": {"type": "array", "items": {"$ref": "#/$defs/code"}},
+        "warnings": {"type": "array", "items": {"$ref": "#/$defs/code"}},
+        "infos": {"type": "array", "items": {"$ref": "#/$defs/code"}},
+        "resolved": {"type": "object"}
+      }
+    }
+  },
+  "$defs": {
+    "code": {"type": "string", "pattern": "^(KB-RES-(\\d{3}|W\\d{2})|CFG-[A-Z]+-\\d{3})$"}
+  }
+}

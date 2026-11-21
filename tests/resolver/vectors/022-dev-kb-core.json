@@ -1,0 +1,90 @@
+{
+  "catalog": "catalogs/dev-kb-core.json",
+  "description": "An unreleased kb-core revision: warned, fetched by commit instead of tag.",
+  "expect": {
+    "errors": [],
+    "files": {
+      "CMakePresets.json": "{\n  \"configurePresets\": [\n    {\n      \"binaryDir\": \"${sourceDir}/build/dev\",\n      \"cacheVariables\": {\n        \"KB_DRIVER_PCAL9555_DIR\": \"${sourceDir}/external/drivers/driver-pcal9555\",\n        \"KB_ENABLE_PCAL9555\": \"ON\",\n        \"KB_MCU\": \"HOST\",\n        \"KB_PARTS\": \"utils;rtos;interfaces;handlers\",\n        \"KB_RTOS\": \"HOST\"\n      },\n      \"displayName\": \"kb image dev\",\n      \"name\": \"dev\"\n    }\n  ],\n  \"version\": 6\n}\n",
+      "kb-fetch.sh": "#!/bin/sh\n# kb-fetch.sh: adds kb-core, the MCU port and the drivers of the image \"dev\" to this git repository as\n# submodules under external/, each checked out at its tag (a kb-core development revision: at its commit) and\n# verified against the commit in kb-image.lock.yml (ADR-0012, ADR-0014). A tag that moved is refused. No branch\n# is recorded in .gitmodules and nothing is fetched recursively. Rerunning it is safe. Written by kb resolve.\n#\n#   sh kb-fetch.sh            add or update every pin\n#   sh kb-fetch.sh --verify   only check that every submodule is at its pinned commit\nset -eu\n\nmode=add\nif [ \"${1:-}\" = \"--verify\" ]; then mode=verify; fi\ntop=$(git rev-parse --show-toplevel 2>/dev/null) || { echo \"kb-fetch: run this inside a git repository\" >&2; exit 1; }\ncd \"$top\"\n\ndie() {\n  printf 'kb-fetch: error: %s\\n' \"$*\" >&2\n  exit 1\n}\n\n# pin <path> <url> <tag, empty for a commit pin> <commit>\npin() {\n  path=$1 url=$2 tag=$3 want=$4\n  if [ \"$mode\" = verify ]; then\n    [ -e \"$path/.git\" ] || die \"$path is missing; run without --verify\"\n  else\n    if [ ! -e \"$path/.git\" ]; then\n      git submodule add --quiet \"$url\" \"$path\" || die \"cannot add $url\"\n    fi\n    if [ -n \"$tag\" ]; then\n      git -C \"$path\" fetch --quiet origin \"+refs/tags/$tag:refs/tags/$tag\" || die \"cannot fetch $tag of $url\"\n      got=$(git -C \"$path\" rev-parse \"refs/tags/$tag^{commit}\")\n      [ \"$got\" = \"$want\" ] || die \"$path: tag $tag points at $got, expected $want (the tag moved; it is not used)\"\n    else\n      git -C \"$path\" fetch --quiet origin \"$want\" || die \"cannot fetch commit $want of $url\"\n    fi\n    git -C \"$path\" -c advice.detachedHead=false checkout --quiet \"$want\"\n    git config -f .gitmodules --unset \"submodule.$path.branch\" 2>/dev/null || true\n    git add .gitmodules \"$path\"\n  fi\n  head=$(git -C \"$path\" rev-parse HEAD)\n  [ \"$head\" = \"$want\" ] || die \"$path is at $head, expected $want\"\n  printf 'kb-fetch: %s at %s (%s)\\n' \"$path\" \"${tag:-commit}\" \"$want\"\n}\n\n# kb-core 0.5.0 (development revision, no tag yet)\npin 'external/kb-core' 'https://github.com/kokeb-labs/kb-core.git' '' '24b17fadb92753d55588afd172d459bac8e6f29d'\n# driver pcal9555 0.1.0\npin 'external/drivers/driver-pcal9555' 'https://github.com/kokeb-labs-drivers/driver-pcal9555.git' 'v0.1.0' 'dbdbae3e67ebb0e729815f047f375c41b844058f'\n\nif [ \"$mode\" = add ]; then\n  echo \"kb-fetch: done; review with git status and commit the submodules\"\nfi\n",
+      "kb-image.lock.yml": "# kb image lock (schema 1), written by kb resolve: do not edit.\n{\n  \"buses\": [],\n  \"cmake\": {\n    \"KB_ENABLE_PCAL9555\": \"ON\",\n    \"KB_MCU\": \"HOST\",\n    \"KB_PARTS\": \"utils;rtos;interfaces;handlers\",\n    \"KB_RTOS\": \"HOST\"\n  },\n  \"drivers\": [\n    {\n      \"authors\": [\n        \"The driver-pcal9555 authors\"\n      ],\n      \"commit\": \"dbdbae3e67ebb0e729815f047f375c41b844058f\",\n      \"folder\": \"driver-pcal9555\",\n      \"kind\": \"release\",\n      \"license\": \"MIT\",\n      \"name\": \"pcal9555\",\n      \"repo\": \"kokeb-labs-drivers/driver-pcal9555\",\n      \"tag\": \"v0.1.0\",\n      \"version\": \"0.1.0\"\n    }\n  ],\n  \"image\": \"dev\",\n  \"kb_core\": {\n    \"authors\": [\n      \"The kb-core authors\"\n    ],\n    \"commit\": \"24b17fadb92753d55588afd172d459bac8e6f29d\",\n    \"kind\": \"dev\",\n    \"license\": \"MIT\",\n    \"repo\": \"kokeb-labs/kb-core\",\n    \"tag\": null,\n    \"version\": \"0.5.0\"\n  },\n  \"mcu\": {\n    \"family\": \"host\",\n    \"target\": \"host\"\n  },\n  \"parts\": [\n    \"utils\",\n    \"rtos\",\n    \"interfaces\",\n    \"handlers\"\n  ],\n  \"ports\": [\n    {\n      \"commit\": \"24b17fadb92753d55588afd172d459bac8e6f29d\",\n      \"in_tree\": true,\n      \"name\": \"host\",\n      \"path\": \"components/lib/interfaces/host\"\n    }\n  ],\n  \"rtos\": \"host\",\n  \"schema\": 1\n}\n",
+      "kb_image.cmake": "# kb image dev: written by kb resolve from kb-image.yml (schema 1); do not edit.\n# kb-core 0.5.0 at 24b17fadb92753d55588afd172d459bac8e6f29d, MCU host/host, RTOS host.\nset(KB_MCU \"HOST\")\nset(KB_RTOS \"HOST\")\nset(KB_PARTS \"utils;rtos;interfaces;handlers\")\nset(KB_ENABLE_PCAL9555 ON)\nset(KB_DRIVER_PCAL9555_DIR \"${CMAKE_CURRENT_LIST_DIR}/external/drivers/driver-pcal9555\")\n"
+    },
+    "lock": {
+      "buses": [],
+      "cmake": {
+        "KB_ENABLE_PCAL9555": "ON",
+        "KB_MCU": "HOST",
+        "KB_PARTS": "utils;rtos;interfaces;handlers",
+        "KB_RTOS": "HOST"
+      },
+      "drivers": [
+        {
+          "authors": [
+            "The driver-pcal9555 authors"
+          ],
+          "commit": "dbdbae3e67ebb0e729815f047f375c41b844058f",
+          "folder": "driver-pcal9555",
+          "kind": "release",
+          "license": "MIT",
+          "name": "pcal9555",
+          "repo": "kokeb-labs-drivers/driver-pcal9555",
+          "tag": "v0.1.0",
+          "version": "0.1.0"
+        }
+      ],
+      "image": "dev",
+      "kb_core": {
+        "authors": [
+          "The kb-core authors"
+        ],
+        "commit": "24b17fadb92753d55588afd172d459bac8e6f29d",
+        "kind": "dev",
+        "license": "MIT",
+        "repo": "kokeb-labs/kb-core",
+        "tag": null,
+        "version": "0.5.0"
+      },
+      "mcu": {
+        "family": "host",
+        "target": "host"
+      },
+      "parts": [
+        "utils",
+        "rtos",
+        "interfaces",
+        "handlers"
+      ],
+      "ports": [
+        {
+          "commit": "24b17fadb92753d55588afd172d459bac8e6f29d",
+          "in_tree": true,
+          "name": "host",
+          "path": "components/lib/interfaces/host"
+        }
+      ],
+      "rtos": "host",
+      "schema": 1
+    },
+    "ok": true,
+    "warnings": [
+      {
+        "code": "KB-RES-W03",
+        "subject": "kb-core"
+      }
+    ]
+  },
+  "image": {
+    "drivers": [
+      "pcal9555"
+    ],
+    "image": "dev",
+    "kb_core": {
+      "version": "0.5.0"
+    },
+    "mcu": {
+      "family": "host"
+    },
+    "rtos": "host",
+    "schema": 1
+  }
+}
