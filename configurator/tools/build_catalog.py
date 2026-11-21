@@ -385,7 +385,16 @@ def driver_pins(clone: Path | None) -> dict[str, str]:
     return pins
 
 
-def build_releases(repo: str, clone: Path | None, online: bool, extra: dict | None = None) -> tuple[list, list]:
+BINDINGS_DIR = "components/lib/handlers/inc/kb/handlers/bindings"
+
+
+def kb_core_bindings(src: Source) -> list[str]:
+    """The drivers a kb-core tag binds: a header <name>.hpp in the handlers bindings folder at that tag."""
+    return sorted(n[:-len(".hpp")] for n in src.listdir(BINDINGS_DIR) if n.endswith(".hpp"))
+
+
+def build_releases(repo: str, clone: Path | None, online: bool, extra: dict | None = None,
+                   bindings: bool = False) -> tuple[list, list]:
     tags = merged_tags(repo, clone, online)
     releases, dates = [], []
     for tag in sorted(tags, key=tag_key, reverse=True):
@@ -395,6 +404,8 @@ def build_releases(repo: str, clone: Path | None, online: bool, extra: dict | No
         entry = {"version": tag[1:], "tag": tag, "commit": tags[tag], "kind": "rc" if "-rc." in tag else "release",
                  "date": date, "osv": None}
         entry.update(extra or {})
+        if bindings:
+            entry["bindings"] = kb_core_bindings(src)
         releases.append(entry)
     return releases, dates
 
@@ -419,7 +430,7 @@ def build(drivers_root: Path, online: bool, figures: bool, include_head: bool = 
         raise BuildError("two clones declare the same driver name")
     kb = platforms["kb_core"]
     kb_clone = CONF.parent if (CONF.parent / ".git").exists() else None
-    kb_releases, d = build_releases(kb["repo"], kb_clone, online, {"bindings": []})
+    kb_releases, d = build_releases(kb["repo"], kb_clone, online, {"bindings": []}, bindings=True)
     dates += d
     if include_head:
         if kb_clone is None:

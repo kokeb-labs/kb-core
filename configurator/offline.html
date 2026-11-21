@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha384-FFdKy4/2+gXlIZ+ZI52wEPrtnPhrFllAAiT9l/gl1B8Jj7qE3oGdOW6okeSwfeWi' 'sha384-DT0Ls0mO7JmjTnT+oBuMhEJzYJO1zUqzuuMXNdnOmOQRIpN2BgSjvBV/j50NngIT' 'sha384-VbsiBVzqpAy5ubkBmbducbBidkV+NoJVSg12hfTloGMwOZwMjHR/U0ORDvK/UR7Z' 'sha384-w90ycptWLHSy39vTbREpkFzJL/XHhRYhRUMOJiuptwKUQVWagUynVy4NblwC3TFy' 'sha384-IXgZ1EoqJZ55co37pFfSWfK3u3XsbWS5pkz9lxQx2tl05Pe7rlLfVQVvg3fckQ7v' 'sha384-6oPM4UYVZCfPrZl6cSgvovoRbzI2zOcNl78rr71ykvL1UIFppFCVpoxFUQaP3poA' 'sha384-y5SRO7FFt7NaqmZEjHVyROPO5P1LbLfgYlezpqB8pf7B2Zciv5O+LmluGtji+/UY' 'sha384-NpkslvNQIkHmXOUghQySGQHi9YktdFKprBfqkT/oQPjpWuekZKyAdlVFLDos4hDT' 'sha384-biBwrhj0QTlQZXmkDLTixR84d97x30XLKvky8NRrR7KwVgZASRzFIw2VUTQ5NSsR' 'sha384-5Zx22ZuJe6IsUclHZWbs3/jAoPjGGUVeRgsaRqeIfsG7Jsfui9iCtBWfQrp9Q+Kp'; style-src 'sha384-Lq0xihy27CCJldmy39VZuAk2eQJVkD/2lSv0A/lUsR/LlmI+nLjZkfR3J+FCLLJb'; img-src 'self'; connect-src 'none'; font-src 'none'; object-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha384-FFdKy4/2+gXlIZ+ZI52wEPrtnPhrFllAAiT9l/gl1B8Jj7qE3oGdOW6okeSwfeWi' 'sha384-DT0Ls0mO7JmjTnT+oBuMhEJzYJO1zUqzuuMXNdnOmOQRIpN2BgSjvBV/j50NngIT' 'sha384-F/1VwszVitGlsA+V5bJjEfJq1j7aLcYISDscR25F61NXfmoESzcnYHS5ICGbwu9c' 'sha384-w90ycptWLHSy39vTbREpkFzJL/XHhRYhRUMOJiuptwKUQVWagUynVy4NblwC3TFy' 'sha384-IXgZ1EoqJZ55co37pFfSWfK3u3XsbWS5pkz9lxQx2tl05Pe7rlLfVQVvg3fckQ7v' 'sha384-6oPM4UYVZCfPrZl6cSgvovoRbzI2zOcNl78rr71ykvL1UIFppFCVpoxFUQaP3poA' 'sha384-y5SRO7FFt7NaqmZEjHVyROPO5P1LbLfgYlezpqB8pf7B2Zciv5O+LmluGtji+/UY' 'sha384-NpkslvNQIkHmXOUghQySGQHi9YktdFKprBfqkT/oQPjpWuekZKyAdlVFLDos4hDT' 'sha384-biBwrhj0QTlQZXmkDLTixR84d97x30XLKvky8NRrR7KwVgZASRzFIw2VUTQ5NSsR' 'sha384-5Zx22ZuJe6IsUclHZWbs3/jAoPjGGUVeRgsaRqeIfsG7Jsfui9iCtBWfQrp9Q+Kp'; style-src 'sha384-Lq0xihy27CCJldmy39VZuAk2eQJVkD/2lSv0A/lUsR/LlmI+nLjZkfR3J+FCLLJb'; img-src 'self'; connect-src 'none'; font-src 'none'; object-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="description" content="Pick an MCU, an RTOS and chip drivers, and download a pinned, repeatable kb-core project with its SBOM and evidence.">
 <meta name="color-scheme" content="light dark">
@@ -2849,13 +2849,37 @@ globalThis.KB_CATALOG = {
   ],
   "releases": [
    {
-    "bindings": [],
-    "commit": "30dd884f135e0da70729acfa98f03ed10163ae5e",
-    "date": "2026-11-20T22:58:06Z",
-    "kind": "dev",
+    "bindings": [
+     "ads7952",
+     "ads9324",
+     "alicat_basis2",
+     "as5047u",
+     "at25040b",
+     "bmp581",
+     "bno08x",
+     "canopen_client",
+     "dynamixel",
+     "fdo2",
+     "isf15acp4",
+     "max22200",
+     "mcp9700",
+     "ntc_thermistor",
+     "pca9685",
+     "pcal9555",
+     "pf1550",
+     "se05x",
+     "sfm_flow_meter",
+     "tle92466ed",
+     "tmc5160",
+     "tmc9660",
+     "ws2812_rmt"
+    ],
+    "commit": "593c482020c550d11080c21fa41c8f67c88e9aa1",
+    "date": "2026-11-21T02:47:07Z",
+    "kind": "rc",
     "osv": null,
-    "tag": null,
-    "version": "0.0.0"
+    "tag": "v0.1.0-rc.1",
+    "version": "0.1.0-rc.1"
    }
   ],
   "repo": "kokeb-labs/kb-core",
@@ -2888,7 +2912,7 @@ globalThis.KB_CATALOG = {
   }
  ],
  "schema": 1,
- "source_date": "2026-11-20T22:58:06Z",
+ "source_date": "2026-11-21T02:47:07Z",
  "tested_sets": []
 };
 </script>
