@@ -25,6 +25,7 @@ exclude_docs: |
   /app/tests/
   /app/tools/
   /app/schemas-draft/
+  /app/vendor/**/*.md
 
 # Mermaid is not used: it does not render on phones. kokeb-docs check fails on a mermaid fence or a .mmd file.
 extra:
