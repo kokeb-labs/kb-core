@@ -2337,8 +2337,8 @@ globalThis.KB_CATALOG = {
   "releases": [
    {
     "bindings": [],
-    "commit": "30dd884f135e0da70729acfa98f03ed10163ae5e",
-    "date": "2026-11-20T22:58:06Z",
+    "commit": "593c482020c550d11080c21fa41c8f67c88e9aa1",
+    "date": "2026-11-21T02:47:07Z",
     "kind": "dev",
     "osv": null,
     "tag": null,
@@ -2375,6 +2375,6 @@ globalThis.KB_CATALOG = {
   }
  ],
  "schema": 1,
- "source_date": "2026-11-20T22:58:06Z",
+ "source_date": "2026-11-21T02:47:07Z",
  "tested_sets": []
 };

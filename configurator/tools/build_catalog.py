@@ -385,7 +385,16 @@ def driver_pins(clone: Path | None) -> dict[str, str]:
     return pins
 
 
-def build_releases(repo: str, clone: Path | None, online: bool, extra: dict | None = None) -> tuple[list, list]:
+BINDINGS_DIR = "components/lib/handlers/inc/kb/handlers/bindings"
+
+
+def kb_core_bindings(src: Source) -> list[str]:
+    """The drivers a kb-core tag binds: a header <name>.hpp in the handlers bindings folder at that tag."""
+    return sorted(n[:-len(".hpp")] for n in src.listdir(BINDINGS_DIR) if n.endswith(".hpp"))
+
+
+def build_releases(repo: str, clone: Path | None, online: bool, extra: dict | None = None,
+                   bindings: bool = False) -> tuple[list, list]:
     tags = merged_tags(repo, clone, online)
     releases, dates = [], []
     for tag in sorted(tags, key=tag_key, reverse=True):
@@ -395,6 +404,8 @@ def build_releases(repo: str, clone: Path | None, online: bool, extra: dict | No
         entry = {"version": tag[1:], "tag": tag, "commit": tags[tag], "kind": "rc" if "-rc." in tag else "release",
                  "date": date, "osv": None}
         entry.update(extra or {})
+        if bindings:
+            entry["bindings"] = kb_core_bindings(src)
         releases.append(entry)
     return releases, dates
 
@@ -419,7 +430,7 @@ def build(drivers_root: Path, online: bool, figures: bool, include_head: bool = 
         raise BuildError("two clones declare the same driver name")
     kb = platforms["kb_core"]
     kb_clone = CONF.parent if (CONF.parent / ".git").exists() else None
-    kb_releases, d = build_releases(kb["repo"], kb_clone, online, {"bindings": []})
+    kb_releases, d = build_releases(kb["repo"], kb_clone, online, {"bindings": []}, bindings=True)
     dates += d
     if include_head:
         if kb_clone is None:
@@ -477,6 +488,27 @@ def _released(obj):
     return obj
 
 
+def _without_own_future(catalog: dict) -> dict:
+    """`catalog` without the kb-core releases the checked commit cannot hold: a tag on that commit or after it.
+
+    A release tag points at a commit whose catalogue was committed before the tag existed, so the check of that
+    commit (the tag's own CI run) must not expect the tag in it.
+    """
+    clone = CONF.parent if (CONF.parent / ".git").exists() else None
+    if clone is None:
+        return catalog
+    head = (run(["git", "rev-parse", "HEAD"], cwd=clone) or "").strip()
+
+    def older(commit: str) -> bool:
+        return commit != head and run(["git", "merge-base", "--is-ancestor", commit, head], cwd=clone,
+                                      check=False) is not None
+
+    out = dict(catalog)
+    out["kb_core"] = dict(catalog["kb_core"])
+    out["kb_core"]["releases"] = [r for r in catalog["kb_core"]["releases"] if r["kind"] == "dev" or older(r["commit"])]
+    return out
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--drivers-root", type=Path, default=CONF.parent.parent,
@@ -497,9 +529,10 @@ def main(argv: list[str] | None = None) -> int:
     if args.check:
         # The development revision (--include-head, kind dev) moves with every push to main, so the check compares the
         # released content only: dev revisions and the source date they feed are left out on both sides. A local
-        # preview keeps --include-head; CI checks without it.
+        # preview keeps --include-head; CI checks without it. A kb-core tag on the checked commit or a later one is
+        # left out of the fresh build, since that commit's catalogue was written before the tag existed.
         committed = json.loads(out_json.read_text()) if out_json.exists() else None
-        same = committed is not None and _released(committed) == _released(json.loads(text))
+        same = committed is not None and _released(committed) == _released(_without_own_future(json.loads(text)))
         print("build_catalog: up to date" if same else "build_catalog: catalogue differs; rerun the builder")
         return 0 if same else 1
     out_json.write_text(text)

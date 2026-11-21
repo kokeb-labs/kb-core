@@ -94,7 +94,9 @@ may still change before 0.1.0.
   drivers' tags (`configurator/tools/build_catalog.py`), every script pinned by SRI. User guide:
   `docs/configurator.md`.
 - CI: `ci-configurator.yml` runs the site's tests, the headless browser check when Chrome is present, and the
-  catalogue, SRI and offline-bundle freshness checks.
+  catalogue, SRI and offline-bundle freshness checks. The catalogue check leaves out a kb-core tag on the checked
+  commit or a later one, so a release tag's own CI run passes; each kb-core release lists its handler bindings
+  (the headers in `components/lib/handlers/inc/kb/handlers/bindings/` at that tag).
 - Update path: `kb outdated` and `kb upgrade [--to NAME=VERSION] [--allow-rc]` plan an upgrade of a project
   from its `kb-image.yml` and lock (kb-core first, drivers gated against it, held-back versions with the gate's
   code, SemVer breaking changes, known vulnerabilities fixed and remaining) and write the new image, lock, CMake
