@@ -228,7 +228,7 @@
           
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
         </label>
-        <div class="md-search" data-md-component="search" role="dialog">
+        <div class="md-search" data-md-component="search" role="dialog" aria-label="Search">
   <label class="md-search__overlay" for="__search"></label>
   <div class="md-search__inner" role="search">
     <form class="md-search__form" name="search">
@@ -1784,14 +1784,14 @@ committed figure no longer matches the code. Each figure below lists the files i
 <details class="kb-figure-desc">
 <summary>Figure description and sources</summary>
 <p>Read from the folders of the repository, so the figure cannot drift. The folder components/lib holds the parts: kb::utils at the bottom, kb::rtos on it, kb::interfaces on that, and kb::handlers on top; kb::dma, the chip-neutral DMA vocabulary, also rests on kb::utils. The folder components/ports holds the MCU ports, which satisfy the interface contracts (the host port is for tests only). The folder components/drivers holds the pinned drivers, each a submodule at a release tag, listed by name; kb::handlers binds them and nothing else may use them.</p>
-<p>Drawn from: <a href="https://github.com/kokeb-labs/kb-core/tree/57e12601700f0528c6466c5a36b9f8c895d2abc4/components/lib"><code>components/lib</code></a>; <a href="https://github.com/kokeb-labs/kb-core/tree/57e12601700f0528c6466c5a36b9f8c895d2abc4/components/ports"><code>components/ports</code></a>; <a href="https://github.com/kokeb-labs/kb-core/tree/57e12601700f0528c6466c5a36b9f8c895d2abc4/components/drivers"><code>components/drivers</code></a>; figure module <a href="https://github.com/kokeb-labs/kb-core/blob/57e12601700f0528c6466c5a36b9f8c895d2abc4/docs/diagrams/figures/components-map.py"><code>docs/diagrams/figures/components-map.py</code></a>.</p>
+<p>Drawn from: <a href="https://github.com/kokeb-labs/kb-core/tree/c559bdaacf940a0eb76b24257bf266ab08cf6aaf/components/lib"><code>components/lib</code></a>; <a href="https://github.com/kokeb-labs/kb-core/tree/c559bdaacf940a0eb76b24257bf266ab08cf6aaf/components/ports"><code>components/ports</code></a>; <a href="https://github.com/kokeb-labs/kb-core/tree/c559bdaacf940a0eb76b24257bf266ab08cf6aaf/components/drivers"><code>components/drivers</code></a>; figure module <a href="https://github.com/kokeb-labs/kb-core/blob/c559bdaacf940a0eb76b24257bf266ab08cf6aaf/docs/diagrams/figures/components-map.py"><code>docs/diagrams/figures/components-map.py</code></a>.</p>
 </details>
-<p>Figure module: <a href="https://github.com/kokeb-labs/kb-core/blob/57e12601700f0528c6466c5a36b9f8c895d2abc4/docs/diagrams/figures/components-map.py"><code>docs/diagrams/figures/components-map.py</code></a></p>
+<p>Figure module: <a href="https://github.com/kokeb-labs/kb-core/blob/c559bdaacf940a0eb76b24257bf266ab08cf6aaf/docs/diagrams/figures/components-map.py"><code>docs/diagrams/figures/components-map.py</code></a></p>
 <p>Drawn from:</p>
 <ul>
-<li><a href="https://github.com/kokeb-labs/kb-core/tree/57e12601700f0528c6466c5a36b9f8c895d2abc4/components/lib"><code>components/lib</code></a></li>
-<li><a href="https://github.com/kokeb-labs/kb-core/tree/57e12601700f0528c6466c5a36b9f8c895d2abc4/components/ports"><code>components/ports</code></a></li>
-<li><a href="https://github.com/kokeb-labs/kb-core/tree/57e12601700f0528c6466c5a36b9f8c895d2abc4/components/drivers"><code>components/drivers</code></a></li>
+<li><a href="https://github.com/kokeb-labs/kb-core/tree/c559bdaacf940a0eb76b24257bf266ab08cf6aaf/components/lib"><code>components/lib</code></a></li>
+<li><a href="https://github.com/kokeb-labs/kb-core/tree/c559bdaacf940a0eb76b24257bf266ab08cf6aaf/components/ports"><code>components/ports</code></a></li>
+<li><a href="https://github.com/kokeb-labs/kb-core/tree/c559bdaacf940a0eb76b24257bf266ab08cf6aaf/components/drivers"><code>components/drivers</code></a></li>
 </ul>
 <h2 id="which-layer-may-depend-on-which">Which layer may depend on which<a class="headerlink" href="#which-layer-may-depend-on-which" title="Permanent link">&para;</a></h2>
 <figure class="kb-figure">
@@ -1931,7 +1931,7 @@ committed figure no longer matches the code. Each figure below lists the files i
 <summary>Figure description and sources</summary>
 <p>Two models, declared per bus, one above the other; callers on other tasks use one access API in both. Model O, the owner task, is the default for real-time buses: one real-time task, a kb::rtos::Thread, calls Service(now) at a fixed rate, steps the single-threaded cores of handlers A and B on BusDomain<SPI1, Owner> without a mutex (an owner check instead), publishes each step to a lock-free SeqlockSnapshot and drains a bounded command queue with completion. Other tasks read the latest snapshot with Latest() (a lock-free copy) or post a request with Request(cmd, timeout) and wait. Model G, the guarded facade, is for slow, sporadic devices: tasks X and Y each call Call(timeout, op) on a Guarded handler, C or D, which takes the handler lock and then, with a bounded wait (TryLockFor), the bus lock of BusDomain<I2C0, Guarded>, which has a mutex, recovery and statistics. An interrupt service routine only sets event flags or notifies the owner task; it never calls a handler.</p>
 </details>
-<p>Figure module: <a href="https://github.com/kokeb-labs/kb-core/blob/57e12601700f0528c6466c5a36b9f8c895d2abc4/docs/diagrams/figures/handler-threading.py"><code>docs/diagrams/figures/handler-threading.py</code></a></p>
+<p>Figure module: <a href="https://github.com/kokeb-labs/kb-core/blob/c559bdaacf940a0eb76b24257bf266ab08cf6aaf/docs/diagrams/figures/handler-threading.py"><code>docs/diagrams/figures/handler-threading.py</code></a></p>
 <h2 id="the-layer-stack">The layer stack<a class="headerlink" href="#the-layer-stack" title="Permanent link">&para;</a></h2>
 <figure class="kb-figure">
 <img src="layer-stack.svg#only-light" alt="Layer stack from the product application through the board HAL to kb::handlers, kb::interfaces, kb::rtos and kb::utils, with the drivers that handlers bind, the MCU ports that satisfy the contracts, and vendor SOUP reached only through boundary files." width="696" height="1417" loading="lazy"><img src="layer-stack.dark.svg#only-dark" alt="Layer stack from the product application through the board HAL to kb::handlers, kb::interfaces, kb::rtos and kb::utils, with the drivers that handlers bind, the MCU ports that satisfy the contracts, and vendor SOUP reached only through boundary files." width="696" height="1417" loading="lazy">
@@ -2163,8 +2163,27 @@ committed figure no longer matches the code. Each figure below lists the files i
       <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.indexes", "navigation.prune", "navigation.top", "navigation.footer", "navigation.tracking", "navigation.instant", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.action.edit", "content.tabs.link", "toc.follow"], "search": "../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"alias": true, "default": "latest", "provider": "mike"}}</script>
     
     
+  
       <script src="../assets/javascripts/bundle.c21346df.min.js"></script>
       
-    
+    <script>
+    (function () {
+      function fix() {
+        var buttons = document.querySelectorAll(".md-version__current");
+        for (var i = 0; i < buttons.length; i++) {
+          var b = buttons[i], text = (b.textContent || "").replace(/\s+/g, " ").trim();
+          var label = b.getAttribute("aria-label") || "";
+          if (text && label.toLowerCase().indexOf(text.toLowerCase()) === -1) {
+            b.setAttribute("aria-label", text + ", " + label);
+          }
+        }
+      }
+      fix();
+      if (window.MutationObserver) {
+        new MutationObserver(fix).observe(document.body, {childList: true, subtree: true});
+      }
+    })();
+  </script>
+
   </body>
 </html>
