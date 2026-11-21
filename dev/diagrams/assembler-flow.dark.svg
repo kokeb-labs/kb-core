@@ -1,65 +1,77 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="763" viewBox="0 0 1200 763" role="img" aria-labelledby="assembler-flow-title assembler-flow-desc" font-family="Inter, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="1099" viewBox="0 0 640 1099" role="img" aria-labelledby="assembler-flow-title assembler-flow-desc" font-family="Inter, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
 <title id="assembler-flow-title">From tags to a project</title>
 <desc id="assembler-flow-desc">Driver and kb-core tags feed kb catalog build, which writes catalog.json; the resolver reads it and kb-image.yml and writes the lock and the project files; kb sbom turns the lock into SBOMs.</desc>
-<defs><marker id="fk-arrow-brown-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#D6A26B"/></marker><marker id="fk-arrow-green-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#4ADE80"/></marker><marker id="fk-arrow-rail" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#6C7889"/></marker></defs>
-<rect x="0.5" y="0.5" width="1199" height="762" rx="16" fill="#0E131A" stroke="#283241"/>
+<defs><marker id="assembler-flow-arrow-brown-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#D6A26B"/></marker><marker id="assembler-flow-arrow-green-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#4ADE80"/></marker><marker id="assembler-flow-arrow-rail" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#6C7889"/></marker></defs>
+<rect x="0.5" y="0.5" width="639" height="1098" rx="16" fill="#0E131A" stroke="#283241"/>
 <text x="32" y="44" font-size="12.5" font-weight="700" letter-spacing="1.2" fill="#F8D27A">CONFIGURATOR</text>
 <text x="32" y="77.3" font-size="26" font-weight="700" fill="#E8EDF3">From tags to a project</text>
-<text x="32" y="103.8" font-size="15" fill="#9AA6B5">One resolver specification, implemented in Python and JavaScript, held to the same vectors.</text>
-<rect x="32" y="119.8" width="1136" height="1" fill="#252F3C"/>
-<path d="M287 183.8 L298 183.8 Q306 183.8 306 191.8 L306 214.8 Q306 222.8 314 222.8 L323 222.8" fill="none" stroke="#6C7889" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rail)"/>
-<path d="M287 301.8 L298 301.8 Q306 301.8 306 293.8 L306 270.8 Q306 262.8 314 262.8 L323 262.8" fill="none" stroke="#6C7889" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rail)"/>
-<path d="M581 242.8 L617 242.8" fill="none" stroke="#6C7889" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rail)"/>
-<path d="M746 291.8 L746 488.8" fill="none" stroke="#6C7889" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rail)"/>
-<path d="M287 537.8 L617 537.8" fill="none" stroke="#6C7889" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rail)"/>
-<path d="M875 537.8 L913 537.8" fill="none" stroke="#4ADE80" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-green-strong)"/>
-<path d="M875 517.8 L888 517.8 Q896 517.8 896 509.8 L896 427.8 Q896 419.8 904 419.8 L913 419.8" fill="none" stroke="#4ADE80" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-green-strong)"/>
-<path d="M1042 586.8 L1042 606.8" fill="none" stroke="#D6A26B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-brown-strong)"/>
-<rect x="32" y="137.8" width="252" height="92" rx="10" fill="#13233A" stroke="#60A5FA" stroke-width="1.4"/>
-<rect x="32" y="145.8" width="4" height="76" rx="2" fill="#60A5FA"/>
-<rect x="32" y="255.8" width="252" height="92" rx="10" fill="#13233A" stroke="#60A5FA" stroke-width="1.4"/>
-<rect x="32" y="263.8" width="4" height="76" rx="2" fill="#60A5FA"/>
-<rect x="326" y="196.8" width="252" height="92" rx="10" fill="#2A1F14" stroke="#D6A26B" stroke-width="1.4"/>
-<rect x="326" y="204.8" width="4" height="76" rx="2" fill="#D6A26B"/>
-<rect x="620" y="196.8" width="252" height="92" rx="10" fill="#11281A" stroke="#4ADE80" stroke-width="1.4"/>
-<rect x="620" y="204.8" width="4" height="76" rx="2" fill="#4ADE80"/>
-<rect x="32" y="491.8" width="252" height="92" rx="10" fill="#13233A" stroke="#60A5FA" stroke-width="1.4"/>
-<rect x="32" y="499.8" width="4" height="76" rx="2" fill="#60A5FA"/>
-<rect x="620" y="491.8" width="252" height="92" rx="10" fill="#2A1F14" stroke="#D6A26B" stroke-width="1.4"/>
-<rect x="620" y="499.8" width="4" height="76" rx="2" fill="#D6A26B"/>
-<rect x="916" y="373.8" width="252" height="92" rx="10" fill="#11281A" stroke="#4ADE80" stroke-width="1.4"/>
-<rect x="916" y="381.8" width="4" height="76" rx="2" fill="#4ADE80"/>
-<rect x="916" y="491.8" width="252" height="92" rx="10" fill="#11281A" stroke="#4ADE80" stroke-width="1.4"/>
-<rect x="916" y="499.8" width="4" height="76" rx="2" fill="#4ADE80"/>
-<rect x="916" y="609.8" width="252" height="92" rx="10" fill="#2A1F14" stroke="#D6A26B" stroke-width="1.4"/>
-<rect x="916" y="617.8" width="4" height="76" rx="2" fill="#D6A26B"/>
-<text x="52" y="164.6" font-size="15" font-weight="700" fill="#BFDBFE">driver-&lt;chip&gt; tags</text>
-<text x="52" y="189.4" font-size="13" fill="#D2DAE4">driver.yml at each tag</text>
-<text x="52" y="282.6" font-size="15" font-weight="700" fill="#BFDBFE">kb-core tags</text>
-<text x="52" y="307.4" font-size="13" fill="#D2DAE4">platform table, pins</text>
-<text x="346" y="223.6" font-size="15" font-weight="700" fill="#F1D5B5">kb catalog build</text>
-<text x="346" y="248.4" font-size="13" fill="#D2DAE4">reads the tags</text>
-<text x="640" y="223.6" font-size="15" font-weight="700" fill="#BBF7D0">catalog.json</text>
-<text x="640" y="248.4" font-size="13" fill="#D2DAE4">every part at every version</text>
-<text x="52" y="518.5" font-size="15" font-weight="700" fill="#BFDBFE">kb-image.yml</text>
-<text x="52" y="543.4" font-size="13" fill="#D2DAE4">what the user selected</text>
-<text x="640" y="518.5" font-size="15" font-weight="700" fill="#F1D5B5">Resolver</text>
-<text x="640" y="543.4" font-size="13" fill="#D2DAE4">Python or JavaScript, one spec</text>
-<text x="936" y="400.6" font-size="15" font-weight="700" fill="#BBF7D0">Project files</text>
-<text x="936" y="425.4" font-size="13" fill="#D2DAE4">CMakePresets.json,</text>
-<text x="936" y="444.3" font-size="13" fill="#D2DAE4">kb_image.cmake, kb-fetch.sh</text>
-<text x="936" y="518.5" font-size="15" font-weight="700" fill="#BBF7D0">kb-image.lock.yml</text>
-<text x="936" y="543.4" font-size="13" fill="#D2DAE4">every version, tag and SHA</text>
-<text x="936" y="636.5" font-size="15" font-weight="700" fill="#F1D5B5">kb sbom</text>
-<text x="936" y="661.4" font-size="13" fill="#D2DAE4">CycloneDX 1.6 and SPDX 2.3</text>
-<rect x="726.3" y="380.3" width="39.5" height="20" rx="10" fill="#0E131A"/>
-<text x="746" y="394.6" font-size="12" font-weight="500" text-anchor="middle" fill="#9AA6B5">read</text>
-<rect x="432.3" y="527.8" width="39.5" height="20" rx="10" fill="#0E131A"/>
-<text x="452" y="542.1" font-size="12" font-weight="500" text-anchor="middle" fill="#9AA6B5">read</text>
-<rect x="32" y="717.2" width="14" height="14" rx="4" fill="#13233A" stroke="#60A5FA" stroke-width="1.4"/>
-<text x="54" y="728.8" font-size="12.5" fill="#9AA6B5">inputs</text>
-<rect x="116.3" y="717.2" width="14" height="14" rx="4" fill="#2A1F14" stroke="#D6A26B" stroke-width="1.4"/>
-<text x="138.3" y="728.8" font-size="12.5" fill="#9AA6B5">tool</text>
-<rect x="185.7" y="717.2" width="14" height="14" rx="4" fill="#11281A" stroke="#4ADE80" stroke-width="1.4"/>
-<text x="207.7" y="728.8" font-size="12.5" fill="#9AA6B5">outputs</text>
+<text x="32" y="103.8" font-size="15" fill="#9AA6B5">One resolver specification, implemented in Python and JavaScript, held to</text>
+<text x="32" y="125.5" font-size="15" fill="#9AA6B5">the same vectors.</text>
+<rect x="32" y="141.6" width="576" height="1" fill="#252F3C"/>
+<path d="M197 251.6 L197 313.6" fill="none" stroke="#6C7889" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#assembler-flow-arrow-rail)"/>
+<path d="M197 390.6 L197 452.6" fill="none" stroke="#6C7889" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#assembler-flow-arrow-rail)"/>
+<path d="M197 548.5 L197 556.7 Q197 564.7 205 564.7 L231 564.7 Q239 564.7 239 572.7 L239 610.5" fill="none" stroke="#6C7889" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#assembler-flow-arrow-rail)"/>
+<path d="M443 548.5 L443 586.4 Q443 594.4 435 594.4 L409 594.4 Q401 594.4 401 602.4 L401 610.5" fill="none" stroke="#6C7889" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#assembler-flow-arrow-rail)"/>
+<path d="M239 706.5 L239 714.7 Q239 722.7 231 722.7 L205 722.7 Q197 722.7 197 730.7 L197 768.5" fill="none" stroke="#4ADE80" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#assembler-flow-arrow-green-strong)"/>
+<path d="M401 706.5 L401 744.4 Q401 752.4 409 752.4 L435 752.4 Q443 752.4 443 760.4 L443 768.5" fill="none" stroke="#4ADE80" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#assembler-flow-arrow-green-strong)"/>
+<path d="M197 883.5 L197 945.5" fill="none" stroke="#D6A26B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#assembler-flow-arrow-brown-strong)"/>
+<rect x="102" y="159.6" width="190" height="88" rx="10" fill="#13233A" stroke="#60A5FA" stroke-width="1.4"/>
+<rect x="102" y="167.6" width="4" height="72" rx="2" fill="#60A5FA"/>
+<rect x="102" y="317.6" width="190" height="69" rx="10" fill="#2A1F14" stroke="#D6A26B" stroke-width="1.4"/>
+<rect x="102" y="325.6" width="4" height="53" rx="2" fill="#D6A26B"/>
+<rect x="102" y="456.6" width="190" height="88" rx="10" fill="#11281A" stroke="#4ADE80" stroke-width="1.4"/>
+<rect x="102" y="464.6" width="4" height="72" rx="2" fill="#4ADE80"/>
+<rect x="348" y="456.6" width="190" height="88" rx="10" fill="#13233A" stroke="#60A5FA" stroke-width="1.4"/>
+<rect x="348" y="464.6" width="4" height="72" rx="2" fill="#60A5FA"/>
+<rect x="225" y="614.5" width="190" height="88" rx="10" fill="#2A1F14" stroke="#D6A26B" stroke-width="1.4"/>
+<rect x="225" y="622.5" width="4" height="72" rx="2" fill="#D6A26B"/>
+<rect x="102" y="772.5" width="190" height="107" rx="10" fill="#11281A" stroke="#4ADE80" stroke-width="1.4"/>
+<rect x="102" y="780.5" width="4" height="91" rx="2" fill="#4ADE80"/>
+<rect x="348" y="772.5" width="190" height="107" rx="10" fill="#11281A" stroke="#4ADE80" stroke-width="1.4"/>
+<rect x="348" y="780.5" width="4" height="91" rx="2" fill="#4ADE80"/>
+<rect x="102" y="949.5" width="190" height="88" rx="10" fill="#2A1F14" stroke="#D6A26B" stroke-width="1.4"/>
+<rect x="102" y="957.5" width="4" height="72" rx="2" fill="#D6A26B"/>
+<text x="122" y="186.3" font-size="15" font-weight="700" fill="#BFDBFE">Release tags</text>
+<text x="122" y="211.2" font-size="13" fill="#D2DAE4">driver.yml per driver</text>
+<text x="122" y="230" font-size="13" fill="#D2DAE4">kb-core: platform, pins</text>
+<text x="122" y="344.3" font-size="15" font-weight="700" fill="#F1D5B5">kb catalog build</text>
+<text x="122" y="369.1" font-size="13" fill="#D2DAE4">reads the tags</text>
+<text x="122" y="483.3" font-size="15" font-weight="700" fill="#BBF7D0">catalog.json</text>
+<text x="122" y="508.2" font-size="13" fill="#D2DAE4">every part at every</text>
+<text x="122" y="527" font-size="13" fill="#D2DAE4">version</text>
+<text x="368" y="483.3" font-size="15" font-weight="700" fill="#BFDBFE">kb-image.yml</text>
+<text x="368" y="508.2" font-size="13" fill="#D2DAE4">what the user picked</text>
+<text x="368" y="527" font-size="13" fill="#D2DAE4">MCU, RTOS, drivers</text>
+<text x="245" y="641.3" font-size="15" font-weight="700" fill="#F1D5B5">Resolver</text>
+<text x="245" y="666.2" font-size="13" fill="#D2DAE4">Python or JavaScript</text>
+<text x="245" y="685" font-size="13" fill="#D2DAE4">one spec</text>
+<text x="122" y="799.3" font-size="15" font-weight="700" fill="#BBF7D0">kb-image.lock.yml</text>
+<text x="122" y="824.2" font-size="13" fill="#D2DAE4">every version</text>
+<text x="122" y="843" font-size="13" fill="#D2DAE4">every tag</text>
+<text x="122" y="861.9" font-size="13" fill="#D2DAE4">every SHA</text>
+<text x="368" y="799.3" font-size="15" font-weight="700" fill="#BBF7D0">Project files</text>
+<text x="368" y="824.2" font-size="13" fill="#D2DAE4">CMakePresets.json</text>
+<text x="368" y="843" font-size="13" fill="#D2DAE4">kb_image.cmake</text>
+<text x="368" y="861.9" font-size="13" fill="#D2DAE4">kb-fetch.sh</text>
+<text x="122" y="976.3" font-size="15" font-weight="700" fill="#F1D5B5">kb sbom</text>
+<text x="122" y="1001.2" font-size="13" fill="#D2DAE4">CycloneDX 1.6</text>
+<text x="122" y="1020" font-size="13" fill="#D2DAE4">SPDX 2.3</text>
+<rect x="204.8" y="272.6" width="39.5" height="20" rx="10" fill="#0E131A"/>
+<text x="224.5" y="286.9" font-size="12" font-weight="500" text-anchor="middle" fill="#9AA6B5">read</text>
+<rect x="204.8" y="411.6" width="49.3" height="20" rx="10" fill="#0E131A"/>
+<text x="229.5" y="425.9" font-size="12" font-weight="500" text-anchor="middle" fill="#9AA6B5">writes</text>
+<rect x="198.3" y="554.7" width="39.5" height="20" rx="10" fill="#0E131A"/>
+<text x="218" y="569" font-size="12" font-weight="500" text-anchor="middle" fill="#9AA6B5">read</text>
+<rect x="402.3" y="584.4" width="39.5" height="20" rx="10" fill="#0E131A"/>
+<text x="422" y="598.7" font-size="12" font-weight="500" text-anchor="middle" fill="#9AA6B5">read</text>
+<rect x="193.3" y="712.7" width="49.3" height="20" rx="10" fill="#0E131A"/>
+<text x="218" y="727" font-size="12" font-weight="500" text-anchor="middle" fill="#9AA6B5">writes</text>
+<rect x="397.3" y="742.4" width="49.3" height="20" rx="10" fill="#0E131A"/>
+<text x="422" y="756.7" font-size="12" font-weight="500" text-anchor="middle" fill="#9AA6B5">writes</text>
+<rect x="32" y="1052.9" width="14" height="14" rx="4" fill="#13233A" stroke="#60A5FA" stroke-width="1.4"/>
+<text x="54" y="1064.5" font-size="12.5" fill="#9AA6B5">inputs</text>
+<rect x="116.3" y="1052.9" width="14" height="14" rx="4" fill="#2A1F14" stroke="#D6A26B" stroke-width="1.4"/>
+<text x="138.3" y="1064.5" font-size="12.5" fill="#9AA6B5">tool</text>
+<rect x="185.7" y="1052.9" width="14" height="14" rx="4" fill="#11281A" stroke="#4ADE80" stroke-width="1.4"/>
+<text x="207.7" y="1064.5" font-size="12.5" fill="#9AA6B5">outputs</text>
 </svg>

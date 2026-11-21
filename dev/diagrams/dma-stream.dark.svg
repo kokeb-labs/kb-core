@@ -1,67 +1,72 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="566" viewBox="0 0 1200 566" role="img" aria-labelledby="dma-stream-title dma-stream-desc" font-family="Inter, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="1080" viewBox="0 0 640 1080" role="img" aria-labelledby="dma-stream-title dma-stream-desc" font-family="Inter, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
 <title id="dma-stream-title">The DMA copy-out stream</title>
-<desc id="dma-stream-desc">Flow: the DMA ring raises an interrupt that copies each finished frame into a slot; the task takes a slot as a FrameView, a content check feeds the supervisor, which can switch to a declared fallback producer; a full ring drops the frame and flags the next one with Gap.</desc>
-<defs><marker id="fk-arrow-green-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#4ADE80"/></marker><marker id="fk-arrow-rail" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#6C7889"/></marker><marker id="fk-arrow-rose-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#FB7185"/></marker></defs>
-<rect x="0.5" y="0.5" width="1199" height="565" rx="16" fill="#0E131A" stroke="#283241"/>
+<desc id="dma-stream-desc">Flow in which the DMA ring raises an interrupt that copies each finished frame into a slot, the task takes a slot as a FrameView, a content check feeds the supervisor, and a full ring drops the frame and flags the next with Gap.</desc>
+<defs><marker id="dma-stream-arrow-green-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#4ADE80"/></marker><marker id="dma-stream-arrow-rail" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#6C7889"/></marker><marker id="dma-stream-arrow-rose-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#FB7185"/></marker></defs>
+<rect x="0.5" y="0.5" width="639" height="1079" rx="16" fill="#0E131A" stroke="#283241"/>
 <text x="32" y="44" font-size="12.5" font-weight="700" letter-spacing="1.2" fill="#F8D27A">DMA</text>
 <text x="32" y="77.3" font-size="26" font-weight="700" fill="#E8EDF3">The DMA copy-out stream</text>
-<text x="32" y="103.8" font-size="15" fill="#9AA6B5">The interrupt copies each finished frame into a slot. The task never holds the ring itself.</text>
-<rect x="32" y="119.8" width="1136" height="1" fill="#252F3C"/>
-<path d="M350.7 181.8 L438.7 181.8" fill="none" stroke="#6C7889" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rail)"/>
-<path d="M761.3 181.8 L849.3 181.8" fill="none" stroke="#6C7889" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rail)"/>
-<path d="M1010.7 229.8 L1010.7 431.8" fill="none" stroke="#6C7889" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rail)"/>
-<path d="M849.3 470.3 L761.3 470.3" fill="none" stroke="#6C7889" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rail)"/>
-<path d="M438.7 470.3 L350.7 470.3" fill="none" stroke="#4ADE80" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-green-strong)"/>
-<path d="M600 229.8 L600 251.8" fill="none" stroke="#FB7185" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 5" marker-end="url(#fk-arrow-rose-strong)"/>
-<rect x="32" y="137.8" width="314.7" height="88" rx="10" fill="#0F2A28" stroke="#2BB3A3" stroke-width="1.4"/>
-<rect x="32" y="145.8" width="4" height="72" rx="2" fill="#2BB3A3"/>
-<rect x="442.7" y="137.8" width="314.7" height="88" rx="10" fill="#221A3A" stroke="#A78BFA" stroke-width="1.4"/>
-<rect x="442.7" y="145.8" width="4" height="72" rx="2" fill="#A78BFA"/>
-<rect x="853.3" y="137.8" width="314.7" height="88" rx="10" fill="#13233A" stroke="#60A5FA" stroke-width="1.4"/>
-<rect x="853.3" y="145.8" width="4" height="72" rx="2" fill="#60A5FA"/>
-<rect x="32" y="435.8" width="314.7" height="69" rx="10" fill="#11281A" stroke="#4ADE80" stroke-width="1.4"/>
-<rect x="32" y="443.8" width="4" height="53" rx="2" fill="#4ADE80"/>
-<rect x="442.7" y="435.8" width="314.7" height="69" rx="10" fill="#221A3A" stroke="#A78BFA" stroke-width="1.4"/>
-<rect x="442.7" y="443.8" width="4" height="53" rx="2" fill="#A78BFA"/>
-<rect x="853.3" y="435.8" width="314.7" height="69" rx="10" fill="#13233A" stroke="#60A5FA" stroke-width="1.4"/>
-<rect x="853.3" y="443.8" width="4" height="53" rx="2" fill="#60A5FA"/>
-<rect x="442.7" y="255.8" width="314.7" height="88" rx="10" fill="#151C26" stroke="#3A4657" stroke-width="1" stroke-dasharray="6 4"/>
-<text x="52" y="164.6" font-size="15" font-weight="700" fill="#A7F3E6">DMA ring</text>
-<text x="52" y="189.4" font-size="13" fill="#D2DAE4">in the buffer: 2 halves or N frames</text>
-<text x="462.7" y="164.6" font-size="15" font-weight="700" fill="#DDD6FE">Interrupt</text>
-<text x="462.7" y="189.4" font-size="13" fill="#D2DAE4">PublishFromDevice: invalidate, copy out,</text>
-<text x="462.7" y="208.2" font-size="13" fill="#D2DAE4">seq, time, torn?</text>
-<text x="873.3" y="164.6" font-size="15" font-weight="700" fill="#BFDBFE">Ring of slots</text>
-<text x="873.3" y="189.4" font-size="13" fill="#D2DAE4">at least 2 slots</text>
-<rect x="362.5" y="171.8" width="64.3" height="20" rx="10" fill="#0E131A"/>
-<text x="394.7" y="186.1" font-size="12" font-weight="500" text-anchor="middle" fill="#9AA6B5">interrupt</text>
-<rect x="774.3" y="171.8" width="62.1" height="20" rx="10" fill="#0E131A"/>
-<text x="805.3" y="186.1" font-size="12" font-weight="500" text-anchor="middle" fill="#9AA6B5">slot free</text>
-<text x="52" y="462.6" font-size="15" font-weight="700" fill="#BBF7D0">Fallback producer</text>
-<text x="52" y="487.4" font-size="13" fill="#D2DAE4">frames flagged Fallback()</text>
-<text x="462.7" y="462.6" font-size="15" font-weight="700" fill="#DDD6FE">Supervise</text>
-<text x="462.7" y="487.4" font-size="13" fill="#D2DAE4">None, Restart, BackOff, UseFallback</text>
-<text x="873.3" y="462.6" font-size="15" font-weight="700" fill="#BFDBFE">FrameView</text>
-<text x="873.3" y="487.4" font-size="13" fill="#D2DAE4">move-only, releases on end</text>
-<rect x="979.3" y="320.8" width="62.6" height="20" rx="10" fill="#0E131A"/>
-<text x="1010.7" y="335.1" font-size="12" font-weight="500" text-anchor="middle" fill="#9AA6B5">TryTake</text>
-<rect x="780.2" y="460.3" width="50.2" height="20" rx="10" fill="#0E131A"/>
-<text x="805.3" y="474.6" font-size="12" font-weight="500" text-anchor="middle" fill="#9AA6B5">Judge</text>
-<rect x="364.7" y="460.3" width="60" height="20" rx="10" fill="#0E131A"/>
-<text x="394.7" y="474.6" font-size="12" font-weight="500" text-anchor="middle" fill="#9AA6B5">fallback</text>
-<text x="462.7" y="282.6" font-size="15" font-weight="700" fill="#E8EDF3">Next frame: Gap()</text>
-<text x="462.7" y="307.4" font-size="13" fill="#D2DAE4">every slot was held: the frame is dropped</text>
-<text x="462.7" y="326.2" font-size="13" fill="#D2DAE4">and counted as Full</text>
-<rect x="572.4" y="230.8" width="55.2" height="20" rx="10" fill="#0E131A"/>
-<text x="600" y="245.1" font-size="12" font-weight="500" text-anchor="middle" fill="#9AA6B5">all held</text>
-<rect x="32" y="520.2" width="14" height="14" rx="4" fill="#0F2A28" stroke="#2BB3A3" stroke-width="1.4"/>
-<text x="54" y="531.8" font-size="12.5" fill="#9AA6B5">hardware</text>
-<rect x="137.4" y="520.2" width="14" height="14" rx="4" fill="#221A3A" stroke="#A78BFA" stroke-width="1.4"/>
-<text x="159.4" y="531.8" font-size="12.5" fill="#9AA6B5">interrupt</text>
-<rect x="236.7" y="520.2" width="14" height="14" rx="4" fill="#13233A" stroke="#60A5FA" stroke-width="1.4"/>
-<text x="258.7" y="531.8" font-size="12.5" fill="#9AA6B5">task</text>
-<rect x="308.8" y="520.2" width="14" height="14" rx="4" fill="#321820" stroke="#FB7185" stroke-width="1.4"/>
-<text x="330.8" y="531.8" font-size="12.5" fill="#9AA6B5">gap</text>
-<rect x="378.4" y="520.2" width="14" height="14" rx="4" fill="#11281A" stroke="#4ADE80" stroke-width="1.4"/>
-<text x="400.4" y="531.8" font-size="12.5" fill="#9AA6B5">fallback</text>
+<text x="32" y="103.8" font-size="15" fill="#9AA6B5">The interrupt copies each finished frame into a slot. The task never holds</text>
+<text x="32" y="125.5" font-size="15" fill="#9AA6B5">the ring itself.</text>
+<rect x="32" y="141.6" width="576" height="1" fill="#252F3C"/>
+<path d="M320 232.6 L320 294.6" fill="none" stroke="#6C7889" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#dma-stream-arrow-rail)"/>
+<path d="M239 409.6 L239 417.7 Q239 425.7 231 425.7 L205 425.7 Q197 425.7 197 433.7 L197 481.6" fill="none" stroke="#6C7889" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#dma-stream-arrow-rail)"/>
+<path d="M401 409.6 L401 447.4 Q401 455.4 409 455.4 L435 455.4 Q443 455.4 443 463.4 L443 471.6" fill="none" stroke="#FB7185" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 5" marker-end="url(#dma-stream-arrow-rose-strong)"/>
+<path d="M197 558.5 L197 629.5" fill="none" stroke="#6C7889" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#dma-stream-arrow-rail)"/>
+<path d="M197 725.5 L197 787.5" fill="none" stroke="#6C7889" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#dma-stream-arrow-rail)"/>
+<path d="M197 883.5 L197 945.5" fill="none" stroke="#4ADE80" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#dma-stream-arrow-green-strong)"/>
+<rect x="225" y="159.6" width="190" height="69" rx="10" fill="#0F2A28" stroke="#2BB3A3" stroke-width="1.4"/>
+<rect x="225" y="167.6" width="4" height="53" rx="2" fill="#2BB3A3"/>
+<rect x="225" y="298.6" width="190" height="107" rx="10" fill="#221A3A" stroke="#A78BFA" stroke-width="1.4"/>
+<rect x="225" y="306.6" width="4" height="91" rx="2" fill="#A78BFA"/>
+<rect x="102" y="485.6" width="190" height="69" rx="10" fill="#13233A" stroke="#60A5FA" stroke-width="1.4"/>
+<rect x="102" y="493.6" width="4" height="53" rx="2" fill="#60A5FA"/>
+<rect x="348" y="475.6" width="190" height="88" rx="10" fill="#321820" stroke="#FB7185" stroke-width="1.4"/>
+<rect x="348" y="483.6" width="4" height="72" rx="2" fill="#FB7185"/>
+<rect x="102" y="633.5" width="190" height="88" rx="10" fill="#13233A" stroke="#60A5FA" stroke-width="1.4"/>
+<rect x="102" y="641.5" width="4" height="72" rx="2" fill="#60A5FA"/>
+<rect x="102" y="791.5" width="190" height="88" rx="10" fill="#221A3A" stroke="#A78BFA" stroke-width="1.4"/>
+<rect x="102" y="799.5" width="4" height="72" rx="2" fill="#A78BFA"/>
+<rect x="102" y="949.5" width="190" height="69" rx="10" fill="#11281A" stroke="#4ADE80" stroke-width="1.4"/>
+<rect x="102" y="957.5" width="4" height="53" rx="2" fill="#4ADE80"/>
+<text x="245" y="186.3" font-size="15" font-weight="700" fill="#A7F3E6">DMA ring</text>
+<text x="245" y="211.2" font-size="13" fill="#D2DAE4">2 halves or N frames</text>
+<text x="245" y="325.3" font-size="15" font-weight="700" fill="#DDD6FE">Interrupt</text>
+<text x="245" y="350.1" font-size="13" fill="#D2DAE4">PublishFromDevice</text>
+<text x="245" y="369" font-size="13" fill="#D2DAE4">copy out, seq, time,</text>
+<text x="245" y="387.9" font-size="13" fill="#D2DAE4">torn</text>
+<text x="122" y="512.3" font-size="15" font-weight="700" fill="#BFDBFE">Ring of slots</text>
+<text x="122" y="537.2" font-size="13" fill="#D2DAE4">at least 2 slots</text>
+<text x="368" y="502.3" font-size="15" font-weight="700" fill="#FECDD3">Next frame: Gap()</text>
+<text x="368" y="527.2" font-size="13" fill="#D2DAE4">all slots held</text>
+<text x="368" y="546" font-size="13" fill="#D2DAE4">frame dropped as Full</text>
+<text x="122" y="660.3" font-size="15" font-weight="700" fill="#BFDBFE">FrameView</text>
+<text x="122" y="685.2" font-size="13" fill="#D2DAE4">move-only</text>
+<text x="122" y="704" font-size="13" fill="#D2DAE4">releases on end</text>
+<text x="122" y="818.3" font-size="15" font-weight="700" fill="#DDD6FE">Supervise</text>
+<text x="122" y="843.2" font-size="13" fill="#D2DAE4">None, Restart, BackOff,</text>
+<text x="122" y="862" font-size="13" fill="#D2DAE4">UseFallback</text>
+<text x="122" y="976.3" font-size="15" font-weight="700" fill="#BBF7D0">Fallback producer</text>
+<text x="122" y="1001.2" font-size="13" fill="#D2DAE4">frames carry Fallback()</text>
+<rect x="328" y="253.6" width="111" height="20" rx="10" fill="#0E131A"/>
+<text x="383.5" y="267.9" font-size="12" font-weight="500" text-anchor="middle" fill="#9AA6B5">half or complete</text>
+<rect x="246.9" y="415.7" width="62.1" height="20" rx="10" fill="#0E131A"/>
+<text x="278" y="430" font-size="12" font-weight="500" text-anchor="middle" fill="#9AA6B5">slot free</text>
+<rect x="394.4" y="445.4" width="55.2" height="20" rx="10" fill="#0E131A"/>
+<text x="422" y="459.7" font-size="12" font-weight="500" text-anchor="middle" fill="#9AA6B5">all held</text>
+<rect x="205.2" y="588.5" width="62.6" height="20" rx="10" fill="#0E131A"/>
+<text x="236.5" y="602.9" font-size="12" font-weight="500" text-anchor="middle" fill="#9AA6B5">TryTake</text>
+<rect x="204.9" y="746.5" width="50.2" height="20" rx="10" fill="#0E131A"/>
+<text x="230" y="760.9" font-size="12" font-weight="500" text-anchor="middle" fill="#9AA6B5">Judge</text>
+<rect x="205.1" y="904.5" width="94.7" height="20" rx="10" fill="#0E131A"/>
+<text x="252.5" y="918.9" font-size="12" font-weight="500" text-anchor="middle" fill="#9AA6B5">EnterFallback</text>
+<rect x="32" y="1033.9" width="14" height="14" rx="4" fill="#0F2A28" stroke="#2BB3A3" stroke-width="1.4"/>
+<text x="54" y="1045.5" font-size="12.5" fill="#9AA6B5">hardware</text>
+<rect x="137.4" y="1033.9" width="14" height="14" rx="4" fill="#221A3A" stroke="#A78BFA" stroke-width="1.4"/>
+<text x="159.4" y="1045.5" font-size="12.5" fill="#9AA6B5">interrupt</text>
+<rect x="236.7" y="1033.9" width="14" height="14" rx="4" fill="#13233A" stroke="#60A5FA" stroke-width="1.4"/>
+<text x="258.7" y="1045.5" font-size="12.5" fill="#9AA6B5">task</text>
+<rect x="308.8" y="1033.9" width="14" height="14" rx="4" fill="#321820" stroke="#FB7185" stroke-width="1.4"/>
+<text x="330.8" y="1045.5" font-size="12.5" fill="#9AA6B5">gap</text>
+<rect x="378.4" y="1033.9" width="14" height="14" rx="4" fill="#11281A" stroke="#4ADE80" stroke-width="1.4"/>
+<text x="400.4" y="1045.5" font-size="12.5" fill="#9AA6B5">fallback</text>
 </svg>

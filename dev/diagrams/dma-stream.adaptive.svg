@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="1080" viewBox="0 0 640 1080" role="img" aria-labelledby="dma-stream-title dma-stream-desc" font-family="Inter, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" class="fk">
+<title id="dma-stream-title">The DMA copy-out stream</title>
+<desc id="dma-stream-desc">Flow in which the DMA ring raises an interrupt that copies each finished frame into a slot, the task takes a slot as a FrameView, a content check feeds the supervisor, and a full ring drops the frame and flags the next with Gap.</desc>
+<style>
+.fk{--fk-blue-strong:#2563EB;--fk-blue-text:#1E429F;--fk-blue-tint:#EAF2FF;--fk-brand-text:#7A360E;--fk-canvas:#FFFFFF;--fk-frame:#E2E7EE;--fk-green-strong:#15803D;--fk-green-text:#14532D;--fk-green-tint:#EAF7EF;--fk-hair:#E2E7EE;--fk-ink:#0E1726;--fk-ink2:#2B3442;--fk-muted:#566070;--fk-rail:#7C8798;--fk-rose-strong:#DB2752;--fk-rose-text:#9F1239;--fk-rose-tint:#FFEEF2;--fk-teal-strong:#0B7A72;--fk-teal-text:#0B5F59;--fk-teal-tint:#E6F6F4;--fk-violet-strong:#7C3AED;--fk-violet-text:#5B21B6;--fk-violet-tint:#F3EEFF;}
+@media (prefers-color-scheme:dark){.fk{--fk-blue-strong:#60A5FA;--fk-blue-text:#BFDBFE;--fk-blue-tint:#13233A;--fk-brand-text:#F8D27A;--fk-canvas:#0E131A;--fk-frame:#283241;--fk-green-strong:#4ADE80;--fk-green-text:#BBF7D0;--fk-green-tint:#11281A;--fk-hair:#252F3C;--fk-ink:#E8EDF3;--fk-ink2:#D2DAE4;--fk-muted:#9AA6B5;--fk-rail:#6C7889;--fk-rose-strong:#FB7185;--fk-rose-text:#FECDD3;--fk-rose-tint:#321820;--fk-teal-strong:#2BB3A3;--fk-teal-text:#A7F3E6;--fk-teal-tint:#0F2A28;--fk-violet-strong:#A78BFA;--fk-violet-text:#DDD6FE;--fk-violet-tint:#221A3A;}}
+:root[data-theme="dark"] .fk,[data-md-color-scheme="slate"] .fk{--fk-blue-strong:#60A5FA;--fk-blue-text:#BFDBFE;--fk-blue-tint:#13233A;--fk-brand-text:#F8D27A;--fk-canvas:#0E131A;--fk-frame:#283241;--fk-green-strong:#4ADE80;--fk-green-text:#BBF7D0;--fk-green-tint:#11281A;--fk-hair:#252F3C;--fk-ink:#E8EDF3;--fk-ink2:#D2DAE4;--fk-muted:#9AA6B5;--fk-rail:#6C7889;--fk-rose-strong:#FB7185;--fk-rose-text:#FECDD3;--fk-rose-tint:#321820;--fk-teal-strong:#2BB3A3;--fk-teal-text:#A7F3E6;--fk-teal-tint:#0F2A28;--fk-violet-strong:#A78BFA;--fk-violet-text:#DDD6FE;--fk-violet-tint:#221A3A;}
+:root[data-theme="light"] .fk,[data-md-color-scheme="default"] .fk{--fk-blue-strong:#2563EB;--fk-blue-text:#1E429F;--fk-blue-tint:#EAF2FF;--fk-brand-text:#7A360E;--fk-canvas:#FFFFFF;--fk-frame:#E2E7EE;--fk-green-strong:#15803D;--fk-green-text:#14532D;--fk-green-tint:#EAF7EF;--fk-hair:#E2E7EE;--fk-ink:#0E1726;--fk-ink2:#2B3442;--fk-muted:#566070;--fk-rail:#7C8798;--fk-rose-strong:#DB2752;--fk-rose-text:#9F1239;--fk-rose-tint:#FFEEF2;--fk-teal-strong:#0B7A72;--fk-teal-text:#0B5F59;--fk-teal-tint:#E6F6F4;--fk-violet-strong:#7C3AED;--fk-violet-text:#5B21B6;--fk-violet-tint:#F3EEFF;}
+.fk-f-blue-strong{fill:var(--fk-blue-strong)}.fk-s-blue-strong{stroke:var(--fk-blue-strong)}
+.fk-f-blue-text{fill:var(--fk-blue-text)}.fk-s-blue-text{stroke:var(--fk-blue-text)}
+.fk-f-blue-tint{fill:var(--fk-blue-tint)}.fk-s-blue-tint{stroke:var(--fk-blue-tint)}
+.fk-f-brand-text{fill:var(--fk-brand-text)}.fk-s-brand-text{stroke:var(--fk-brand-text)}
+.fk-f-canvas{fill:var(--fk-canvas)}.fk-s-canvas{stroke:var(--fk-canvas)}
+.fk-f-frame{fill:var(--fk-frame)}.fk-s-frame{stroke:var(--fk-frame)}
+.fk-f-green-strong{fill:var(--fk-green-strong)}.fk-s-green-strong{stroke:var(--fk-green-strong)}
+.fk-f-green-text{fill:var(--fk-green-text)}.fk-s-green-text{stroke:var(--fk-green-text)}
+.fk-f-green-tint{fill:var(--fk-green-tint)}.fk-s-green-tint{stroke:var(--fk-green-tint)}
+.fk-f-hair{fill:var(--fk-hair)}.fk-s-hair{stroke:var(--fk-hair)}
+.fk-f-ink{fill:var(--fk-ink)}.fk-s-ink{stroke:var(--fk-ink)}
+.fk-f-ink2{fill:var(--fk-ink2)}.fk-s-ink2{stroke:var(--fk-ink2)}
+.fk-f-muted{fill:var(--fk-muted)}.fk-s-muted{stroke:var(--fk-muted)}
+.fk-f-rail{fill:var(--fk-rail)}.fk-s-rail{stroke:var(--fk-rail)}
+.fk-f-rose-strong{fill:var(--fk-rose-strong)}.fk-s-rose-strong{stroke:var(--fk-rose-strong)}
+.fk-f-rose-text{fill:var(--fk-rose-text)}.fk-s-rose-text{stroke:var(--fk-rose-text)}
+.fk-f-rose-tint{fill:var(--fk-rose-tint)}.fk-s-rose-tint{stroke:var(--fk-rose-tint)}
+.fk-f-teal-strong{fill:var(--fk-teal-strong)}.fk-s-teal-strong{stroke:var(--fk-teal-strong)}
+.fk-f-teal-text{fill:var(--fk-teal-text)}.fk-s-teal-text{stroke:var(--fk-teal-text)}
+.fk-f-teal-tint{fill:var(--fk-teal-tint)}.fk-s-teal-tint{stroke:var(--fk-teal-tint)}
+.fk-f-violet-strong{fill:var(--fk-violet-strong)}.fk-s-violet-strong{stroke:var(--fk-violet-strong)}
+.fk-f-violet-text{fill:var(--fk-violet-text)}.fk-s-violet-text{stroke:var(--fk-violet-text)}
+.fk-f-violet-tint{fill:var(--fk-violet-tint)}.fk-s-violet-tint{stroke:var(--fk-violet-tint)}
+@media (forced-colors:active){.fk text{fill:CanvasText}.fk rect,.fk circle{fill:Canvas;stroke:CanvasText}.fk path{stroke:CanvasText}.fk marker path{fill:CanvasText;stroke:none}}
+</style>
+<defs><marker id="dma-stream-arrow-green-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="fk-f-green-strong"/></marker><marker id="dma-stream-arrow-rail" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="fk-f-rail"/></marker><marker id="dma-stream-arrow-rose-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="fk-f-rose-strong"/></marker></defs>
+<rect x="0.5" y="0.5" width="639" height="1079" rx="16" class="fk-f-canvas fk-s-frame"/>
+<text x="32" y="44" font-size="12.5" font-weight="700" letter-spacing="1.2" class="fk-f-brand-text">DMA</text>
+<text x="32" y="77.3" font-size="26" font-weight="700" class="fk-f-ink">The DMA copy-out stream</text>
+<text x="32" y="103.8" font-size="15" class="fk-f-muted">The interrupt copies each finished frame into a slot. The task never holds</text>
+<text x="32" y="125.5" font-size="15" class="fk-f-muted">the ring itself.</text>
+<rect x="32" y="141.6" width="576" height="1" class="fk-f-hair"/>
+<path d="M320 232.6 L320 294.6" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#dma-stream-arrow-rail)" class="fk-s-rail"/>
+<path d="M239 409.6 L239 417.7 Q239 425.7 231 425.7 L205 425.7 Q197 425.7 197 433.7 L197 481.6" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#dma-stream-arrow-rail)" class="fk-s-rail"/>
+<path d="M401 409.6 L401 447.4 Q401 455.4 409 455.4 L435 455.4 Q443 455.4 443 463.4 L443 471.6" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 5" marker-end="url(#dma-stream-arrow-rose-strong)" class="fk-s-rose-strong"/>
+<path d="M197 558.5 L197 629.5" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#dma-stream-arrow-rail)" class="fk-s-rail"/>
+<path d="M197 725.5 L197 787.5" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#dma-stream-arrow-rail)" class="fk-s-rail"/>
+<path d="M197 883.5 L197 945.5" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#dma-stream-arrow-green-strong)" class="fk-s-green-strong"/>
+<rect x="225" y="159.6" width="190" height="69" rx="10" stroke-width="1.4" class="fk-f-teal-tint fk-s-teal-strong"/>
+<rect x="225" y="167.6" width="4" height="53" rx="2" class="fk-f-teal-strong"/>
+<rect x="225" y="298.6" width="190" height="107" rx="10" stroke-width="1.4" class="fk-f-violet-tint fk-s-violet-strong"/>
+<rect x="225" y="306.6" width="4" height="91" rx="2" class="fk-f-violet-strong"/>
+<rect x="102" y="485.6" width="190" height="69" rx="10" stroke-width="1.4" class="fk-f-blue-tint fk-s-blue-strong"/>
+<rect x="102" y="493.6" width="4" height="53" rx="2" class="fk-f-blue-strong"/>
+<rect x="348" y="475.6" width="190" height="88" rx="10" stroke-width="1.4" class="fk-f-rose-tint fk-s-rose-strong"/>
+<rect x="348" y="483.6" width="4" height="72" rx="2" class="fk-f-rose-strong"/>
+<rect x="102" y="633.5" width="190" height="88" rx="10" stroke-width="1.4" class="fk-f-blue-tint fk-s-blue-strong"/>
+<rect x="102" y="641.5" width="4" height="72" rx="2" class="fk-f-blue-strong"/>
+<rect x="102" y="791.5" width="190" height="88" rx="10" stroke-width="1.4" class="fk-f-violet-tint fk-s-violet-strong"/>
+<rect x="102" y="799.5" width="4" height="72" rx="2" class="fk-f-violet-strong"/>
+<rect x="102" y="949.5" width="190" height="69" rx="10" stroke-width="1.4" class="fk-f-green-tint fk-s-green-strong"/>
+<rect x="102" y="957.5" width="4" height="53" rx="2" class="fk-f-green-strong"/>
+<text x="245" y="186.3" font-size="15" font-weight="700" class="fk-f-teal-text">DMA ring</text>
+<text x="245" y="211.2" font-size="13" class="fk-f-ink2">2 halves or N frames</text>
+<text x="245" y="325.3" font-size="15" font-weight="700" class="fk-f-violet-text">Interrupt</text>
+<text x="245" y="350.1" font-size="13" class="fk-f-ink2">PublishFromDevice</text>
+<text x="245" y="369" font-size="13" class="fk-f-ink2">copy out, seq, time,</text>
+<text x="245" y="387.9" font-size="13" class="fk-f-ink2">torn</text>
+<text x="122" y="512.3" font-size="15" font-weight="700" class="fk-f-blue-text">Ring of slots</text>
+<text x="122" y="537.2" font-size="13" class="fk-f-ink2">at least 2 slots</text>
+<text x="368" y="502.3" font-size="15" font-weight="700" class="fk-f-rose-text">Next frame: Gap()</text>
+<text x="368" y="527.2" font-size="13" class="fk-f-ink2">all slots held</text>
+<text x="368" y="546" font-size="13" class="fk-f-ink2">frame dropped as Full</text>
+<text x="122" y="660.3" font-size="15" font-weight="700" class="fk-f-blue-text">FrameView</text>
+<text x="122" y="685.2" font-size="13" class="fk-f-ink2">move-only</text>
+<text x="122" y="704" font-size="13" class="fk-f-ink2">releases on end</text>
+<text x="122" y="818.3" font-size="15" font-weight="700" class="fk-f-violet-text">Supervise</text>
+<text x="122" y="843.2" font-size="13" class="fk-f-ink2">None, Restart, BackOff,</text>
+<text x="122" y="862" font-size="13" class="fk-f-ink2">UseFallback</text>
+<text x="122" y="976.3" font-size="15" font-weight="700" class="fk-f-green-text">Fallback producer</text>
+<text x="122" y="1001.2" font-size="13" class="fk-f-ink2">frames carry Fallback()</text>
+<rect x="328" y="253.6" width="111" height="20" rx="10" class="fk-f-canvas"/>
+<text x="383.5" y="267.9" font-size="12" font-weight="500" text-anchor="middle" class="fk-f-muted">half or complete</text>
+<rect x="246.9" y="415.7" width="62.1" height="20" rx="10" class="fk-f-canvas"/>
+<text x="278" y="430" font-size="12" font-weight="500" text-anchor="middle" class="fk-f-muted">slot free</text>
+<rect x="394.4" y="445.4" width="55.2" height="20" rx="10" class="fk-f-canvas"/>
+<text x="422" y="459.7" font-size="12" font-weight="500" text-anchor="middle" class="fk-f-muted">all held</text>
+<rect x="205.2" y="588.5" width="62.6" height="20" rx="10" class="fk-f-canvas"/>
+<text x="236.5" y="602.9" font-size="12" font-weight="500" text-anchor="middle" class="fk-f-muted">TryTake</text>
+<rect x="204.9" y="746.5" width="50.2" height="20" rx="10" class="fk-f-canvas"/>
+<text x="230" y="760.9" font-size="12" font-weight="500" text-anchor="middle" class="fk-f-muted">Judge</text>
+<rect x="205.1" y="904.5" width="94.7" height="20" rx="10" class="fk-f-canvas"/>
+<text x="252.5" y="918.9" font-size="12" font-weight="500" text-anchor="middle" class="fk-f-muted">EnterFallback</text>
+<rect x="32" y="1033.9" width="14" height="14" rx="4" stroke-width="1.4" class="fk-f-teal-tint fk-s-teal-strong"/>
+<text x="54" y="1045.5" font-size="12.5" class="fk-f-muted">hardware</text>
+<rect x="137.4" y="1033.9" width="14" height="14" rx="4" stroke-width="1.4" class="fk-f-violet-tint fk-s-violet-strong"/>
+<text x="159.4" y="1045.5" font-size="12.5" class="fk-f-muted">interrupt</text>
+<rect x="236.7" y="1033.9" width="14" height="14" rx="4" stroke-width="1.4" class="fk-f-blue-tint fk-s-blue-strong"/>
+<text x="258.7" y="1045.5" font-size="12.5" class="fk-f-muted">task</text>
+<rect x="308.8" y="1033.9" width="14" height="14" rx="4" stroke-width="1.4" class="fk-f-rose-tint fk-s-rose-strong"/>
+<text x="330.8" y="1045.5" font-size="12.5" class="fk-f-muted">gap</text>
+<rect x="378.4" y="1033.9" width="14" height="14" rx="4" stroke-width="1.4" class="fk-f-green-tint fk-s-green-strong"/>
+<text x="400.4" y="1045.5" font-size="12.5" class="fk-f-muted">fallback</text>
+</svg>

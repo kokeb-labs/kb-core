@@ -1688,13 +1688,14 @@ transfers or calls that must not be interleaved.</p>
 rules still hold, <code>kNonBlocking</code> is false), so a binding builds on every port today and the remaining wait is
 visible in its type. What each port adds for a native form is listed in ADR-0016.</p>
 <figure class="kb-figure">
-<img src="../../diagrams/async-poll.svg#only-light" alt="Sequence: the owner task starts a read through the poller and the port in pass n; the poller polls and gets Pending; the interrupt completes the transfer; in pass n+1 the poll returns Done with the byte count and the completion is Ok. Past the deadline the result is Timeout; Cancel releases the buffers." width="1200" height="1003"><img src="../../diagrams/async-poll.dark.svg#only-dark" alt="Sequence: the owner task starts a read through the poller and the port in pass n; the poller polls and gets Pending; the interrupt completes the transfer; in pass n+1 the poll returns Done with the byte count and the completion is Ok. Past the deadline the result is Timeout; Cancel releases the buffers." width="1200" height="1003">
+<img src="../../diagrams/async-poll.svg#only-light" alt="Sequence in which the owner task starts a read through the poller and the port in pass n, polls and gets Pending, the interrupt completes the transfer, and in pass n+1 the poll returns Done with the byte count." width="654" height="904"><img src="../../diagrams/async-poll.dark.svg#only-dark" alt="Sequence in which the owner task starts a read through the poller and the port in pass n, polls and gets Pending, the interrupt completes the transfer, and in pass n+1 the poll returns Done with the byte count." width="654" height="904">
 <figcaption>One asynchronous read</figcaption>
 </figure>
 
 <details class="kb-figure-desc">
 <summary>Figure description and sources</summary>
-<p>The owner task starts the transfer in one service pass and collects the result in a later one; no pass waits. AsyncPoller owns the buffers and asks the port to start; a Poll in the next pass reports Pending until the peripheral interrupt has set the owner's event flag and the transfer is complete, then Done with the count. Past the deadline the result is Done with Timeout, late data included; Cancel makes the poller Idle and releases the buffers.</p>
+<p>The Owner task starts the transfer in one service pass and collects the result in a later one; no pass waits. In pass n the Owner task calls StartWriteRead on the AsyncPoller, which owns the buffers and asks the Port (I2cAsync or SpiAsync) to start with a deadline; the port answers Ok at once. A Step(now) in the same pass makes the poller call Poll(now), which reports Pending. The peripheral ISR then finishes the transfer and sets the owner's event flag. In pass n+1 the poll reports Done, Ok with the count, and Completion() is Ok with the bytes held. Past the deadline the result is Done with Timeout, late data included; Cancel() makes the poller Idle and releases the buffers.</p>
+<p>Drawn from: <a href="../../model/async-poll.seq.yml"><code>docs/model/async-poll.seq.yml</code></a>.</p>
 </details>
 <h3 id="in-an-owner-task-access">In an owner-task access<a class="headerlink" href="#in-an-owner-task-access" title="Permanent link">&para;</a></h3>
 <div class="language-cpp highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">struct</span><span class="w"> </span><span class="nc">PressureSampler</span><span class="w"> </span><span class="p">{</span>
@@ -1746,13 +1747,14 @@ before the bus is used.</p>
 </table>
 <p>A guarded handler has no <code>Held(BusHold&amp;)</code>: taking its handler lock while holding the bus would invert the lock order.</p>
 <figure class="kb-figure">
-<img src="../../diagrams/bus-hold.svg#only-light" alt="Two side by side models. Guarded bus: task X takes the handler mutex, then the bus mutex, and makes several calls while task Y&#x27;s plain request waits or times out. Owner bus: the owner task takes the hold between passes and runs inline calls; the service pass reports Busy while the hold is held." width="1200" height="780" loading="lazy"><img src="../../diagrams/bus-hold.dark.svg#only-dark" alt="Two side by side models. Guarded bus: task X takes the handler mutex, then the bus mutex, and makes several calls while task Y&#x27;s plain request waits or times out. Owner bus: the owner task takes the hold between passes and runs inline calls; the service pass reports Busy while the hold is held." width="1200" height="780" loading="lazy">
+<img src="../../diagrams/bus-hold.svg#only-light" alt="Two chains side by side: on a guarded bus task X takes the handler mutex and then the bus mutex while task Y waits; on an owner bus the owner task takes the hold between passes and the service pass reports Busy." width="640" height="845" loading="lazy"><img src="../../diagrams/bus-hold.dark.svg#only-dark" alt="Two chains side by side: on a guarded bus task X takes the handler mutex and then the bus mutex while task Y waits; on an owner bus the owner task takes the hold between passes and the service pass reports Busy." width="640" height="845" loading="lazy">
 <figcaption>Held transactions</figcaption>
 </figure>
 
 <details class="kb-figure-desc">
 <summary>Figure description and sources</summary>
-<p>On a guarded bus a task takes the handler mutex first and then the bus mutex, both bounded, and holds the bus for several calls with nothing in between; another task's plain request waits (bounded) or times out. On an owner bus the owner task takes the hold between passes, which never waits, and runs inline calls for several handlers; the service pass reports Busy while the hold is held and the violation is counted.</p>
+<p>Guarded bus, on the left: task X calls Guarded::Hold(timeout), takes the handler mutex first and then the bus mutex through BusDomain::Hold, both with a bounded wait, and holds the bus in GuardedHeld for several calls (Request, Sample and so on) with nothing in between; another task's plain Request waits (bounded) or returns Timeout. Owner bus, on the right: the owner task takes BusDomain::Hold() between passes, which never waits, and sets the pass flag while the hold is held; OwnerAccess::Held(hold) runs inline calls for several handlers, and Service(now, ...) reports Busy while the hold is held and the violation is counted.</p>
+<p>Drawn from: <a href="../../model/bus-hold.graph.yml"><code>docs/model/bus-hold.graph.yml</code></a>.</p>
 </details>
 <p>What needs it: an at25040b range of several chunks (the integration test writes a record in three parts while
 another task writes the same range; the record lands whole), as5047u angle and velocity read as one pair,

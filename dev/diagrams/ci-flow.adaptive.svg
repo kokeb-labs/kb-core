@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="1158" viewBox="0 0 640 1158" role="img" aria-labelledby="ci-flow-title ci-flow-desc" font-family="Inter, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" class="fk">
+<title id="ci-flow-title">The CI flow</title>
+<desc id="ci-flow-desc">Flow from the local preflight to a pull request, then always-run and path-gated checks into one required gate, with the drivers' own tests never re-run, and a tag producing the release assets that a schedule re-scans.</desc>
+<style>
+.fk{--fk-blue-strong:#2563EB;--fk-blue-text:#1E429F;--fk-blue-tint:#EAF2FF;--fk-brand-strong:#9A4A17;--fk-brand-text:#7A360E;--fk-brand-tint:#FBEFE6;--fk-brown-strong:#7C4A1E;--fk-brown-text:#6B3F17;--fk-brown-tint:#F8F1EA;--fk-canvas:#FFFFFF;--fk-card:#FFFFFF;--fk-frame:#E2E7EE;--fk-green-strong:#15803D;--fk-green-text:#14532D;--fk-green-tint:#EAF7EF;--fk-hair:#E2E7EE;--fk-ink:#0E1726;--fk-ink2:#2B3442;--fk-line:#738093;--fk-muted:#566070;--fk-rail:#7C8798;--fk-slate-strong:#64748B;--fk-slate-tint:#F1F4F8;}
+@media (prefers-color-scheme:dark){.fk{--fk-blue-strong:#60A5FA;--fk-blue-text:#BFDBFE;--fk-blue-tint:#13233A;--fk-brand-strong:#F4B942;--fk-brand-text:#F8D27A;--fk-brand-tint:#2A2113;--fk-brown-strong:#D6A26B;--fk-brown-text:#F1D5B5;--fk-brown-tint:#2A1F14;--fk-canvas:#0E131A;--fk-card:#151C26;--fk-frame:#283241;--fk-green-strong:#4ADE80;--fk-green-text:#BBF7D0;--fk-green-tint:#11281A;--fk-hair:#252F3C;--fk-ink:#E8EDF3;--fk-ink2:#D2DAE4;--fk-line:#6C7889;--fk-muted:#9AA6B5;--fk-rail:#6C7889;--fk-slate-strong:#94A3B8;--fk-slate-tint:#1B232E;}}
+:root[data-theme="dark"] .fk,[data-md-color-scheme="slate"] .fk{--fk-blue-strong:#60A5FA;--fk-blue-text:#BFDBFE;--fk-blue-tint:#13233A;--fk-brand-strong:#F4B942;--fk-brand-text:#F8D27A;--fk-brand-tint:#2A2113;--fk-brown-strong:#D6A26B;--fk-brown-text:#F1D5B5;--fk-brown-tint:#2A1F14;--fk-canvas:#0E131A;--fk-card:#151C26;--fk-frame:#283241;--fk-green-strong:#4ADE80;--fk-green-text:#BBF7D0;--fk-green-tint:#11281A;--fk-hair:#252F3C;--fk-ink:#E8EDF3;--fk-ink2:#D2DAE4;--fk-line:#6C7889;--fk-muted:#9AA6B5;--fk-rail:#6C7889;--fk-slate-strong:#94A3B8;--fk-slate-tint:#1B232E;}
+:root[data-theme="light"] .fk,[data-md-color-scheme="default"] .fk{--fk-blue-strong:#2563EB;--fk-blue-text:#1E429F;--fk-blue-tint:#EAF2FF;--fk-brand-strong:#9A4A17;--fk-brand-text:#7A360E;--fk-brand-tint:#FBEFE6;--fk-brown-strong:#7C4A1E;--fk-brown-text:#6B3F17;--fk-brown-tint:#F8F1EA;--fk-canvas:#FFFFFF;--fk-card:#FFFFFF;--fk-frame:#E2E7EE;--fk-green-strong:#15803D;--fk-green-text:#14532D;--fk-green-tint:#EAF7EF;--fk-hair:#E2E7EE;--fk-ink:#0E1726;--fk-ink2:#2B3442;--fk-line:#738093;--fk-muted:#566070;--fk-rail:#7C8798;--fk-slate-strong:#64748B;--fk-slate-tint:#F1F4F8;}
+.fk-f-blue-strong{fill:var(--fk-blue-strong)}.fk-s-blue-strong{stroke:var(--fk-blue-strong)}
+.fk-f-blue-text{fill:var(--fk-blue-text)}.fk-s-blue-text{stroke:var(--fk-blue-text)}
+.fk-f-blue-tint{fill:var(--fk-blue-tint)}.fk-s-blue-tint{stroke:var(--fk-blue-tint)}
+.fk-f-brand-strong{fill:var(--fk-brand-strong)}.fk-s-brand-strong{stroke:var(--fk-brand-strong)}
+.fk-f-brand-text{fill:var(--fk-brand-text)}.fk-s-brand-text{stroke:var(--fk-brand-text)}
+.fk-f-brand-tint{fill:var(--fk-brand-tint)}.fk-s-brand-tint{stroke:var(--fk-brand-tint)}
+.fk-f-brown-strong{fill:var(--fk-brown-strong)}.fk-s-brown-strong{stroke:var(--fk-brown-strong)}
+.fk-f-brown-text{fill:var(--fk-brown-text)}.fk-s-brown-text{stroke:var(--fk-brown-text)}
+.fk-f-brown-tint{fill:var(--fk-brown-tint)}.fk-s-brown-tint{stroke:var(--fk-brown-tint)}
+.fk-f-canvas{fill:var(--fk-canvas)}.fk-s-canvas{stroke:var(--fk-canvas)}
+.fk-f-card{fill:var(--fk-card)}.fk-s-card{stroke:var(--fk-card)}
+.fk-f-frame{fill:var(--fk-frame)}.fk-s-frame{stroke:var(--fk-frame)}
+.fk-f-green-strong{fill:var(--fk-green-strong)}.fk-s-green-strong{stroke:var(--fk-green-strong)}
+.fk-f-green-text{fill:var(--fk-green-text)}.fk-s-green-text{stroke:var(--fk-green-text)}
+.fk-f-green-tint{fill:var(--fk-green-tint)}.fk-s-green-tint{stroke:var(--fk-green-tint)}
+.fk-f-hair{fill:var(--fk-hair)}.fk-s-hair{stroke:var(--fk-hair)}
+.fk-f-ink{fill:var(--fk-ink)}.fk-s-ink{stroke:var(--fk-ink)}
+.fk-f-ink2{fill:var(--fk-ink2)}.fk-s-ink2{stroke:var(--fk-ink2)}
+.fk-f-line{fill:var(--fk-line)}.fk-s-line{stroke:var(--fk-line)}
+.fk-f-muted{fill:var(--fk-muted)}.fk-s-muted{stroke:var(--fk-muted)}
+.fk-f-rail{fill:var(--fk-rail)}.fk-s-rail{stroke:var(--fk-rail)}
+.fk-f-slate-strong{fill:var(--fk-slate-strong)}.fk-s-slate-strong{stroke:var(--fk-slate-strong)}
+.fk-f-slate-tint{fill:var(--fk-slate-tint)}.fk-s-slate-tint{stroke:var(--fk-slate-tint)}
+@media (forced-colors:active){.fk text{fill:CanvasText}.fk rect,.fk circle{fill:Canvas;stroke:CanvasText}.fk path{stroke:CanvasText}.fk marker path{fill:CanvasText;stroke:none}}
+</style>
+<defs><marker id="ci-flow-arrow-brand-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="fk-f-brand-strong"/></marker><marker id="ci-flow-arrow-rail" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="fk-f-rail"/></marker></defs>
+<rect x="0.5" y="0.5" width="639" height="1157" rx="16" class="fk-f-canvas fk-s-frame"/>
+<text x="32" y="44" font-size="12.5" font-weight="700" letter-spacing="1.2" class="fk-f-brand-text">TESTING</text>
+<text x="32" y="77.3" font-size="26" font-weight="700" class="fk-f-ink">The CI flow</text>
+<text x="32" y="103.8" font-size="15" class="fk-f-muted">Every CI job has a local equivalent in tools/preflight.sh, run before any push.</text>
+<rect x="32" y="119.8" width="576" height="1" class="fk-f-hair"/>
+<path d="M320 229.8 L320 301.8" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#ci-flow-arrow-rail)" class="fk-s-rail"/>
+<path d="M239 353.8 L239 364.8 Q239 372.8 231 372.8 L205 372.8 Q197 372.8 197 380.8 L197 425.8" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#ci-flow-arrow-rail)" class="fk-s-rail"/>
+<path d="M401 353.8 L401 398.8 Q401 406.8 409 406.8 L435 406.8 Q443 406.8 443 414.8 L443 425.8" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#ci-flow-arrow-rail)" class="fk-s-rail"/>
+<path d="M524 596.8 L524 644.8 Q524 652.8 516 652.8 L451 652.8 Q443 652.8 443 660.8 L443 668.8" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 5" marker-end="url(#ci-flow-arrow-rail)" class="fk-s-rail"/>
+<path d="M197 596.8 L197 600.1 Q197 603.3 193.7 603.3 L124 603.3 Q116 603.3 116 611.3 L116 668.8" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#ci-flow-arrow-rail)" class="fk-s-rail"/>
+<path d="M362 596.8 L362 615.3 Q362 623.3 354 623.3 L286 623.3 Q278 623.3 278 631.3 L278 668.8" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#ci-flow-arrow-rail)" class="fk-s-rail"/>
+<path d="M197 764.8 L197 836.8" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#ci-flow-arrow-brand-strong)" class="fk-s-brand-strong"/>
+<path d="M197 932.8 L197 1004.8" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#ci-flow-arrow-brand-strong)" class="fk-s-brand-strong"/>
+<rect x="225" y="137.8" width="190" height="88" rx="10" stroke-width="1.4" class="fk-f-brown-tint fk-s-brown-strong"/>
+<rect x="225" y="145.8" width="4" height="72" rx="2" class="fk-f-brown-strong"/>
+<rect x="225" y="305.8" width="190" height="44" rx="10" stroke-width="1.4" class="fk-f-brown-tint fk-s-brown-strong"/>
+<rect x="225" y="313.8" width="4" height="28" rx="2" class="fk-f-brown-strong"/>
+<rect x="102" y="429.8" width="190" height="163" rx="10" stroke-width="1.4" class="fk-f-green-tint fk-s-green-strong"/>
+<rect x="102" y="437.8" width="4" height="147" rx="2" class="fk-f-green-strong"/>
+<rect x="348" y="429.8" width="190" height="163" rx="10" stroke-width="1.4" class="fk-f-blue-tint fk-s-blue-strong"/>
+<rect x="348" y="437.8" width="4" height="147" rx="2" class="fk-f-blue-strong"/>
+<rect x="348" y="672.8" width="190" height="88" rx="10" stroke-width="1" class="fk-f-card fk-s-line"/>
+<rect x="348" y="680.8" width="4" height="72" rx="2" class="fk-f-slate-strong"/>
+<rect x="102" y="672.8" width="190" height="88" rx="10" stroke-width="1.4" class="fk-f-brand-tint fk-s-brand-strong"/>
+<rect x="102" y="680.8" width="4" height="72" rx="2" class="fk-f-brand-strong"/>
+<rect x="102" y="840.8" width="190" height="88" rx="10" stroke-width="1.4" class="fk-f-brand-tint fk-s-brand-strong"/>
+<rect x="102" y="848.8" width="4" height="72" rx="2" class="fk-f-brand-strong"/>
+<rect x="102" y="1008.8" width="190" height="88" rx="10" stroke-width="1.4" class="fk-f-brand-tint fk-s-brand-strong"/>
+<rect x="102" y="1016.8" width="4" height="72" rx="2" class="fk-f-brand-strong"/>
+<text x="245" y="164.6" font-size="15" font-weight="700" class="fk-f-brown-text">tools/preflight.sh</text>
+<text x="245" y="189.4" font-size="13" class="fk-f-ink2">local</text>
+<text x="245" y="208.2" font-size="13" class="fk-f-ink2">before every push</text>
+<text x="245" y="332.6" font-size="15" font-weight="700" class="fk-f-brown-text">Pull request or push</text>
+<text x="122" y="456.6" font-size="15" font-weight="700" class="fk-f-green-text">Always</text>
+<text x="122" y="481.4" font-size="13" class="fk-f-ink2">repository checks</text>
+<text x="122" y="500.3" font-size="13" class="fk-f-ink2">layering</text>
+<text x="122" y="519.1" font-size="13" class="fk-f-ink2">layout and examples</text>
+<text x="122" y="538" font-size="13" class="fk-f-ink2">own parts</text>
+<text x="122" y="556.8" font-size="13" class="fk-f-ink2">MISRA level high</text>
+<text x="122" y="575.7" font-size="13" class="fk-f-ink2">pin hygiene</text>
+<text x="368" y="456.6" font-size="15" font-weight="700" class="fk-f-blue-text">Path-gated</text>
+<text x="368" y="481.4" font-size="13" class="fk-f-ink2">quality</text>
+<text x="368" y="500.3" font-size="13" class="fk-f-ink2">integration</text>
+<text x="368" y="519.1" font-size="13" class="fk-f-ink2">ESP-IDF port job</text>
+<text x="368" y="538" font-size="13" class="fk-f-ink2">catalogue</text>
+<text x="368" y="556.8" font-size="13" class="fk-f-ink2">on matching paths</text>
+<text x="368" y="575.7" font-size="13" class="fk-f-ink2">main and tags</text>
+<text x="368" y="699.5" font-size="15" font-weight="700" class="fk-f-ink">Driver tests</text>
+<text x="368" y="724.4" font-size="13" class="fk-f-ink2">never re-run here</text>
+<text x="368" y="743.2" font-size="13" class="fk-f-ink2">trusted by pin hygiene</text>
+<text x="122" y="699.5" font-size="15" font-weight="700" class="fk-f-brand-text">ru-ci-gate</text>
+<text x="122" y="724.4" font-size="13" class="fk-f-ink2">the single required</text>
+<text x="122" y="743.2" font-size="13" class="fk-f-ink2">check</text>
+<text x="122" y="867.5" font-size="15" font-weight="700" class="fk-f-brand-text">Tag vX.Y.Z</text>
+<text x="122" y="892.4" font-size="13" class="fk-f-ink2">release assets</text>
+<text x="122" y="911.2" font-size="13" class="fk-f-ink2">SBOM, CVE scan</text>
+<text x="122" y="1035.5" font-size="15" font-weight="700" class="fk-f-brand-text">Scheduled</text>
+<text x="122" y="1060.4" font-size="13" class="fk-f-ink2">CVE re-scan</text>
+<text x="122" y="1079.2" font-size="13" class="fk-f-ink2">tested set kb YYYY.N</text>
+<rect x="328" y="255.8" width="42" height="20" rx="10" class="fk-f-canvas"/>
+<text x="349" y="270.1" font-size="12" font-weight="500" text-anchor="middle" class="fk-f-muted">push</text>
+<rect x="198.5" y="362.8" width="39.1" height="20" rx="10" class="fk-f-canvas"/>
+<text x="218" y="377.2" font-size="12" font-weight="500" text-anchor="middle" class="fk-f-muted">runs</text>
+<rect x="450.9" y="396.8" width="87.2" height="20" rx="10" class="fk-f-canvas"/>
+<text x="494.5" y="411.1" font-size="12" font-weight="500" text-anchor="middle" class="fk-f-muted">paths match</text>
+<rect x="461.6" y="642.8" width="43.9" height="20" rx="10" class="fk-f-canvas"/>
+<text x="483.5" y="657.1" font-size="12" font-weight="500" text-anchor="middle" class="fk-f-muted">skips</text>
+<rect x="291.1" y="613.3" width="57.8" height="20" rx="10" class="fk-f-canvas"/>
+<text x="320" y="627.6" font-size="12" font-weight="500" text-anchor="middle" class="fk-f-muted">all pass</text>
+<rect x="32" y="1112.2" width="14" height="14" rx="4" stroke-width="1.4" class="fk-f-brown-tint fk-s-brown-strong"/>
+<text x="54" y="1123.8" font-size="12.5" class="fk-f-muted">start</text>
+<rect x="106.1" y="1112.2" width="14" height="14" rx="4" stroke-width="1.4" class="fk-f-green-tint fk-s-green-strong"/>
+<text x="128.1" y="1123.8" font-size="12.5" class="fk-f-muted">always</text>
+<rect x="195.5" y="1112.2" width="14" height="14" rx="4" stroke-width="1.4" class="fk-f-blue-tint fk-s-blue-strong"/>
+<text x="217.5" y="1123.8" font-size="12.5" class="fk-f-muted">path-gated</text>
+<rect x="311" y="1112.2" width="14" height="14" rx="4" stroke-width="1.4" class="fk-f-slate-tint fk-s-slate-strong"/>
+<text x="333" y="1123.8" font-size="12.5" class="fk-f-muted">never re-run</text>
+<rect x="435.9" y="1112.2" width="14" height="14" rx="4" stroke-width="1.4" class="fk-f-brand-tint fk-s-brand-strong"/>
+<text x="457.9" y="1123.8" font-size="12.5" class="fk-f-muted">gate and release</text>
+</svg>

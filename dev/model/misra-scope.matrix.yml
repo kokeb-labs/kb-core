@@ -1,0 +1,47 @@
+---
+# MISRA C++:2023 scope at assurance level high.
+kind: matrix
+id: misra-scope
+title: "MISRA C++:2023 scope"
+kicker: Assurance
+subtitle: What is claimed for each zone, at assurance level high, from the strongest claim to none.
+alt: >-
+  Table of four zones from strongest claim to none, with kb-core's own code claimed compliant with zero deviations,
+  boundary files compliant with recorded deviations, drivers covered by their own evidence and SOUP out of scope.
+reads: >-
+  Four zones, from strongest claim to none. kb-core's own code under components/lib/** is claimed compliant with
+  zero repository deviations: kb::utils and kb::interfaces (the contracts and the host port) in phase 1, the kb::rtos
+  public API in phase 2, and kb::handlers with the bindings in phase 4. Boundary files, the files that touch vendor
+  code, are compliant with recorded deviations: the RTOS backends'
+  (components/lib/rtos/backends/freertos/*_boundary.cpp, DEV-KBC-*) and the ports'
+  (components/ports/esp32/src/*_boundary.cpp, DEV-KBP-*, in their own records); the claim for kb-core's own code
+  includes them. Each driver-<chip> at its pinned tag is covered by its own evidence, its own ru-misra run at level
+  high. SOUP (ESP-IDF, STM32 HAL, FreeRTOS, ThreadX, mbedTLS) is out of scope, listed with versions, included with
+  -isystem and never reported.
+print: portrait
+width: 640
+cell_width: 300
+legend:
+  - [ok, claimed or covered]
+  - [warn, recorded deviations]
+  - [na, out of scope]
+cols:
+  - {id: claim, label: Claim}
+rows:
+  - {id: utils, label: "kb::utils"}
+  - {id: ifaces, label: "kb::interfaces"}
+  - {id: rtos, label: "kb::rtos public API"}
+  - {id: handlers, label: "kb::handlers, bindings"}
+  - {id: rtosb, label: RTOS boundary files}
+  - {id: portb, label: Port boundary files}
+  - {id: drivers, label: "driver-<chip> at its tag"}
+  - {id: soup, label: SOUP}
+cells:
+  - {row: utils, col: claim, status: ok, text: compliant, note: "0 deviations, phase 1"}
+  - {row: ifaces, col: claim, status: ok, text: compliant, note: "0 deviations, phase 1"}
+  - {row: rtos, col: claim, status: ok, text: compliant, note: "0 deviations, phase 2"}
+  - {row: handlers, col: claim, status: ok, text: compliant, note: "0 deviations, phase 4"}
+  - {row: rtosb, col: claim, status: warn, text: compliant, note: "recorded, DEV-KBC-*"}
+  - {row: portb, col: claim, status: warn, text: compliant, note: "recorded, DEV-KBP-*"}
+  - {row: drivers, col: claim, status: ok, text: own evidence, note: "own ru-misra run, level high"}
+  - {row: soup, col: claim, status: na, text: out of scope, note: "-isystem, never reported"}

@@ -1,0 +1,92 @@
+{
+ "direction": "TB",
+ "edges": [
+  {
+   "from": "handlers",
+   "to": "interfaces",
+   "via": [
+    [
+     218,
+     168
+    ]
+   ]
+  },
+  {
+   "from": "interfaces",
+   "to": "rtos",
+   "via": []
+  },
+  {
+   "from": "rtos",
+   "to": "utils",
+   "via": []
+  },
+  {
+   "from": "dma",
+   "to": "utils",
+   "via": []
+  },
+  {
+   "from": "ports",
+   "to": "interfaces",
+   "via": []
+  },
+  {
+   "from": "handlers",
+   "to": "drivers",
+   "via": []
+  }
+ ],
+ "engine": "graphviz dot 13.1.0 (recorded for the reader; render never reads it)",
+ "figkit_layout": 1,
+ "id": "components-map",
+ "input": "9e4b9edff7ac88a28ae976d641c0b8cd2129d962acace071359c52a77eaf0c91",
+ "nodes": {
+  "dma": [
+   246,
+   562,
+   190,
+   88
+  ],
+  "drivers": [
+   246,
+   168,
+   190,
+   314
+  ],
+  "handlers": [
+   246,
+   9,
+   190,
+   69
+  ],
+  "interfaces": [
+   0,
+   281,
+   190,
+   88
+  ],
+  "ports": [
+   0,
+   0,
+   190,
+   88
+  ],
+  "rtos": [
+   0,
+   562,
+   190,
+   88
+  ],
+  "utils": [
+   123,
+   730,
+   190,
+   88
+  ]
+ },
+ "size": [
+  436,
+  818
+ ]
+}

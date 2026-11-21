@@ -907,6 +907,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#board-declarations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Board declarations
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1486,6 +1497,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#board-declarations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Board declarations
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1561,13 +1583,14 @@ register code; a driver or handler gets a buffer it cannot misuse. Decisions: <a
 </table>
 <h2 id="ownership-a-buffer-is-either-the-cpus-or-the-devices">Ownership: a buffer is either the CPU's or the device's<a class="headerlink" href="#ownership-a-buffer-is-either-the-cpus-or-the-devices" title="Permanent link">&para;</a></h2>
 <figure class="kb-figure">
-<img src="../../diagrams/dma-lease.svg#only-light" alt="State machine with the states Cpu, Device and Quarantined: Lend moves a buffer from Cpu to Device, Complete or a proven Abort returns it to Cpu, an unproven Abort moves it to Quarantined, and Recover with proof returns it to Cpu." width="1200" height="552"><img src="../../diagrams/dma-lease.dark.svg#only-dark" alt="State machine with the states Cpu, Device and Quarantined: Lend moves a buffer from Cpu to Device, Complete or a proven Abort returns it to Cpu, an unproven Abort moves it to Quarantined, and Recover with proof returns it to Cpu." width="1200" height="552">
+<img src="../../diagrams/dma-lease.svg#only-light" alt="State machine with the states Cpu, Device and Quarantined: Lend moves a buffer to Device, Complete or a proven Abort returns it to Cpu, an unproven Abort quarantines it, and Recover with proof returns it to Cpu." width="640" height="728"><img src="../../diagrams/dma-lease.dark.svg#only-dark" alt="State machine with the states Cpu, Device and Quarantined: Lend moves a buffer to Device, Complete or a proven Abort returns it to Cpu, an unproven Abort quarantines it, and Recover with proof returns it to Cpu." width="640" height="728">
 <figcaption>Ownership of a DMA buffer</figcaption>
 </figure>
 
 <details class="kb-figure-desc">
 <summary>Figure description and sources</summary>
-<p>Three states. A buffer is constructed in Cpu: static, line-aligned and padded. Lend moves it from Cpu to Device after the owned cache lines are cleaned or invalidated and a barrier ran. Complete moves it from Device back to Cpu after a receive is invalidated and a barrier ran. Abort with proof that the bus master stopped also returns it to Cpu. Abort without proof, or a lease destroyed while the device owns the buffer, moves it from Device to Quarantined. Recover with proof, after the peripheral was re-initialised, moves it from Quarantined to Cpu. In Quarantined a Lend is refused with a Fault and the CPU view is empty. Only the port holds the key that moves a buffer between states (ADR-0030).</p>
+<p>Three states. A buffer is constructed in Cpu: static, line-aligned and padded. Lend moves it from Cpu to Device after the owned cache lines are cleaned or invalidated and a barrier ran. Complete moves it from Device back to Cpu after a receive is invalidated and a barrier ran; Abort with proof that the bus master stopped also returns it to Cpu. Abort without proof, or a lease destroyed while the device owns the buffer, moves it from Device to Quarantined. Recover with proof, after the peripheral was re-initialised, moves it from Quarantined to Cpu. In Quarantined a Lend is refused with a Fault and the CPU view is empty. Only the port holds the key that moves a buffer between states (ADR-0030).</p>
+<p>Drawn from: <a href="../../model/dma-lease.state.yml"><code>docs/model/dma-lease.state.yml</code></a>.</p>
 </details>
 <p>A <code>Buffer</code> is a static object: aligned to its region's unit, padded to a whole number of units, so cache
 maintenance over it never reaches a neighbour. <code>CpuView()</code> returns the data while the CPU owns the buffer and an
@@ -1642,13 +1665,14 @@ about to write. The default region on a part with a data cache is a non-cacheabl
 (<a href="../../adr/ADR-0032-dma-region-policy/">ADR-0032</a>).</p>
 <h2 id="streams-copy-out-never-lend-the-ring">Streams: copy out, never lend the ring<a class="headerlink" href="#streams-copy-out-never-lend-the-ring" title="Permanent link">&para;</a></h2>
 <figure class="kb-figure">
-<img src="../../diagrams/dma-stream.svg#only-light" alt="Flow: the DMA ring raises an interrupt that copies each finished frame into a slot; the task takes a slot as a FrameView, a content check feeds the supervisor, which can switch to a declared fallback producer; a full ring drops the frame and flags the next one with Gap." width="1200" height="566" loading="lazy"><img src="../../diagrams/dma-stream.dark.svg#only-dark" alt="Flow: the DMA ring raises an interrupt that copies each finished frame into a slot; the task takes a slot as a FrameView, a content check feeds the supervisor, which can switch to a declared fallback producer; a full ring drops the frame and flags the next one with Gap." width="1200" height="566" loading="lazy">
+<img src="../../diagrams/dma-stream.svg#only-light" alt="Flow in which the DMA ring raises an interrupt that copies each finished frame into a slot, the task takes a slot as a FrameView, a content check feeds the supervisor, and a full ring drops the frame and flags the next with Gap." width="640" height="1080" loading="lazy"><img src="../../diagrams/dma-stream.dark.svg#only-dark" alt="Flow in which the DMA ring raises an interrupt that copies each finished frame into a slot, the task takes a slot as a FrameView, a content check feeds the supervisor, and a full ring drops the frame and flags the next with Gap." width="640" height="1080" loading="lazy">
 <figcaption>The DMA copy-out stream</figcaption>
 </figure>
 
 <details class="kb-figure-desc">
 <summary>Figure description and sources</summary>
-<p>Two rows of three steps. The DMA ring in the buffer holds two halves or N frames. A half or complete interrupt makes PublishFromDevice invalidate the lines, copy the finished frame out and stamp a sequence number, a time and a torn flag. It copies into a slot of a ring of at least two slots; when every slot is held the frame is dropped, counted as Full, and the next frame carries Gap(). The task takes a slot with TryTake and reads it through a move-only FrameView that releases on its end. Judge checks the content, and Supervise answers None, Restart, BackOff or UseFallback. EnterFallback switches to the declared fallback producer, whose frames carry Fallback(). The ring is never lent to the task (ADR-0031).</p>
+<p>From the top. The DMA ring in the buffer holds two halves or N frames. A half or complete interrupt makes PublishFromDevice invalidate the lines, copy the finished frame out and stamp a sequence number, a time and a torn flag. It copies into a slot of a ring of at least two slots; when every slot is held the frame is dropped, counted as Full, and the next frame carries Gap(). The task takes a slot with TryTake and reads it through a move-only FrameView that releases on its end. Judge checks the content, and Supervise answers None, Restart, BackOff or UseFallback. EnterFallback switches to the declared fallback producer, whose frames carry Fallback(). The ring is never lent to the task (ADR-0031).</p>
+<p>Drawn from: <a href="../../model/dma-stream.graph.yml"><code>docs/model/dma-stream.graph.yml</code></a>.</p>
 </details>
 <p><code>Stream&lt;Frame, Frames, Region&gt;</code> has at least two slots. The interrupt copies each finished hardware frame
 (<code>PublishFromDevice</code>, which invalidates the frame's lines first) into a slot with a sequence number and the time
@@ -1857,8 +1881,32 @@ functions; each case passes on the good model and is shown to fail on a model wi
 <td><code>Stream&lt;Frame, 1, ...&gt;</code></td>
 <td>fewer than two frames</td>
 </tr>
+<tr>
+<td><code>RequireInterruptTier&lt;Stream, Rtos&gt;</code></td>
+<td>a stream that notifies a task runs above the RTOS syscall limit, or its priority is outside the implemented bits</td>
+</tr>
+<tr>
+<td><code>RequireSamePriority&lt;S1, S2&gt;</code></td>
+<td>the streams of one peripheral run at different interrupt priorities</td>
+</tr>
+<tr>
+<td><code>RequireBusCarries&lt;Bus, Bytes&gt;</code></td>
+<td>the driver's largest frame exceeds what the bus carries in the mode the board gave it</td>
+</tr>
+<tr>
+<td><code>RequireShape&lt;Decl, Frame, Frames&gt;</code></td>
+<td>the handler's frame size or ring length differs from the board's stream declaration</td>
+</tr>
 </tbody>
 </table>
+<h2 id="board-declarations">Board declarations<a class="headerlink" href="#board-declarations" title="Permanent link">&para;</a></h2>
+<p><code>kb/dma/assignment.hpp</code> holds the values the board generator writes into <code>board_dma.hpp</code> from <code>board.yml</code>: a
+<code>StreamAssignment</code> per DMA stream (engine, stream, request line, arbitration priority, interrupt priority, how the
+interrupt notifies the owner, which interrupts are on, normal or circular), the <code>InterruptLimits</code> of the RTOS, the
+<code>BusLimits</code> of each bus (DMA or not, the largest frame each way, the receive-length multiple, the alignment unit) and
+the <code>StreamShape</code> of each stream. A port receives a resolved assignment and only checks it with the helpers above; it
+never looks for a free stream at run time. What <code>engine</code>, <code>stream</code> and <code>request</code> number is the port's to define (its
+<code>docs/dma.md</code>).</p>
 
 
 

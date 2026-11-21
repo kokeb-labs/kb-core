@@ -1650,13 +1650,14 @@ had already passed is counted as an overrun.</p>
 </table>
 <h2 id="backends">Backends<a class="headerlink" href="#backends" title="Permanent link">&para;</a></h2>
 <figure class="kb-figure">
-<img src="../../diagrams/rtos-backends.svg#only-light" alt="The kb::rtos API reaches one backend through a single seam: none, FreeRTOS, host (tests only) or ThreadX; FreeRTOS and ThreadX reach their kernel, which is SOUP, through boundary files and are tested on fake kernels." width="1200" height="711"><img src="../../diagrams/rtos-backends.dark.svg#only-dark" alt="The kb::rtos API reaches one backend through a single seam: none, FreeRTOS, host (tests only) or ThreadX; FreeRTOS and ThreadX reach their kernel, which is SOUP, through boundary files and are tested on fake kernels." width="1200" height="711">
+<img src="../../diagrams/rtos-backends.svg#only-light" alt="The kb::rtos API reaches one backend through a single seam, none, FreeRTOS, ThreadX or host for tests, and FreeRTOS and ThreadX reach their kernel, which is SOUP, through boundary files and are tested on fake kernels." width="670" height="881"><img src="../../diagrams/rtos-backends.dark.svg#only-dark" alt="The kb::rtos API reaches one backend through a single seam, none, FreeRTOS, ThreadX or host for tests, and FreeRTOS and ThreadX reach their kernel, which is SOUP, through boundary files and are tested on fake kernels." width="670" height="881">
 <figcaption>kb::rtos backends</figcaption>
 </figure>
 
 <details class="kb-figure-desc">
 <summary>Figure description and sources</summary>
-<p>One API, one seam, four backends. The kb::rtos API (components/lib/rtos/inc) reaches a backend through kb::rtos::backend (backend.hpp). The none backend is for host tests and bare-metal bring-up; FreeRTOS and ThreadX each have boundary files that reach the kernel, which is SOUP, either a product's copy or the pinned or ESP-IDF one; the host backend (std::thread) is for tests only. FreeRTOS and ThreadX tests run against a fake kernel.</p>
+<p>One API, one seam, four backends. The kb::rtos API (Mutex, RecursiveMutex, Semaphore, Queue, EventFlags, Timer, Thread, CriticalSection in components/lib/rtos/inc) reaches a backend through kb::rtos::backend (backend.hpp), where each native object lives in opaque storage sized there and every backend static_asserts that it fits. The none backend is for host tests and bare-metal bring-up, with one context and a deterministic fake clock; the host backend (std::thread) runs PC tests with real threads and is never built for a target. FreeRTOS (the ESP32 default, any FreeRTOS target, static API only) and ThreadX (Eclipse ThreadX targets, one boundary file) reach their kernel through boundary files; the kernel is SOUP, from ESP-IDF or KB_FREERTOS_INCLUDE_DIRS for FreeRTOS, and from KB_THREADX_INCLUDE_DIRS or third_party/threadx for ThreadX. FreeRTOS and ThreadX also run their tests on fake kernels (tests/fakes) with exact ticks.</p>
+<p>Drawn from: <a href="../../model/rtos-backends.graph.yml"><code>docs/model/rtos-backends.graph.yml</code></a>.</p>
 </details>
 <table>
 <thead>

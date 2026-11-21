@@ -1,65 +1,59 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="905" viewBox="0 0 1200 905" role="img" aria-labelledby="misra-scope-title misra-scope-desc" font-family="Inter, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="738" viewBox="0 0 640 738" role="img" aria-labelledby="misra-scope-title misra-scope-desc" font-family="Inter, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
 <title id="misra-scope-title">MISRA C++:2023 scope</title>
-<desc id="misra-scope-desc">Four zones from strongest claim to none: kb-core own code claimed compliant with zero deviations; boundary files compliant with recorded deviations; drivers covered by their own evidence; SOUP out of scope and never reported.</desc>
-<defs><marker id="fk-arrow-green-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#4ADE80"/></marker><marker id="fk-arrow-rail" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#6C7889"/></marker></defs>
-<rect x="0.5" y="0.5" width="1199" height="904" rx="16" fill="#0E131A" stroke="#283241"/>
+<desc id="misra-scope-desc">Table of four zones from strongest claim to none, with kb-core's own code claimed compliant with zero deviations, boundary files compliant with recorded deviations, drivers covered by their own evidence and SOUP out of scope.</desc>
+<rect x="0.5" y="0.5" width="639" height="737" rx="16" fill="#0E131A" stroke="#283241"/>
 <text x="32" y="44" font-size="12.5" font-weight="700" letter-spacing="1.2" fill="#F8D27A">ASSURANCE</text>
 <text x="32" y="77.3" font-size="26" font-weight="700" fill="#E8EDF3">MISRA C++:2023 scope</text>
-<text x="32" y="103.8" font-size="15" fill="#9AA6B5">What is claimed for each zone, at assurance level high.</text>
-<rect x="32" y="119.8" width="1136" height="1" fill="#252F3C"/>
-<rect x="32" y="137.8" width="1136" height="143.4" rx="14" fill="#11281A" stroke="#285A3A" stroke-width="1.2"/>
-<rect x="32" y="337.2" width="1136" height="142.4" rx="14" fill="#2C2310" stroke="#6A5220" stroke-width="1.2"/>
-<rect x="32" y="535.6" width="1136" height="126" rx="14" fill="#13233A" stroke="#2B4C78" stroke-width="1.2"/>
-<rect x="32" y="717.6" width="1136" height="126" rx="14" fill="#1B232E" stroke="#3A4656" stroke-width="1.2"/>
-<path d="M968 284.2 L968 334.2" fill="none" stroke="#4ADE80" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-green-strong)"/>
-<path d="M968 664.6 L968 714.6" fill="none" stroke="#6C7889" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 5" marker-end="url(#fk-arrow-rail)"/>
-<rect x="48" y="196.2" width="262.5" height="69" rx="10" fill="#2A2113" stroke="#F4B942" stroke-width="1.4"/>
-<rect x="48" y="204.2" width="4" height="53" rx="2" fill="#F4B942"/>
-<rect x="328.5" y="196.2" width="262.5" height="69" rx="10" fill="#13233A" stroke="#60A5FA" stroke-width="1.4"/>
-<rect x="328.5" y="204.2" width="4" height="53" rx="2" fill="#60A5FA"/>
-<rect x="609" y="196.2" width="262.5" height="69" rx="10" fill="#2C2310" stroke="#FBBF24" stroke-width="1.4"/>
-<rect x="609" y="204.2" width="4" height="53" rx="2" fill="#FBBF24"/>
-<rect x="889.5" y="196.2" width="262.5" height="69" rx="10" fill="#221A3A" stroke="#A78BFA" stroke-width="1.4"/>
-<rect x="889.5" y="204.2" width="4" height="53" rx="2" fill="#A78BFA"/>
-<rect x="48" y="395.6" width="543" height="68" rx="10" fill="#151C26" stroke="#3A4657" stroke-width="1"/>
-<rect x="48" y="403.6" width="4" height="52" rx="2" fill="#FBBF24"/>
-<rect x="609" y="395.6" width="543" height="68" rx="10" fill="#151C26" stroke="#3A4657" stroke-width="1"/>
-<rect x="609" y="403.6" width="4" height="52" rx="2" fill="#FBBF24"/>
-<rect x="48" y="576.6" width="1104" height="69" rx="10" fill="#11281A" stroke="#4ADE80" stroke-width="1.4"/>
-<rect x="48" y="584.6" width="4" height="53" rx="2" fill="#4ADE80"/>
-<rect x="48" y="758.6" width="1104" height="69" rx="10" fill="#151C26" stroke="#3A4657" stroke-width="1" stroke-dasharray="6 4"/>
-<text x="48" y="162.8" font-size="13" font-weight="700" fill="#BBF7D0">CLAIMED COMPLIANT</text>
-<text x="48" y="180.2" font-size="12" fill="#BBF7D0">kb-core own code, components/lib/**, zero repository deviations</text>
-<text x="68" y="223" font-size="15" font-weight="700" fill="#F8D27A">kb::utils</text>
-<text x="68" y="247.8" font-size="13" fill="#D2DAE4">phase 1</text>
-<text x="348.5" y="223" font-size="15" font-weight="700" fill="#BFDBFE">kb::interfaces</text>
-<text x="348.5" y="247.8" font-size="13" fill="#D2DAE4">contracts and host port, phase 1</text>
-<text x="629" y="223" font-size="15" font-weight="700" fill="#FDE68A">kb::rtos</text>
-<text x="629" y="247.8" font-size="13" fill="#D2DAE4">public API, phase 2</text>
-<text x="909.5" y="223" font-size="15" font-weight="700" fill="#DDD6FE">kb::handlers</text>
-<text x="909.5" y="247.8" font-size="13" fill="#D2DAE4">handlers and bindings, phase 4</text>
-<text x="48" y="362.2" font-size="13" font-weight="700" fill="#FDE68A">BOUNDARY FILES</text>
-<text x="48" y="379.6" font-size="12" fill="#FDE68A">compliant with recorded deviations (DEV-KBC-*, DEV-KBP-*)</text>
-<text x="68" y="422.4" font-size="15" font-weight="700" fill="#E8EDF3">RTOS backend boundary files</text>
-<text x="68" y="446.5" font-size="12.5" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" fill="#D2DAE4">components/lib/rtos/backends/freertos/*_boundary.cpp</text>
-<text x="629" y="422.4" font-size="15" font-weight="700" fill="#E8EDF3">Port boundary files</text>
-<text x="629" y="446.5" font-size="12.5" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" fill="#D2DAE4">components/ports/esp32/src/*_boundary.cpp (own records)</text>
-<text x="48" y="560.6" font-size="13" font-weight="700" fill="#BFDBFE">COVERED BY THEIR OWN EVIDENCE</text>
-<text x="68" y="603.4" font-size="15" font-weight="700" fill="#BBF7D0">driver-&lt;chip&gt; at its pinned tag</text>
-<text x="68" y="628.2" font-size="13" fill="#D2DAE4">own ru-misra run at level high</text>
-<text x="48" y="742.6" font-size="13" font-weight="700" fill="#E2E8F0">SOUP, OUT OF SCOPE</text>
-<text x="68" y="785.3" font-size="15" font-weight="700" fill="#E8EDF3">Vendor and third-party code</text>
-<text x="68" y="810.2" font-size="13" fill="#D2DAE4">ESP-IDF, STM32 HAL, FreeRTOS, ThreadX, mbedTLS, listed with versions</text>
-<rect x="879.7" y="299.2" width="176.6" height="20" rx="10" fill="#0E131A"/>
-<text x="968" y="313.5" font-size="12" font-weight="500" text-anchor="middle" fill="#9AA6B5">includes the boundary files</text>
-<rect x="886.4" y="679.6" width="163.2" height="20" rx="10" fill="#0E131A"/>
-<text x="968" y="693.9" font-size="12" font-weight="500" text-anchor="middle" fill="#9AA6B5">-isystem, never reported</text>
-<rect x="32" y="859" width="14" height="14" rx="4" fill="#11281A" stroke="#4ADE80" stroke-width="1.4"/>
-<text x="54" y="870.6" font-size="12.5" fill="#9AA6B5">claimed, zero deviations</text>
-<rect x="230.4" y="859" width="14" height="14" rx="4" fill="#2C2310" stroke="#FBBF24" stroke-width="1.4"/>
-<text x="252.4" y="870.6" font-size="12.5" fill="#9AA6B5">claimed, recorded deviations</text>
-<rect x="457.9" y="859" width="14" height="14" rx="4" fill="#13233A" stroke="#60A5FA" stroke-width="1.4"/>
-<text x="479.9" y="870.6" font-size="12.5" fill="#9AA6B5">covered by its own evidence</text>
-<rect x="684.4" y="859" width="14" height="14" rx="4" fill="#1B232E" stroke="#94A3B8" stroke-width="1.4"/>
-<text x="706.4" y="870.6" font-size="12.5" fill="#9AA6B5">out of scope</text>
+<text x="32" y="103.8" font-size="15" fill="#9AA6B5">What is claimed for each zone, at assurance level high, from the strongest</text>
+<text x="32" y="125.5" font-size="15" fill="#9AA6B5">claim to none.</text>
+<rect x="32" y="141.6" width="576" height="1" fill="#252F3C"/>
+<rect x="264.7" y="202.6" width="294" height="54" rx="10" fill="#11281A" stroke="#4ADE80" stroke-width="1.4"/>
+<path d="M360.8 226.6 L364.8 231.6 L373.8 220.6" fill="none" stroke="#4ADE80" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="264.7" y="262.6" width="294" height="54" rx="10" fill="#11281A" stroke="#4ADE80" stroke-width="1.4"/>
+<path d="M360.8 286.6 L364.8 291.6 L373.8 280.6" fill="none" stroke="#4ADE80" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="264.7" y="322.6" width="294" height="54" rx="10" fill="#11281A" stroke="#4ADE80" stroke-width="1.4"/>
+<path d="M360.8 346.6 L364.8 351.6 L373.8 340.6" fill="none" stroke="#4ADE80" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="264.7" y="382.6" width="294" height="54" rx="10" fill="#11281A" stroke="#4ADE80" stroke-width="1.4"/>
+<path d="M360.8 406.6 L364.8 411.6 L373.8 400.6" fill="none" stroke="#4ADE80" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="264.7" y="442.6" width="294" height="54" rx="10" fill="#2C2310" stroke="#FBBF24" stroke-width="1.4"/>
+<path d="M366.8 459.6 L366.8 468.6" fill="none" stroke="#FBBF24" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="366.8" cy="472.6" r="1.6" fill="#FBBF24"/>
+<rect x="264.7" y="502.6" width="294" height="54" rx="10" fill="#2C2310" stroke="#FBBF24" stroke-width="1.4"/>
+<path d="M366.8 519.5 L366.8 528.5" fill="none" stroke="#FBBF24" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="366.8" cy="532.5" r="1.6" fill="#FBBF24"/>
+<rect x="264.7" y="562.5" width="294" height="54" rx="10" fill="#11281A" stroke="#4ADE80" stroke-width="1.4"/>
+<path d="M347.2 586.5 L351.2 591.5 L360.2 580.5" fill="none" stroke="#4ADE80" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="264.7" y="622.5" width="294" height="54" rx="10" fill="#1B232E" stroke="#94A3B8" stroke-width="1.4"/>
+<path d="M352.2 646.5 L364.2 646.5" fill="none" stroke="#94A3B8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="411.7" y="187.6" font-size="13" font-weight="700" text-anchor="middle" fill="#E8EDF3">Claim</text>
+<text x="82.3" y="234.6" font-size="13" font-weight="700" fill="#E8EDF3">kb::utils</text>
+<text x="421.7" y="231.6" font-size="13" font-weight="600" text-anchor="middle" fill="#BBF7D0">compliant</text>
+<text x="411.7" y="250.6" font-size="12" text-anchor="middle" fill="#BBF7D0">0 deviations, phase 1</text>
+<text x="82.3" y="294.6" font-size="13" font-weight="700" fill="#E8EDF3">kb::interfaces</text>
+<text x="421.7" y="291.6" font-size="13" font-weight="600" text-anchor="middle" fill="#BBF7D0">compliant</text>
+<text x="411.7" y="310.6" font-size="12" text-anchor="middle" fill="#BBF7D0">0 deviations, phase 1</text>
+<text x="82.3" y="354.6" font-size="13" font-weight="700" fill="#E8EDF3">kb::rtos public API</text>
+<text x="421.7" y="351.6" font-size="13" font-weight="600" text-anchor="middle" fill="#BBF7D0">compliant</text>
+<text x="411.7" y="370.6" font-size="12" text-anchor="middle" fill="#BBF7D0">0 deviations, phase 2</text>
+<text x="82.3" y="414.6" font-size="13" font-weight="700" fill="#E8EDF3">kb::handlers, bindings</text>
+<text x="421.7" y="411.6" font-size="13" font-weight="600" text-anchor="middle" fill="#BBF7D0">compliant</text>
+<text x="411.7" y="430.6" font-size="12" text-anchor="middle" fill="#BBF7D0">0 deviations, phase 4</text>
+<text x="82.3" y="474.6" font-size="13" font-weight="700" fill="#E8EDF3">RTOS boundary files</text>
+<text x="421.7" y="471.6" font-size="13" font-weight="600" text-anchor="middle" fill="#FDE68A">compliant</text>
+<text x="411.7" y="490.6" font-size="12" text-anchor="middle" fill="#FDE68A">recorded, DEV-KBC-*</text>
+<text x="82.3" y="534.5" font-size="13" font-weight="700" fill="#E8EDF3">Port boundary files</text>
+<text x="421.7" y="531.5" font-size="13" font-weight="600" text-anchor="middle" fill="#FDE68A">compliant</text>
+<text x="411.7" y="550.5" font-size="12" text-anchor="middle" fill="#FDE68A">recorded, DEV-KBP-*</text>
+<text x="82.3" y="594.5" font-size="13" font-weight="700" fill="#E8EDF3">driver-&lt;chip&gt; at its tag</text>
+<text x="421.7" y="591.5" font-size="13" font-weight="600" text-anchor="middle" fill="#BBF7D0">own evidence</text>
+<text x="411.7" y="610.5" font-size="12" text-anchor="middle" fill="#BBF7D0">own ru-misra run, level high</text>
+<text x="82.3" y="654.5" font-size="13" font-weight="700" fill="#E8EDF3">SOUP</text>
+<text x="421.7" y="651.5" font-size="13" font-weight="600" text-anchor="middle" fill="#E2E8F0">out of scope</text>
+<text x="411.7" y="670.5" font-size="12" text-anchor="middle" fill="#E2E8F0">-isystem, never reported</text>
+<rect x="32" y="691.9" width="14" height="14" rx="4" fill="#11281A" stroke="#4ADE80" stroke-width="1.4"/>
+<text x="54" y="703.5" font-size="12.5" fill="#9AA6B5">claimed or covered</text>
+<rect x="198.8" y="691.9" width="14" height="14" rx="4" fill="#2C2310" stroke="#FBBF24" stroke-width="1.4"/>
+<text x="220.8" y="703.5" font-size="12.5" fill="#9AA6B5">recorded deviations</text>
+<rect x="369.9" y="691.9" width="14" height="14" rx="4" fill="#1B232E" stroke="#94A3B8" stroke-width="1.4"/>
+<text x="391.9" y="703.5" font-size="12.5" fill="#9AA6B5">out of scope</text>
 </svg>

@@ -1,0 +1,104 @@
+{
+ "direction": "TB",
+ "edges": [
+  {
+   "from": "tx",
+   "to": "hl",
+   "via": []
+  },
+  {
+   "from": "hl",
+   "to": "bl",
+   "via": []
+  },
+  {
+   "from": "bl",
+   "to": "gh",
+   "via": []
+  },
+  {
+   "from": "gh",
+   "to": "ty",
+   "via": []
+  },
+  {
+   "from": "ot",
+   "to": "pf",
+   "via": []
+  },
+  {
+   "from": "pf",
+   "to": "oh",
+   "via": []
+  },
+  {
+   "from": "oh",
+   "to": "sp",
+   "via": []
+  }
+ ],
+ "engine": "graphviz dot 13.1.0 (recorded for the reader; render never reads it)",
+ "figkit_layout": 1,
+ "id": "bus-hold",
+ "input": "aa740a816c3501c22b31646a8be034e46a166576e6e2ef2a51eced87748950ee",
+ "nodes": {
+  "bl": [
+   0,
+   277,
+   190,
+   88
+  ],
+  "gh": [
+   0,
+   416,
+   190,
+   88
+  ],
+  "hl": [
+   0,
+   148,
+   190,
+   69
+  ],
+  "oh": [
+   246,
+   277,
+   190,
+   88
+  ],
+  "ot": [
+   246,
+   0,
+   190,
+   87
+  ],
+  "pf": [
+   246,
+   138,
+   190,
+   88
+  ],
+  "sp": [
+   246,
+   416,
+   190,
+   88
+  ],
+  "tx": [
+   0,
+   0,
+   190,
+   87
+  ],
+  "ty": [
+   0,
+   555,
+   190,
+   69
+  ]
+ },
+ "size": [
+  436,
+  624
+ ]
+}

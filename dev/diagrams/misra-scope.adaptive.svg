@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="738" viewBox="0 0 640 738" role="img" aria-labelledby="misra-scope-title misra-scope-desc" font-family="Inter, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" class="fk">
+<title id="misra-scope-title">MISRA C++:2023 scope</title>
+<desc id="misra-scope-desc">Table of four zones from strongest claim to none, with kb-core's own code claimed compliant with zero deviations, boundary files compliant with recorded deviations, drivers covered by their own evidence and SOUP out of scope.</desc>
+<style>
+.fk{--fk-brand-text:#7A360E;--fk-canvas:#FFFFFF;--fk-frame:#E2E7EE;--fk-hair:#E2E7EE;--fk-ink:#0E1726;--fk-muted:#566070;--fk-na-strong:#64748B;--fk-na-text:#334155;--fk-na-tint:#F1F4F8;--fk-ok-strong:#15803D;--fk-ok-text:#14532D;--fk-ok-tint:#EAF7EF;--fk-warn-strong:#C26A05;--fk-warn-text:#8A3C0B;--fk-warn-tint:#FFF5E3;}
+@media (prefers-color-scheme:dark){.fk{--fk-brand-text:#F8D27A;--fk-canvas:#0E131A;--fk-frame:#283241;--fk-hair:#252F3C;--fk-ink:#E8EDF3;--fk-muted:#9AA6B5;--fk-na-strong:#94A3B8;--fk-na-text:#E2E8F0;--fk-na-tint:#1B232E;--fk-ok-strong:#4ADE80;--fk-ok-text:#BBF7D0;--fk-ok-tint:#11281A;--fk-warn-strong:#FBBF24;--fk-warn-text:#FDE68A;--fk-warn-tint:#2C2310;}}
+:root[data-theme="dark"] .fk,[data-md-color-scheme="slate"] .fk{--fk-brand-text:#F8D27A;--fk-canvas:#0E131A;--fk-frame:#283241;--fk-hair:#252F3C;--fk-ink:#E8EDF3;--fk-muted:#9AA6B5;--fk-na-strong:#94A3B8;--fk-na-text:#E2E8F0;--fk-na-tint:#1B232E;--fk-ok-strong:#4ADE80;--fk-ok-text:#BBF7D0;--fk-ok-tint:#11281A;--fk-warn-strong:#FBBF24;--fk-warn-text:#FDE68A;--fk-warn-tint:#2C2310;}
+:root[data-theme="light"] .fk,[data-md-color-scheme="default"] .fk{--fk-brand-text:#7A360E;--fk-canvas:#FFFFFF;--fk-frame:#E2E7EE;--fk-hair:#E2E7EE;--fk-ink:#0E1726;--fk-muted:#566070;--fk-na-strong:#64748B;--fk-na-text:#334155;--fk-na-tint:#F1F4F8;--fk-ok-strong:#15803D;--fk-ok-text:#14532D;--fk-ok-tint:#EAF7EF;--fk-warn-strong:#C26A05;--fk-warn-text:#8A3C0B;--fk-warn-tint:#FFF5E3;}
+.fk-f-brand-text{fill:var(--fk-brand-text)}.fk-s-brand-text{stroke:var(--fk-brand-text)}
+.fk-f-canvas{fill:var(--fk-canvas)}.fk-s-canvas{stroke:var(--fk-canvas)}
+.fk-f-frame{fill:var(--fk-frame)}.fk-s-frame{stroke:var(--fk-frame)}
+.fk-f-hair{fill:var(--fk-hair)}.fk-s-hair{stroke:var(--fk-hair)}
+.fk-f-ink{fill:var(--fk-ink)}.fk-s-ink{stroke:var(--fk-ink)}
+.fk-f-muted{fill:var(--fk-muted)}.fk-s-muted{stroke:var(--fk-muted)}
+.fk-f-na-strong{fill:var(--fk-na-strong)}.fk-s-na-strong{stroke:var(--fk-na-strong)}
+.fk-f-na-text{fill:var(--fk-na-text)}.fk-s-na-text{stroke:var(--fk-na-text)}
+.fk-f-na-tint{fill:var(--fk-na-tint)}.fk-s-na-tint{stroke:var(--fk-na-tint)}
+.fk-f-ok-strong{fill:var(--fk-ok-strong)}.fk-s-ok-strong{stroke:var(--fk-ok-strong)}
+.fk-f-ok-text{fill:var(--fk-ok-text)}.fk-s-ok-text{stroke:var(--fk-ok-text)}
+.fk-f-ok-tint{fill:var(--fk-ok-tint)}.fk-s-ok-tint{stroke:var(--fk-ok-tint)}
+.fk-f-warn-strong{fill:var(--fk-warn-strong)}.fk-s-warn-strong{stroke:var(--fk-warn-strong)}
+.fk-f-warn-text{fill:var(--fk-warn-text)}.fk-s-warn-text{stroke:var(--fk-warn-text)}
+.fk-f-warn-tint{fill:var(--fk-warn-tint)}.fk-s-warn-tint{stroke:var(--fk-warn-tint)}
+@media (forced-colors:active){.fk text{fill:CanvasText}.fk rect,.fk circle{fill:Canvas;stroke:CanvasText}.fk path{stroke:CanvasText}.fk marker path{fill:CanvasText;stroke:none}}
+</style>
+<rect x="0.5" y="0.5" width="639" height="737" rx="16" class="fk-f-canvas fk-s-frame"/>
+<text x="32" y="44" font-size="12.5" font-weight="700" letter-spacing="1.2" class="fk-f-brand-text">ASSURANCE</text>
+<text x="32" y="77.3" font-size="26" font-weight="700" class="fk-f-ink">MISRA C++:2023 scope</text>
+<text x="32" y="103.8" font-size="15" class="fk-f-muted">What is claimed for each zone, at assurance level high, from the strongest</text>
+<text x="32" y="125.5" font-size="15" class="fk-f-muted">claim to none.</text>
+<rect x="32" y="141.6" width="576" height="1" class="fk-f-hair"/>
+<rect x="264.7" y="202.6" width="294" height="54" rx="10" stroke-width="1.4" class="fk-f-ok-tint fk-s-ok-strong"/>
+<path d="M360.8 226.6 L364.8 231.6 L373.8 220.6" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" class="fk-s-ok-strong"/>
+<rect x="264.7" y="262.6" width="294" height="54" rx="10" stroke-width="1.4" class="fk-f-ok-tint fk-s-ok-strong"/>
+<path d="M360.8 286.6 L364.8 291.6 L373.8 280.6" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" class="fk-s-ok-strong"/>
+<rect x="264.7" y="322.6" width="294" height="54" rx="10" stroke-width="1.4" class="fk-f-ok-tint fk-s-ok-strong"/>
+<path d="M360.8 346.6 L364.8 351.6 L373.8 340.6" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" class="fk-s-ok-strong"/>
+<rect x="264.7" y="382.6" width="294" height="54" rx="10" stroke-width="1.4" class="fk-f-ok-tint fk-s-ok-strong"/>
+<path d="M360.8 406.6 L364.8 411.6 L373.8 400.6" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" class="fk-s-ok-strong"/>
+<rect x="264.7" y="442.6" width="294" height="54" rx="10" stroke-width="1.4" class="fk-f-warn-tint fk-s-warn-strong"/>
+<path d="M366.8 459.6 L366.8 468.6" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" class="fk-s-warn-strong"/>
+<circle cx="366.8" cy="472.6" r="1.6" class="fk-f-warn-strong"/>
+<rect x="264.7" y="502.6" width="294" height="54" rx="10" stroke-width="1.4" class="fk-f-warn-tint fk-s-warn-strong"/>
+<path d="M366.8 519.5 L366.8 528.5" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" class="fk-s-warn-strong"/>
+<circle cx="366.8" cy="532.5" r="1.6" class="fk-f-warn-strong"/>
+<rect x="264.7" y="562.5" width="294" height="54" rx="10" stroke-width="1.4" class="fk-f-ok-tint fk-s-ok-strong"/>
+<path d="M347.2 586.5 L351.2 591.5 L360.2 580.5" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" class="fk-s-ok-strong"/>
+<rect x="264.7" y="622.5" width="294" height="54" rx="10" stroke-width="1.4" class="fk-f-na-tint fk-s-na-strong"/>
+<path d="M352.2 646.5 L364.2 646.5" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" class="fk-s-na-strong"/>
+<text x="411.7" y="187.6" font-size="13" font-weight="700" text-anchor="middle" class="fk-f-ink">Claim</text>
+<text x="82.3" y="234.6" font-size="13" font-weight="700" class="fk-f-ink">kb::utils</text>
+<text x="421.7" y="231.6" font-size="13" font-weight="600" text-anchor="middle" class="fk-f-ok-text">compliant</text>
+<text x="411.7" y="250.6" font-size="12" text-anchor="middle" class="fk-f-ok-text">0 deviations, phase 1</text>
+<text x="82.3" y="294.6" font-size="13" font-weight="700" class="fk-f-ink">kb::interfaces</text>
+<text x="421.7" y="291.6" font-size="13" font-weight="600" text-anchor="middle" class="fk-f-ok-text">compliant</text>
+<text x="411.7" y="310.6" font-size="12" text-anchor="middle" class="fk-f-ok-text">0 deviations, phase 1</text>
+<text x="82.3" y="354.6" font-size="13" font-weight="700" class="fk-f-ink">kb::rtos public API</text>
+<text x="421.7" y="351.6" font-size="13" font-weight="600" text-anchor="middle" class="fk-f-ok-text">compliant</text>
+<text x="411.7" y="370.6" font-size="12" text-anchor="middle" class="fk-f-ok-text">0 deviations, phase 2</text>
+<text x="82.3" y="414.6" font-size="13" font-weight="700" class="fk-f-ink">kb::handlers, bindings</text>
+<text x="421.7" y="411.6" font-size="13" font-weight="600" text-anchor="middle" class="fk-f-ok-text">compliant</text>
+<text x="411.7" y="430.6" font-size="12" text-anchor="middle" class="fk-f-ok-text">0 deviations, phase 4</text>
+<text x="82.3" y="474.6" font-size="13" font-weight="700" class="fk-f-ink">RTOS boundary files</text>
+<text x="421.7" y="471.6" font-size="13" font-weight="600" text-anchor="middle" class="fk-f-warn-text">compliant</text>
+<text x="411.7" y="490.6" font-size="12" text-anchor="middle" class="fk-f-warn-text">recorded, DEV-KBC-*</text>
+<text x="82.3" y="534.5" font-size="13" font-weight="700" class="fk-f-ink">Port boundary files</text>
+<text x="421.7" y="531.5" font-size="13" font-weight="600" text-anchor="middle" class="fk-f-warn-text">compliant</text>
+<text x="411.7" y="550.5" font-size="12" text-anchor="middle" class="fk-f-warn-text">recorded, DEV-KBP-*</text>
+<text x="82.3" y="594.5" font-size="13" font-weight="700" class="fk-f-ink">driver-&lt;chip&gt; at its tag</text>
+<text x="421.7" y="591.5" font-size="13" font-weight="600" text-anchor="middle" class="fk-f-ok-text">own evidence</text>
+<text x="411.7" y="610.5" font-size="12" text-anchor="middle" class="fk-f-ok-text">own ru-misra run, level high</text>
+<text x="82.3" y="654.5" font-size="13" font-weight="700" class="fk-f-ink">SOUP</text>
+<text x="421.7" y="651.5" font-size="13" font-weight="600" text-anchor="middle" class="fk-f-na-text">out of scope</text>
+<text x="411.7" y="670.5" font-size="12" text-anchor="middle" class="fk-f-na-text">-isystem, never reported</text>
+<rect x="32" y="691.9" width="14" height="14" rx="4" stroke-width="1.4" class="fk-f-ok-tint fk-s-ok-strong"/>
+<text x="54" y="703.5" font-size="12.5" class="fk-f-muted">claimed or covered</text>
+<rect x="198.8" y="691.9" width="14" height="14" rx="4" stroke-width="1.4" class="fk-f-warn-tint fk-s-warn-strong"/>
+<text x="220.8" y="703.5" font-size="12.5" class="fk-f-muted">recorded deviations</text>
+<rect x="369.9" y="691.9" width="14" height="14" rx="4" stroke-width="1.4" class="fk-f-na-tint fk-s-na-strong"/>
+<text x="391.9" y="703.5" font-size="12.5" class="fk-f-muted">out of scope</text>
+</svg>

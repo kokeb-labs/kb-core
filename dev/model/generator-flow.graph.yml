@@ -1,0 +1,51 @@
+---
+# Generators and the hosted configurator.
+kind: graph
+id: generator-flow
+title: Generators and the configurator
+kicker: Configurator
+subtitle: One resolver specification, two front ends, repeatable downloads. Items marked later come in M6 and M7.
+alt: >-
+  Flow from the release inputs through the kb command line or the configurator site to one resolver, which writes
+  kb-image.yml, git commands, CMake presets, evidence for the selection and later a project archive.
+reads: >-
+  From the top. Inputs are single sources published with each kb-core release: each pinned driver's driver.yml (bus,
+  mcus, peripheral, kb_core_min, ports, binding), the release lock with the kb-core tag and SHA and every pin with its
+  tag and SHA, the evidence (SBOM in SPDX and CycloneDX, CVE scan, licence report), the tested version sets kb YYYY.N
+  and, later, board.yml with buses, pins and chips. One resolver specification has two front ends, the kb command
+  line (Python standard library only, tools/kb) and the static configurator site on GitHub Pages, where the user
+  picks MCU, RTOS, drivers and handlers. It resolves drivers, then handlers, interfaces and parts, and applies the MCU
+  gates, kb_core_min and the thread model per bus. It produces byte-for-byte repeatable downloads: kb-image.yml (the
+  selection), git commands (clone at the tag, check the SHA, init only the enabled submodules), a CMake presets
+  fragment with kb_image.cmake, the evidence for the selection (SBOM, CVEs, licences, compatibility rows, tested set)
+  and, later, a project archive.
+direction: TB
+print: portrait
+legend:
+  - [blue, inputs]
+  - [brown, tool]
+  - [green, outputs]
+nodes:
+  - id: inputs
+    label: Inputs
+    tone: blue
+    lines: [driver.yml per driver, release lock, "evidence: SBOM, CVEs", tested sets kb YYYY.N, board.yml (later)]
+    accent: true
+  - {id: cli, label: kb command line, tone: brown, lines: [tools/kb, standard library only], accent: true}
+  - {id: site, label: Configurator site, tone: brown, lines: [static, GitHub Pages], accent: true}
+  - id: res
+    label: Resolve
+    tone: brown
+    lines: [drivers to handlers, interfaces and parts, MCU gates, kb_core_min, thread model per bus]
+    accent: true
+  - id: out
+    label: Downloads
+    tone: green
+    lines: [kb-image.yml, git commands, CMake presets, selection evidence, project archive (later)]
+    accent: true
+edges:
+  - {from: inputs, to: cli, label: read}
+  - {from: inputs, to: site, label: read}
+  - {from: cli, to: res}
+  - {from: site, to: res}
+  - {from: res, to: out, label: writes, tone: green}

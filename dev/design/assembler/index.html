@@ -1846,13 +1846,14 @@ set of rules that the <code>kb</code> command line (<code>tools/kb/resolver.py</
 The <a href="#upgrades">upgrade planner</a> (<code>tools/kb/upgrade.py</code>, <code>plan</code> in <code>configurator/resolver.mjs</code>) is part of the same
 specification and has its own vectors in <code>tests/resolver/vectors/upgrade/</code>.</p>
 <figure class="kb-figure">
-<img src="../../diagrams/assembler-flow.svg#only-light" alt="Driver and kb-core tags feed kb catalog build, which writes catalog.json; the resolver reads it and kb-image.yml and writes the lock and the project files; kb sbom turns the lock into SBOMs." width="1200" height="763"><img src="../../diagrams/assembler-flow.dark.svg#only-dark" alt="Driver and kb-core tags feed kb catalog build, which writes catalog.json; the resolver reads it and kb-image.yml and writes the lock and the project files; kb sbom turns the lock into SBOMs." width="1200" height="763">
+<img src="../../diagrams/assembler-flow.svg#only-light" alt="Driver and kb-core tags feed kb catalog build, which writes catalog.json; the resolver reads it and kb-image.yml and writes the lock and the project files; kb sbom turns the lock into SBOMs." width="640" height="1099"><img src="../../diagrams/assembler-flow.dark.svg#only-dark" alt="Driver and kb-core tags feed kb catalog build, which writes catalog.json; the resolver reads it and kb-image.yml and writes the lock and the project files; kb sbom turns the lock into SBOMs." width="640" height="1099">
 <figcaption>From tags to a project</figcaption>
 </figure>
 
 <details class="kb-figure-desc">
 <summary>Figure description and sources</summary>
-<p>Left to right. kb catalog build reads each driver's driver.yml at its tags and the kb-core tags with their platform table and pins, and writes catalog.json. The resolver, one specification with a Python and a JavaScript implementation, reads kb-image.yml and the catalogue and writes the lock kb-image.lock.yml and three project files: CMakePresets.json, kb_image.cmake and kb-fetch.sh. kb sbom turns the lock into CycloneDX 1.6 and SPDX 2.3 documents.</p>
+<p>From the top. kb catalog build reads each driver's driver.yml at its tags and the kb-core tags with their platform table and pins, and writes catalog.json, every part at every version. The resolver, one specification with a Python and a JavaScript implementation, reads kb-image.yml (what the user selected) and the catalogue, and writes the lock kb-image.lock.yml (every version, tag and SHA) and three project files: CMakePresets.json, kb_image.cmake and kb-fetch.sh. kb sbom turns the lock into CycloneDX 1.6 and SPDX 2.3 documents.</p>
+<p>Drawn from: <a href="../../model/assembler-flow.graph.yml"><code>docs/model/assembler-flow.graph.yml</code></a>.</p>
 </details>
 <h2 id="documents">Documents<a class="headerlink" href="#documents" title="Permanent link">&para;</a></h2>
 <table>

@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="654" height="904" viewBox="0 0 654 904" role="img" aria-labelledby="async-poll-title async-poll-desc" font-family="Inter, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" class="fk">
+<title id="async-poll-title">One asynchronous read</title>
+<desc id="async-poll-desc">Sequence in which the owner task starts a read through the poller and the port in pass n, polls and gets Pending, the interrupt completes the transfer, and in pass n+1 the poll returns Done with the byte count.</desc>
+<style>
+.fk{--fk-amber-soft:#F1CF93;--fk-amber-text:#8A3C0B;--fk-amber-tint:#FFF5E3;--fk-brand-text:#7A360E;--fk-brown-strong:#7C4A1E;--fk-brown-text:#6B3F17;--fk-brown-tint:#F8F1EA;--fk-canvas:#FFFFFF;--fk-frame:#E2E7EE;--fk-hair:#E2E7EE;--fk-ink:#0E1726;--fk-line:#738093;--fk-muted:#566070;--fk-rail:#7C8798;--fk-teal-strong:#0B7A72;--fk-teal-text:#0B5F59;--fk-teal-tint:#E6F6F4;--fk-violet-strong:#7C3AED;--fk-violet-text:#5B21B6;--fk-violet-tint:#F3EEFF;}
+@media (prefers-color-scheme:dark){.fk{--fk-amber-soft:#6A5220;--fk-amber-text:#FDE68A;--fk-amber-tint:#2C2310;--fk-brand-text:#F8D27A;--fk-brown-strong:#D6A26B;--fk-brown-text:#F1D5B5;--fk-brown-tint:#2A1F14;--fk-canvas:#0E131A;--fk-frame:#283241;--fk-hair:#252F3C;--fk-ink:#E8EDF3;--fk-line:#6C7889;--fk-muted:#9AA6B5;--fk-rail:#6C7889;--fk-teal-strong:#2BB3A3;--fk-teal-text:#A7F3E6;--fk-teal-tint:#0F2A28;--fk-violet-strong:#A78BFA;--fk-violet-text:#DDD6FE;--fk-violet-tint:#221A3A;}}
+:root[data-theme="dark"] .fk,[data-md-color-scheme="slate"] .fk{--fk-amber-soft:#6A5220;--fk-amber-text:#FDE68A;--fk-amber-tint:#2C2310;--fk-brand-text:#F8D27A;--fk-brown-strong:#D6A26B;--fk-brown-text:#F1D5B5;--fk-brown-tint:#2A1F14;--fk-canvas:#0E131A;--fk-frame:#283241;--fk-hair:#252F3C;--fk-ink:#E8EDF3;--fk-line:#6C7889;--fk-muted:#9AA6B5;--fk-rail:#6C7889;--fk-teal-strong:#2BB3A3;--fk-teal-text:#A7F3E6;--fk-teal-tint:#0F2A28;--fk-violet-strong:#A78BFA;--fk-violet-text:#DDD6FE;--fk-violet-tint:#221A3A;}
+:root[data-theme="light"] .fk,[data-md-color-scheme="default"] .fk{--fk-amber-soft:#F1CF93;--fk-amber-text:#8A3C0B;--fk-amber-tint:#FFF5E3;--fk-brand-text:#7A360E;--fk-brown-strong:#7C4A1E;--fk-brown-text:#6B3F17;--fk-brown-tint:#F8F1EA;--fk-canvas:#FFFFFF;--fk-frame:#E2E7EE;--fk-hair:#E2E7EE;--fk-ink:#0E1726;--fk-line:#738093;--fk-muted:#566070;--fk-rail:#7C8798;--fk-teal-strong:#0B7A72;--fk-teal-text:#0B5F59;--fk-teal-tint:#E6F6F4;--fk-violet-strong:#7C3AED;--fk-violet-text:#5B21B6;--fk-violet-tint:#F3EEFF;}
+.fk-f-amber-soft{fill:var(--fk-amber-soft)}.fk-s-amber-soft{stroke:var(--fk-amber-soft)}
+.fk-f-amber-text{fill:var(--fk-amber-text)}.fk-s-amber-text{stroke:var(--fk-amber-text)}
+.fk-f-amber-tint{fill:var(--fk-amber-tint)}.fk-s-amber-tint{stroke:var(--fk-amber-tint)}
+.fk-f-brand-text{fill:var(--fk-brand-text)}.fk-s-brand-text{stroke:var(--fk-brand-text)}
+.fk-f-brown-strong{fill:var(--fk-brown-strong)}.fk-s-brown-strong{stroke:var(--fk-brown-strong)}
+.fk-f-brown-text{fill:var(--fk-brown-text)}.fk-s-brown-text{stroke:var(--fk-brown-text)}
+.fk-f-brown-tint{fill:var(--fk-brown-tint)}.fk-s-brown-tint{stroke:var(--fk-brown-tint)}
+.fk-f-canvas{fill:var(--fk-canvas)}.fk-s-canvas{stroke:var(--fk-canvas)}
+.fk-f-frame{fill:var(--fk-frame)}.fk-s-frame{stroke:var(--fk-frame)}
+.fk-f-hair{fill:var(--fk-hair)}.fk-s-hair{stroke:var(--fk-hair)}
+.fk-f-ink{fill:var(--fk-ink)}.fk-s-ink{stroke:var(--fk-ink)}
+.fk-f-line{fill:var(--fk-line)}.fk-s-line{stroke:var(--fk-line)}
+.fk-f-muted{fill:var(--fk-muted)}.fk-s-muted{stroke:var(--fk-muted)}
+.fk-f-rail{fill:var(--fk-rail)}.fk-s-rail{stroke:var(--fk-rail)}
+.fk-f-teal-strong{fill:var(--fk-teal-strong)}.fk-s-teal-strong{stroke:var(--fk-teal-strong)}
+.fk-f-teal-text{fill:var(--fk-teal-text)}.fk-s-teal-text{stroke:var(--fk-teal-text)}
+.fk-f-teal-tint{fill:var(--fk-teal-tint)}.fk-s-teal-tint{stroke:var(--fk-teal-tint)}
+.fk-f-violet-strong{fill:var(--fk-violet-strong)}.fk-s-violet-strong{stroke:var(--fk-violet-strong)}
+.fk-f-violet-text{fill:var(--fk-violet-text)}.fk-s-violet-text{stroke:var(--fk-violet-text)}
+.fk-f-violet-tint{fill:var(--fk-violet-tint)}.fk-s-violet-tint{stroke:var(--fk-violet-tint)}
+@media (forced-colors:active){.fk text{fill:CanvasText}.fk rect,.fk circle{fill:Canvas;stroke:CanvasText}.fk path{stroke:CanvasText}.fk marker path{fill:CanvasText;stroke:none}}
+</style>
+<defs><marker id="async-poll-arrow-brown-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="fk-f-brown-strong"/></marker><marker id="async-poll-arrow-rail" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="fk-f-rail"/></marker><marker id="async-poll-arrow-teal-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="fk-f-teal-strong"/></marker><marker id="async-poll-arrow-violet-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="fk-f-violet-strong"/></marker></defs>
+<rect x="0.5" y="0.5" width="653" height="903" rx="16" class="fk-f-canvas fk-s-frame"/>
+<text x="32" y="44" font-size="12.5" font-weight="700" letter-spacing="1.2" class="fk-f-brand-text">HANDLERS</text>
+<text x="32" y="77.3" font-size="26" font-weight="700" class="fk-f-ink">One asynchronous read</text>
+<text x="32" y="103.8" font-size="15" class="fk-f-muted">Started in one owner pass, collected in a later one. No pass waits.</text>
+<rect x="32" y="119.8" width="590" height="1" class="fk-f-hair"/>
+<path d="M104.9 193.8 L104.9 859.8" fill="none" stroke-width="1.2" stroke-dasharray="5 5" class="fk-s-line"/>
+<path d="M254.3 193.8 L254.3 859.8" fill="none" stroke-width="1.2" stroke-dasharray="5 5" class="fk-s-line"/>
+<path d="M403.4 193.8 L403.4 859.8" fill="none" stroke-width="1.2" stroke-dasharray="5 5" class="fk-s-line"/>
+<path d="M549.4 193.8 L549.4 859.8" fill="none" stroke-width="1.2" stroke-dasharray="5 5" class="fk-s-line"/>
+<path d="M108.9 281.8 L250.3 281.8" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#async-poll-arrow-brown-strong)" class="fk-s-brown-strong"/>
+<path d="M258.3 325.8 L399.4 325.8" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#async-poll-arrow-violet-strong)" class="fk-s-violet-strong"/>
+<path d="M399.4 369.8 L258.3 369.8" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 5" marker-end="url(#async-poll-arrow-teal-strong)" class="fk-s-teal-strong"/>
+<path d="M108.9 413.8 L250.3 413.8" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#async-poll-arrow-brown-strong)" class="fk-s-brown-strong"/>
+<path d="M258.3 457.8 L399.4 457.8" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#async-poll-arrow-violet-strong)" class="fk-s-violet-strong"/>
+<path d="M399.4 501.8 L258.3 501.8" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 5" marker-end="url(#async-poll-arrow-teal-strong)" class="fk-s-teal-strong"/>
+<path d="M545.4 545.8 L407.4 545.8" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#async-poll-arrow-teal-strong)" class="fk-s-teal-strong"/>
+<path d="M108.9 641.8 L250.3 641.8" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#async-poll-arrow-brown-strong)" class="fk-s-brown-strong"/>
+<path d="M258.3 685.8 L399.4 685.8" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#async-poll-arrow-violet-strong)" class="fk-s-violet-strong"/>
+<path d="M399.4 729.8 L258.3 729.8" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 5" marker-end="url(#async-poll-arrow-teal-strong)" class="fk-s-teal-strong"/>
+<path d="M250.3 773.8 L108.9 773.8" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 5" marker-end="url(#async-poll-arrow-violet-strong)" class="fk-s-violet-strong"/>
+<rect x="39.6" y="137.8" width="130.6" height="52" rx="10" stroke-width="1.4" class="fk-f-brown-tint fk-s-brown-strong"/>
+<rect x="39.6" y="145.8" width="4" height="36" rx="2" class="fk-f-brown-strong"/>
+<rect x="186.2" y="137.8" width="136.2" height="52" rx="10" stroke-width="1.4" class="fk-f-violet-tint fk-s-violet-strong"/>
+<rect x="186.2" y="145.8" width="4" height="36" rx="2" class="fk-f-violet-strong"/>
+<rect x="338.4" y="137.8" width="130" height="52" rx="10" stroke-width="1.4" class="fk-f-teal-tint fk-s-teal-strong"/>
+<rect x="338.4" y="145.8" width="4" height="36" rx="2" class="fk-f-teal-strong"/>
+<rect x="484.4" y="137.8" width="130" height="52" rx="10" stroke-width="1.4" class="fk-f-teal-tint fk-s-teal-strong"/>
+<rect x="484.4" y="145.8" width="4" height="36" rx="2" class="fk-f-teal-strong"/>
+<rect x="34.9" y="213.8" width="140" height="41" rx="10" stroke-width="1" class="fk-f-amber-tint fk-s-amber-soft"/>
+<rect x="34.9" y="573.8" width="140" height="41" rx="10" stroke-width="1" class="fk-f-amber-tint fk-s-amber-soft"/>
+<rect x="184.3" y="801.8" width="289.1" height="41" rx="10" stroke-width="1" class="fk-f-amber-tint fk-s-amber-soft"/>
+<text x="107.9" y="168.3" font-size="15" font-weight="700" text-anchor="middle" class="fk-f-brown-text">Owner task</text>
+<text x="257.3" y="168.3" font-size="15" font-weight="700" text-anchor="middle" class="fk-f-violet-text">AsyncPoller</text>
+<text x="406.4" y="168.3" font-size="15" font-weight="700" text-anchor="middle" class="fk-f-teal-text">Port</text>
+<text x="552.4" y="168.3" font-size="15" font-weight="700" text-anchor="middle" class="fk-f-teal-text">ISR</text>
+<text x="48.9" y="238.9" font-size="13" class="fk-f-amber-text">pass n</text>
+<rect x="127.3" y="257.8" width="104.5" height="20" rx="10" class="fk-f-canvas"/>
+<text x="179.6" y="272.1" font-size="12" font-weight="500" text-anchor="middle" class="fk-f-muted">StartWriteRead</text>
+<rect x="277.7" y="301.8" width="102.4" height="20" rx="10" class="fk-f-canvas"/>
+<text x="328.8" y="316.1" font-size="12" font-weight="500" text-anchor="middle" class="fk-f-muted">Start(deadline)</text>
+<rect x="290.2" y="345.8" width="77.3" height="20" rx="10" class="fk-f-canvas"/>
+<text x="328.8" y="360.1" font-size="12" font-weight="500" text-anchor="middle" class="fk-f-muted">Ok at once</text>
+<rect x="142" y="389.8" width="75.1" height="20" rx="10" class="fk-f-canvas"/>
+<text x="179.6" y="404.1" font-size="12" font-weight="500" text-anchor="middle" class="fk-f-muted">Step(now)</text>
+<rect x="294.1" y="433.8" width="69.5" height="20" rx="10" class="fk-f-canvas"/>
+<text x="328.8" y="448.1" font-size="12" font-weight="500" text-anchor="middle" class="fk-f-muted">Poll(now)</text>
+<rect x="297.9" y="477.8" width="61.9" height="20" rx="10" class="fk-f-canvas"/>
+<text x="328.8" y="492.1" font-size="12" font-weight="500" text-anchor="middle" class="fk-f-muted">Pending</text>
+<rect x="428.8" y="521.8" width="95.1" height="20" rx="10" class="fk-f-canvas"/>
+<text x="476.4" y="536.1" font-size="12" font-weight="500" text-anchor="middle" class="fk-f-muted">done, flag set</text>
+<text x="48.9" y="598.9" font-size="13" class="fk-f-amber-text">pass n+1</text>
+<rect x="142" y="617.8" width="75.1" height="20" rx="10" class="fk-f-canvas"/>
+<text x="179.6" y="632.1" font-size="12" font-weight="500" text-anchor="middle" class="fk-f-muted">Step(now)</text>
+<rect x="294.1" y="661.8" width="69.5" height="20" rx="10" class="fk-f-canvas"/>
+<text x="328.8" y="676.1" font-size="12" font-weight="500" text-anchor="middle" class="fk-f-muted">Poll(now)</text>
+<rect x="273.8" y="705.8" width="110" height="20" rx="10" class="fk-f-canvas"/>
+<text x="328.8" y="720.1" font-size="12" font-weight="500" text-anchor="middle" class="fk-f-muted">Done, Ok, count</text>
+<rect x="128.6" y="749.8" width="102" height="20" rx="10" class="fk-f-canvas"/>
+<text x="179.6" y="764.1" font-size="12" font-weight="500" text-anchor="middle" class="fk-f-muted">Completion Ok</text>
+<text x="198.3" y="826.8" font-size="13" class="fk-f-amber-text">past the deadline: Timeout; Cancel: Idle</text>
+<rect x="32" y="858.2" width="14" height="14" rx="4" stroke-width="1.4" class="fk-f-brown-tint fk-s-brown-strong"/>
+<text x="54" y="869.8" font-size="12.5" class="fk-f-muted">owner task</text>
+<rect x="147.1" y="858.2" width="14" height="14" rx="4" stroke-width="1.4" class="fk-f-violet-tint fk-s-violet-strong"/>
+<text x="169.1" y="869.8" font-size="12.5" class="fk-f-muted">poller</text>
+<rect x="228.3" y="858.2" width="14" height="14" rx="4" stroke-width="1.4" class="fk-f-teal-tint fk-s-teal-strong"/>
+<text x="250.3" y="869.8" font-size="12.5" class="fk-f-muted">port and interrupt</text>
+<path d="M383.9 864.4L413.9 864.4" fill="none" stroke-width="1.6" marker-end="url(#async-poll-arrow-rail)" class="fk-s-rail"/>
+<text x="427.9" y="869.8" font-size="12.5" class="fk-f-muted">call</text>
+<path d="M473.3 864.4L503.3 864.4" fill="none" stroke-width="1.6" stroke-dasharray="7 5" marker-end="url(#async-poll-arrow-rail)" class="fk-s-rail"/>
+<text x="517.3" y="869.8" font-size="12.5" class="fk-f-muted">return</text>
+</svg>

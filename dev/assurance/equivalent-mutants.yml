@@ -357,6 +357,15 @@ equivalent:
     reason: >-
       none_backend.cpp CopyBytes i < n vs <=: the one extra byte lands in the next queue slot, which a send writes before any receive reads it, or past the last slot where nothing reads it
   # kb::dma
+  - id: m-5e2ef5c85555
+    reason: >-
+      assignment.hpp InterruptTierAllowed levels, >= vs >: at 8 bits the shift also gives 256
+  - id: m-85f9c2108783
+    reason: >-
+      assignment.hpp InterruptTierAllowed levels, 8 vs 9: at 8 bits the shift gives the same 256, and 9 or more is capped to 256 by the other branch
+  - id: m-e922d7c06ea6
+    reason: >-
+      assignment.hpp InterruptTierAllowed levels, 256 vs 257: a uint8_t priority is never above 255, so the in-range test is the same
   - id: m-84636bf3af4f
     reason: >-
       completion.hpp kCancelling: the value only has to differ from the other three states

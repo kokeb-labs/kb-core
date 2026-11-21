@@ -806,10 +806,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#templates" class="md-nav__link">
+  <a href="#choosing-a-kind" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Templates
+        Choosing a kind
       
     </span>
   </a>
@@ -1443,10 +1443,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#templates" class="md-nav__link">
+  <a href="#choosing-a-kind" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Templates
+        Choosing a kind
       
     </span>
   </a>
@@ -1490,28 +1490,34 @@
 
 
 <h1 id="figures">Figures<a class="headerlink" href="#figures" title="Permanent link">&para;</a></h1>
-<p>Every diagram of this site is a committed SVG pair, light and dark, drawn from a small Python module by the
-documentation toolchain (<code>figkit</code>, shipped in the shared <code>kokeb-mkdocs-theme</code>) and the kb-core kit on top of it
-(<code>tools/docs/kbfig.py</code>). There is no script in the reader's browser: the pages load no Mermaid, stay fast on a phone and
-print. The <a href="../diagrams/">figure catalogue</a> lists every figure with its description.</p>
+<p>Every diagram of this site is a committed SVG pair, light and dark, drawn from a small model file by the documentation
+toolchain (<code>figkit</code>, shipped in the shared <code>kokeb-mkdocs-theme</code>). There is no script in the reader's browser: the pages
+load no Mermaid, stay fast on a phone and print. The <a href="../diagrams/">figure catalogue</a> lists every figure with its
+description.</p>
 <h2 id="what-every-figure-has">What every figure has<a class="headerlink" href="#what-every-figure-has" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>One source.</strong> <code>docs/diagrams/figures/&lt;id&gt;.py</code> is the only place a figure is edited. A figure that shows facts of
-  the repository (the components, a rule file) reads them in <code>data()</code>, so it cannot drift from the code.</li>
-<li><strong>A light and a dark file.</strong> <code>&lt;id&gt;.svg</code> and <code>&lt;id&gt;.dark.svg</code>, laid out once, so the two cannot differ. Pages embed
-  both with a marker pair and the site follows the theme toggle.</li>
-<li><strong>Accessible text.</strong> One sentence of <code>alt</code> becomes the <code>&lt;title&gt;</code> and the <code>alt</code> of every embed; the <code>Reads:</code>
-  paragraph of the module docstring becomes the <code>&lt;desc&gt;</code> and the long description under the figure. Colour is never the
-  only carrier of meaning: edges that are forbidden or faulty are dashed or labelled, states carry a text.</li>
-<li><strong>Contrast of at least 4.5:1</strong> for every text, in both themes, checked as the figure is built, and text sizes that
-  stay readable at README width and on a phone.</li>
-<li><strong>A freshness check.</strong> <code>kokeb-docs figures --check</code> fails CI when a committed SVG differs from a fresh build, and
-  <code>tools/docs/check_figures.py</code> rejects Mermaid fences, <code>.mmd</code> files, a missing light or dark file or source, and an
-  SVG with a script or an external reference.</li>
+<li><strong>One source.</strong> <code>docs/model/&lt;id&gt;.&lt;kind&gt;.yml</code> is the only place a figure is edited. The kind is one of the shared
+  figkit kinds: <code>state</code>, <code>graph</code>, <code>seq</code>, <code>timeline</code>, <code>matrix</code>, <code>bytes</code> or <code>pipeline</code>. A figure that shows facts of the
+  repository (the components) is a small module <code>docs/diagrams/figures/&lt;id&gt;.py</code> instead: its <code>data()</code> reads the facts
+  and its <code>build()</code> turns them into the same model and draws it with <code>from_model</code>, so it cannot drift from the code.</li>
+<li><strong>A phone-first layout.</strong> About 640 px wide, read top to bottom, with short labels on the cards and arrows. Long
+  text goes to the <code>reads</code> paragraph under the figure, not onto the figure.</li>
+<li><strong>A light and a dark file.</strong> <code>&lt;id&gt;.svg</code> and <code>&lt;id&gt;.dark.svg</code>, laid out once, so the two cannot differ, plus
+  <code>&lt;id&gt;.adaptive.svg</code>, one file for both themes. Pages embed the pair with a marker pair and the site follows the theme
+  toggle.</li>
+<li><strong>Accessible text.</strong> The one-sentence <code>alt</code> becomes the <code>&lt;title&gt;</code> and the <code>alt</code> of every embed; the <code>reads</code>
+  paragraph becomes the <code>&lt;desc&gt;</code> and the long description under the figure. Colour is never the only carrier of
+  meaning: forbidden or faulty edges are dashed and labelled, states and matrix cells carry a word, and a matrix also
+  gets a table twin, <code>&lt;id&gt;.table.html</code>.</li>
+<li><strong>Checks.</strong> Text contrast of at least 4.5:1 and shape contrast of at least 3:1 in both themes, text that fits its
+  card, no arrow under a card, text of at least 7 pt when printed on A4, and SVG and alt lint, all from
+  <code>kokeb-docs figures --lint</code>. <code>kokeb-docs figures --check</code> fails CI when a committed SVG differs from a fresh build,
+  and <code>tools/docs/check_figures.py</code> rejects Mermaid fences, <code>.mmd</code> files, a missing light or dark file or source, a
+  module that does not draw with figkit, and an SVG with a script or an external reference.</li>
 </ul>
 <h2 id="the-palette">The palette<a class="headerlink" href="#the-palette" title="Permanent link">&para;</a></h2>
 <p>Colours are tokens, never hex values: the Kokeb copper (gold in dark) for kb-core itself, and one tone for each kind of
-thing, the same in every figure, so a reader learns it once.</p>
+thing, the same in every figure, so a reader learns it once. Write the tone in the model (<code>tone: violet</code>).</p>
 <table>
 <thead>
 <tr>
@@ -1522,122 +1528,133 @@ thing, the same in every figure, so a reader learns it once.</p>
 </thead>
 <tbody>
 <tr>
-<td><code>core</code></td>
-<td>copper (gold in dark)</td>
+<td>core</td>
+<td><code>brand</code>, copper (gold in dark)</td>
 <td>kb-core as a whole, <code>kb::utils</code></td>
 </tr>
 <tr>
-<td><code>contract</code></td>
-<td>blue</td>
+<td>contract</td>
+<td><code>blue</code></td>
 <td><code>kb::interfaces</code>, port contracts, shared state, inputs</td>
 </tr>
 <tr>
-<td><code>handler</code></td>
-<td>violet</td>
+<td>handler</td>
+<td><code>violet</code></td>
 <td><code>kb::handlers</code>, bindings, the start-up pipeline</td>
 </tr>
 <tr>
-<td><code>rtos</code></td>
-<td>amber</td>
+<td>rtos</td>
+<td><code>amber</code></td>
 <td><code>kb::rtos</code> and its backends, timing</td>
 </tr>
 <tr>
-<td><code>port</code></td>
-<td>teal</td>
+<td>port</td>
+<td><code>teal</code></td>
 <td>MCU ports, the host port, bus domains</td>
 </tr>
 <tr>
-<td><code>driver</code></td>
-<td>green</td>
+<td>driver</td>
+<td><code>green</code></td>
 <td><code>driver-&lt;chip&gt;</code> (and "ok", "allowed", outputs)</td>
 </tr>
 <tr>
-<td><code>product</code></td>
-<td>magenta</td>
+<td>product</td>
+<td><code>magenta</code></td>
 <td>the application and the board HAL</td>
 </tr>
 <tr>
-<td><code>soup</code></td>
-<td>slate, dashed when planned</td>
-<td>SOUP and things not built yet</td>
+<td>soup</td>
+<td><code>slate</code></td>
+<td>SOUP and things not built yet (a card without the accent tint)</td>
 </tr>
 <tr>
-<td><code>bad</code></td>
-<td>rose</td>
+<td>bad</td>
+<td><code>rose</code></td>
 <td>forbidden edges, failures, fault paths</td>
 </tr>
 <tr>
-<td><code>tool</code></td>
-<td>brown</td>
+<td>tool</td>
+<td><code>brown</code></td>
 <td>generators, the kb tool, tasks and tests</td>
 </tr>
 </tbody>
 </table>
-<p>Solid arrows are calls or "depends on"; dashed arrows are optional, returns or forbidden (always with a label that says
-which). Cards have a coloured stripe and 10 px corners; regions are tinted bands with an upper-case label.</p>
-<h2 id="templates">Templates<a class="headerlink" href="#templates" title="Permanent link">&para;</a></h2>
-<p><code>kbfig</code> adds what figkit leaves to each figure:</p>
+<p>A matrix uses the status tones instead: <code>ok</code>, <code>warn</code>, <code>fail</code>, <code>na</code> and <code>planned</code>, each drawn with a mark and a word.
+Solid arrows are calls or "depends on"; dashed arrows are optional, returns or forbidden, always with a label that says
+which. Every figure has a <code>legend</code> that names each tone it uses.</p>
+<h2 id="choosing-a-kind">Choosing a kind<a class="headerlink" href="#choosing-a-kind" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
-<th>Call</th>
-<th>Draws</th>
+<th>Kind</th>
+<th>For</th>
+<th>Examples here</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>kbfig.row(f, x, y, w, cards)</code></td>
-<td>Cards side by side, equal height, with a role colour each</td>
+<td><code>graph</code></td>
+<td>Layers, flows and call chains: cards and arrows in ranks, top to bottom</td>
+<td><code>layer-stack</code>, <code>ci-flow</code>, <code>call-sequence</code></td>
 </tr>
 <tr>
-<td><code>kbfig.lane(f, x, y, w, label, cards, role=...)</code></td>
-<td>A tinted band with a label and a row of cards (a layer, a zone)</td>
+<td><code>state</code></td>
+<td>A state machine: states, transitions, a start disc, self loops</td>
+<td><code>handler-health</code>, <code>dma-lease</code></td>
 </tr>
 <tr>
-<td><code>kbfig.flow(f, x, y, w, steps)</code></td>
-<td>A left to right pipeline of cards joined by arrows</td>
+<td><code>seq</code></td>
+<td>Messages between three or four participants over time</td>
+<td><code>async-poll</code></td>
 </tr>
 <tr>
-<td><code>kbfig.pairs(f, x, y, w, rows)</code></td>
-<td>Rows of two pills and an arrow with a note (allowed and forbidden edges)</td>
+<td><code>matrix</code></td>
+<td>A verdict per row, with a word and a mark in every cell</td>
+<td><code>dependency-rules</code>, <code>misra-scope</code></td>
 </tr>
 <tr>
-<td><code>kbfig.sequence(f, y, actors, messages)</code></td>
-<td>A sequence diagram: lifelines, calls, returns, self calls, notes</td>
+<td><code>pipeline</code></td>
+<td>Columns of stacked items</td>
+<td><code>handler-startup</code></td>
 </tr>
 <tr>
-<td><code>kbfig.loop(f, box, side, label)</code></td>
-<td>A self-transition on a state</td>
+<td><code>timeline</code></td>
+<td>Lanes against a time axis</td>
+<td>none yet</td>
 </tr>
 <tr>
-<td><code>kbfig.legend(*roles)</code></td>
-<td>A legend from role names</td>
+<td><code>bytes</code></td>
+<td>A record laid out byte by byte</td>
+<td>none yet</td>
 </tr>
 </tbody>
 </table>
-<p>State machines are drawn with <code>f.card</code> per state on a grid and <code>f.edge</code> for each transition (see
-<code>docs/diagrams/figures/handler-health.py</code>); a layered stack with <code>kbfig.lane</code> per layer (<code>layer-stack.py</code>).</p>
+<p>Keep a <code>graph</code> or <code>state</code> figure to about two cards per rank: a rank of three cards makes the figure wider than
+640 px. A <code>seq</code> figure with five participants is too wide for a phone; draw the call chain as a <code>graph</code> with solid calls
+going down and dashed returns going up instead (see <code>call-sequence</code>). One figure, <code>handler-threading</code>, stays a module of
+plain figkit calls, because it stacks two small graphs one above the other, which the <code>graph</code> kind would put side by
+side.</p>
 <h2 id="add-a-figure">Add a figure<a class="headerlink" href="#add-a-figure" title="Permanent link">&para;</a></h2>
 <ol>
-<li>Copy the closest module in <code>docs/diagrams/figures/</code> to <code>&lt;id&gt;.py</code> (lower case, hyphens) and change its content. Keep
-   a <code>Reads:</code> paragraph in the docstring, a one-sentence <code>alt</code> and a <code>legend</code> that names every colour you use.</li>
-<li>Build and look at it: <code>kokeb-docs figures &lt;id&gt;</code> (from the repository root, with
-   <code>KOKEB_DOCS_CONFIG=_config/mkdocs.yml</code>) writes <code>docs/diagrams/&lt;id&gt;.svg</code> and <code>&lt;id&gt;.dark.svg</code>. The build refuses a
-   figure with low contrast, text that does not fit, overlapping cards, an arrow under a card or a label on a card;
-   fix the layout rather than the check. <code>rsvg-convert -w 1200 docs/diagrams/&lt;id&gt;.svg -o /tmp/&lt;id&gt;.png</code> gives a
-   picture to open.</li>
-<li>Embed it in a page with a marker pair, and run <code>kokeb-docs figures</code> again to fill it:</li>
+<li>Scaffold it: <code>kokeb-docs figkit new --kind graph --id &lt;id&gt; --page docs/&lt;page&gt;.md</code> (from the repository root, with
+   <code>KOKEB_DOCS_CONFIG=_config/mkdocs.yml</code>). This writes <code>docs/model/&lt;id&gt;.graph.yml</code> and adds the embed marker to the
+   page.</li>
+<li>Edit the model. Write the one-sentence <code>alt</code> (40 to 300 characters) and the <code>reads</code> paragraph first: at least two
+   sentences, naming every state, participant, lane or column. Then the cards, the edges and the <code>legend</code>. Quote a list
+   item that holds a comma or a colon (<code>lines: ["MCU, RTOS"]</code>), or YAML splits it.</li>
+<li>For a <code>state</code> or <code>graph</code> figure, run <code>kokeb-docs figkit layout &lt;id&gt;</code> and commit <code>docs/diagrams/&lt;id&gt;.layout.json</code>.
+   This is the only step that needs Graphviz; run it again whenever the cards, edges or text change.</li>
+<li>Build and look at it: <code>kokeb-docs figures</code> writes the SVGs, <code>figures.json</code> and the catalogue, and fills the embed
+   markers. The build refuses low contrast, text that does not fit, overlapping cards, an arrow under a card or a label
+   on a card; fix the model rather than the check. <code>rsvg-convert -w 360 docs/diagrams/&lt;id&gt;.svg -o /tmp/&lt;id&gt;.png</code> shows
+   it at phone width.</li>
+<li>Run <code>kokeb-docs figures --lint</code>, <code>kokeb-docs check</code>, <code>python3 tools/docs/check_figures.py</code> and the strict site
+   build, or <code>tools/preflight.sh</code>, which runs them. Commit the model, the layout lock and everything under
+   <code>docs/diagrams/</code> together.</li>
 </ol>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>&lt;!-- figure: &lt;id&gt; --&gt;
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>&lt;!-- /figure --&gt;
-</span></code></pre></div>
-<ol>
-<li>Run <code>kokeb-docs check</code>, <code>python3 tools/docs/check_figures.py</code> and the strict site build, or <code>tools/preflight.sh</code>,
-   which runs all three. Commit the module, the two SVGs, <code>figures.json</code> and <code>diagrams/index.md</code> together.</li>
-</ol>
-<p>Rules of thumb: at most about ten cards per figure (split a bigger story in two), arrows only between neighbours or
-along a clear gap, labels of a few words (put detail in the card text), the same role colour for the same thing as
-everywhere else, and a figure that shows repository facts reads them in <code>data()</code> and names its <code>sources</code>.</p>
+<p>Rules of thumb: at most about ten cards per figure (split a bigger story in two), labels of a few words, the same tone
+for the same thing as everywhere else, and a figure that shows repository facts reads them in <code>data()</code> and names its
+<code>sources</code>. Never edit an SVG or a layout lock by hand, write a hex colour, or put a time stamp in a model.</p>
 
 
 

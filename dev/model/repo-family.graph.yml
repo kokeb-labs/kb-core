@@ -1,0 +1,46 @@
+---
+# The kb repository family.
+kind: graph
+id: repo-family
+title: The kb repository family
+kicker: Ports and repositories
+subtitle: Only kb-core exists today. Every repository marked planned is not built yet.
+alt: >-
+  Repository graph with consumers on top, in which the product application uses a board HAL built on kb-hal-common and
+  an MCU port, both resting on kb-core, which pins the drivers, while planned tool repositories read kb-core.
+reads: >-
+  Consumers on top. A product organisation owns the product application and its board HAL, board-<name>. The
+  kokeb-labs organisation holds kb-core (utils, rtos, interfaces, handlers and the driver pins), kb-hal-common (shared
+  HAL bases), the reference board HALs kb-board-<board> and, planned, the configurator kb-configurator, an
+  application template kb-app-template and the tested version sets kb-trains. The kokeb-labs-drivers organisation
+  holds each driver-<chip> (one repository per chip) and each MCU port, port-<family> (port-esp32, port-stm32). A
+  board HAL builds on kb-hal-common and one port; both rest on kb-core, which pins the drivers. The configurator
+  reads kb-core releases and fills the application template; the tested version sets list sets of kb-core. Only
+  kb-core exists today; the other names are planned.
+direction: TB
+print: portrait
+legend:
+  - [magenta, product organisation]
+  - [brand, kokeb-labs]
+  - [teal, kokeb-labs-drivers]
+  - [green, driver]
+  - [brown, tool]
+nodes:
+  - {id: app, label: product application, tone: magenta, lines: [product organisation], accent: true}
+  - {id: tools, label: Planned tools, tone: brown, lines: [kb-configurator, kb-app-template, kb-trains]}
+  - {id: board, label: "board-<name>", tone: magenta, lines: [product board HAL, product organisation], accent: true}
+  - {id: kboard, label: "kb-board-<board>", tone: brand, lines: [reference HALs, planned]}
+  - {id: halc, label: kb-hal-common, tone: brand, lines: [shared HAL bases, planned]}
+  - {id: port, label: "port-<family>", tone: teal, lines: [port-esp32, port-stm32], accent: true}
+  - {id: core, label: kb-core, tone: brand, lines: [parts and driver pins], accent: true}
+  - {id: drv, label: "driver-<chip>", tone: green, lines: [one repository, per chip, at release tags], accent: true}
+edges:
+  - {from: app, to: board}
+  - {from: board, to: halc}
+  - {from: board, to: port}
+  - {from: kboard, to: halc}
+  - {from: kboard, to: port}
+  - {from: halc, to: core}
+  - {from: port, to: core}
+  - {from: core, to: drv, label: pins}
+  - {from: core, to: tools, label: releases, dashed: true}

@@ -1631,13 +1631,14 @@ Test code (unit, compile-fail and fuzz tests, the host test port in <code>compon
 host backend in <code>host/</code>) is built with the same flags and analysed by clang-tidy and cppcheck, but is outside the
 MISRA claim.</p>
 <figure class="kb-figure">
-<img src="../../diagrams/misra-scope.svg#only-light" alt="Four zones from strongest claim to none: kb-core own code claimed compliant with zero deviations; boundary files compliant with recorded deviations; drivers covered by their own evidence; SOUP out of scope and never reported." width="1200" height="905"><img src="../../diagrams/misra-scope.dark.svg#only-dark" alt="Four zones from strongest claim to none: kb-core own code claimed compliant with zero deviations; boundary files compliant with recorded deviations; drivers covered by their own evidence; SOUP out of scope and never reported." width="1200" height="905">
+<img src="../../diagrams/misra-scope.svg#only-light" alt="Table of four zones from strongest claim to none, with kb-core&#x27;s own code claimed compliant with zero deviations, boundary files compliant with recorded deviations, drivers covered by their own evidence and SOUP out of scope." width="640" height="738"><img src="../../diagrams/misra-scope.dark.svg#only-dark" alt="Table of four zones from strongest claim to none, with kb-core&#x27;s own code claimed compliant with zero deviations, boundary files compliant with recorded deviations, drivers covered by their own evidence and SOUP out of scope." width="640" height="738">
 <figcaption>MISRA C++:2023 scope</figcaption>
 </figure>
 
 <details class="kb-figure-desc">
 <summary>Figure description and sources</summary>
-<p>Four zones, from strongest claim to none. kb-core's own code under components/lib is claimed compliant with zero repository deviations: utils, interface contracts and host port, the rtos public API, and handlers with bindings. Boundary files, the RTOS backends' and the ports' files that touch vendor code, are compliant with recorded deviations. Each driver at its pinned tag is covered by its own MISRA run at level high. SOUP (ESP-IDF, STM32 HAL, FreeRTOS, ThreadX, mbedTLS) is out of scope, listed with versions, included with -isystem and never reported.</p>
+<p>Four zones, from strongest claim to none. kb-core's own code under components/lib/** is claimed compliant with zero repository deviations: kb::utils and kb::interfaces (the contracts and the host port) in phase 1, the kb::rtos public API in phase 2, and kb::handlers with the bindings in phase 4. Boundary files, the files that touch vendor code, are compliant with recorded deviations: the RTOS backends' (components/lib/rtos/backends/freertos/<em>_boundary.cpp, DEV-KBC-</em>) and the ports' (components/ports/esp32/src/<em>_boundary.cpp, DEV-KBP-</em>, in their own records); the claim for kb-core's own code includes them. Each driver-<chip> at its pinned tag is covered by its own evidence, its own ru-misra run at level high. SOUP (ESP-IDF, STM32 HAL, FreeRTOS, ThreadX, mbedTLS) is out of scope, listed with versions, included with -isystem and never reported.</p>
+<p>Drawn from: <a href="../../model/misra-scope.matrix.yml"><code>docs/model/misra-scope.matrix.yml</code></a>.</p>
 </details>
 <h2 id="phases">Phases<a class="headerlink" href="#phases" title="Permanent link">&para;</a></h2>
 <table>

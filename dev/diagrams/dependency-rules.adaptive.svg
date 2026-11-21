@@ -1,0 +1,125 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="1376" viewBox="0 0 640 1376" role="img" aria-labelledby="dependency-rules-title dependency-rules-desc" font-family="Inter, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" class="fk">
+<title id="dependency-rules-title">Which layer may depend on which</title>
+<desc id="dependency-rules-desc">Table of nineteen dependency rules between layers, twelve allowed from the application down to kb::utils and seven forbidden, each forbidden one with the check that catches it.</desc>
+<style>
+.fk{--fk-brand-text:#7A360E;--fk-canvas:#FFFFFF;--fk-fail-strong:#DB2752;--fk-fail-text:#9F1239;--fk-fail-tint:#FFEEF2;--fk-frame:#E2E7EE;--fk-hair:#E2E7EE;--fk-ink:#0E1726;--fk-muted:#566070;--fk-ok-strong:#15803D;--fk-ok-text:#14532D;--fk-ok-tint:#EAF7EF;}
+@media (prefers-color-scheme:dark){.fk{--fk-brand-text:#F8D27A;--fk-canvas:#0E131A;--fk-fail-strong:#FB7185;--fk-fail-text:#FECDD3;--fk-fail-tint:#321820;--fk-frame:#283241;--fk-hair:#252F3C;--fk-ink:#E8EDF3;--fk-muted:#9AA6B5;--fk-ok-strong:#4ADE80;--fk-ok-text:#BBF7D0;--fk-ok-tint:#11281A;}}
+:root[data-theme="dark"] .fk,[data-md-color-scheme="slate"] .fk{--fk-brand-text:#F8D27A;--fk-canvas:#0E131A;--fk-fail-strong:#FB7185;--fk-fail-text:#FECDD3;--fk-fail-tint:#321820;--fk-frame:#283241;--fk-hair:#252F3C;--fk-ink:#E8EDF3;--fk-muted:#9AA6B5;--fk-ok-strong:#4ADE80;--fk-ok-text:#BBF7D0;--fk-ok-tint:#11281A;}
+:root[data-theme="light"] .fk,[data-md-color-scheme="default"] .fk{--fk-brand-text:#7A360E;--fk-canvas:#FFFFFF;--fk-fail-strong:#DB2752;--fk-fail-text:#9F1239;--fk-fail-tint:#FFEEF2;--fk-frame:#E2E7EE;--fk-hair:#E2E7EE;--fk-ink:#0E1726;--fk-muted:#566070;--fk-ok-strong:#15803D;--fk-ok-text:#14532D;--fk-ok-tint:#EAF7EF;}
+.fk-f-brand-text{fill:var(--fk-brand-text)}.fk-s-brand-text{stroke:var(--fk-brand-text)}
+.fk-f-canvas{fill:var(--fk-canvas)}.fk-s-canvas{stroke:var(--fk-canvas)}
+.fk-f-fail-strong{fill:var(--fk-fail-strong)}.fk-s-fail-strong{stroke:var(--fk-fail-strong)}
+.fk-f-fail-text{fill:var(--fk-fail-text)}.fk-s-fail-text{stroke:var(--fk-fail-text)}
+.fk-f-fail-tint{fill:var(--fk-fail-tint)}.fk-s-fail-tint{stroke:var(--fk-fail-tint)}
+.fk-f-frame{fill:var(--fk-frame)}.fk-s-frame{stroke:var(--fk-frame)}
+.fk-f-hair{fill:var(--fk-hair)}.fk-s-hair{stroke:var(--fk-hair)}
+.fk-f-ink{fill:var(--fk-ink)}.fk-s-ink{stroke:var(--fk-ink)}
+.fk-f-muted{fill:var(--fk-muted)}.fk-s-muted{stroke:var(--fk-muted)}
+.fk-f-ok-strong{fill:var(--fk-ok-strong)}.fk-s-ok-strong{stroke:var(--fk-ok-strong)}
+.fk-f-ok-text{fill:var(--fk-ok-text)}.fk-s-ok-text{stroke:var(--fk-ok-text)}
+.fk-f-ok-tint{fill:var(--fk-ok-tint)}.fk-s-ok-tint{stroke:var(--fk-ok-tint)}
+@media (forced-colors:active){.fk text{fill:CanvasText}.fk rect,.fk circle{fill:Canvas;stroke:CanvasText}.fk path{stroke:CanvasText}.fk marker path{fill:CanvasText;stroke:none}}
+</style>
+<rect x="0.5" y="0.5" width="639" height="1375" rx="16" class="fk-f-canvas fk-s-frame"/>
+<text x="32" y="44" font-size="12.5" font-weight="700" letter-spacing="1.2" class="fk-f-brand-text">LAYERING</text>
+<text x="32" y="77.3" font-size="26" font-weight="700" class="fk-f-ink">Which layer may depend on which</text>
+<text x="32" y="103.8" font-size="15" class="fk-f-muted">Every forbidden edge is caught by a named check before it can merge.</text>
+<rect x="32" y="119.8" width="576" height="1" class="fk-f-hair"/>
+<rect x="286.6" y="180.8" width="294" height="54" rx="10" stroke-width="1.4" class="fk-f-ok-tint fk-s-ok-strong"/>
+<path d="M389.7 207.8 L393.7 212.8 L402.7 201.8" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" class="fk-s-ok-strong"/>
+<rect x="286.6" y="240.8" width="294" height="54" rx="10" stroke-width="1.4" class="fk-f-ok-tint fk-s-ok-strong"/>
+<path d="M389.7 267.8 L393.7 272.8 L402.7 261.8" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" class="fk-s-ok-strong"/>
+<rect x="286.6" y="300.8" width="294" height="54" rx="10" stroke-width="1.4" class="fk-f-ok-tint fk-s-ok-strong"/>
+<path d="M389.7 327.8 L393.7 332.8 L402.7 321.8" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" class="fk-s-ok-strong"/>
+<rect x="286.6" y="360.8" width="294" height="54" rx="10" stroke-width="1.4" class="fk-f-ok-tint fk-s-ok-strong"/>
+<path d="M389.7 387.8 L393.7 392.8 L402.7 381.8" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" class="fk-s-ok-strong"/>
+<rect x="286.6" y="420.8" width="294" height="54" rx="10" stroke-width="1.4" class="fk-f-ok-tint fk-s-ok-strong"/>
+<path d="M389.7 447.8 L393.7 452.8 L402.7 441.8" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" class="fk-s-ok-strong"/>
+<rect x="286.6" y="480.8" width="294" height="54" rx="10" stroke-width="1.4" class="fk-f-ok-tint fk-s-ok-strong"/>
+<path d="M389.7 507.8 L393.7 512.8 L402.7 501.8" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" class="fk-s-ok-strong"/>
+<rect x="286.6" y="540.8" width="294" height="54" rx="10" stroke-width="1.4" class="fk-f-ok-tint fk-s-ok-strong"/>
+<path d="M389.7 564.8 L393.7 569.8 L402.7 558.8" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" class="fk-s-ok-strong"/>
+<rect x="286.6" y="600.8" width="294" height="54" rx="10" stroke-width="1.4" class="fk-f-ok-tint fk-s-ok-strong"/>
+<path d="M389.7 624.8 L393.7 629.8 L402.7 618.8" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" class="fk-s-ok-strong"/>
+<rect x="286.6" y="660.8" width="294" height="54" rx="10" stroke-width="1.4" class="fk-f-ok-tint fk-s-ok-strong"/>
+<path d="M389.7 687.8 L393.7 692.8 L402.7 681.8" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" class="fk-s-ok-strong"/>
+<rect x="286.6" y="720.8" width="294" height="54" rx="10" stroke-width="1.4" class="fk-f-ok-tint fk-s-ok-strong"/>
+<path d="M389.7 747.8 L393.7 752.8 L402.7 741.8" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" class="fk-s-ok-strong"/>
+<rect x="286.6" y="780.8" width="294" height="54" rx="10" stroke-width="1.4" class="fk-f-ok-tint fk-s-ok-strong"/>
+<path d="M389.7 807.8 L393.7 812.8 L402.7 801.8" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" class="fk-s-ok-strong"/>
+<rect x="286.6" y="840.8" width="294" height="54" rx="10" stroke-width="1.4" class="fk-f-ok-tint fk-s-ok-strong"/>
+<path d="M389.7 867.8 L393.7 872.8 L402.7 861.8" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" class="fk-s-ok-strong"/>
+<rect x="286.6" y="900.8" width="294" height="54" rx="10" stroke-width="1.4" class="fk-f-fail-tint fk-s-fail-strong"/>
+<path d="M384 919.8 L394 929.8" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" class="fk-s-fail-strong"/>
+<path d="M394 919.8 L384 929.8" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" class="fk-s-fail-strong"/>
+<rect x="286.6" y="960.8" width="294" height="54" rx="10" stroke-width="1.4" class="fk-f-fail-tint fk-s-fail-strong"/>
+<path d="M384 979.8 L394 989.8" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" class="fk-s-fail-strong"/>
+<path d="M394 979.8 L384 989.8" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" class="fk-s-fail-strong"/>
+<rect x="286.6" y="1020.8" width="294" height="54" rx="10" stroke-width="1.4" class="fk-f-fail-tint fk-s-fail-strong"/>
+<path d="M384 1039.8 L394 1049.8" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" class="fk-s-fail-strong"/>
+<path d="M394 1039.8 L384 1049.8" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" class="fk-s-fail-strong"/>
+<rect x="286.6" y="1080.8" width="294" height="54" rx="10" stroke-width="1.4" class="fk-f-fail-tint fk-s-fail-strong"/>
+<path d="M384 1099.8 L394 1109.8" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" class="fk-s-fail-strong"/>
+<path d="M394 1099.8 L384 1109.8" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" class="fk-s-fail-strong"/>
+<rect x="286.6" y="1140.8" width="294" height="54" rx="10" stroke-width="1.4" class="fk-f-fail-tint fk-s-fail-strong"/>
+<path d="M384 1159.8 L394 1169.8" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" class="fk-s-fail-strong"/>
+<path d="M394 1159.8 L384 1169.8" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" class="fk-s-fail-strong"/>
+<rect x="286.6" y="1200.8" width="294" height="54" rx="10" stroke-width="1.4" class="fk-f-fail-tint fk-s-fail-strong"/>
+<path d="M384 1219.8 L394 1229.8" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" class="fk-s-fail-strong"/>
+<path d="M394 1219.8 L384 1229.8" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" class="fk-s-fail-strong"/>
+<rect x="286.6" y="1260.8" width="294" height="54" rx="10" stroke-width="1.4" class="fk-f-fail-tint fk-s-fail-strong"/>
+<path d="M384 1279.8 L394 1289.8" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" class="fk-s-fail-strong"/>
+<path d="M394 1279.8 L384 1289.8" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" class="fk-s-fail-strong"/>
+<text x="433.6" y="165.8" font-size="13" font-weight="700" text-anchor="middle" class="fk-f-ink">Verdict</text>
+<text x="60.4" y="212.8" font-size="13" font-weight="700" class="fk-f-ink">Application → Board HAL</text>
+<text x="443.6" y="212.8" font-size="13" font-weight="600" text-anchor="middle" class="fk-f-ok-text">allowed</text>
+<text x="60.4" y="272.8" font-size="13" font-weight="700" class="fk-f-ink">Application → kb::rtos</text>
+<text x="443.6" y="272.8" font-size="13" font-weight="600" text-anchor="middle" class="fk-f-ok-text">allowed</text>
+<text x="60.4" y="332.8" font-size="13" font-weight="700" class="fk-f-ink">Application → kb::utils</text>
+<text x="443.6" y="332.8" font-size="13" font-weight="600" text-anchor="middle" class="fk-f-ok-text">allowed</text>
+<text x="60.4" y="392.8" font-size="13" font-weight="700" class="fk-f-ink">Board HAL → kb::handlers</text>
+<text x="443.6" y="392.8" font-size="13" font-weight="600" text-anchor="middle" class="fk-f-ok-text">allowed</text>
+<text x="60.4" y="452.8" font-size="13" font-weight="700" class="fk-f-ink">Board HAL → kb::interfaces</text>
+<text x="443.6" y="452.8" font-size="13" font-weight="600" text-anchor="middle" class="fk-f-ok-text">allowed</text>
+<text x="60.4" y="512.8" font-size="13" font-weight="700" class="fk-f-ink">Board HAL → MCU port</text>
+<text x="443.6" y="512.8" font-size="13" font-weight="600" text-anchor="middle" class="fk-f-ok-text">allowed</text>
+<text x="60.4" y="572.8" font-size="13" font-weight="700" class="fk-f-ink">MCU port → kb::interfaces</text>
+<text x="443.6" y="569.8" font-size="13" font-weight="600" text-anchor="middle" class="fk-f-ok-text">allowed</text>
+<text x="433.6" y="588.8" font-size="12" text-anchor="middle" class="fk-f-ok-text">installed headers only</text>
+<text x="60.4" y="632.8" font-size="13" font-weight="700" class="fk-f-ink">MCU port → SDK headers</text>
+<text x="443.6" y="629.8" font-size="13" font-weight="600" text-anchor="middle" class="fk-f-ok-text">allowed</text>
+<text x="433.6" y="648.8" font-size="12" text-anchor="middle" class="fk-f-ok-text">boundary files only</text>
+<text x="60.4" y="692.8" font-size="13" font-weight="700" class="fk-f-ink">kb::handlers → driver-&lt;chip&gt;</text>
+<text x="443.6" y="692.8" font-size="13" font-weight="600" text-anchor="middle" class="fk-f-ok-text">allowed</text>
+<text x="60.4" y="752.8" font-size="13" font-weight="700" class="fk-f-ink">kb::handlers → kb::interfaces</text>
+<text x="443.6" y="752.8" font-size="13" font-weight="600" text-anchor="middle" class="fk-f-ok-text">allowed</text>
+<text x="60.4" y="812.8" font-size="13" font-weight="700" class="fk-f-ink">kb::interfaces → kb::rtos</text>
+<text x="443.6" y="812.8" font-size="13" font-weight="600" text-anchor="middle" class="fk-f-ok-text">allowed</text>
+<text x="60.4" y="872.8" font-size="13" font-weight="700" class="fk-f-ink">kb::rtos → kb::utils</text>
+<text x="443.6" y="872.8" font-size="13" font-weight="600" text-anchor="middle" class="fk-f-ok-text">allowed</text>
+<text x="60.4" y="932.8" font-size="13" font-weight="700" class="fk-f-ink">Application → kb::interfaces</text>
+<text x="443.6" y="929.8" font-size="13" font-weight="600" text-anchor="middle" class="fk-f-fail-text">forbidden</text>
+<text x="433.6" y="948.8" font-size="12" text-anchor="middle" class="fk-f-fail-text">include checker, symbol lint</text>
+<text x="60.4" y="992.8" font-size="13" font-weight="700" class="fk-f-ink">Application → SDK headers</text>
+<text x="443.6" y="989.8" font-size="13" font-weight="600" text-anchor="middle" class="fk-f-fail-text">forbidden</text>
+<text x="433.6" y="1008.8" font-size="12" text-anchor="middle" class="fk-f-fail-text">include checker, symbol lint</text>
+<text x="60.4" y="1052.8" font-size="13" font-weight="700" class="fk-f-ink">kb::handlers → SDK headers</text>
+<text x="443.6" y="1049.8" font-size="13" font-weight="600" text-anchor="middle" class="fk-f-fail-text">forbidden</text>
+<text x="433.6" y="1068.8" font-size="12" text-anchor="middle" class="fk-f-fail-text">poison build, include checker</text>
+<text x="60.4" y="1112.8" font-size="13" font-weight="700" class="fk-f-ink">kb::handlers → MCU port</text>
+<text x="443.6" y="1109.8" font-size="13" font-weight="600" text-anchor="middle" class="fk-f-fail-text">forbidden</text>
+<text x="433.6" y="1128.8" font-size="12" text-anchor="middle" class="fk-f-fail-text">CMake DAG check</text>
+<text x="60.4" y="1172.8" font-size="13" font-weight="700" class="fk-f-ink">kb::interfaces → MCU port</text>
+<text x="443.6" y="1169.8" font-size="13" font-weight="600" text-anchor="middle" class="fk-f-fail-text">forbidden</text>
+<text x="433.6" y="1188.8" font-size="12" text-anchor="middle" class="fk-f-fail-text">include checker (LAY-010)</text>
+<text x="60.4" y="1232.8" font-size="13" font-weight="700" class="fk-f-ink">driver-&lt;chip&gt; → kb::utils</text>
+<text x="443.6" y="1229.8" font-size="13" font-weight="600" text-anchor="middle" class="fk-f-fail-text">forbidden</text>
+<text x="433.6" y="1248.8" font-size="12" text-anchor="middle" class="fk-f-fail-text">driver CI, include checker</text>
+<text x="60.4" y="1292.8" font-size="13" font-weight="700" class="fk-f-ink">kb::utils → kb::rtos</text>
+<text x="443.6" y="1289.8" font-size="13" font-weight="600" text-anchor="middle" class="fk-f-fail-text">forbidden</text>
+<text x="433.6" y="1308.8" font-size="12" text-anchor="middle" class="fk-f-fail-text">CMake target graph</text>
+<rect x="32" y="1330.2" width="14" height="14" rx="4" stroke-width="1.4" class="fk-f-ok-tint fk-s-ok-strong"/>
+<text x="54" y="1341.8" font-size="12.5" class="fk-f-muted">allowed</text>
+<rect x="126.5" y="1330.2" width="14" height="14" rx="4" stroke-width="1.4" class="fk-f-fail-tint fk-s-fail-strong"/>
+<text x="148.5" y="1341.8" font-size="12.5" class="fk-f-muted">forbidden</text>
+</svg>

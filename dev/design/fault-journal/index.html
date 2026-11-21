@@ -1621,13 +1621,14 @@
 loop, is alive. Two pieces serve that: the liveness verdict (<code>kb::handlers::LivenessMonitor</code>) and the fault journal
 (<code>kb::utils::FaultJournal&lt;Store, Slots&gt;</code>), joined by <code>kb::handlers::HealthJournal</code> on the supervisor task.</p>
 <figure class="kb-figure">
-<img src="../../diagrams/fault-journal.svg#only-light" alt="Flow: handler health edges and the liveness verdict go to the health journal, which appends one record to a CRC-checked ring in a port-provided store that survives a reset; the boot reset reason is recorded too; the watchdog is kicked only when nothing is stale; after a reset Open finds the newest record." width="1200" height="764"><img src="../../diagrams/fault-journal.dark.svg#only-dark" alt="Flow: handler health edges and the liveness verdict go to the health journal, which appends one record to a CRC-checked ring in a port-provided store that survives a reset; the boot reset reason is recorded too; the watchdog is kicked only when nothing is stale; after a reset Open finds the newest record." width="1200" height="764">
+<img src="../../diagrams/fault-journal.svg#only-light" alt="Flow in which handler health edges and the liveness verdict go to the health journal, which appends one record to a CRC-checked ring in a port store that survives a reset, with the boot reset reason recorded and the watchdog kicked only when nothing is stale." width="665" height="817"><img src="../../diagrams/fault-journal.dark.svg#only-dark" alt="Flow in which handler health edges and the liveness verdict go to the health journal, which appends one record to a CRC-checked ring in a port store that survives a reset, with the boot reset reason recorded and the watchdog kicked only when nothing is stale." width="665" height="817">
 <figcaption>Fault evidence path</figcaption>
 </figure>
 
 <details class="kb-figure-desc">
 <summary>Figure description and sources</summary>
-<p>Handler health is read lock-free and only its edges go to the HealthJournal. The LivenessMonitor's verdict goes there too, and the watchdog owner is kicked only when nothing is stale. The journal appends with one bounded store write into a FaultJournal ring of 32-byte CRC-32 records with a sequence number; at boot the port's reset reason is recorded. The store (RTC or no-init RAM, NVS, FRAM, flash) belongs to the port; after a reset Open() finds the newest record and skips a torn slot.</p>
+<p>Handler health is read lock-free and only its edges go to the HealthJournal. The LivenessMonitor's verdict goes there too, and the watchdog owner is kicked only when nothing is stale. The journal appends with one bounded store write into a FaultJournal ring of 32-byte CRC-32 records with a sequence number; at boot the port's reset reason is recorded with RecordReset. The store (RTC or no-init RAM, NVS, FRAM, flash) belongs to the port; after a reset Open() finds the newest record and skips a torn slot.</p>
+<p>Drawn from: <a href="../../model/fault-journal.graph.yml"><code>docs/model/fault-journal.graph.yml</code></a>.</p>
 </details>
 <h2 id="liveness">Liveness<a class="headerlink" href="#liveness" title="Permanent link">&para;</a></h2>
 <p>Each handler beats when it is serviced or called (<code>LivenessBeat</code>). A monitor watches up to 32 beats, each with its

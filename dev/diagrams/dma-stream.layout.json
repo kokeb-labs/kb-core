@@ -1,0 +1,87 @@
+{
+ "direction": "TB",
+ "edges": [
+  {
+   "from": "ring",
+   "to": "isr",
+   "via": []
+  },
+  {
+   "from": "isr",
+   "to": "slots",
+   "via": []
+  },
+  {
+   "from": "isr",
+   "to": "gap",
+   "via": []
+  },
+  {
+   "from": "slots",
+   "to": "view",
+   "via": []
+  },
+  {
+   "from": "view",
+   "to": "sup",
+   "via": []
+  },
+  {
+   "from": "sup",
+   "to": "fb",
+   "via": []
+  }
+ ],
+ "engine": "graphviz dot 13.1.0 (recorded for the reader; render never reads it)",
+ "figkit_layout": 1,
+ "id": "dma-stream",
+ "input": "7fab7b65bae02f5b3c1ed658b8ecfba6b616319fe916ad10ce038e5fa3484c91",
+ "nodes": {
+  "fb": [
+   0,
+   790,
+   190,
+   69
+  ],
+  "gap": [
+   246,
+   316,
+   190,
+   88
+  ],
+  "isr": [
+   123,
+   139,
+   190,
+   107
+  ],
+  "ring": [
+   123,
+   0,
+   190,
+   69
+  ],
+  "slots": [
+   0,
+   326,
+   190,
+   69
+  ],
+  "sup": [
+   0,
+   632,
+   190,
+   88
+  ],
+  "view": [
+   0,
+   474,
+   190,
+   88
+  ]
+ },
+ "size": [
+  436,
+  859
+ ]
+}

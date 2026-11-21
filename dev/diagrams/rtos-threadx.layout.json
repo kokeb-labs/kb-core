@@ -1,0 +1,101 @@
+{
+ "direction": "TB",
+ "edges": [
+  {
+   "from": "api",
+   "to": "seam",
+   "via": []
+  },
+  {
+   "from": "seam",
+   "to": "isr",
+   "via": []
+  },
+  {
+   "from": "seam",
+   "to": "bnd",
+   "via": [
+    [
+     251,
+     316
+    ],
+    [
+     251,
+     404
+    ]
+   ]
+  },
+  {
+   "from": "isr",
+   "to": "bnd",
+   "via": []
+  },
+  {
+   "from": "bnd",
+   "to": "kern",
+   "via": []
+  },
+  {
+   "from": "bnd",
+   "to": "fake",
+   "via": []
+  },
+  {
+   "from": "kern",
+   "to": "linux",
+   "via": []
+  }
+ ],
+ "engine": "graphviz dot 13.1.0 (recorded for the reader; render never reads it)",
+ "figkit_layout": 1,
+ "id": "rtos-threadx",
+ "input": "6fa399303cd7566b8b1ea62d40fcc9bfe0d48cfef8d1b0fe27e1931a731fc1b8",
+ "nodes": {
+  "api": [
+   123,
+   0,
+   190,
+   88
+  ],
+  "bnd": [
+   112,
+   474,
+   212,
+   88
+  ],
+  "fake": [
+   246,
+   660,
+   190,
+   88
+  ],
+  "isr": [
+   33,
+   316,
+   190,
+   88
+  ],
+  "kern": [
+   0,
+   632,
+   190,
+   144
+  ],
+  "linux": [
+   0,
+   846,
+   190,
+   88
+  ],
+  "seam": [
+   123,
+   158,
+   190,
+   88
+  ]
+ },
+ "size": [
+  436,
+  934
+ ]
+}

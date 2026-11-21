@@ -1,0 +1,44 @@
+---
+# The kb::rtos backends.
+kind: graph
+id: rtos-backends
+title: "kb::rtos backends"
+kicker: RTOS
+subtitle: One API and one seam. Each backend owns its objects in opaque storage.
+alt: >-
+  The kb::rtos API reaches one backend through a single seam, none, FreeRTOS, ThreadX or host for tests, and FreeRTOS
+  and ThreadX reach their kernel, which is SOUP, through boundary files and are tested on fake kernels.
+reads: >-
+  One API, one seam, four backends. The kb::rtos API (Mutex, RecursiveMutex, Semaphore, Queue, EventFlags, Timer,
+  Thread, CriticalSection in components/lib/rtos/inc) reaches a backend through kb::rtos::backend (backend.hpp), where
+  each native object lives in opaque storage sized there and every backend static_asserts that it fits. The none
+  backend is for host tests and bare-metal bring-up, with one context and a deterministic fake clock; the host
+  backend (std::thread) runs PC tests with real threads and is never built for a target. FreeRTOS (the ESP32 default,
+  any FreeRTOS target, static API only) and ThreadX (Eclipse ThreadX targets, one boundary file) reach their kernel
+  through boundary files; the kernel is SOUP, from ESP-IDF or KB_FREERTOS_INCLUDE_DIRS for FreeRTOS, and from
+  KB_THREADX_INCLUDE_DIRS or third_party/threadx for ThreadX. FreeRTOS and ThreadX also run their tests on fake
+  kernels (tests/fakes) with exact ticks.
+direction: TB
+print: portrait
+node_width: 124
+legend:
+  - [amber, "kb::rtos"]
+  - [slate, SOUP]
+  - [brown, tests only]
+nodes:
+  - {id: api, label: "kb::rtos API", tone: amber, lines: ["Mutex, Queue,", "Thread ..."], accent: true}
+  - {id: seam, label: "kb::rtos::backend", tone: amber, lines: [backend.hpp, opaque storage], accent: true}
+  - {id: tst, label: "none, host", tone: brown, lines: [host tests, bare metal, std::thread], accent: true}
+  - {id: frt, label: freertos, tone: amber, lines: [ESP32 default, static API], accent: true}
+  - {id: tx, label: threadx, tone: amber, lines: [one boundary file], accent: true}
+  - {id: kern, label: Kernels, tone: slate, lines: [FreeRTOS or ThreadX, SOUP]}
+  - {id: fake, label: Fake kernels, tone: brown, lines: [tests/fakes, exact ticks], accent: true}
+edges:
+  - {from: api, to: seam, tone: amber}
+  - {from: seam, to: tst, tone: amber}
+  - {from: seam, to: frt, tone: amber}
+  - {from: seam, to: tx, tone: amber}
+  - {from: frt, to: kern, label: boundary, tone: slate}
+  - {from: tx, to: kern, tone: slate}
+  - {from: frt, to: fake, label: tests, tone: brown, dashed: true}
+  - {from: tx, to: fake, tone: brown, dashed: true}

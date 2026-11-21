@@ -1,0 +1,55 @@
+---
+# The pieces of a handler.
+kind: graph
+id: handler-pieces
+title: The pieces of a handler
+kicker: Handlers
+subtitle: One facade per handler, chosen by the bus's thread model. Only a facade can run the core.
+alt: >-
+  Stack in which a HAL manager calls an access facade, the facade runs the handler core with a service key and owns
+  the bus domain, and the core builds the driver, which reaches the HAL's bus through the binding's port and the
+  kb::iface contract.
+reads: >-
+  From the top. A HAL manager or application task calls an access facade with EnsureStarted, Request, Sample, Latest
+  or Health; there is one facade per handler, chosen by the bus's thread model: OwnerAccess (request queue and a
+  lock-free snapshot) or Guarded (handler lock, then bus lock). Only a facade can make the ServiceKey that the handler
+  core needs, and the facade also owns the BusDomain of its bus, which holds one bus and its declared thread model.
+  The core, HandlerCore of the handler, the driver, the snapshot, the command and the reply, holds the start-up plan
+  runner (kStartupPlan), the health record and the snapshot (both seqlocks) and a liveness beat. It builds the driver
+  in a std::optional; the driver reaches the bus through the binding's Port, driver hooks (I2cHooks, SpiHooks,
+  UartHooks, AdcHooks, GpioHooks) over the kb::iface contract through which the HAL supplies its bus, pins and clock.
+direction: TB
+print: portrait
+legend:
+  - [magenta, product and board HAL]
+  - [violet, handlers]
+  - [teal, bus domain]
+  - [green, drivers]
+  - [blue, interfaces and contracts]
+nodes:
+  - id: hal
+    label: HAL manager or task
+    tone: magenta
+    lines: ["EnsureStarted, Request, Sample, Latest, Health"]
+    accent: true
+  - id: facade
+    label: Access facade
+    tone: violet
+    lines: ["OwnerAccess<H>: queue, snapshot", "or Guarded<H>: handler lock, then bus lock"]
+    accent: true
+  - id: core
+    label: HandlerCore
+    tone: violet
+    lines: [start-up runner, health, snapshot, liveness beat]
+    accent: true
+  - {id: dom, label: "BusDomain<Bus, Model>", tone: teal, lines: [one bus, its thread model], accent: true}
+  - {id: drv, label: Driver, tone: green, lines: ["std::optional", built by the plan], accent: true}
+  - {id: port, label: Binding Port, tone: violet, lines: [driver hooks, "over kb::iface"], accent: true}
+  - {id: iface, label: "kb::iface contract", tone: blue, lines: ["the HAL's bus, pins, clock"], accent: true}
+edges:
+  - {from: hal, to: facade, label: calls, tone: magenta}
+  - {from: facade, to: core, label: ServiceKey, tone: violet}
+  - {from: facade, to: dom, label: owns, tone: teal}
+  - {from: core, to: drv, label: builds, tone: violet}
+  - {from: drv, to: port, tone: green}
+  - {from: port, to: iface, tone: violet}
