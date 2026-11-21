@@ -1,0 +1,42 @@
+---
+# One call through the layers.
+kind: graph
+id: call-sequence
+title: One call through the layers
+kicker: Architecture
+subtitle: A HAL reads a register of a PF1550 power IC. Only the last step knows it runs on an ESP32.
+alt: >-
+  Call chain in which the HAL calls a guarded handler, which locks and calls the pf1550 driver, the driver calls the
+  kb binding's WriteRead, which calls the ESP32 I2C device, and the results return the same way.
+reads: >-
+  A HAL reads a register of a PF1550 power IC; solid arrows are calls, going down, and dashed arrows are returns,
+  going up. The HAL calls the guarded handler with Call(timeout, ReadRegister) (its bus is declared guarded), which
+  takes the handler lock and then the bus lock, both bounded, and calls the driver. The driver calls its own WriteRead
+  hook, WriteRead(addr, tx, n, rx, m), implemented by the kb binding (Pf1550Port), which calls WriteRead(addr, span,
+  span) on the ESP32 I2cDevice of the port. The port answers ok or an I2cFailure (AddressNack, DataNack, Bus, Timeout,
+  BusStuck); the binding returns a bool and keeps the failure for GetLastFailure; the driver returns its Result; the
+  handler returns a kb::Result carrying the driver's error in detail. Only the last step knows it runs on an ESP32.
+direction: TB
+print: portrait
+legend:
+  - [magenta, HAL]
+  - [violet, handler and binding]
+  - [green, driver]
+  - [teal, MCU port]
+  - ["~solid", call]
+  - ["~dashed", return]
+nodes:
+  - {id: hal, label: HAL, tone: magenta, lines: [reads a register], accent: true}
+  - {id: handler, label: Guarded handler, tone: violet, lines: ["handler lock, then bus lock"], accent: true}
+  - {id: driver, label: pf1550 driver, tone: green, lines: [calls its WriteRead hook], accent: true}
+  - {id: binding, label: kb binding, tone: violet, lines: [Pf1550Port], accent: true}
+  - {id: i2c, label: ESP32 I2cDevice, tone: teal, lines: [the only step that knows the MCU], accent: true}
+edges:
+  - {from: hal, to: handler, label: "Call(timeout, op)", tone: magenta}
+  - {from: handler, to: driver, label: driver call, tone: violet}
+  - {from: driver, to: binding, label: WriteRead, tone: green}
+  - {from: binding, to: i2c, label: "WriteRead(spans)", tone: violet}
+  - {from: i2c, to: binding, label: ok or I2cFailure, tone: teal, dashed: true}
+  - {from: binding, to: driver, label: "bool, failure kept", tone: violet, dashed: true}
+  - {from: driver, to: handler, label: Result, tone: green, dashed: true}
+  - {from: handler, to: hal, label: "kb::Result", tone: violet, dashed: true}

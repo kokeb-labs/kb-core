@@ -1,0 +1,58 @@
+---
+# The phase roadmap.
+kind: graph
+id: roadmap
+title: Phase roadmap
+kicker: Plan
+subtitle: No calendar dates. A phase ends when its exit criteria are met.
+alt: >-
+  Column of eight phases in order, M0 to M7: decisions, utils, rtos, interfaces, the ESP32 port and bindings, the
+  handler rollout, breadth and generators, each with its exit criteria.
+reads: >-
+  Eight phases, M0 to M7, in order; there are no calendar dates, each phase ends on its exit criteria. M0 fixes
+  decisions and guardrails: ADR-0006 to ADR-0013 recorded, and the include checker, poison build, symbol lint,
+  preflight and CI skeleton green on empty parts. M1 to M3 deliver kb::utils v0.1, kb::rtos v0.2 and kb::interfaces
+  v0.3: MISRA at level high with zero findings and zero deviations, the coverage floor, the mutation gate and clean
+  fuzzing; kb::rtos adds the none and FreeRTOS backends, at-least delays, bounded locks, CRTP threads with statistics,
+  approved boundary deviations and a clean TSan run; kb::interfaces adds concepts, a host port with fault injection,
+  BusDomain, and conformance and compile-fail tests. M4 (v0.4) adds the ESP32 port with reviewed boundary files and
+  the first three simple drivers bound and handled, integration, compat.yml, kb image check, configurator P1 and a
+  bench run. M5 (v0.9 to v1.0) rolls out handlers for all drivers, simplest to hardest (bno08x, se05x and tmc9660
+  last), with start-up plans, both thread models, and health and recovery tests. M6 adds breadth: port-stm32, the
+  ThreadX backend, tested version sets, and SBOM, CVE and licence evidence in the configurator (P2). M7 adds the
+  generators: pin tables from board.yml, a project archive and HIL in scheduled CI.
+direction: TB
+print: portrait
+node_width: 380
+legend:
+  - [brand, "kb::utils and guardrails"]
+  - [amber, "kb::rtos"]
+  - [blue, "kb::interfaces"]
+  - [teal, MCU ports]
+  - [violet, handlers]
+  - [brown, tools and generators]
+nodes:
+  - id: m0
+    label: M0 Decisions and guardrails
+    tone: brand
+    lines: ["ADR-0006 to 0013; checks green on empty parts"]
+    accent: true
+  - id: m1
+    label: "M1 kb::utils v0.1"
+    tone: brand
+    lines: ["MISRA 0 findings, coverage, mutation, fuzz"]
+    accent: true
+  - {id: m2, label: "M2 kb::rtos v0.2", tone: amber, lines: ["none and FreeRTOS backends, TSan clean"], accent: true}
+  - {id: m3, label: "M3 kb::interfaces v0.3", tone: blue, lines: ["concepts, host port, BusDomain"], accent: true}
+  - {id: m4, label: M4 ESP32 port v0.4, tone: teal, lines: [3 simple drivers bound, bench run], accent: true}
+  - {id: m5, label: M5 Handler rollout v1.0, tone: violet, lines: ["all drivers, simplest to hardest"], accent: true}
+  - {id: m6, label: M6 Breadth, tone: brown, lines: ["port-stm32, ThreadX, tested sets"], accent: true}
+  - {id: m7, label: M7 Generators, tone: brown, lines: ["board.yml pin tables, archive, HIL"], accent: true}
+edges:
+  - {from: m0, to: m1}
+  - {from: m1, to: m2}
+  - {from: m2, to: m3}
+  - {from: m3, to: m4}
+  - {from: m4, to: m5}
+  - {from: m5, to: m6}
+  - {from: m6, to: m7}

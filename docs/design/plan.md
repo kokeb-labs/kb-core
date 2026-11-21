@@ -51,8 +51,8 @@ Each phase ends on its exit criteria, not a date.
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="../diagrams/roadmap.dark.svg">
   <img src="../diagrams/roadmap.svg"
-    alt="Two rows of four phases, M0 to M7, in order: decisions, utils, rtos, interfaces, ESP32 port and
-    bindings, handler rollout, breadth and generators, each with its exit criteria.">
+    alt="Column of eight phases in order, M0 to M7: decisions, utils, rtos, interfaces, the ESP32 port and
+    bindings, the handler rollout, breadth and generators, each with its exit criteria.">
 </picture>
 <!-- /figure -->
 

@@ -1,0 +1,44 @@
+---
+# The ThreadX backend.
+kind: graph
+id: rtos-threadx
+title: The ThreadX backend
+kicker: RTOS
+subtitle: One boundary file between the kb::rtos seam and the kernel, two ways to get the kernel.
+alt: >-
+  The kb::rtos API and seam lead to two ThreadX backend files, and the boundary file reaches the ThreadX kernel,
+  from a product's copy or the pinned submodule, which tests run on a fake kernel and on the Linux port.
+reads: >-
+  The kb::rtos API (Mutex, RecursiveMutex, Semaphore, Queue, EventFlags, Timer, Thread, CriticalSection) reaches the
+  seam, kb::rtos::backend in backend.hpp. The ThreadX backend is two files: threadx_isr.cpp, where every FromIsr call
+  is the same call with TX_NO_WAIT, and threadx_boundary.cpp, the only boundary file, which creates ThreadX objects
+  (tx_*_create) on kb-owned control blocks and stacks. The kernel is SOUP and never edited; it comes from a product's
+  copy (KB_THREADX_INCLUDE_DIRS, for STM32Cube or a vendor SDK) or from the pinned submodule third_party/threadx at a
+  release tag, with KB_THREADX_PORT choosing cortex_m0, cortex_m4, cortex_m7 or linux. Tests run the boundary on a
+  fake kernel in tests/fakes/threadx (contract and seam, exact ticks, kb_rtos_tests_threadx) and, on the pinned
+  kernel's Linux port, as a threaded suite with priority inheritance (kb_rtos_tests_threadx_linux).
+direction: TB
+print: portrait
+legend:
+  - [amber, "kb::rtos"]
+  - [slate, SOUP]
+  - [brown, tests]
+nodes:
+  - {id: api, label: "kb::rtos API", tone: amber, lines: ["Mutex, Queue, Thread ..."], accent: true}
+  - {id: seam, label: "kb::rtos::backend", tone: amber, lines: [backend.hpp, the seam], accent: true}
+  - {id: isr, label: threadx_isr.cpp, tone: amber, lines: [FromIsr with TX_NO_WAIT], accent: true}
+  - {id: bnd, label: threadx_boundary.cpp, tone: amber, lines: [the only boundary file, kb-owned blocks], accent: true}
+  - id: kern
+    label: ThreadX kernel
+    tone: slate
+    lines: [SOUP, never edited, "pinned third_party/threadx", "or a product's copy"]
+  - {id: fake, label: Fake kernel, tone: brown, lines: [tests/fakes/threadx, exact ticks], accent: true}
+  - {id: linux, label: Linux port, tone: brown, lines: [threaded suite, priority inheritance], accent: true}
+edges:
+  - {from: api, to: seam, tone: amber}
+  - {from: seam, to: isr, tone: amber}
+  - {from: seam, to: bnd, tone: amber}
+  - {from: isr, to: bnd, tone: amber}
+  - {from: bnd, to: kern, label: "tx_*_create", tone: slate}
+  - {from: bnd, to: fake, label: tests, tone: brown, dashed: true}
+  - {from: kern, to: linux, label: tests, tone: brown, dashed: true}

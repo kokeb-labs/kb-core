@@ -1,0 +1,44 @@
+---
+# The fault evidence path.
+kind: graph
+id: fault-journal
+title: Fault evidence path
+kicker: Handlers
+subtitle: Health edges and stalls into a CRC-checked ring that survives a reset.
+alt: >-
+  Flow in which handler health edges and the liveness verdict go to the health journal, which appends one record to a
+  CRC-checked ring in a port store that survives a reset, with the boot reset reason recorded and the watchdog kicked
+  only when nothing is stale.
+reads: >-
+  Handler health is read lock-free and only its edges go to the HealthJournal. The LivenessMonitor's verdict goes
+  there too, and the watchdog owner is kicked only when nothing is stale. The journal appends with one bounded store
+  write into a FaultJournal ring of 32-byte CRC-32 records with a sequence number; at boot the port's reset reason is
+  recorded with RecordReset. The store (RTC or no-init RAM, NVS, FRAM, flash) belongs to the port; after a reset
+  Open() finds the newest record and skips a torn slot.
+direction: TB
+node_width: 160
+print: portrait
+legend:
+  - [violet, handler and journal]
+  - [amber, liveness]
+  - [teal, port]
+  - [brand, stored record]
+same_rank:
+  - [hj, boot]
+nodes:
+  - {id: hand, label: Handlers, tone: violet, lines: ["Health(): lock-free"], accent: true}
+  - {id: live, label: LivenessMonitor, tone: amber, lines: ["Verdict(now)", kicks the watchdog owner], accent: true}
+  - {id: hj, label: HealthJournal, tone: violet, lines: [edges only], accent: true}
+  - {id: boot, label: Boot, tone: teal, lines: [port reset reason], accent: true}
+  - {id: fj, label: FaultJournal ring, tone: brand, lines: ["32-byte records, CRC-32"], accent: true}
+  - id: store
+    label: Store
+    tone: teal
+    lines: ["RTC or no-init RAM, NVS, FRAM, flash", "Open(): newest record"]
+    accent: true
+edges:
+  - {from: hand, to: hj, label: edges, tone: violet}
+  - {from: live, to: hj, label: verdict, tone: amber}
+  - {from: hj, to: fj, label: Append, tone: violet}
+  - {from: boot, to: fj, label: RecordReset, tone: teal}
+  - {from: fj, to: store, label: one bounded write, tone: brand}

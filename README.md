@@ -34,10 +34,9 @@ repeatable project. Full documentation: <https://kokeb-labs.github.io/kb-core/>.
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/diagrams/layer-stack.dark.svg">
   <img src="docs/diagrams/layer-stack.svg"
-    alt="Layer stack, top to bottom: the product application; the board HAL repository; kb-core with
-    kb::handlers, kb::interfaces, kb::rtos and kb::utils, each depending on the next; below it the
-    drivers used by handlers, the MCU ports that satisfy the interface contracts, and the vendor SOUP
-    reached only through boundary files.">
+    alt="Layer stack from the product application through the board HAL to kb::handlers, kb::interfaces,
+    kb::rtos and kb::utils, with the drivers that handlers bind, the MCU ports that satisfy the
+    contracts, and vendor SOUP reached only through boundary files.">
 </picture>
 <!-- /figure -->
 

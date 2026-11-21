@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="728" viewBox="0 0 640 728" role="img" aria-labelledby="dma-lease-title dma-lease-desc" font-family="Inter, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" class="fk">
+<title id="dma-lease-title">Ownership of a DMA buffer</title>
+<desc id="dma-lease-desc">State machine with the states Cpu, Device and Quarantined: Lend moves a buffer to Device, Complete or a proven Abort returns it to Cpu, an unproven Abort quarantines it, and Recover with proof returns it to Cpu.</desc>
+<style>
+.fk{--fk-amber-strong:#C26A05;--fk-amber-text:#8A3C0B;--fk-amber-tint:#FFF5E3;--fk-brand-text:#7A360E;--fk-canvas:#FFFFFF;--fk-frame:#E2E7EE;--fk-green-strong:#15803D;--fk-green-text:#14532D;--fk-green-tint:#EAF7EF;--fk-hair:#E2E7EE;--fk-ink:#0E1726;--fk-ink2:#2B3442;--fk-muted:#566070;--fk-rail:#7C8798;--fk-rose-strong:#DB2752;--fk-rose-text:#9F1239;--fk-rose-tint:#FFEEF2;}
+@media (prefers-color-scheme:dark){.fk{--fk-amber-strong:#FBBF24;--fk-amber-text:#FDE68A;--fk-amber-tint:#2C2310;--fk-brand-text:#F8D27A;--fk-canvas:#0E131A;--fk-frame:#283241;--fk-green-strong:#4ADE80;--fk-green-text:#BBF7D0;--fk-green-tint:#11281A;--fk-hair:#252F3C;--fk-ink:#E8EDF3;--fk-ink2:#D2DAE4;--fk-muted:#9AA6B5;--fk-rail:#6C7889;--fk-rose-strong:#FB7185;--fk-rose-text:#FECDD3;--fk-rose-tint:#321820;}}
+:root[data-theme="dark"] .fk,[data-md-color-scheme="slate"] .fk{--fk-amber-strong:#FBBF24;--fk-amber-text:#FDE68A;--fk-amber-tint:#2C2310;--fk-brand-text:#F8D27A;--fk-canvas:#0E131A;--fk-frame:#283241;--fk-green-strong:#4ADE80;--fk-green-text:#BBF7D0;--fk-green-tint:#11281A;--fk-hair:#252F3C;--fk-ink:#E8EDF3;--fk-ink2:#D2DAE4;--fk-muted:#9AA6B5;--fk-rail:#6C7889;--fk-rose-strong:#FB7185;--fk-rose-text:#FECDD3;--fk-rose-tint:#321820;}
+:root[data-theme="light"] .fk,[data-md-color-scheme="default"] .fk{--fk-amber-strong:#C26A05;--fk-amber-text:#8A3C0B;--fk-amber-tint:#FFF5E3;--fk-brand-text:#7A360E;--fk-canvas:#FFFFFF;--fk-frame:#E2E7EE;--fk-green-strong:#15803D;--fk-green-text:#14532D;--fk-green-tint:#EAF7EF;--fk-hair:#E2E7EE;--fk-ink:#0E1726;--fk-ink2:#2B3442;--fk-muted:#566070;--fk-rail:#7C8798;--fk-rose-strong:#DB2752;--fk-rose-text:#9F1239;--fk-rose-tint:#FFEEF2;}
+.fk-f-amber-strong{fill:var(--fk-amber-strong)}.fk-s-amber-strong{stroke:var(--fk-amber-strong)}
+.fk-f-amber-text{fill:var(--fk-amber-text)}.fk-s-amber-text{stroke:var(--fk-amber-text)}
+.fk-f-amber-tint{fill:var(--fk-amber-tint)}.fk-s-amber-tint{stroke:var(--fk-amber-tint)}
+.fk-f-brand-text{fill:var(--fk-brand-text)}.fk-s-brand-text{stroke:var(--fk-brand-text)}
+.fk-f-canvas{fill:var(--fk-canvas)}.fk-s-canvas{stroke:var(--fk-canvas)}
+.fk-f-frame{fill:var(--fk-frame)}.fk-s-frame{stroke:var(--fk-frame)}
+.fk-f-green-strong{fill:var(--fk-green-strong)}.fk-s-green-strong{stroke:var(--fk-green-strong)}
+.fk-f-green-text{fill:var(--fk-green-text)}.fk-s-green-text{stroke:var(--fk-green-text)}
+.fk-f-green-tint{fill:var(--fk-green-tint)}.fk-s-green-tint{stroke:var(--fk-green-tint)}
+.fk-f-hair{fill:var(--fk-hair)}.fk-s-hair{stroke:var(--fk-hair)}
+.fk-f-ink{fill:var(--fk-ink)}.fk-s-ink{stroke:var(--fk-ink)}
+.fk-f-ink2{fill:var(--fk-ink2)}.fk-s-ink2{stroke:var(--fk-ink2)}
+.fk-f-muted{fill:var(--fk-muted)}.fk-s-muted{stroke:var(--fk-muted)}
+.fk-f-rail{fill:var(--fk-rail)}.fk-s-rail{stroke:var(--fk-rail)}
+.fk-f-rose-strong{fill:var(--fk-rose-strong)}.fk-s-rose-strong{stroke:var(--fk-rose-strong)}
+.fk-f-rose-text{fill:var(--fk-rose-text)}.fk-s-rose-text{stroke:var(--fk-rose-text)}
+.fk-f-rose-tint{fill:var(--fk-rose-tint)}.fk-s-rose-tint{stroke:var(--fk-rose-tint)}
+@media (forced-colors:active){.fk text{fill:CanvasText}.fk rect,.fk circle{fill:Canvas;stroke:CanvasText}.fk path{stroke:CanvasText}.fk marker path{fill:CanvasText;stroke:none}}
+</style>
+<defs><marker id="dma-lease-arrow-amber-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="fk-f-amber-strong"/></marker><marker id="dma-lease-arrow-green-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="fk-f-green-strong"/></marker><marker id="dma-lease-arrow-rail" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="fk-f-rail"/></marker><marker id="dma-lease-arrow-rose-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="fk-f-rose-strong"/></marker></defs>
+<rect x="0.5" y="0.5" width="639" height="727" rx="16" class="fk-f-canvas fk-s-frame"/>
+<text x="32" y="44" font-size="12.5" font-weight="700" letter-spacing="1.2" class="fk-f-brand-text">DMA</text>
+<text x="32" y="77.3" font-size="26" font-weight="700" class="fk-f-ink">Ownership of a DMA buffer</text>
+<text x="32" y="103.8" font-size="15" class="fk-f-muted">Only the port holds the key that moves a buffer between states. The CPU's</text>
+<text x="32" y="125.5" font-size="15" class="fk-f-muted">view exists in Cpu only.</text>
+<rect x="32" y="141.6" width="576" height="1" class="fk-f-hair"/>
+<path d="M280 185.6 L280 257.6" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#dma-lease-arrow-rail)" class="fk-s-rail"/>
+<path d="M219 353.6 L219 425.6" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#dma-lease-arrow-amber-strong)" class="fk-s-amber-strong"/>
+<path d="M341 425.6 L341 407 Q341 399 333 399 L288 399 Q280 399 280 391 L280 353.6" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#dma-lease-arrow-green-strong)" class="fk-s-green-strong"/>
+<path d="M280 521.5 L280 532.6 Q280 540.6 288 540.6 L291 540.6 Q299 540.6 299 548.6 L299 593.5" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 5" marker-end="url(#dma-lease-arrow-rose-strong)" class="fk-s-rose-strong"/>
+<path d="M421 593.5 L421 582.5 Q421 574.5 413 574.5 L391 574.5 Q383 574.5 383 566.5 L383 427 Q383 419 375 419 L349 419 Q341 419 341 411 L341 353.6" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#dma-lease-arrow-green-strong)" class="fk-s-green-strong"/>
+<rect x="205" y="261.6" width="150" height="88" rx="10" stroke-width="1.4" class="fk-f-green-tint fk-s-green-strong"/>
+<rect x="205" y="269.6" width="4" height="72" rx="2" class="fk-f-green-strong"/>
+<rect x="205" y="429.6" width="150" height="88" rx="10" stroke-width="1.4" class="fk-f-amber-tint fk-s-amber-strong"/>
+<rect x="205" y="437.6" width="4" height="72" rx="2" class="fk-f-amber-strong"/>
+<rect x="285" y="597.5" width="150" height="69" rx="10" stroke-width="1.4" class="fk-f-rose-tint fk-s-rose-strong"/>
+<rect x="285" y="605.5" width="4" height="53" rx="2" class="fk-f-rose-strong"/>
+<circle cx="280" cy="170.6" r="11" class="fk-f-ink2"/>
+<text x="283" y="288.3" font-size="15" font-weight="700" text-anchor="middle" class="fk-f-green-text">Cpu</text>
+<text x="283" y="313.1" font-size="13" text-anchor="middle" class="fk-f-ink2">static, aligned,</text>
+<text x="283" y="332" font-size="13" text-anchor="middle" class="fk-f-ink2">padded</text>
+<text x="283" y="456.3" font-size="15" font-weight="700" text-anchor="middle" class="fk-f-amber-text">Device</text>
+<text x="283" y="481.2" font-size="13" text-anchor="middle" class="fk-f-ink2">the peripheral</text>
+<text x="283" y="500" font-size="13" text-anchor="middle" class="fk-f-ink2">owns it</text>
+<text x="363" y="624.3" font-size="15" font-weight="700" text-anchor="middle" class="fk-f-rose-text">Quarantined</text>
+<text x="363" y="649.2" font-size="13" text-anchor="middle" class="fk-f-ink2">Lend refused</text>
+<rect x="288" y="211.6" width="70.1" height="20" rx="10" class="fk-f-canvas"/>
+<text x="323" y="225.9" font-size="12" font-weight="500" text-anchor="middle" class="fk-f-muted">construct</text>
+<rect x="226.9" y="359.6" width="42.2" height="20" rx="10" class="fk-f-canvas"/>
+<text x="248" y="373.9" font-size="12" font-weight="500" text-anchor="middle" class="fk-f-muted">Lend</text>
+<rect x="348.9" y="389" width="170.1" height="20" rx="10" class="fk-f-canvas"/>
+<text x="434" y="403.3" font-size="12" font-weight="500" text-anchor="middle" class="fk-f-muted">Complete or proven Abort</text>
+<rect x="306.8" y="530.6" width="107.4" height="20" rx="10" class="fk-f-canvas"/>
+<text x="360.5" y="544.9" font-size="12" font-weight="500" text-anchor="middle" class="fk-f-muted">unproven Abort</text>
+<rect x="429" y="564.5" width="127.9" height="20" rx="10" class="fk-f-canvas"/>
+<text x="493" y="578.8" font-size="12" font-weight="500" text-anchor="middle" class="fk-f-muted">Recover with proof</text>
+<rect x="32" y="681.9" width="14" height="14" rx="4" stroke-width="1.4" class="fk-f-green-tint fk-s-green-strong"/>
+<text x="54" y="693.5" font-size="12.5" class="fk-f-muted">the CPU owns it</text>
+<rect x="178.2" y="681.9" width="14" height="14" rx="4" stroke-width="1.4" class="fk-f-amber-tint fk-s-amber-strong"/>
+<text x="200.2" y="693.5" font-size="12.5" class="fk-f-muted">the device owns it</text>
+<rect x="338.2" y="681.9" width="14" height="14" rx="4" stroke-width="1.4" class="fk-f-rose-tint fk-s-rose-strong"/>
+<text x="360.2" y="693.5" font-size="12.5" class="fk-f-muted">quarantined</text>
+</svg>

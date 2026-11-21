@@ -1,63 +1,73 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="780" viewBox="0 0 1200 780" role="img" aria-labelledby="bus-hold-title bus-hold-desc" font-family="Inter, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="845" viewBox="0 0 640 845" role="img" aria-labelledby="bus-hold-title bus-hold-desc" font-family="Inter, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
 <title id="bus-hold-title">Held transactions</title>
-<desc id="bus-hold-desc">Two side by side models. Guarded bus: task X takes the handler mutex, then the bus mutex, and makes several calls while task Y's plain request waits or times out. Owner bus: the owner task takes the hold between passes and runs inline calls; the service pass reports Busy while the hold is held.</desc>
-<defs><marker id="fk-arrow-brown-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#7C4A1E"/></marker><marker id="fk-arrow-teal-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#0B7A72"/></marker><marker id="fk-arrow-violet-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#7C3AED"/></marker></defs>
-<rect x="0.5" y="0.5" width="1199" height="779" rx="16" fill="#FFFFFF" stroke="#E2E7EE"/>
+<desc id="bus-hold-desc">Two chains side by side: on a guarded bus task X takes the handler mutex and then the bus mutex while task Y waits; on an owner bus the owner task takes the hold between passes and the service pass reports Busy.</desc>
+<defs><marker id="bus-hold-arrow-brown-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#7C4A1E"/></marker><marker id="bus-hold-arrow-rose-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#DB2752"/></marker><marker id="bus-hold-arrow-teal-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#0B7A72"/></marker><marker id="bus-hold-arrow-violet-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#7C3AED"/></marker></defs>
+<rect x="0.5" y="0.5" width="639" height="844" rx="16" fill="#FFFFFF" stroke="#E2E7EE"/>
 <text x="32" y="44" font-size="12.5" font-weight="700" letter-spacing="1.2" fill="#7A360E">HANDLERS</text>
 <text x="32" y="77.3" font-size="26" font-weight="700" fill="#0E1726">Held transactions</text>
-<text x="32" y="103.8" font-size="15" fill="#566070">The order of the locks, and what each hold excludes.</text>
-<rect x="32" y="119.8" width="1136" height="1" fill="#E2E7EE"/>
-<rect x="32" y="137.8" width="556" height="581.4" rx="14" fill="#F3EEFF" stroke="#D5C5FA" stroke-width="1.2"/>
-<rect x="612" y="137.8" width="556" height="581.4" rx="14" fill="#F3EEFF" stroke="#D5C5FA" stroke-width="1.2"/>
-<path d="M310 268.2 L310 302.2" fill="none" stroke="#7C4A1E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-brown-strong)"/>
-<path d="M310 377.2 L310 411.2" fill="none" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-violet-strong)"/>
-<path d="M310 486.2 L310 520.2" fill="none" stroke="#0B7A72" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-teal-strong)"/>
-<path d="M890 268.2 L890 302.2" fill="none" stroke="#7C4A1E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-brown-strong)"/>
-<path d="M890 377.2 L890 411.2" fill="none" stroke="#0B7A72" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-teal-strong)"/>
-<rect x="48" y="196.2" width="524" height="69" rx="10" fill="#F8F1EA" stroke="#7C4A1E" stroke-width="1.4"/>
-<rect x="48" y="204.2" width="4" height="53" rx="2" fill="#7C4A1E"/>
-<rect x="48" y="305.2" width="524" height="69" rx="10" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1.4"/>
-<rect x="48" y="313.2" width="4" height="53" rx="2" fill="#7C3AED"/>
-<rect x="48" y="414.2" width="524" height="69" rx="10" fill="#E6F6F4" stroke="#0B7A72" stroke-width="1.4"/>
-<rect x="48" y="422.2" width="4" height="53" rx="2" fill="#0B7A72"/>
-<rect x="48" y="523.2" width="524" height="69" rx="10" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1.4"/>
-<rect x="48" y="531.2" width="4" height="53" rx="2" fill="#7C3AED"/>
-<rect x="48" y="632.2" width="524" height="69" rx="10" fill="#FFEEF2" stroke="#DB2752" stroke-width="1.4" stroke-dasharray="6 4"/>
-<rect x="628" y="196.2" width="524" height="69" rx="10" fill="#F8F1EA" stroke="#7C4A1E" stroke-width="1.4"/>
-<rect x="628" y="204.2" width="4" height="53" rx="2" fill="#7C4A1E"/>
-<rect x="628" y="305.2" width="524" height="69" rx="10" fill="#E6F6F4" stroke="#0B7A72" stroke-width="1.4"/>
-<rect x="628" y="313.2" width="4" height="53" rx="2" fill="#0B7A72"/>
-<rect x="628" y="414.2" width="524" height="69" rx="10" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1.4"/>
-<rect x="628" y="422.2" width="4" height="53" rx="2" fill="#7C3AED"/>
-<rect x="628" y="523.2" width="524" height="69" rx="10" fill="#FFEEF2" stroke="#DB2752" stroke-width="1.4" stroke-dasharray="6 4"/>
-<text x="68" y="223" font-size="15" font-weight="700" fill="#6B3F17">Task X</text>
-<text x="68" y="247.8" font-size="13" fill="#2B3442">Guarded::Hold(timeout)</text>
-<text x="68" y="332" font-size="15" font-weight="700" fill="#5B21B6">1: handler mutex</text>
-<text x="68" y="356.8" font-size="13" fill="#2B3442">bounded wait</text>
-<text x="68" y="440.9" font-size="15" font-weight="700" fill="#0B5F59">2: BusDomain::Hold</text>
-<text x="68" y="465.8" font-size="13" fill="#2B3442">bus mutex, bounded wait</text>
-<text x="68" y="550" font-size="15" font-weight="700" fill="#5B21B6">GuardedHeld</text>
-<text x="68" y="574.8" font-size="13" fill="#2B3442">Request, Sample ... many calls, nothing in between</text>
-<text x="68" y="659" font-size="15" font-weight="700" fill="#9F1239">Task Y: plain Request</text>
-<text x="68" y="683.8" font-size="13" fill="#2B3442">waits (bounded) or returns Timeout</text>
-<text x="648" y="223" font-size="15" font-weight="700" fill="#6B3F17">Owner task, between passes</text>
-<text x="648" y="247.8" font-size="13" fill="#2B3442">BusDomain::Hold(): never waits</text>
-<text x="648" y="332" font-size="15" font-weight="700" fill="#0B5F59">Pass flag</text>
-<text x="648" y="356.8" font-size="13" fill="#2B3442">set while the hold is held</text>
-<text x="648" y="440.9" font-size="15" font-weight="700" fill="#5B21B6">OwnerAccess::Held(hold)</text>
-<text x="648" y="465.8" font-size="13" fill="#2B3442">inline calls, several handlers</text>
-<text x="648" y="550" font-size="15" font-weight="700" fill="#9F1239">Service(now, ...)</text>
-<text x="648" y="574.8" font-size="13" fill="#2B3442">Busy while held; the violation is counted</text>
-<text x="48" y="162.8" font-size="13" font-weight="700" fill="#5B21B6">GUARDED BUS</text>
-<text x="48" y="180.2" font-size="12" fill="#5B21B6">handler lock, then bus lock</text>
-<text x="628" y="162.8" font-size="13" font-weight="700" fill="#5B21B6">OWNER BUS</text>
-<text x="628" y="180.2" font-size="12" fill="#5B21B6">the pass flag</text>
-<rect x="32" y="734.6" width="14" height="14" rx="4" fill="#F8F1EA" stroke="#7C4A1E" stroke-width="1.4"/>
-<text x="54" y="746.2" font-size="12.5" fill="#566070">task</text>
-<rect x="104" y="734.6" width="14" height="14" rx="4" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1.4"/>
-<text x="126" y="746.2" font-size="12.5" fill="#566070">handler</text>
-<rect x="197.2" y="734.6" width="14" height="14" rx="4" fill="#E6F6F4" stroke="#0B7A72" stroke-width="1.4"/>
-<text x="219.2" y="746.2" font-size="12.5" fill="#566070">bus domain</text>
-<rect x="316" y="734.6" width="14" height="14" rx="4" fill="#FFEEF2" stroke="#DB2752" stroke-width="1.4"/>
-<text x="338" y="746.2" font-size="12.5" fill="#566070">excluded</text>
+<text x="32" y="103.8" font-size="15" fill="#566070">The order of the locks, and what each hold excludes. Left, a guarded bus;</text>
+<text x="32" y="125.5" font-size="15" fill="#566070">right, an owner bus.</text>
+<rect x="32" y="141.6" width="576" height="1" fill="#E2E7EE"/>
+<path d="M197 250.6 L197 303.6" fill="none" stroke="#7C4A1E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#bus-hold-arrow-brown-strong)"/>
+<path d="M197 380.6 L197 432.6" fill="none" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#bus-hold-arrow-violet-strong)"/>
+<path d="M197 528.5 L197 571.5" fill="none" stroke="#0B7A72" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#bus-hold-arrow-teal-strong)"/>
+<path d="M197 667.5 L197 710.5" fill="none" stroke="#DB2752" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 5" marker-end="url(#bus-hold-arrow-rose-strong)"/>
+<path d="M443 250.6 L443 293.6" fill="none" stroke="#7C4A1E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#bus-hold-arrow-brown-strong)"/>
+<path d="M443 389.6 L443 432.6" fill="none" stroke="#0B7A72" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#bus-hold-arrow-teal-strong)"/>
+<path d="M443 528.5 L443 571.5" fill="none" stroke="#DB2752" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 5" marker-end="url(#bus-hold-arrow-rose-strong)"/>
+<rect x="102" y="159.6" width="190" height="87" rx="10" fill="#F8F1EA" stroke="#7C4A1E" stroke-width="1.4"/>
+<rect x="102" y="167.6" width="4" height="71" rx="2" fill="#7C4A1E"/>
+<rect x="102" y="307.6" width="190" height="69" rx="10" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1.4"/>
+<rect x="102" y="315.6" width="4" height="53" rx="2" fill="#7C3AED"/>
+<rect x="102" y="436.6" width="190" height="88" rx="10" fill="#E6F6F4" stroke="#0B7A72" stroke-width="1.4"/>
+<rect x="102" y="444.6" width="4" height="72" rx="2" fill="#0B7A72"/>
+<rect x="102" y="575.5" width="190" height="88" rx="10" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1.4"/>
+<rect x="102" y="583.5" width="4" height="72" rx="2" fill="#7C3AED"/>
+<rect x="102" y="714.5" width="190" height="69" rx="10" fill="#FFEEF2" stroke="#DB2752" stroke-width="1.4"/>
+<rect x="102" y="722.5" width="4" height="53" rx="2" fill="#DB2752"/>
+<rect x="348" y="159.6" width="190" height="87" rx="10" fill="#F8F1EA" stroke="#7C4A1E" stroke-width="1.4"/>
+<rect x="348" y="167.6" width="4" height="71" rx="2" fill="#7C4A1E"/>
+<rect x="348" y="297.6" width="190" height="88" rx="10" fill="#E6F6F4" stroke="#0B7A72" stroke-width="1.4"/>
+<rect x="348" y="305.6" width="4" height="72" rx="2" fill="#0B7A72"/>
+<rect x="348" y="436.6" width="190" height="88" rx="10" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1.4"/>
+<rect x="348" y="444.6" width="4" height="72" rx="2" fill="#7C3AED"/>
+<rect x="348" y="575.5" width="190" height="88" rx="10" fill="#FFEEF2" stroke="#DB2752" stroke-width="1.4"/>
+<rect x="348" y="583.5" width="4" height="72" rx="2" fill="#DB2752"/>
+<text x="122" y="186.3" font-size="15" font-weight="700" fill="#6B3F17">Task X</text>
+<text x="122" y="203.5" font-size="12" fill="#6B3F17">guarded bus</text>
+<text x="122" y="227.4" font-size="13" fill="#2B3442">Guarded::Hold(timeout)</text>
+<text x="122" y="334.3" font-size="15" font-weight="700" fill="#5B21B6">1: handler mutex</text>
+<text x="122" y="359.1" font-size="13" fill="#2B3442">bounded wait</text>
+<text x="122" y="463.3" font-size="15" font-weight="700" fill="#0B5F59">2: BusDomain::Hold</text>
+<text x="122" y="488.2" font-size="13" fill="#2B3442">bus mutex</text>
+<text x="122" y="507" font-size="13" fill="#2B3442">bounded</text>
+<text x="122" y="602.3" font-size="15" font-weight="700" fill="#5B21B6">GuardedHeld</text>
+<text x="122" y="627.2" font-size="13" fill="#2B3442">many calls</text>
+<text x="122" y="646" font-size="13" fill="#2B3442">nothing between</text>
+<text x="122" y="741.3" font-size="15" font-weight="700" fill="#9F1239">Task Y: Request</text>
+<text x="122" y="766.2" font-size="13" fill="#2B3442">waits or Timeout</text>
+<text x="368" y="186.3" font-size="15" font-weight="700" fill="#6B3F17">Owner task</text>
+<text x="368" y="203.5" font-size="12" fill="#6B3F17">owner bus</text>
+<text x="368" y="227.4" font-size="13" fill="#2B3442">Hold() between passes</text>
+<text x="368" y="324.3" font-size="15" font-weight="700" fill="#0B5F59">Pass flag</text>
+<text x="368" y="349.1" font-size="13" fill="#2B3442">set while held</text>
+<text x="368" y="368" font-size="13" fill="#2B3442">never waits</text>
+<text x="368" y="463.3" font-size="15" font-weight="700" fill="#5B21B6">OwnerAccess::Held</text>
+<text x="368" y="488.2" font-size="13" fill="#2B3442">inline calls</text>
+<text x="368" y="507" font-size="13" fill="#2B3442">several handlers</text>
+<text x="368" y="602.3" font-size="15" font-weight="700" fill="#9F1239">Service(now, ...)</text>
+<text x="368" y="627.2" font-size="13" fill="#2B3442">Busy</text>
+<text x="368" y="646" font-size="13" fill="#2B3442">violation counted</text>
+<rect x="205" y="679" width="66.9" height="20" rx="10" fill="#FFFFFF"/>
+<text x="238.5" y="693.4" font-size="12" font-weight="500" text-anchor="middle" fill="#566070">excludes</text>
+<rect x="451" y="545.4" width="66.9" height="20" rx="10" fill="#FFFFFF"/>
+<text x="484.5" y="559.7" font-size="12" font-weight="500" text-anchor="middle" fill="#566070">excludes</text>
+<rect x="32" y="798.9" width="14" height="14" rx="4" fill="#F8F1EA" stroke="#7C4A1E" stroke-width="1.4"/>
+<text x="54" y="810.5" font-size="12.5" fill="#566070">task</text>
+<rect x="104" y="798.9" width="14" height="14" rx="4" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1.4"/>
+<text x="126" y="810.5" font-size="12.5" fill="#566070">handler</text>
+<rect x="197.2" y="798.9" width="14" height="14" rx="4" fill="#E6F6F4" stroke="#0B7A72" stroke-width="1.4"/>
+<text x="219.2" y="810.5" font-size="12.5" fill="#566070">bus domain</text>
+<rect x="316" y="798.9" width="14" height="14" rx="4" fill="#FFEEF2" stroke="#DB2752" stroke-width="1.4"/>
+<text x="338" y="810.5" font-size="12.5" fill="#566070">excluded</text>
 </svg>

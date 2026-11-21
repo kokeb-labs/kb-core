@@ -1,0 +1,70 @@
+{
+ "direction": "TB",
+ "edges": [
+  {
+   "from": "inputs",
+   "to": "cli",
+   "via": []
+  },
+  {
+   "from": "inputs",
+   "to": "site",
+   "via": []
+  },
+  {
+   "from": "cli",
+   "to": "res",
+   "via": []
+  },
+  {
+   "from": "site",
+   "to": "res",
+   "via": []
+  },
+  {
+   "from": "res",
+   "to": "out",
+   "via": []
+  }
+ ],
+ "engine": "graphviz dot 13.1.0 (recorded for the reader; render never reads it)",
+ "figkit_layout": 1,
+ "id": "generator-flow",
+ "input": "dc2a6dabf45a613c41275948044d30ea778e12ce410d245b71efd7797fbd5ac1",
+ "nodes": {
+  "cli": [
+   0,
+   214,
+   190,
+   88
+  ],
+  "inputs": [
+   123,
+   0,
+   190,
+   144
+  ],
+  "out": [
+   123,
+   586,
+   190,
+   144
+  ],
+  "res": [
+   123,
+   372,
+   190,
+   144
+  ],
+  "site": [
+   246,
+   214,
+   190,
+   88
+  ]
+ },
+ "size": [
+  436,
+  730
+ ]
+}

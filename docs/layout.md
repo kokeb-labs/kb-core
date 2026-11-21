@@ -12,9 +12,8 @@ a check fails when one still names a retired location.
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="diagrams/components-map.dark.svg">
   <img src="diagrams/components-map.svg"
-    alt="Map of the repository: the lib parts utils, rtos, interfaces and handlers, each depending on the
-    next down; MCU ports that satisfy the interface contracts; and the pinned drivers that handlers
-    bind.">
+    alt="Map of the repository in which the lib parts handlers, interfaces, rtos and utils each rest on the
+    next one down, the MCU ports satisfy the interface contracts, and handlers bind the pinned drivers.">
 </picture>
 <!-- /figure -->
 

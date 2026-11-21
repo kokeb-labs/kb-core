@@ -1,0 +1,43 @@
+---
+# The update path.
+kind: graph
+id: update-path
+title: The update path
+kicker: Updates
+subtitle: One pure function plans an upgrade. The kb tool and the configurator give the same bytes.
+alt: >-
+  Five steps from reading the lock, catalogue and image through ordering, gating, one row per component and writing the
+  new files, with failing versions held back and a final review, fetch, build and test by hand.
+reads: >-
+  From the top. kb outdated (exit 3 when a component can move), kb upgrade, or the configurator's Open an existing
+  project view plan from the current lock, the catalogue and the image; the current versions come from the lock.
+  kb-core moves first, then an extracted port, then each driver in name order. Each candidate must pass the driver
+  gates in order (MCU family, kb_core_min, owner-task rule, bus kind in use); a newer version that fails is held back
+  with the code of its first failing gate. The plan lists one row per component with the SemVer change, whether it
+  breaks, and known vulnerabilities fixed and remaining. kb upgrade writes a new image and lock, the CMake files, the
+  fetch script and kb-upgrade.md; the user then reviews the diff, runs sh kb-fetch.sh, builds and tests.
+direction: TB
+print: portrait
+legend:
+  - [brown, entry and hand steps]
+  - [blue, inputs]
+  - [violet, plan]
+  - [rose, held back]
+  - [green, written]
+nodes:
+  - {id: entry, label: Entry points, tone: brown, lines: [kb outdated, kb upgrade, the configurator], accent: true}
+  - {id: read, label: 1 Read, tone: blue, lines: ["lock, catalogue, image"], accent: true}
+  - {id: order, label: 2 Order, tone: violet, lines: ["kb-core, port, drivers"], accent: true}
+  - {id: gate, label: 3 Gate, tone: violet, lines: ["MCU, kb_core_min,", "owner task, bus kind"], accent: true}
+  - {id: held, label: Held back, tone: rose, lines: [first failing gate], accent: true}
+  - {id: rows, label: 4 Rows, tone: violet, lines: [one per component], accent: true}
+  - {id: write, label: 5 Write, tone: green, lines: ["image, lock, CMake,", "fetch script, report"], accent: true}
+  - {id: hand, label: "Then, by hand", tone: brown, lines: ["review, fetch, build, test"], accent: true}
+edges:
+  - {from: entry, to: read}
+  - {from: read, to: order}
+  - {from: order, to: gate}
+  - {from: gate, to: rows, label: passes}
+  - {from: gate, to: held, label: fails, tone: rose, dashed: true}
+  - {from: rows, to: write, tone: green}
+  - {from: write, to: hand}

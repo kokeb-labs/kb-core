@@ -1,0 +1,98 @@
+{
+ "direction": "TB",
+ "edges": [
+  {
+   "from": "entry",
+   "to": "read",
+   "via": []
+  },
+  {
+   "from": "read",
+   "to": "order",
+   "via": []
+  },
+  {
+   "from": "order",
+   "to": "gate",
+   "via": []
+  },
+  {
+   "from": "gate",
+   "to": "rows",
+   "via": []
+  },
+  {
+   "from": "gate",
+   "to": "held",
+   "via": []
+  },
+  {
+   "from": "rows",
+   "to": "write",
+   "via": []
+  },
+  {
+   "from": "write",
+   "to": "hand",
+   "via": []
+  }
+ ],
+ "engine": "graphviz dot 13.1.0 (recorded for the reader; render never reads it)",
+ "figkit_layout": 1,
+ "id": "update-path",
+ "input": "66cff0e8a45844dac4489742711a2408898e74d912926f882a4646948de14326",
+ "nodes": {
+  "entry": [
+   123,
+   0,
+   190,
+   107
+  ],
+  "gate": [
+   123,
+   455,
+   190,
+   88
+  ],
+  "hand": [
+   246,
+   910,
+   190,
+   88
+  ],
+  "held": [
+   0,
+   613,
+   190,
+   69
+  ],
+  "order": [
+   123,
+   316,
+   190,
+   69
+  ],
+  "read": [
+   123,
+   177,
+   190,
+   69
+  ],
+  "rows": [
+   246,
+   613,
+   190,
+   69
+  ],
+  "write": [
+   246,
+   752,
+   190,
+   88
+  ]
+ },
+ "size": [
+  436,
+  998
+ ]
+}

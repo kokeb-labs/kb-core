@@ -1,0 +1,98 @@
+{
+ "direction": "TB",
+ "edges": [
+  {
+   "from": "tags",
+   "to": "build",
+   "via": []
+  },
+  {
+   "from": "build",
+   "to": "cat",
+   "via": []
+  },
+  {
+   "from": "cat",
+   "to": "res",
+   "via": []
+  },
+  {
+   "from": "img",
+   "to": "res",
+   "via": []
+  },
+  {
+   "from": "res",
+   "to": "lock",
+   "via": []
+  },
+  {
+   "from": "res",
+   "to": "proj",
+   "via": []
+  },
+  {
+   "from": "lock",
+   "to": "sbom",
+   "via": []
+  }
+ ],
+ "engine": "graphviz dot 13.1.0 (recorded for the reader; render never reads it)",
+ "figkit_layout": 1,
+ "id": "assembler-flow",
+ "input": "13653669b6238d94e998beb33b921e1f3710f8f25a372078c89fe56bc6532825",
+ "nodes": {
+  "build": [
+   0,
+   158,
+   190,
+   69
+  ],
+  "cat": [
+   0,
+   297,
+   190,
+   88
+  ],
+  "img": [
+   246,
+   297,
+   190,
+   88
+  ],
+  "lock": [
+   0,
+   613,
+   190,
+   107
+  ],
+  "proj": [
+   246,
+   613,
+   190,
+   107
+  ],
+  "res": [
+   123,
+   455,
+   190,
+   88
+  ],
+  "sbom": [
+   0,
+   790,
+   190,
+   88
+  ],
+  "tags": [
+   0,
+   0,
+   190,
+   88
+  ]
+ },
+ "size": [
+  436,
+  878
+ ]
+}

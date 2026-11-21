@@ -75,8 +75,8 @@ had already passed is counted as an overrun.
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="../diagrams/rtos-backends.dark.svg">
   <img src="../diagrams/rtos-backends.svg"
-    alt="The kb::rtos API reaches one backend through a single seam: none, FreeRTOS, host (tests only) or
-    ThreadX; FreeRTOS and ThreadX reach their kernel, which is SOUP, through boundary files and are
+    alt="The kb::rtos API reaches one backend through a single seam, none, FreeRTOS, ThreadX or host for
+    tests, and FreeRTOS and ThreadX reach their kernel, which is SOUP, through boundary files and are
     tested on fake kernels.">
 </picture>
 <!-- /figure -->

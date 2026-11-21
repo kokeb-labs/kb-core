@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="670" height="881" viewBox="0 0 670 881" role="img" aria-labelledby="rtos-backends-title rtos-backends-desc" font-family="Inter, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" class="fk">
+<title id="rtos-backends-title">kb::rtos backends</title>
+<desc id="rtos-backends-desc">The kb::rtos API reaches one backend through a single seam, none, FreeRTOS, ThreadX or host for tests, and FreeRTOS and ThreadX reach their kernel, which is SOUP, through boundary files and are tested on fake kernels.</desc>
+<style>
+.fk{--fk-amber-strong:#C26A05;--fk-amber-text:#8A3C0B;--fk-amber-tint:#FFF5E3;--fk-brand-text:#7A360E;--fk-brown-strong:#7C4A1E;--fk-brown-text:#6B3F17;--fk-brown-tint:#F8F1EA;--fk-canvas:#FFFFFF;--fk-card:#FFFFFF;--fk-frame:#E2E7EE;--fk-hair:#E2E7EE;--fk-ink:#0E1726;--fk-ink2:#2B3442;--fk-line:#738093;--fk-muted:#566070;--fk-slate-strong:#64748B;--fk-slate-tint:#F1F4F8;}
+@media (prefers-color-scheme:dark){.fk{--fk-amber-strong:#FBBF24;--fk-amber-text:#FDE68A;--fk-amber-tint:#2C2310;--fk-brand-text:#F8D27A;--fk-brown-strong:#D6A26B;--fk-brown-text:#F1D5B5;--fk-brown-tint:#2A1F14;--fk-canvas:#0E131A;--fk-card:#151C26;--fk-frame:#283241;--fk-hair:#252F3C;--fk-ink:#E8EDF3;--fk-ink2:#D2DAE4;--fk-line:#6C7889;--fk-muted:#9AA6B5;--fk-slate-strong:#94A3B8;--fk-slate-tint:#1B232E;}}
+:root[data-theme="dark"] .fk,[data-md-color-scheme="slate"] .fk{--fk-amber-strong:#FBBF24;--fk-amber-text:#FDE68A;--fk-amber-tint:#2C2310;--fk-brand-text:#F8D27A;--fk-brown-strong:#D6A26B;--fk-brown-text:#F1D5B5;--fk-brown-tint:#2A1F14;--fk-canvas:#0E131A;--fk-card:#151C26;--fk-frame:#283241;--fk-hair:#252F3C;--fk-ink:#E8EDF3;--fk-ink2:#D2DAE4;--fk-line:#6C7889;--fk-muted:#9AA6B5;--fk-slate-strong:#94A3B8;--fk-slate-tint:#1B232E;}
+:root[data-theme="light"] .fk,[data-md-color-scheme="default"] .fk{--fk-amber-strong:#C26A05;--fk-amber-text:#8A3C0B;--fk-amber-tint:#FFF5E3;--fk-brand-text:#7A360E;--fk-brown-strong:#7C4A1E;--fk-brown-text:#6B3F17;--fk-brown-tint:#F8F1EA;--fk-canvas:#FFFFFF;--fk-card:#FFFFFF;--fk-frame:#E2E7EE;--fk-hair:#E2E7EE;--fk-ink:#0E1726;--fk-ink2:#2B3442;--fk-line:#738093;--fk-muted:#566070;--fk-slate-strong:#64748B;--fk-slate-tint:#F1F4F8;}
+.fk-f-amber-strong{fill:var(--fk-amber-strong)}.fk-s-amber-strong{stroke:var(--fk-amber-strong)}
+.fk-f-amber-text{fill:var(--fk-amber-text)}.fk-s-amber-text{stroke:var(--fk-amber-text)}
+.fk-f-amber-tint{fill:var(--fk-amber-tint)}.fk-s-amber-tint{stroke:var(--fk-amber-tint)}
+.fk-f-brand-text{fill:var(--fk-brand-text)}.fk-s-brand-text{stroke:var(--fk-brand-text)}
+.fk-f-brown-strong{fill:var(--fk-brown-strong)}.fk-s-brown-strong{stroke:var(--fk-brown-strong)}
+.fk-f-brown-text{fill:var(--fk-brown-text)}.fk-s-brown-text{stroke:var(--fk-brown-text)}
+.fk-f-brown-tint{fill:var(--fk-brown-tint)}.fk-s-brown-tint{stroke:var(--fk-brown-tint)}
+.fk-f-canvas{fill:var(--fk-canvas)}.fk-s-canvas{stroke:var(--fk-canvas)}
+.fk-f-card{fill:var(--fk-card)}.fk-s-card{stroke:var(--fk-card)}
+.fk-f-frame{fill:var(--fk-frame)}.fk-s-frame{stroke:var(--fk-frame)}
+.fk-f-hair{fill:var(--fk-hair)}.fk-s-hair{stroke:var(--fk-hair)}
+.fk-f-ink{fill:var(--fk-ink)}.fk-s-ink{stroke:var(--fk-ink)}
+.fk-f-ink2{fill:var(--fk-ink2)}.fk-s-ink2{stroke:var(--fk-ink2)}
+.fk-f-line{fill:var(--fk-line)}.fk-s-line{stroke:var(--fk-line)}
+.fk-f-muted{fill:var(--fk-muted)}.fk-s-muted{stroke:var(--fk-muted)}
+.fk-f-slate-strong{fill:var(--fk-slate-strong)}.fk-s-slate-strong{stroke:var(--fk-slate-strong)}
+.fk-f-slate-tint{fill:var(--fk-slate-tint)}.fk-s-slate-tint{stroke:var(--fk-slate-tint)}
+@media (forced-colors:active){.fk text{fill:CanvasText}.fk rect,.fk circle{fill:Canvas;stroke:CanvasText}.fk path{stroke:CanvasText}.fk marker path{fill:CanvasText;stroke:none}}
+</style>
+<defs><marker id="rtos-backends-arrow-amber-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="fk-f-amber-strong"/></marker><marker id="rtos-backends-arrow-brown-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="fk-f-brown-strong"/></marker><marker id="rtos-backends-arrow-slate-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="fk-f-slate-strong"/></marker></defs>
+<rect x="0.5" y="0.5" width="669" height="880" rx="16" class="fk-f-canvas fk-s-frame"/>
+<text x="32" y="44" font-size="12.5" font-weight="700" letter-spacing="1.2" class="fk-f-brand-text">RTOS</text>
+<text x="32" y="77.3" font-size="26" font-weight="700" class="fk-f-ink">kb::rtos backends</text>
+<text x="32" y="103.8" font-size="15" class="fk-f-muted">One API and one seam. Each backend owns its objects in opaque storage.</text>
+<rect x="32" y="119.8" width="606" height="1" class="fk-f-hair"/>
+<path d="M332 248.8 L332.5 331.8" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#rtos-backends-arrow-amber-strong)" class="fk-s-amber-strong"/>
+<path d="M260 427.8 L260 438.6 Q260 446.6 252 446.6 L160 446.6 Q152 446.6 152 454.6 L152 510.8" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#rtos-backends-arrow-amber-strong)" class="fk-s-amber-strong"/>
+<path d="M405 427.8 L405 484.1 Q405 492.1 413 492.1 L504 492.1 Q512 492.1 512 500.1 L512 510.8" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#rtos-backends-arrow-amber-strong)" class="fk-s-amber-strong"/>
+<path d="M332.5 427.8 L332 519.8" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#rtos-backends-arrow-amber-strong)" class="fk-s-amber-strong"/>
+<path d="M464 625.8 L464 655.1 Q464 663.1 456 663.1 L386 663.1 Q378 663.1 378 671.1 L378 708.8" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#rtos-backends-arrow-slate-strong)" class="fk-s-slate-strong"/>
+<path d="M284 615.8 L284 631.4 Q284 632.4 283 632.4 L283 632.4 Q282 632.4 282 633.4 L282 708.8" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#rtos-backends-arrow-slate-strong)" class="fk-s-slate-strong"/>
+<path d="M560 625.8 L560 689.2 Q560 692.7 563.5 692.7 L563.5 692.7 Q567 692.7 567 696.2 L567 717.8" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 5" marker-end="url(#rtos-backends-arrow-brown-strong)" class="fk-s-brown-strong"/>
+<path d="M380 615.8 L380 635 Q380 643 388 643 L454 643 Q462 643 462 651 L462 717.8" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 5" marker-end="url(#rtos-backends-arrow-brown-strong)" class="fk-s-brown-strong"/>
+<rect x="269" y="137.8" width="126" height="107" rx="10" stroke-width="1.4" class="fk-f-amber-tint fk-s-amber-strong"/>
+<rect x="269" y="145.8" width="4" height="91" rx="2" class="fk-f-amber-strong"/>
+<rect x="246" y="335.8" width="173" height="88" rx="10" stroke-width="1.4" class="fk-f-amber-tint fk-s-amber-strong"/>
+<rect x="246" y="343.8" width="4" height="72" rx="2" class="fk-f-amber-strong"/>
+<rect x="90" y="514.8" width="124" height="107" rx="10" stroke-width="1.4" class="fk-f-brown-tint fk-s-brown-strong"/>
+<rect x="90" y="522.8" width="4" height="91" rx="2" class="fk-f-brown-strong"/>
+<rect x="450" y="514.8" width="124" height="107" rx="10" stroke-width="1.4" class="fk-f-amber-tint fk-s-amber-strong"/>
+<rect x="450" y="522.8" width="4" height="91" rx="2" class="fk-f-amber-strong"/>
+<rect x="270" y="523.8" width="124" height="88" rx="10" stroke-width="1.4" class="fk-f-amber-tint fk-s-amber-strong"/>
+<rect x="270" y="531.8" width="4" height="72" rx="2" class="fk-f-amber-strong"/>
+<rect x="268" y="712.8" width="124" height="107" rx="10" stroke-width="1" class="fk-f-card fk-s-line"/>
+<rect x="268" y="720.8" width="4" height="91" rx="2" class="fk-f-slate-strong"/>
+<rect x="448" y="721.8" width="133" height="88" rx="10" stroke-width="1.4" class="fk-f-brown-tint fk-s-brown-strong"/>
+<rect x="448" y="729.8" width="4" height="72" rx="2" class="fk-f-brown-strong"/>
+<text x="289" y="164.6" font-size="15" font-weight="700" class="fk-f-amber-text">kb::rtos API</text>
+<text x="289" y="189.4" font-size="13" class="fk-f-ink2">Mutex,</text>
+<text x="289" y="208.2" font-size="13" class="fk-f-ink2">Queue,</text>
+<text x="289" y="227.1" font-size="13" class="fk-f-ink2">Thread ...</text>
+<text x="266" y="362.6" font-size="15" font-weight="700" class="fk-f-amber-text">kb::rtos::backend</text>
+<text x="266" y="387.4" font-size="13" class="fk-f-ink2">backend.hpp</text>
+<text x="266" y="406.3" font-size="13" class="fk-f-ink2">opaque storage</text>
+<text x="110" y="541.5" font-size="15" font-weight="700" class="fk-f-brown-text">none, host</text>
+<text x="110" y="566.4" font-size="13" class="fk-f-ink2">host tests</text>
+<text x="110" y="585.2" font-size="13" class="fk-f-ink2">bare metal</text>
+<text x="110" y="604.1" font-size="13" class="fk-f-ink2">std::thread</text>
+<text x="470" y="541.5" font-size="15" font-weight="700" class="fk-f-amber-text">freertos</text>
+<text x="470" y="566.4" font-size="13" class="fk-f-ink2">ESP32</text>
+<text x="470" y="585.2" font-size="13" class="fk-f-ink2">default</text>
+<text x="470" y="604.1" font-size="13" class="fk-f-ink2">static API</text>
+<text x="290" y="550.5" font-size="15" font-weight="700" class="fk-f-amber-text">threadx</text>
+<text x="290" y="575.4" font-size="13" class="fk-f-ink2">one</text>
+<text x="290" y="594.2" font-size="13" class="fk-f-ink2">boundary file</text>
+<text x="288" y="739.5" font-size="15" font-weight="700" class="fk-f-ink">Kernels</text>
+<text x="288" y="764.4" font-size="13" class="fk-f-ink2">FreeRTOS or</text>
+<text x="288" y="783.2" font-size="13" class="fk-f-ink2">ThreadX</text>
+<text x="288" y="802.1" font-size="13" class="fk-f-ink2">SOUP</text>
+<text x="468" y="748.5" font-size="15" font-weight="700" class="fk-f-brown-text">Fake kernels</text>
+<text x="468" y="773.4" font-size="13" class="fk-f-ink2">tests/fakes</text>
+<text x="468" y="792.2" font-size="13" class="fk-f-ink2">exact ticks</text>
+<rect x="385.9" y="653.1" width="70.2" height="20" rx="10" class="fk-f-canvas"/>
+<text x="421" y="667.4" font-size="12" font-weight="500" text-anchor="middle" class="fk-f-muted">boundary</text>
+<rect x="575.1" y="682.7" width="41.8" height="20" rx="10" class="fk-f-canvas"/>
+<text x="596" y="697" font-size="12" font-weight="500" text-anchor="middle" class="fk-f-muted">tests</text>
+<rect x="32" y="835.2" width="14" height="14" rx="4" stroke-width="1.4" class="fk-f-amber-tint fk-s-amber-strong"/>
+<text x="54" y="846.8" font-size="12.5" class="fk-f-muted">kb::rtos</text>
+<rect x="125.3" y="835.2" width="14" height="14" rx="4" stroke-width="1.4" class="fk-f-slate-tint fk-s-slate-strong"/>
+<text x="147.3" y="846.8" font-size="12.5" class="fk-f-muted">SOUP</text>
+<rect x="208.2" y="835.2" width="14" height="14" rx="4" stroke-width="1.4" class="fk-f-brown-tint fk-s-brown-strong"/>
+<text x="230.2" y="846.8" font-size="12.5" class="fk-f-muted">tests only</text>
+</svg>

@@ -1,24 +1,25 @@
 """The components of kb-core and what they depend on.
 
-Reads: Three bands read from the folders of the repository, so the figure cannot drift. components/lib holds the parts:
-kb::utils at the bottom, kb::rtos on it, kb::interfaces on that, and kb::handlers on top. components/ports holds the MCU
-ports, which satisfy the interface contracts (the host port is for tests). components/drivers holds the pinned drivers,
-each a submodule at a release tag; kb::handlers binds them and nothing else may use them.
+Reads: Read from the folders of the repository, so the figure cannot drift. The folder components/lib holds the parts:
+kb::utils at the bottom, kb::rtos on it, kb::interfaces on that, and kb::handlers on top; kb::dma, the chip-neutral DMA
+vocabulary, also rests on kb::utils. The folder components/ports holds the MCU ports, which satisfy the interface
+contracts (the host port is for tests only). The folder components/drivers holds the pinned drivers, each a submodule at
+a release tag, listed by name; kb::handlers binds them and nothing else may use them.
 """
 
-import kbfig
-from kokeb_mkdocs_theme.figkit import Fig
+from kokeb_mkdocs_theme.figkit.kinds import from_model
 from kokeb_mkdocs_theme.paths import repo_root
 
 ROOT = repo_root()
-LIB_ROLE = {"utils": "core", "rtos": "rtos", "interfaces": "contract", "handlers": "handler"}
-LIB_ORDER = ["handlers", "interfaces", "rtos", "utils"]
-LIB_NOTE = {
-    "utils": "Status/Result, units, containers, CRC, seqlock",
-    "rtos": "mutexes, queues, threads; none, FreeRTOS, ThreadX backends",
-    "interfaces": "contracts as C++20 concepts, host test port",
-    "handlers": "bindings, handler core, start-up pipeline",
+#: Part -> (tone, the line under its name, the part it rests on). A part not listed here is drawn without an edge.
+LIB = {
+    "handlers": ("violet", "bindings, core, start-up", "interfaces"),
+    "interfaces": ("blue", "C++20 concepts, host port", "rtos"),
+    "rtos": ("amber", "none, FreeRTOS, ThreadX", "utils"),
+    "utils": ("brand", "Result, units, CRC, seqlock", ""),
+    "dma": ("brand", "buffers, leases, streams", "utils"),
 }
+ORDER = ["handlers", "interfaces", "rtos", "utils", "dma"]
 
 
 def data():
@@ -29,35 +30,40 @@ def data():
             "sources": ["components/lib", "components/ports", "components/drivers"]}
 
 
+def model(d: dict) -> dict:
+    """The graph model of the figure, from the folder listing in ``d``."""
+    parts = [p for p in ORDER if p in d["lib"]] + [p for p in d["lib"] if p not in ORDER]
+    nodes = []
+    edges = []
+    for p in parts:
+        tone, line, rests_on = LIB.get(p, ("brand", f"components/lib/{p}", ""))
+        nodes.append({"id": p, "label": f"kb::{p}", "tone": tone, "lines": [line], "accent": True})
+        if rests_on in parts:
+            edges.append({"from": p, "to": rests_on})
+    nodes.append({"id": "ports", "label": "components/ports", "tone": "teal", "accent": True,
+                  "lines": [f"{p}: {'tests only' if p == 'host' else 'MCU port'}" for p in d["ports"]]})
+    nodes.append({"id": "drivers", "label": f"{len(d['drivers'])} pinned drivers", "tone": "green", "accent": True,
+                  "lines": [", ".join(d["drivers"])]})
+    if "interfaces" in parts:
+        edges.append({"from": "ports", "to": "interfaces", "label": "satisfy", "tone": "teal"})
+    if "handlers" in parts:
+        edges.append({"from": "handlers", "to": "drivers", "label": "bind", "tone": "violet"})
+    return {
+        "kind": "graph",
+        "id": "components-map",
+        "title": "Parts, ports and drivers",
+        "kicker": "Architecture",
+        "subtitle": "Read from components/: a new part, port or driver appears here without anyone editing the figure.",
+        "alt": ("Map of the repository in which the lib parts handlers, interfaces, rtos and utils each rest on the next "
+                "one down, the MCU ports satisfy the interface contracts, and handlers bind the pinned drivers."),
+        "direction": "TB",
+        "print": "portrait",
+        "legend": [["violet", "handlers"], ["blue", "interfaces"], ["amber", "kb::rtos"], ["brand", "kb::utils"],
+                   ["teal", "MCU ports"], ["green", "drivers"]],
+        "nodes": nodes,
+        "edges": edges,
+    }
+
+
 def build(d):
-    f = Fig(
-        "components-map",
-        "Parts, ports and drivers",
-        alt=kbfig.title_case_alt(
-            "Map of the repository: the lib parts utils, rtos, interfaces and handlers, each depending on the next down;",
-            "MCU ports that satisfy the interface contracts; and the pinned drivers that handlers bind."),
-        kicker="Architecture",
-        subtitle="Read from components/: a new part, port or driver appears here without anyone editing the figure.",
-        legend=kbfig.legend("handler", "contract", "rtos", "core", "port", "driver"),
-    )
-    W = f.body_w
-    parts = [p for p in LIB_ORDER if p in d["lib"]] + [p for p in d["lib"] if p not in LIB_ORDER]
-    cards = [dict(title=f"kb::{p}", lines=[LIB_NOTE.get(p, "")], role=LIB_ROLE.get(p, "core"), accent=True,
-                  sub=f"components/lib/{p}") for p in parts]
-    band, bx = kbfig.lane(f, 0, 0, W, "components/lib: the parts", cards, role="core", gap=16)
-    for a, b in zip(bx, bx[1:]):
-        f.edge([(a.r + 3, a.cy), (b.x - 3, b.cy)], tone="rail")
-    y = band.b + 70
-    dw = (W - 40) * 0.58
-    inner = f.region_inner_top(y)
-    h = f.chips(16, inner, dw - 32, d["drivers"], tone="green")
-    f.region(0, y, dw, inner - y + h + 18, "components/drivers: pinned releases", tone="green", sub=f"{len(d['drivers'])} drivers")
-    gx = dw + 40
-    pband, pb = kbfig.lane(f, gx, y, W - gx, "components/ports: the MCU seam",
-                           [dict(title=p, lines=["MCU port" if p != "host" else "tests only"], role="port", accent=True)
-                            for p in d["ports"]], role="port", gap=16)
-    hand = next((b for b, p in zip(bx, parts) if p == "handlers"), bx[0])
-    ifc = next((b for b, p in zip(bx, parts) if p == "interfaces"), bx[0])
-    f.connect(pband, ifc, "top", "bottom", at=0.92, bt=0.5, tone="teal", label="satisfy")
-    f.edge([(hand.cx, hand.b + 3), (hand.cx, y - 3)], tone="violet", label="bind")
-    return f
+    return from_model(model(d))

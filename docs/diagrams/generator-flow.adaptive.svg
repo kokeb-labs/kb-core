@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="951" viewBox="0 0 640 951" role="img" aria-labelledby="generator-flow-title generator-flow-desc" font-family="Inter, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" class="fk">
+<title id="generator-flow-title">Generators and the configurator</title>
+<desc id="generator-flow-desc">Flow from the release inputs through the kb command line or the configurator site to one resolver, which writes kb-image.yml, git commands, CMake presets, evidence for the selection and later a project archive.</desc>
+<style>
+.fk{--fk-blue-strong:#2563EB;--fk-blue-text:#1E429F;--fk-blue-tint:#EAF2FF;--fk-brand-text:#7A360E;--fk-brown-strong:#7C4A1E;--fk-brown-text:#6B3F17;--fk-brown-tint:#F8F1EA;--fk-canvas:#FFFFFF;--fk-frame:#E2E7EE;--fk-green-strong:#15803D;--fk-green-text:#14532D;--fk-green-tint:#EAF7EF;--fk-hair:#E2E7EE;--fk-ink:#0E1726;--fk-ink2:#2B3442;--fk-muted:#566070;--fk-rail:#7C8798;}
+@media (prefers-color-scheme:dark){.fk{--fk-blue-strong:#60A5FA;--fk-blue-text:#BFDBFE;--fk-blue-tint:#13233A;--fk-brand-text:#F8D27A;--fk-brown-strong:#D6A26B;--fk-brown-text:#F1D5B5;--fk-brown-tint:#2A1F14;--fk-canvas:#0E131A;--fk-frame:#283241;--fk-green-strong:#4ADE80;--fk-green-text:#BBF7D0;--fk-green-tint:#11281A;--fk-hair:#252F3C;--fk-ink:#E8EDF3;--fk-ink2:#D2DAE4;--fk-muted:#9AA6B5;--fk-rail:#6C7889;}}
+:root[data-theme="dark"] .fk,[data-md-color-scheme="slate"] .fk{--fk-blue-strong:#60A5FA;--fk-blue-text:#BFDBFE;--fk-blue-tint:#13233A;--fk-brand-text:#F8D27A;--fk-brown-strong:#D6A26B;--fk-brown-text:#F1D5B5;--fk-brown-tint:#2A1F14;--fk-canvas:#0E131A;--fk-frame:#283241;--fk-green-strong:#4ADE80;--fk-green-text:#BBF7D0;--fk-green-tint:#11281A;--fk-hair:#252F3C;--fk-ink:#E8EDF3;--fk-ink2:#D2DAE4;--fk-muted:#9AA6B5;--fk-rail:#6C7889;}
+:root[data-theme="light"] .fk,[data-md-color-scheme="default"] .fk{--fk-blue-strong:#2563EB;--fk-blue-text:#1E429F;--fk-blue-tint:#EAF2FF;--fk-brand-text:#7A360E;--fk-brown-strong:#7C4A1E;--fk-brown-text:#6B3F17;--fk-brown-tint:#F8F1EA;--fk-canvas:#FFFFFF;--fk-frame:#E2E7EE;--fk-green-strong:#15803D;--fk-green-text:#14532D;--fk-green-tint:#EAF7EF;--fk-hair:#E2E7EE;--fk-ink:#0E1726;--fk-ink2:#2B3442;--fk-muted:#566070;--fk-rail:#7C8798;}
+.fk-f-blue-strong{fill:var(--fk-blue-strong)}.fk-s-blue-strong{stroke:var(--fk-blue-strong)}
+.fk-f-blue-text{fill:var(--fk-blue-text)}.fk-s-blue-text{stroke:var(--fk-blue-text)}
+.fk-f-blue-tint{fill:var(--fk-blue-tint)}.fk-s-blue-tint{stroke:var(--fk-blue-tint)}
+.fk-f-brand-text{fill:var(--fk-brand-text)}.fk-s-brand-text{stroke:var(--fk-brand-text)}
+.fk-f-brown-strong{fill:var(--fk-brown-strong)}.fk-s-brown-strong{stroke:var(--fk-brown-strong)}
+.fk-f-brown-text{fill:var(--fk-brown-text)}.fk-s-brown-text{stroke:var(--fk-brown-text)}
+.fk-f-brown-tint{fill:var(--fk-brown-tint)}.fk-s-brown-tint{stroke:var(--fk-brown-tint)}
+.fk-f-canvas{fill:var(--fk-canvas)}.fk-s-canvas{stroke:var(--fk-canvas)}
+.fk-f-frame{fill:var(--fk-frame)}.fk-s-frame{stroke:var(--fk-frame)}
+.fk-f-green-strong{fill:var(--fk-green-strong)}.fk-s-green-strong{stroke:var(--fk-green-strong)}
+.fk-f-green-text{fill:var(--fk-green-text)}.fk-s-green-text{stroke:var(--fk-green-text)}
+.fk-f-green-tint{fill:var(--fk-green-tint)}.fk-s-green-tint{stroke:var(--fk-green-tint)}
+.fk-f-hair{fill:var(--fk-hair)}.fk-s-hair{stroke:var(--fk-hair)}
+.fk-f-ink{fill:var(--fk-ink)}.fk-s-ink{stroke:var(--fk-ink)}
+.fk-f-ink2{fill:var(--fk-ink2)}.fk-s-ink2{stroke:var(--fk-ink2)}
+.fk-f-muted{fill:var(--fk-muted)}.fk-s-muted{stroke:var(--fk-muted)}
+.fk-f-rail{fill:var(--fk-rail)}.fk-s-rail{stroke:var(--fk-rail)}
+@media (forced-colors:active){.fk text{fill:CanvasText}.fk rect,.fk circle{fill:Canvas;stroke:CanvasText}.fk path{stroke:CanvasText}.fk marker path{fill:CanvasText;stroke:none}}
+</style>
+<defs><marker id="generator-flow-arrow-green-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="fk-f-green-strong"/></marker><marker id="generator-flow-arrow-rail" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="fk-f-rail"/></marker></defs>
+<rect x="0.5" y="0.5" width="639" height="950" rx="16" class="fk-f-canvas fk-s-frame"/>
+<text x="32" y="44" font-size="12.5" font-weight="700" letter-spacing="1.2" class="fk-f-brand-text">CONFIGURATOR</text>
+<text x="32" y="77.3" font-size="26" font-weight="700" class="fk-f-ink">Generators and the configurator</text>
+<text x="32" y="103.8" font-size="15" class="fk-f-muted">One resolver specification, two front ends, repeatable downloads. Items</text>
+<text x="32" y="125.5" font-size="15" class="fk-f-muted">marked later come in M6 and M7.</text>
+<rect x="32" y="141.6" width="576" height="1" class="fk-f-hair"/>
+<path d="M239 307.6 L239 315.7 Q239 323.7 231 323.7 L205 323.7 Q197 323.7 197 331.7 L197 369.6" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#generator-flow-arrow-rail)" class="fk-s-rail"/>
+<path d="M401 307.6 L401 345.4 Q401 353.4 409 353.4 L435 353.4 Q443 353.4 443 361.4 L443 369.6" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#generator-flow-arrow-rail)" class="fk-s-rail"/>
+<path d="M197 465.6 L197 476.9 Q197 484.9 205 484.9 L231 484.9 Q239 484.9 239 492.9 L239 527.5" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#generator-flow-arrow-rail)" class="fk-s-rail"/>
+<path d="M443 465.6 L443 500.2 Q443 508.2 435 508.2 L409 508.2 Q401 508.2 401 516.2 L401 527.5" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#generator-flow-arrow-rail)" class="fk-s-rail"/>
+<path d="M320 679.5 L320 741.5" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#generator-flow-arrow-green-strong)" class="fk-s-green-strong"/>
+<rect x="225" y="159.6" width="190" height="144" rx="10" stroke-width="1.4" class="fk-f-blue-tint fk-s-blue-strong"/>
+<rect x="225" y="167.6" width="4" height="128" rx="2" class="fk-f-blue-strong"/>
+<rect x="102" y="373.6" width="190" height="88" rx="10" stroke-width="1.4" class="fk-f-brown-tint fk-s-brown-strong"/>
+<rect x="102" y="381.6" width="4" height="72" rx="2" class="fk-f-brown-strong"/>
+<rect x="348" y="373.6" width="190" height="88" rx="10" stroke-width="1.4" class="fk-f-brown-tint fk-s-brown-strong"/>
+<rect x="348" y="381.6" width="4" height="72" rx="2" class="fk-f-brown-strong"/>
+<rect x="225" y="531.5" width="190" height="144" rx="10" stroke-width="1.4" class="fk-f-brown-tint fk-s-brown-strong"/>
+<rect x="225" y="539.5" width="4" height="128" rx="2" class="fk-f-brown-strong"/>
+<rect x="225" y="745.5" width="190" height="144" rx="10" stroke-width="1.4" class="fk-f-green-tint fk-s-green-strong"/>
+<rect x="225" y="753.5" width="4" height="128" rx="2" class="fk-f-green-strong"/>
+<text x="245" y="186.3" font-size="15" font-weight="700" class="fk-f-blue-text">Inputs</text>
+<text x="245" y="211.2" font-size="13" class="fk-f-ink2">driver.yml per driver</text>
+<text x="245" y="230" font-size="13" class="fk-f-ink2">release lock</text>
+<text x="245" y="248.8" font-size="13" class="fk-f-ink2">evidence: SBOM, CVEs</text>
+<text x="245" y="267.7" font-size="13" class="fk-f-ink2">tested sets kb YYYY.N</text>
+<text x="245" y="286.5" font-size="13" class="fk-f-ink2">board.yml (later)</text>
+<text x="122" y="400.3" font-size="15" font-weight="700" class="fk-f-brown-text">kb command line</text>
+<text x="122" y="425.2" font-size="13" class="fk-f-ink2">tools/kb</text>
+<text x="122" y="444" font-size="13" class="fk-f-ink2">standard library only</text>
+<text x="368" y="400.3" font-size="15" font-weight="700" class="fk-f-brown-text">Configurator site</text>
+<text x="368" y="425.2" font-size="13" class="fk-f-ink2">static</text>
+<text x="368" y="444" font-size="13" class="fk-f-ink2">GitHub Pages</text>
+<text x="245" y="558.3" font-size="15" font-weight="700" class="fk-f-brown-text">Resolve</text>
+<text x="245" y="583.2" font-size="13" class="fk-f-ink2">drivers to handlers</text>
+<text x="245" y="602" font-size="13" class="fk-f-ink2">interfaces and parts</text>
+<text x="245" y="620.9" font-size="13" class="fk-f-ink2">MCU gates</text>
+<text x="245" y="639.7" font-size="13" class="fk-f-ink2">kb_core_min</text>
+<text x="245" y="658.6" font-size="13" class="fk-f-ink2">thread model per bus</text>
+<text x="245" y="772.3" font-size="15" font-weight="700" class="fk-f-green-text">Downloads</text>
+<text x="245" y="797.2" font-size="13" class="fk-f-ink2">kb-image.yml</text>
+<text x="245" y="816" font-size="13" class="fk-f-ink2">git commands</text>
+<text x="245" y="834.9" font-size="13" class="fk-f-ink2">CMake presets</text>
+<text x="245" y="853.7" font-size="13" class="fk-f-ink2">selection evidence</text>
+<text x="245" y="872.6" font-size="13" class="fk-f-ink2">project archive (later)</text>
+<rect x="198.3" y="313.7" width="39.5" height="20" rx="10" class="fk-f-canvas"/>
+<text x="218" y="328" font-size="12" font-weight="500" text-anchor="middle" class="fk-f-muted">read</text>
+<rect x="402.3" y="343.4" width="39.5" height="20" rx="10" class="fk-f-canvas"/>
+<text x="422" y="357.7" font-size="12" font-weight="500" text-anchor="middle" class="fk-f-muted">read</text>
+<rect x="327.8" y="700.5" width="49.3" height="20" rx="10" class="fk-f-canvas"/>
+<text x="352.5" y="714.9" font-size="12" font-weight="500" text-anchor="middle" class="fk-f-muted">writes</text>
+<rect x="32" y="904.9" width="14" height="14" rx="4" stroke-width="1.4" class="fk-f-blue-tint fk-s-blue-strong"/>
+<text x="54" y="916.5" font-size="12.5" class="fk-f-muted">inputs</text>
+<rect x="116.3" y="904.9" width="14" height="14" rx="4" stroke-width="1.4" class="fk-f-brown-tint fk-s-brown-strong"/>
+<text x="138.3" y="916.5" font-size="12.5" class="fk-f-muted">tool</text>
+<rect x="185.7" y="904.9" width="14" height="14" rx="4" stroke-width="1.4" class="fk-f-green-tint fk-s-green-strong"/>
+<text x="207.7" y="916.5" font-size="12.5" class="fk-f-muted">outputs</text>
+</svg>

@@ -1,0 +1,34 @@
+---
+# Ownership of a DMA buffer.
+kind: state
+id: dma-lease
+title: Ownership of a DMA buffer
+kicker: DMA
+subtitle: Only the port holds the key that moves a buffer between states. The CPU's view exists in Cpu only.
+alt: >-
+  State machine with the states Cpu, Device and Quarantined: Lend moves a buffer to Device, Complete or a proven Abort
+  returns it to Cpu, an unproven Abort quarantines it, and Recover with proof returns it to Cpu.
+reads: >-
+  Three states. A buffer is constructed in Cpu: static, line-aligned and padded. Lend moves it from Cpu to Device
+  after the owned cache lines are cleaned or invalidated and a barrier ran. Complete moves it from Device back to Cpu
+  after a receive is invalidated and a barrier ran; Abort with proof that the bus master stopped also returns it to
+  Cpu. Abort without proof, or a lease destroyed while the device owns the buffer, moves it from Device to
+  Quarantined. Recover with proof, after the peripheral was re-initialised, moves it from Quarantined to Cpu. In
+  Quarantined a Lend is refused with a Fault and the CPU view is empty. Only the port holds the key that moves a
+  buffer between states (ADR-0030).
+direction: TB
+print: portrait
+legend:
+  - [green, the CPU owns it]
+  - [amber, the device owns it]
+  - [rose, quarantined]
+states:
+  - {id: Cpu, tone: green, note: "static, aligned, padded"}
+  - {id: Device, tone: amber, note: the peripheral owns it}
+  - {id: Quarantined, tone: rose, note: Lend refused}
+transitions:
+  - {from: "[*]", to: Cpu, label: construct}
+  - {from: Cpu, to: Device, label: Lend, tone: amber}
+  - {from: Device, to: Cpu, label: Complete or proven Abort, tone: green}
+  - {from: Device, to: Quarantined, label: unproven Abort, tone: rose, dashed: true}
+  - {from: Quarantined, to: Cpu, label: Recover with proof, tone: green}

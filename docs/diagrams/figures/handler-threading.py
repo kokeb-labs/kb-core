@@ -1,75 +1,106 @@
 """The two handler thread models.
 
-Reads: Two models, declared per bus; callers on other tasks use one access API in both. In the owner-task model, one
-real-time task calls Service(now) at a fixed rate, steps the single-threaded handlers on a bus domain without a mutex,
-publishes each step to a lock-free seqlock snapshot and drains a bounded command queue. Other tasks read the latest
-snapshot (a lock-free copy) or post a request and wait with a timeout. In the guarded model, each calling task takes the
-handler lock and then, within a bounded wait, the bus lock of a mutex-protected bus domain. An interrupt service routine
-only sets event flags or notifies the owner task.
+Reads: Two models, declared per bus, one above the other; callers on other tasks use one access API in both. Model O,
+the owner task, is the default for real-time buses: one real-time task, a kb::rtos::Thread, calls Service(now) at a
+fixed rate, steps the single-threaded cores of handlers A and B on BusDomain<SPI1, Owner> without a mutex (an owner
+check instead), publishes each step to a lock-free SeqlockSnapshot and drains a bounded command queue with completion.
+Other tasks read the latest snapshot with Latest() (a lock-free copy) or post a request with Request(cmd, timeout) and
+wait. Model G, the guarded facade, is for slow, sporadic devices: tasks X and Y each call Call(timeout, op) on a
+Guarded handler, C or D, which takes the handler lock and then, with a bounded wait (TryLockFor), the bus lock of
+BusDomain<I2C0, Guarded>, which has a mutex, recovery and statistics. An interrupt service routine only sets event
+flags or notifies the owner task; it never calls a handler.
+
+This figure stays a module of plain figkit calls: it is two small graphs stacked in one figure, which the graph kind
+lays out side by side (too wide for a phone).
 """
 
-import kbfig
 from kokeb_mkdocs_theme.figkit import Fig
+from kokeb_mkdocs_theme.figkit.core import PROFILES, card_size
+
+K = PROFILES["detail"]
+GAP_X = 16  # between two cards in a row
+GAP_Y = 52  # between rows, room for an arrow and its label
+PAD = 16  # inside a region
+
+
+def _row(f: Fig, x: float, y: float, w: float, cards: list[tuple[str, list[str], str]]):
+    """Cards side by side in a band ``w`` wide, all as tall as the tallest; ``cards`` are ``(title, lines, tone)``."""
+    n = len(cards)
+    cw = (w - GAP_X * (n - 1)) / n
+    h = max(card_size(K, cw, t, ls) for t, ls, _tone in cards)
+    return [f.card(x + i * (cw + GAP_X), y, cw, t, ls, tone=tone, h=h, accent=True)
+            for i, (t, ls, tone) in enumerate(cards)]
+
+
+def _down(f: Fig, a, b, tone: str, label: str = "", x: float | None = None) -> None:
+    """A vertical arrow from the bottom of ``a`` to the top of ``b``, at ``x`` (default: the centre of ``b``)."""
+    x = b.cx if x is None else x
+    f.edge([(x, a.b + 3), (x, b.y - 3)], tone=tone, label=label)
+
+
+def _up(f: Fig, a, b, tone: str, label: str = "", x: float | None = None) -> None:
+    """A vertical arrow from the top of ``a`` up to the bottom of ``b``."""
+    x = b.cx if x is None else x
+    f.edge([(x, a.y - 3), (x, b.b + 3)], tone=tone, label=label)
 
 
 def build(_d):
     f = Fig(
         "handler-threading",
         "Handler thread models",
-        alt=kbfig.title_case_alt(
-            "Two side by side models. Owner task: other tasks read a lock-free snapshot or post requests to a queue that",
-            "the owner task publishes to and drains, and the owner task steps the handlers on an unlocked bus domain.",
-            "Guarded facade: tasks call a guarded handler that takes the handler lock then a bounded bus lock."),
+        alt=("Two thread models, one above the other: in model O other tasks read a lock-free snapshot or queue requests "
+             "that the owner task publishes and drains, and in model G tasks call guarded handlers that take the "
+             "handler lock and then a bounded bus lock."),
+        width=640,
         kicker="Handlers",
         subtitle="Declared per bus. Callers on other tasks use one access API in both models.",
-        legend=[("violet", "handler"), ("brown", "task"), ("blue", "shared state"), ("teal", "bus domain")],
+        legend=[("brown", "task"), ("blue", "shared state"), ("violet", "handler"), ("teal", "bus domain")],
+        palette=2,
+        print_mode="portrait",
+        adaptive=True,
     )
     W = f.body_w
-    gw = 24
-    half = (W - gw) / 2
-    # ---------------- model O
+    iw = W - 2 * PAD
+    x = PAD
+
+    # Model O: the owner task.
     top = 0
-    x0, iw = 16, half - 32
     y = f.region_inner_top(top, sub_below=True)
-    others = f.card(x0, y, iw, "Other tasks", ["Latest(): lock-free copy", "Request(cmd, timeout): post and wait"],
-                    tone="brown", accent=True)
-    y = others.b + 54
-    cw = (iw - 16) / 2
-    snap, q = kbfig.row(f, x0, y, iw, [
-        dict(title="SeqlockSnapshot", lines=["published each step"], role="contract", accent=True),
-        dict(title="Command queue", lines=["with completion, drained bounded per step"], role="contract", accent=True)], gap=16)
-    f.edge([(snap.cx, others.b + 3), (snap.cx, snap.y - 3)], tone="brown", label="Latest()")
-    f.edge([(q.cx, others.b + 3), (q.cx, q.y - 3)], tone="brown", label="Request()")
-    y = snap.b + 54
-    owner = f.card(x0, y, iw, "Owner task", ["kb::rtos::Thread at a fixed rate, calls Service(now)"], tone="brown", accent=True)
-    f.edge([(snap.cx, owner.y - 3), (snap.cx, snap.b + 3)], tone="brown", label="publishes")
-    f.edge([(q.cx, owner.y - 3), (q.cx, q.b + 3)], tone="brown", label="drains")
-    y = owner.b + 48
-    ha, hb = kbfig.row(f, x0, y, iw, [dict(title="Handler A", lines=["single-threaded core"], role="handler", accent=True),
-                                      dict(title="Handler B", lines=["single-threaded core"], role="handler", accent=True)], gap=16)
-    f.edge([(ha.cx, owner.b + 3), (ha.cx, ha.y - 3)], tone="brown")
-    f.edge([(hb.cx, owner.b + 3), (hb.cx, hb.y - 3)], tone="brown")
-    y = ha.b + 48
-    bus = f.card(x0, y, iw, "BusDomain<SPI1, Owner>", ["no mutex, owner check"], tone="teal", accent=True)
-    f.edge([(ha.cx, ha.b + 3), (ha.cx, bus.y - 3)], tone="violet")
-    f.edge([(hb.cx, hb.b + 3), (hb.cx, bus.y - 3)], tone="violet")
-    # ---------------- model G
-    gx = half + gw
-    x1 = gx + 16
+    (others,) = _row(f, x, y, iw, [("Other tasks", ["Latest(): lock-free copy", "Request(cmd, timeout): post, wait"],
+                                    "brown")])
+    snap, queue = _row(f, x, others.b + GAP_Y, iw, [("SeqlockSnapshot", ["published each step"], "blue"),
+                                                     ("Command queue", ["drained, bounded"], "blue")])
+    _down(f, others, snap, "brown", "Latest()")
+    _down(f, others, queue, "brown", "Request()")
+    (owner,) = _row(f, x, snap.b + GAP_Y, iw, [("Owner task", ["fixed-rate Thread, calls Service(now)"], "brown")])
+    _up(f, owner, snap, "brown", "publishes")
+    _up(f, owner, queue, "brown", "drains")
+    ha, hb = _row(f, x, owner.b + GAP_Y, iw, [("Handler A", ["single-threaded core"], "violet"),
+                                              ("Handler B", ["single-threaded core"], "violet")])
+    _down(f, owner, ha, "brown")
+    _down(f, owner, hb, "brown")
+    (bus_o,) = _row(f, x, ha.b + GAP_Y, iw, [("BusDomain<SPI1, Owner>", ["no mutex, owner check"], "teal")])
+    _down(f, ha, bus_o, "violet", x=ha.cx)
+    _down(f, hb, bus_o, "violet", x=hb.cx)
+    end_o = bus_o.b + PAD
+    f.region(0, top, W, end_o - top, "Model O: owner task", tone="violet", sub="default for real-time buses",
+             sub_below=True)
+
+    # Model G: the guarded facade.
+    top = end_o + 36
     y = f.region_inner_top(top, sub_below=True)
-    tx, ty = kbfig.row(f, x1, y, iw, [dict(title="Task X", tone="brown", accent=True),
-                                      dict(title="Task Y", tone="brown", accent=True)], gap=16)
-    y = tx.b + 70
-    gc, gd = kbfig.row(f, x1, y, iw, [dict(title="Guarded<Handler C>", lines=["handler lock"], role="handler", accent=True),
-                                      dict(title="Guarded<Handler D>", lines=["handler lock"], role="handler", accent=True)], gap=16)
-    f.edge([(tx.cx, tx.b + 3), (gc.cx, gc.y - 3)], tone="brown", label="Call(timeout, op)")
-    f.edge([(ty.cx, ty.b + 3), (gd.cx, gd.y - 3)], tone="brown", label="Call(timeout, op)")
-    y = gc.b + 80
-    bus2 = f.card(x1, y, iw, "BusDomain<I2C0, Guarded>", ["mutex, recovery, statistics"], tone="teal", accent=True)
-    f.edge([(gc.cx, gc.b + 3), (gc.cx, bus2.y - 3)], tone="violet", label="then bus lock (TryLockFor)")
-    f.edge([(gd.cx, gd.b + 3), (gd.cx, bus2.y - 3)], tone="violet")
-    end = max(bus.b, bus2.b) + 18
-    f.region(0, top, half, end - top, "Model O: owner task", tone="violet", sub="default for real-time buses", sub_below=True)
-    f.region(gx, top, half, end - top, "Model G: guarded facade", tone="violet", sub="slow, sporadic devices", sub_below=True)
-    f.note(0, end + 28, W, "An ISR only sets event flags or notifies the owner task. It never calls a handler.", tone="slate", title="Interrupts")
+    tx, ty = _row(f, x, y, iw, [("Task X", [], "brown"), ("Task Y", [], "brown")])
+    gc, gd = _row(f, x, tx.b + GAP_Y, iw, [("Guarded<Handler C>", ["handler lock"], "violet"),
+                                            ("Guarded<Handler D>", ["handler lock"], "violet")])
+    _down(f, tx, gc, "brown", "Call(timeout, op)")
+    _down(f, ty, gd, "brown", "Call(timeout, op)")
+    (bus_g,) = _row(f, x, gc.b + GAP_Y, iw, [("BusDomain<I2C0, Guarded>", ["mutex, recovery, statistics"], "teal")])
+    _down(f, gc, bus_g, "violet", "then bus lock", x=gc.cx)
+    _down(f, gd, bus_g, "violet", x=gd.cx)
+    end_g = bus_g.b + PAD
+    f.region(0, top, W, end_g - top, "Model G: guarded facade", tone="violet", sub="slow, sporadic devices",
+             sub_below=True)
+
+    f.note(0, end_g + 28, W, "An ISR only sets event flags or notifies the owner task. It never calls a handler.",
+           tone="slate", title="Interrupts")
     return f

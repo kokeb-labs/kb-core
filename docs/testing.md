@@ -26,9 +26,9 @@
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="diagrams/ci-flow.dark.svg">
   <img src="diagrams/ci-flow.svg"
-    alt="Flow: local preflight, then a pull request; always-run checks, path-gated checks and the drivers
-    that are never re-run feed one required gate; a tag then produces the release assets and a schedule
-    re-scans them.">
+    alt="Flow from the local preflight to a pull request, then always-run and path-gated checks into one
+    required gate, with the drivers' own tests never re-run, and a tag producing the release assets that
+    a schedule re-scans.">
 </picture>
 <!-- /figure -->
 

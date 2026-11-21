@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="845" viewBox="0 0 640 845" role="img" aria-labelledby="bus-hold-title bus-hold-desc" font-family="Inter, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" class="fk">
+<title id="bus-hold-title">Held transactions</title>
+<desc id="bus-hold-desc">Two chains side by side: on a guarded bus task X takes the handler mutex and then the bus mutex while task Y waits; on an owner bus the owner task takes the hold between passes and the service pass reports Busy.</desc>
+<style>
+.fk{--fk-brand-text:#7A360E;--fk-brown-strong:#7C4A1E;--fk-brown-text:#6B3F17;--fk-brown-tint:#F8F1EA;--fk-canvas:#FFFFFF;--fk-frame:#E2E7EE;--fk-hair:#E2E7EE;--fk-ink:#0E1726;--fk-ink2:#2B3442;--fk-muted:#566070;--fk-rose-strong:#DB2752;--fk-rose-text:#9F1239;--fk-rose-tint:#FFEEF2;--fk-teal-strong:#0B7A72;--fk-teal-text:#0B5F59;--fk-teal-tint:#E6F6F4;--fk-violet-strong:#7C3AED;--fk-violet-text:#5B21B6;--fk-violet-tint:#F3EEFF;}
+@media (prefers-color-scheme:dark){.fk{--fk-brand-text:#F8D27A;--fk-brown-strong:#D6A26B;--fk-brown-text:#F1D5B5;--fk-brown-tint:#2A1F14;--fk-canvas:#0E131A;--fk-frame:#283241;--fk-hair:#252F3C;--fk-ink:#E8EDF3;--fk-ink2:#D2DAE4;--fk-muted:#9AA6B5;--fk-rose-strong:#FB7185;--fk-rose-text:#FECDD3;--fk-rose-tint:#321820;--fk-teal-strong:#2BB3A3;--fk-teal-text:#A7F3E6;--fk-teal-tint:#0F2A28;--fk-violet-strong:#A78BFA;--fk-violet-text:#DDD6FE;--fk-violet-tint:#221A3A;}}
+:root[data-theme="dark"] .fk,[data-md-color-scheme="slate"] .fk{--fk-brand-text:#F8D27A;--fk-brown-strong:#D6A26B;--fk-brown-text:#F1D5B5;--fk-brown-tint:#2A1F14;--fk-canvas:#0E131A;--fk-frame:#283241;--fk-hair:#252F3C;--fk-ink:#E8EDF3;--fk-ink2:#D2DAE4;--fk-muted:#9AA6B5;--fk-rose-strong:#FB7185;--fk-rose-text:#FECDD3;--fk-rose-tint:#321820;--fk-teal-strong:#2BB3A3;--fk-teal-text:#A7F3E6;--fk-teal-tint:#0F2A28;--fk-violet-strong:#A78BFA;--fk-violet-text:#DDD6FE;--fk-violet-tint:#221A3A;}
+:root[data-theme="light"] .fk,[data-md-color-scheme="default"] .fk{--fk-brand-text:#7A360E;--fk-brown-strong:#7C4A1E;--fk-brown-text:#6B3F17;--fk-brown-tint:#F8F1EA;--fk-canvas:#FFFFFF;--fk-frame:#E2E7EE;--fk-hair:#E2E7EE;--fk-ink:#0E1726;--fk-ink2:#2B3442;--fk-muted:#566070;--fk-rose-strong:#DB2752;--fk-rose-text:#9F1239;--fk-rose-tint:#FFEEF2;--fk-teal-strong:#0B7A72;--fk-teal-text:#0B5F59;--fk-teal-tint:#E6F6F4;--fk-violet-strong:#7C3AED;--fk-violet-text:#5B21B6;--fk-violet-tint:#F3EEFF;}
+.fk-f-brand-text{fill:var(--fk-brand-text)}.fk-s-brand-text{stroke:var(--fk-brand-text)}
+.fk-f-brown-strong{fill:var(--fk-brown-strong)}.fk-s-brown-strong{stroke:var(--fk-brown-strong)}
+.fk-f-brown-text{fill:var(--fk-brown-text)}.fk-s-brown-text{stroke:var(--fk-brown-text)}
+.fk-f-brown-tint{fill:var(--fk-brown-tint)}.fk-s-brown-tint{stroke:var(--fk-brown-tint)}
+.fk-f-canvas{fill:var(--fk-canvas)}.fk-s-canvas{stroke:var(--fk-canvas)}
+.fk-f-frame{fill:var(--fk-frame)}.fk-s-frame{stroke:var(--fk-frame)}
+.fk-f-hair{fill:var(--fk-hair)}.fk-s-hair{stroke:var(--fk-hair)}
+.fk-f-ink{fill:var(--fk-ink)}.fk-s-ink{stroke:var(--fk-ink)}
+.fk-f-ink2{fill:var(--fk-ink2)}.fk-s-ink2{stroke:var(--fk-ink2)}
+.fk-f-muted{fill:var(--fk-muted)}.fk-s-muted{stroke:var(--fk-muted)}
+.fk-f-rose-strong{fill:var(--fk-rose-strong)}.fk-s-rose-strong{stroke:var(--fk-rose-strong)}
+.fk-f-rose-text{fill:var(--fk-rose-text)}.fk-s-rose-text{stroke:var(--fk-rose-text)}
+.fk-f-rose-tint{fill:var(--fk-rose-tint)}.fk-s-rose-tint{stroke:var(--fk-rose-tint)}
+.fk-f-teal-strong{fill:var(--fk-teal-strong)}.fk-s-teal-strong{stroke:var(--fk-teal-strong)}
+.fk-f-teal-text{fill:var(--fk-teal-text)}.fk-s-teal-text{stroke:var(--fk-teal-text)}
+.fk-f-teal-tint{fill:var(--fk-teal-tint)}.fk-s-teal-tint{stroke:var(--fk-teal-tint)}
+.fk-f-violet-strong{fill:var(--fk-violet-strong)}.fk-s-violet-strong{stroke:var(--fk-violet-strong)}
+.fk-f-violet-text{fill:var(--fk-violet-text)}.fk-s-violet-text{stroke:var(--fk-violet-text)}
+.fk-f-violet-tint{fill:var(--fk-violet-tint)}.fk-s-violet-tint{stroke:var(--fk-violet-tint)}
+@media (forced-colors:active){.fk text{fill:CanvasText}.fk rect,.fk circle{fill:Canvas;stroke:CanvasText}.fk path{stroke:CanvasText}.fk marker path{fill:CanvasText;stroke:none}}
+</style>
+<defs><marker id="bus-hold-arrow-brown-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="fk-f-brown-strong"/></marker><marker id="bus-hold-arrow-rose-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="fk-f-rose-strong"/></marker><marker id="bus-hold-arrow-teal-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="fk-f-teal-strong"/></marker><marker id="bus-hold-arrow-violet-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="fk-f-violet-strong"/></marker></defs>
+<rect x="0.5" y="0.5" width="639" height="844" rx="16" class="fk-f-canvas fk-s-frame"/>
+<text x="32" y="44" font-size="12.5" font-weight="700" letter-spacing="1.2" class="fk-f-brand-text">HANDLERS</text>
+<text x="32" y="77.3" font-size="26" font-weight="700" class="fk-f-ink">Held transactions</text>
+<text x="32" y="103.8" font-size="15" class="fk-f-muted">The order of the locks, and what each hold excludes. Left, a guarded bus;</text>
+<text x="32" y="125.5" font-size="15" class="fk-f-muted">right, an owner bus.</text>
+<rect x="32" y="141.6" width="576" height="1" class="fk-f-hair"/>
+<path d="M197 250.6 L197 303.6" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#bus-hold-arrow-brown-strong)" class="fk-s-brown-strong"/>
+<path d="M197 380.6 L197 432.6" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#bus-hold-arrow-violet-strong)" class="fk-s-violet-strong"/>
+<path d="M197 528.5 L197 571.5" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#bus-hold-arrow-teal-strong)" class="fk-s-teal-strong"/>
+<path d="M197 667.5 L197 710.5" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 5" marker-end="url(#bus-hold-arrow-rose-strong)" class="fk-s-rose-strong"/>
+<path d="M443 250.6 L443 293.6" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#bus-hold-arrow-brown-strong)" class="fk-s-brown-strong"/>
+<path d="M443 389.6 L443 432.6" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#bus-hold-arrow-teal-strong)" class="fk-s-teal-strong"/>
+<path d="M443 528.5 L443 571.5" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 5" marker-end="url(#bus-hold-arrow-rose-strong)" class="fk-s-rose-strong"/>
+<rect x="102" y="159.6" width="190" height="87" rx="10" stroke-width="1.4" class="fk-f-brown-tint fk-s-brown-strong"/>
+<rect x="102" y="167.6" width="4" height="71" rx="2" class="fk-f-brown-strong"/>
+<rect x="102" y="307.6" width="190" height="69" rx="10" stroke-width="1.4" class="fk-f-violet-tint fk-s-violet-strong"/>
+<rect x="102" y="315.6" width="4" height="53" rx="2" class="fk-f-violet-strong"/>
+<rect x="102" y="436.6" width="190" height="88" rx="10" stroke-width="1.4" class="fk-f-teal-tint fk-s-teal-strong"/>
+<rect x="102" y="444.6" width="4" height="72" rx="2" class="fk-f-teal-strong"/>
+<rect x="102" y="575.5" width="190" height="88" rx="10" stroke-width="1.4" class="fk-f-violet-tint fk-s-violet-strong"/>
+<rect x="102" y="583.5" width="4" height="72" rx="2" class="fk-f-violet-strong"/>
+<rect x="102" y="714.5" width="190" height="69" rx="10" stroke-width="1.4" class="fk-f-rose-tint fk-s-rose-strong"/>
+<rect x="102" y="722.5" width="4" height="53" rx="2" class="fk-f-rose-strong"/>
+<rect x="348" y="159.6" width="190" height="87" rx="10" stroke-width="1.4" class="fk-f-brown-tint fk-s-brown-strong"/>
+<rect x="348" y="167.6" width="4" height="71" rx="2" class="fk-f-brown-strong"/>
+<rect x="348" y="297.6" width="190" height="88" rx="10" stroke-width="1.4" class="fk-f-teal-tint fk-s-teal-strong"/>
+<rect x="348" y="305.6" width="4" height="72" rx="2" class="fk-f-teal-strong"/>
+<rect x="348" y="436.6" width="190" height="88" rx="10" stroke-width="1.4" class="fk-f-violet-tint fk-s-violet-strong"/>
+<rect x="348" y="444.6" width="4" height="72" rx="2" class="fk-f-violet-strong"/>
+<rect x="348" y="575.5" width="190" height="88" rx="10" stroke-width="1.4" class="fk-f-rose-tint fk-s-rose-strong"/>
+<rect x="348" y="583.5" width="4" height="72" rx="2" class="fk-f-rose-strong"/>
+<text x="122" y="186.3" font-size="15" font-weight="700" class="fk-f-brown-text">Task X</text>
+<text x="122" y="203.5" font-size="12" class="fk-f-brown-text">guarded bus</text>
+<text x="122" y="227.4" font-size="13" class="fk-f-ink2">Guarded::Hold(timeout)</text>
+<text x="122" y="334.3" font-size="15" font-weight="700" class="fk-f-violet-text">1: handler mutex</text>
+<text x="122" y="359.1" font-size="13" class="fk-f-ink2">bounded wait</text>
+<text x="122" y="463.3" font-size="15" font-weight="700" class="fk-f-teal-text">2: BusDomain::Hold</text>
+<text x="122" y="488.2" font-size="13" class="fk-f-ink2">bus mutex</text>
+<text x="122" y="507" font-size="13" class="fk-f-ink2">bounded</text>
+<text x="122" y="602.3" font-size="15" font-weight="700" class="fk-f-violet-text">GuardedHeld</text>
+<text x="122" y="627.2" font-size="13" class="fk-f-ink2">many calls</text>
+<text x="122" y="646" font-size="13" class="fk-f-ink2">nothing between</text>
+<text x="122" y="741.3" font-size="15" font-weight="700" class="fk-f-rose-text">Task Y: Request</text>
+<text x="122" y="766.2" font-size="13" class="fk-f-ink2">waits or Timeout</text>
+<text x="368" y="186.3" font-size="15" font-weight="700" class="fk-f-brown-text">Owner task</text>
+<text x="368" y="203.5" font-size="12" class="fk-f-brown-text">owner bus</text>
+<text x="368" y="227.4" font-size="13" class="fk-f-ink2">Hold() between passes</text>
+<text x="368" y="324.3" font-size="15" font-weight="700" class="fk-f-teal-text">Pass flag</text>
+<text x="368" y="349.1" font-size="13" class="fk-f-ink2">set while held</text>
+<text x="368" y="368" font-size="13" class="fk-f-ink2">never waits</text>
+<text x="368" y="463.3" font-size="15" font-weight="700" class="fk-f-violet-text">OwnerAccess::Held</text>
+<text x="368" y="488.2" font-size="13" class="fk-f-ink2">inline calls</text>
+<text x="368" y="507" font-size="13" class="fk-f-ink2">several handlers</text>
+<text x="368" y="602.3" font-size="15" font-weight="700" class="fk-f-rose-text">Service(now, ...)</text>
+<text x="368" y="627.2" font-size="13" class="fk-f-ink2">Busy</text>
+<text x="368" y="646" font-size="13" class="fk-f-ink2">violation counted</text>
+<rect x="205" y="679" width="66.9" height="20" rx="10" class="fk-f-canvas"/>
+<text x="238.5" y="693.4" font-size="12" font-weight="500" text-anchor="middle" class="fk-f-muted">excludes</text>
+<rect x="451" y="545.4" width="66.9" height="20" rx="10" class="fk-f-canvas"/>
+<text x="484.5" y="559.7" font-size="12" font-weight="500" text-anchor="middle" class="fk-f-muted">excludes</text>
+<rect x="32" y="798.9" width="14" height="14" rx="4" stroke-width="1.4" class="fk-f-brown-tint fk-s-brown-strong"/>
+<text x="54" y="810.5" font-size="12.5" class="fk-f-muted">task</text>
+<rect x="104" y="798.9" width="14" height="14" rx="4" stroke-width="1.4" class="fk-f-violet-tint fk-s-violet-strong"/>
+<text x="126" y="810.5" font-size="12.5" class="fk-f-muted">handler</text>
+<rect x="197.2" y="798.9" width="14" height="14" rx="4" stroke-width="1.4" class="fk-f-teal-tint fk-s-teal-strong"/>
+<text x="219.2" y="810.5" font-size="12.5" class="fk-f-muted">bus domain</text>
+<rect x="316" y="798.9" width="14" height="14" rx="4" stroke-width="1.4" class="fk-f-rose-tint fk-s-rose-strong"/>
+<text x="338" y="810.5" font-size="12.5" class="fk-f-muted">excluded</text>
+</svg>

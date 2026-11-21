@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="1219" viewBox="0 0 640 1219" role="img" aria-labelledby="update-path-title update-path-desc" font-family="Inter, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" class="fk">
+<title id="update-path-title">The update path</title>
+<desc id="update-path-desc">Five steps from reading the lock, catalogue and image through ordering, gating, one row per component and writing the new files, with failing versions held back and a final review, fetch, build and test by hand.</desc>
+<style>
+.fk{--fk-blue-strong:#2563EB;--fk-blue-text:#1E429F;--fk-blue-tint:#EAF2FF;--fk-brand-text:#7A360E;--fk-brown-strong:#7C4A1E;--fk-brown-text:#6B3F17;--fk-brown-tint:#F8F1EA;--fk-canvas:#FFFFFF;--fk-frame:#E2E7EE;--fk-green-strong:#15803D;--fk-green-text:#14532D;--fk-green-tint:#EAF7EF;--fk-hair:#E2E7EE;--fk-ink:#0E1726;--fk-ink2:#2B3442;--fk-muted:#566070;--fk-rail:#7C8798;--fk-rose-strong:#DB2752;--fk-rose-text:#9F1239;--fk-rose-tint:#FFEEF2;--fk-violet-strong:#7C3AED;--fk-violet-text:#5B21B6;--fk-violet-tint:#F3EEFF;}
+@media (prefers-color-scheme:dark){.fk{--fk-blue-strong:#60A5FA;--fk-blue-text:#BFDBFE;--fk-blue-tint:#13233A;--fk-brand-text:#F8D27A;--fk-brown-strong:#D6A26B;--fk-brown-text:#F1D5B5;--fk-brown-tint:#2A1F14;--fk-canvas:#0E131A;--fk-frame:#283241;--fk-green-strong:#4ADE80;--fk-green-text:#BBF7D0;--fk-green-tint:#11281A;--fk-hair:#252F3C;--fk-ink:#E8EDF3;--fk-ink2:#D2DAE4;--fk-muted:#9AA6B5;--fk-rail:#6C7889;--fk-rose-strong:#FB7185;--fk-rose-text:#FECDD3;--fk-rose-tint:#321820;--fk-violet-strong:#A78BFA;--fk-violet-text:#DDD6FE;--fk-violet-tint:#221A3A;}}
+:root[data-theme="dark"] .fk,[data-md-color-scheme="slate"] .fk{--fk-blue-strong:#60A5FA;--fk-blue-text:#BFDBFE;--fk-blue-tint:#13233A;--fk-brand-text:#F8D27A;--fk-brown-strong:#D6A26B;--fk-brown-text:#F1D5B5;--fk-brown-tint:#2A1F14;--fk-canvas:#0E131A;--fk-frame:#283241;--fk-green-strong:#4ADE80;--fk-green-text:#BBF7D0;--fk-green-tint:#11281A;--fk-hair:#252F3C;--fk-ink:#E8EDF3;--fk-ink2:#D2DAE4;--fk-muted:#9AA6B5;--fk-rail:#6C7889;--fk-rose-strong:#FB7185;--fk-rose-text:#FECDD3;--fk-rose-tint:#321820;--fk-violet-strong:#A78BFA;--fk-violet-text:#DDD6FE;--fk-violet-tint:#221A3A;}
+:root[data-theme="light"] .fk,[data-md-color-scheme="default"] .fk{--fk-blue-strong:#2563EB;--fk-blue-text:#1E429F;--fk-blue-tint:#EAF2FF;--fk-brand-text:#7A360E;--fk-brown-strong:#7C4A1E;--fk-brown-text:#6B3F17;--fk-brown-tint:#F8F1EA;--fk-canvas:#FFFFFF;--fk-frame:#E2E7EE;--fk-green-strong:#15803D;--fk-green-text:#14532D;--fk-green-tint:#EAF7EF;--fk-hair:#E2E7EE;--fk-ink:#0E1726;--fk-ink2:#2B3442;--fk-muted:#566070;--fk-rail:#7C8798;--fk-rose-strong:#DB2752;--fk-rose-text:#9F1239;--fk-rose-tint:#FFEEF2;--fk-violet-strong:#7C3AED;--fk-violet-text:#5B21B6;--fk-violet-tint:#F3EEFF;}
+.fk-f-blue-strong{fill:var(--fk-blue-strong)}.fk-s-blue-strong{stroke:var(--fk-blue-strong)}
+.fk-f-blue-text{fill:var(--fk-blue-text)}.fk-s-blue-text{stroke:var(--fk-blue-text)}
+.fk-f-blue-tint{fill:var(--fk-blue-tint)}.fk-s-blue-tint{stroke:var(--fk-blue-tint)}
+.fk-f-brand-text{fill:var(--fk-brand-text)}.fk-s-brand-text{stroke:var(--fk-brand-text)}
+.fk-f-brown-strong{fill:var(--fk-brown-strong)}.fk-s-brown-strong{stroke:var(--fk-brown-strong)}
+.fk-f-brown-text{fill:var(--fk-brown-text)}.fk-s-brown-text{stroke:var(--fk-brown-text)}
+.fk-f-brown-tint{fill:var(--fk-brown-tint)}.fk-s-brown-tint{stroke:var(--fk-brown-tint)}
+.fk-f-canvas{fill:var(--fk-canvas)}.fk-s-canvas{stroke:var(--fk-canvas)}
+.fk-f-frame{fill:var(--fk-frame)}.fk-s-frame{stroke:var(--fk-frame)}
+.fk-f-green-strong{fill:var(--fk-green-strong)}.fk-s-green-strong{stroke:var(--fk-green-strong)}
+.fk-f-green-text{fill:var(--fk-green-text)}.fk-s-green-text{stroke:var(--fk-green-text)}
+.fk-f-green-tint{fill:var(--fk-green-tint)}.fk-s-green-tint{stroke:var(--fk-green-tint)}
+.fk-f-hair{fill:var(--fk-hair)}.fk-s-hair{stroke:var(--fk-hair)}
+.fk-f-ink{fill:var(--fk-ink)}.fk-s-ink{stroke:var(--fk-ink)}
+.fk-f-ink2{fill:var(--fk-ink2)}.fk-s-ink2{stroke:var(--fk-ink2)}
+.fk-f-muted{fill:var(--fk-muted)}.fk-s-muted{stroke:var(--fk-muted)}
+.fk-f-rail{fill:var(--fk-rail)}.fk-s-rail{stroke:var(--fk-rail)}
+.fk-f-rose-strong{fill:var(--fk-rose-strong)}.fk-s-rose-strong{stroke:var(--fk-rose-strong)}
+.fk-f-rose-text{fill:var(--fk-rose-text)}.fk-s-rose-text{stroke:var(--fk-rose-text)}
+.fk-f-rose-tint{fill:var(--fk-rose-tint)}.fk-s-rose-tint{stroke:var(--fk-rose-tint)}
+.fk-f-violet-strong{fill:var(--fk-violet-strong)}.fk-s-violet-strong{stroke:var(--fk-violet-strong)}
+.fk-f-violet-text{fill:var(--fk-violet-text)}.fk-s-violet-text{stroke:var(--fk-violet-text)}
+.fk-f-violet-tint{fill:var(--fk-violet-tint)}.fk-s-violet-tint{stroke:var(--fk-violet-tint)}
+@media (forced-colors:active){.fk text{fill:CanvasText}.fk rect,.fk circle{fill:Canvas;stroke:CanvasText}.fk path{stroke:CanvasText}.fk marker path{fill:CanvasText;stroke:none}}
+</style>
+<defs><marker id="update-path-arrow-green-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="fk-f-green-strong"/></marker><marker id="update-path-arrow-rail" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="fk-f-rail"/></marker><marker id="update-path-arrow-rose-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="fk-f-rose-strong"/></marker></defs>
+<rect x="0.5" y="0.5" width="639" height="1218" rx="16" class="fk-f-canvas fk-s-frame"/>
+<text x="32" y="44" font-size="12.5" font-weight="700" letter-spacing="1.2" class="fk-f-brand-text">UPDATES</text>
+<text x="32" y="77.3" font-size="26" font-weight="700" class="fk-f-ink">The update path</text>
+<text x="32" y="103.8" font-size="15" class="fk-f-muted">One pure function plans an upgrade. The kb tool and the configurator give</text>
+<text x="32" y="125.5" font-size="15" class="fk-f-muted">the same bytes.</text>
+<rect x="32" y="141.6" width="576" height="1" class="fk-f-hair"/>
+<path d="M320 270.6 L320 332.6" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#update-path-arrow-rail)" class="fk-s-rail"/>
+<path d="M320 409.6 L320 471.6" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#update-path-arrow-rail)" class="fk-s-rail"/>
+<path d="M320 548.5 L320 610.5" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#update-path-arrow-rail)" class="fk-s-rail"/>
+<path d="M401 706.5 L401 744.4 Q401 752.4 409 752.4 L435 752.4 Q443 752.4 443 760.4 L443 768.5" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#update-path-arrow-rail)" class="fk-s-rail"/>
+<path d="M239 706.5 L239 714.7 Q239 722.7 231 722.7 L205 722.7 Q197 722.7 197 730.7 L197 768.5" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 5" marker-end="url(#update-path-arrow-rose-strong)" class="fk-s-rose-strong"/>
+<path d="M443 845.5 L443 907.5" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#update-path-arrow-green-strong)" class="fk-s-green-strong"/>
+<path d="M443 1003.5 L443 1065.5" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#update-path-arrow-rail)" class="fk-s-rail"/>
+<rect x="225" y="159.6" width="190" height="107" rx="10" stroke-width="1.4" class="fk-f-brown-tint fk-s-brown-strong"/>
+<rect x="225" y="167.6" width="4" height="91" rx="2" class="fk-f-brown-strong"/>
+<rect x="225" y="336.6" width="190" height="69" rx="10" stroke-width="1.4" class="fk-f-blue-tint fk-s-blue-strong"/>
+<rect x="225" y="344.6" width="4" height="53" rx="2" class="fk-f-blue-strong"/>
+<rect x="225" y="475.6" width="190" height="69" rx="10" stroke-width="1.4" class="fk-f-violet-tint fk-s-violet-strong"/>
+<rect x="225" y="483.6" width="4" height="53" rx="2" class="fk-f-violet-strong"/>
+<rect x="225" y="614.5" width="190" height="88" rx="10" stroke-width="1.4" class="fk-f-violet-tint fk-s-violet-strong"/>
+<rect x="225" y="622.5" width="4" height="72" rx="2" class="fk-f-violet-strong"/>
+<rect x="102" y="772.5" width="190" height="69" rx="10" stroke-width="1.4" class="fk-f-rose-tint fk-s-rose-strong"/>
+<rect x="102" y="780.5" width="4" height="53" rx="2" class="fk-f-rose-strong"/>
+<rect x="348" y="772.5" width="190" height="69" rx="10" stroke-width="1.4" class="fk-f-violet-tint fk-s-violet-strong"/>
+<rect x="348" y="780.5" width="4" height="53" rx="2" class="fk-f-violet-strong"/>
+<rect x="348" y="911.5" width="190" height="88" rx="10" stroke-width="1.4" class="fk-f-green-tint fk-s-green-strong"/>
+<rect x="348" y="919.5" width="4" height="72" rx="2" class="fk-f-green-strong"/>
+<rect x="348" y="1069.5" width="190" height="88" rx="10" stroke-width="1.4" class="fk-f-brown-tint fk-s-brown-strong"/>
+<rect x="348" y="1077.5" width="4" height="72" rx="2" class="fk-f-brown-strong"/>
+<text x="245" y="186.3" font-size="15" font-weight="700" class="fk-f-brown-text">Entry points</text>
+<text x="245" y="211.2" font-size="13" class="fk-f-ink2">kb outdated</text>
+<text x="245" y="230" font-size="13" class="fk-f-ink2">kb upgrade</text>
+<text x="245" y="248.8" font-size="13" class="fk-f-ink2">the configurator</text>
+<text x="245" y="363.3" font-size="15" font-weight="700" class="fk-f-blue-text">1 Read</text>
+<text x="245" y="388.1" font-size="13" class="fk-f-ink2">lock, catalogue, image</text>
+<text x="245" y="502.3" font-size="15" font-weight="700" class="fk-f-violet-text">2 Order</text>
+<text x="245" y="527.2" font-size="13" class="fk-f-ink2">kb-core, port, drivers</text>
+<text x="245" y="641.3" font-size="15" font-weight="700" class="fk-f-violet-text">3 Gate</text>
+<text x="245" y="666.2" font-size="13" class="fk-f-ink2">MCU, kb_core_min,</text>
+<text x="245" y="685" font-size="13" class="fk-f-ink2">owner task, bus kind</text>
+<text x="122" y="799.3" font-size="15" font-weight="700" class="fk-f-rose-text">Held back</text>
+<text x="122" y="824.2" font-size="13" class="fk-f-ink2">first failing gate</text>
+<text x="368" y="799.3" font-size="15" font-weight="700" class="fk-f-violet-text">4 Rows</text>
+<text x="368" y="824.2" font-size="13" class="fk-f-ink2">one per component</text>
+<text x="368" y="938.3" font-size="15" font-weight="700" class="fk-f-green-text">5 Write</text>
+<text x="368" y="963.2" font-size="13" class="fk-f-ink2">image, lock, CMake,</text>
+<text x="368" y="982" font-size="13" class="fk-f-ink2">fetch script, report</text>
+<text x="368" y="1096.3" font-size="15" font-weight="700" class="fk-f-brown-text">Then, by hand</text>
+<text x="368" y="1121.2" font-size="13" class="fk-f-ink2">review, fetch, build,</text>
+<text x="368" y="1140" font-size="13" class="fk-f-ink2">test</text>
+<rect x="394.4" y="742.4" width="55.1" height="20" rx="10" class="fk-f-canvas"/>
+<text x="422" y="756.7" font-size="12" font-weight="500" text-anchor="middle" class="fk-f-muted">passes</text>
+<rect x="199.3" y="712.7" width="37.3" height="20" rx="10" class="fk-f-canvas"/>
+<text x="218" y="727" font-size="12" font-weight="500" text-anchor="middle" class="fk-f-muted">fails</text>
+<rect x="32" y="1172.9" width="14" height="14" rx="4" stroke-width="1.4" class="fk-f-brown-tint fk-s-brown-strong"/>
+<text x="54" y="1184.5" font-size="12.5" class="fk-f-muted">entry and hand steps</text>
+<rect x="210.3" y="1172.9" width="14" height="14" rx="4" stroke-width="1.4" class="fk-f-blue-tint fk-s-blue-strong"/>
+<text x="232.3" y="1184.5" font-size="12.5" class="fk-f-muted">inputs</text>
+<rect x="294.6" y="1172.9" width="14" height="14" rx="4" stroke-width="1.4" class="fk-f-violet-tint fk-s-violet-strong"/>
+<text x="316.6" y="1184.5" font-size="12.5" class="fk-f-muted">plan</text>
+<rect x="367.2" y="1172.9" width="14" height="14" rx="4" stroke-width="1.4" class="fk-f-rose-tint fk-s-rose-strong"/>
+<text x="389.2" y="1184.5" font-size="12.5" class="fk-f-muted">held back</text>
+<rect x="474.2" y="1172.9" width="14" height="14" rx="4" stroke-width="1.4" class="fk-f-green-tint fk-s-green-strong"/>
+<text x="496.2" y="1184.5" font-size="12.5" class="fk-f-muted">written</text>
+</svg>

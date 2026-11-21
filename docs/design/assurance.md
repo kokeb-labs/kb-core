@@ -31,9 +31,9 @@ MISRA claim.
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="../diagrams/misra-scope.dark.svg">
   <img src="../diagrams/misra-scope.svg"
-    alt="Four zones from strongest claim to none: kb-core own code claimed compliant with zero deviations;
-    boundary files compliant with recorded deviations; drivers covered by their own evidence; SOUP out
-    of scope and never reported.">
+    alt="Table of four zones from strongest claim to none, with kb-core's own code claimed compliant with
+    zero deviations, boundary files compliant with recorded deviations, drivers covered by their own
+    evidence and SOUP out of scope.">
 </picture>
 <!-- /figure -->
 

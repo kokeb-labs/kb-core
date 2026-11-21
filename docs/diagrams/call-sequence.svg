@@ -1,73 +1,70 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="868" viewBox="0 0 1200 868" role="img" aria-labelledby="call-sequence-title call-sequence-desc" font-family="Inter, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="928" viewBox="0 0 640 928" role="img" aria-labelledby="call-sequence-title call-sequence-desc" font-family="Inter, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
 <title id="call-sequence-title">One call through the layers</title>
-<desc id="call-sequence-desc">Sequence: the HAL calls a guarded handler, which locks and calls the pf1550 driver; the driver calls the kb binding's WriteRead, which calls the ESP32 I2C device; results return the same way. Only the I2C device knows it is an ESP32.</desc>
-<defs><marker id="fk-arrow-green-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#15803D"/></marker><marker id="fk-arrow-magenta-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#A21CAF"/></marker><marker id="fk-arrow-rail" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#8893A2"/></marker><marker id="fk-arrow-teal-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#0B7A72"/></marker><marker id="fk-arrow-violet-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#7C3AED"/></marker></defs>
-<rect x="0.5" y="0.5" width="1199" height="867" rx="16" fill="#FFFFFF" stroke="#E2E7EE"/>
+<desc id="call-sequence-desc">Call chain in which the HAL calls a guarded handler, which locks and calls the pf1550 driver, the driver calls the kb binding's WriteRead, which calls the ESP32 I2C device, and the results return the same way.</desc>
+<defs><marker id="call-sequence-arrow-green-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#15803D"/></marker><marker id="call-sequence-arrow-magenta-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#A21CAF"/></marker><marker id="call-sequence-arrow-rail" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#7C8798"/></marker><marker id="call-sequence-arrow-teal-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#0B7A72"/></marker><marker id="call-sequence-arrow-violet-strong" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#7C3AED"/></marker></defs>
+<rect x="0.5" y="0.5" width="639" height="927" rx="16" fill="#FFFFFF" stroke="#E2E7EE"/>
 <text x="32" y="44" font-size="12.5" font-weight="700" letter-spacing="1.2" fill="#7A360E">ARCHITECTURE</text>
 <text x="32" y="77.3" font-size="26" font-weight="700" fill="#0E1726">One call through the layers</text>
-<text x="32" y="103.8" font-size="15" fill="#566070">A HAL reads a register of a PF1550 power IC. Only the last step knows it runs on an ESP32.</text>
-<rect x="32" y="119.8" width="1136" height="1" fill="#E2E7EE"/>
-<path d="M145.6 202.8 L145.6 813.8" fill="none" stroke="#C9D1DB" stroke-width="1.4" stroke-dasharray="5 5"/>
-<path d="M372.8 202.8 L372.8 813.8" fill="none" stroke="#C9D1DB" stroke-width="1.4" stroke-dasharray="5 5"/>
-<path d="M600 202.8 L600 813.8" fill="none" stroke="#C9D1DB" stroke-width="1.4" stroke-dasharray="5 5"/>
-<path d="M827.2 202.8 L827.2 813.8" fill="none" stroke="#C9D1DB" stroke-width="1.4" stroke-dasharray="5 5"/>
-<path d="M1054.4 202.8 L1054.4 813.8" fill="none" stroke="#C9D1DB" stroke-width="1.4" stroke-dasharray="5 5"/>
-<path d="M149.6 238.8 L368.8 238.8" fill="none" stroke="#A21CAF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-magenta-strong)"/>
-<path d="M375.8 288.8 L402.8 288.8 Q410.8 288.8 410.8 296.8 L410.8 300.8 Q410.8 308.8 402.8 308.8 L375.8 308.8" fill="none" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-violet-strong)"/>
-<path d="M376.8 354.8 L596 354.8" fill="none" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-violet-strong)"/>
-<path d="M604 412.8 L823.2 412.8" fill="none" stroke="#15803D" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-green-strong)"/>
-<path d="M831.2 470.8 L1050.4 470.8" fill="none" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-violet-strong)"/>
-<path d="M1050.4 528.8 L831.2 528.8" fill="none" stroke="#0B7A72" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 5" marker-end="url(#fk-arrow-teal-strong)"/>
-<path d="M823.2 586.8 L604 586.8" fill="none" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 5" marker-end="url(#fk-arrow-violet-strong)"/>
-<path d="M596 644.8 L376.8 644.8" fill="none" stroke="#15803D" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 5" marker-end="url(#fk-arrow-green-strong)"/>
-<path d="M368.8 702.8 L149.6 702.8" fill="none" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 5" marker-end="url(#fk-arrow-violet-strong)"/>
-<rect x="39" y="137.8" width="213.2" height="63" rx="10" fill="#FDF0FF" stroke="#A21CAF" stroke-width="1.4"/>
-<rect x="39" y="145.8" width="4" height="47" rx="2" fill="#A21CAF"/>
-<rect x="266.2" y="137.8" width="213.2" height="63" rx="10" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1.4"/>
-<rect x="266.2" y="145.8" width="4" height="47" rx="2" fill="#7C3AED"/>
-<rect x="493.4" y="137.8" width="213.2" height="63" rx="10" fill="#EAF7EF" stroke="#15803D" stroke-width="1.4"/>
-<rect x="493.4" y="145.8" width="4" height="47" rx="2" fill="#15803D"/>
-<rect x="720.6" y="137.8" width="213.2" height="63" rx="10" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1.4"/>
-<rect x="720.6" y="145.8" width="4" height="47" rx="2" fill="#7C3AED"/>
-<rect x="947.8" y="137.8" width="213.2" height="63" rx="10" fill="#E6F6F4" stroke="#0B7A72" stroke-width="1.4"/>
-<rect x="947.8" y="145.8" width="4" height="47" rx="2" fill="#0B7A72"/>
-<rect x="946.8" y="746.8" width="215.2" height="59.8" rx="10" fill="#E6F6F4" stroke="#A6DCD5" stroke-width="1"/>
-<text x="148.6" y="173.8" font-size="15" font-weight="700" text-anchor="middle" fill="#86198F">HAL</text>
-<text x="375.8" y="173.8" font-size="15" font-weight="700" text-anchor="middle" fill="#5B21B6">Guarded handler</text>
-<text x="603" y="173.8" font-size="15" font-weight="700" text-anchor="middle" fill="#14532D">pf1550 driver</text>
-<text x="830.2" y="164.1" font-size="15" font-weight="700" text-anchor="middle" fill="#5B21B6">kb binding</text>
-<text x="830.2" y="183.6" font-size="15" font-weight="700" text-anchor="middle" fill="#5B21B6">(Pf1550Port)</text>
-<text x="1057.4" y="173.8" font-size="15" font-weight="700" text-anchor="middle" fill="#0B5F59">ESP32 I2cDevice</text>
-<rect x="169.8" y="213.8" width="178.7" height="20" rx="10" fill="#FFFFFF"/>
-<text x="259.2" y="228.1" font-size="12" font-weight="500" text-anchor="middle" fill="#566070">Call(timeout, ReadRegister)</text>
-<rect x="412.8" y="288.8" width="175.6" height="20" rx="10" fill="#FFFFFF"/>
-<text x="500.6" y="303.1" font-size="12" font-weight="500" text-anchor="middle" fill="#566070">handler lock, then bus lock</text>
-<rect x="450.4" y="329.8" width="72.1" height="20" rx="10" fill="#FFFFFF"/>
-<text x="486.4" y="344.1" font-size="12" font-weight="500" text-anchor="middle" fill="#566070">driver call</text>
-<rect x="621.6" y="387.8" width="184.1" height="20" rx="10" fill="#FFFFFF"/>
-<text x="713.6" y="402.1" font-size="12" font-weight="500" text-anchor="middle" fill="#566070">WriteRead(addr, tx, n, rx, m)</text>
-<rect x="847.6" y="445.8" width="186.4" height="20" rx="10" fill="#FFFFFF"/>
-<text x="940.8" y="460.1" font-size="12" font-weight="500" text-anchor="middle" fill="#566070">WriteRead(addr, span, span)</text>
-<rect x="885.9" y="503.8" width="109.9" height="20" rx="10" fill="#FFFFFF"/>
-<text x="940.8" y="518.1" font-size="12" font-weight="500" text-anchor="middle" fill="#566070">ok, or I2cFailure</text>
-<rect x="656.4" y="561.8" width="114.4" height="20" rx="10" fill="#FFFFFF"/>
-<text x="713.6" y="576.1" font-size="12" font-weight="500" text-anchor="middle" fill="#566070">bool, failure kept</text>
-<rect x="425.1" y="619.8" width="122.5" height="20" rx="10" fill="#FFFFFF"/>
-<text x="486.4" y="634.1" font-size="12" font-weight="500" text-anchor="middle" fill="#566070">the driver's Result</text>
-<rect x="190.1" y="677.8" width="138.3" height="20" rx="10" fill="#FFFFFF"/>
-<text x="259.2" y="692.1" font-size="12" font-weight="500" text-anchor="middle" fill="#566070">kb::Result with detail</text>
-<text x="960.8" y="771.8" font-size="13" fill="#0B5F59">The only step that knows</text>
-<text x="960.8" y="790.7" font-size="13" fill="#0B5F59">the MCU.</text>
-<rect x="32" y="822" width="14" height="14" rx="4" fill="#FDF0FF" stroke="#A21CAF" stroke-width="1.4"/>
-<text x="54" y="833.7" font-size="12.5" fill="#566070">HAL</text>
-<rect x="104.5" y="822" width="14" height="14" rx="4" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1.4"/>
-<text x="126.5" y="833.7" font-size="12.5" fill="#566070">handler and binding</text>
-<rect x="274.9" y="822" width="14" height="14" rx="4" fill="#EAF7EF" stroke="#15803D" stroke-width="1.4"/>
-<text x="296.9" y="833.7" font-size="12.5" fill="#566070">driver</text>
-<rect x="357.3" y="822" width="14" height="14" rx="4" fill="#E6F6F4" stroke="#0B7A72" stroke-width="1.4"/>
-<text x="379.3" y="833.7" font-size="12.5" fill="#566070">MCU port</text>
-<path d="M464 828.3L494 828.3" fill="none" stroke="#8893A2" stroke-width="1.6" marker-end="url(#fk-arrow-rail)"/>
-<text x="508" y="833.7" font-size="12.5" fill="#566070">call</text>
-<path d="M553.4 828.3L583.4 828.3" fill="none" stroke="#8893A2" stroke-width="1.6" stroke-dasharray="7 5" marker-end="url(#fk-arrow-rail)"/>
-<text x="597.4" y="833.7" font-size="12.5" fill="#566070">return</text>
+<text x="32" y="103.8" font-size="15" fill="#566070">A HAL reads a register of a PF1550 power IC. Only the last step knows it</text>
+<text x="32" y="125.5" font-size="15" fill="#566070">runs on an ESP32.</text>
+<rect x="32" y="141.6" width="576" height="1" fill="#E2E7EE"/>
+<path d="M239 232.6 L239 294.6" fill="none" stroke="#A21CAF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#call-sequence-arrow-magenta-strong)"/>
+<path d="M239 390.6 L239 452.6" fill="none" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#call-sequence-arrow-violet-strong)"/>
+<path d="M239 548.5 L239 610.5" fill="none" stroke="#15803D" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#call-sequence-arrow-green-strong)"/>
+<path d="M239 687.5 L239 749.5" fill="none" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#call-sequence-arrow-violet-strong)"/>
+<path d="M401 749.5 L401 687.5" fill="none" stroke="#0B7A72" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 5" marker-end="url(#call-sequence-arrow-teal-strong)"/>
+<path d="M401 610.5 L401 548.5" fill="none" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 5" marker-end="url(#call-sequence-arrow-violet-strong)"/>
+<path d="M401 452.6 L401 390.6" fill="none" stroke="#15803D" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 5" marker-end="url(#call-sequence-arrow-green-strong)"/>
+<path d="M401 294.6 L401 232.6" fill="none" stroke="#7C3AED" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 5" marker-end="url(#call-sequence-arrow-violet-strong)"/>
+<rect x="225" y="159.6" width="190" height="69" rx="10" fill="#FDF0FF" stroke="#A21CAF" stroke-width="1.4"/>
+<rect x="225" y="167.6" width="4" height="53" rx="2" fill="#A21CAF"/>
+<rect x="225" y="298.6" width="190" height="88" rx="10" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1.4"/>
+<rect x="225" y="306.6" width="4" height="72" rx="2" fill="#7C3AED"/>
+<rect x="225" y="456.6" width="190" height="88" rx="10" fill="#EAF7EF" stroke="#15803D" stroke-width="1.4"/>
+<rect x="225" y="464.6" width="4" height="72" rx="2" fill="#15803D"/>
+<rect x="225" y="614.5" width="190" height="69" rx="10" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1.4"/>
+<rect x="225" y="622.5" width="4" height="53" rx="2" fill="#7C3AED"/>
+<rect x="225" y="753.5" width="190" height="88" rx="10" fill="#E6F6F4" stroke="#0B7A72" stroke-width="1.4"/>
+<rect x="225" y="761.5" width="4" height="72" rx="2" fill="#0B7A72"/>
+<text x="245" y="186.3" font-size="15" font-weight="700" fill="#86198F">HAL</text>
+<text x="245" y="211.2" font-size="13" fill="#2B3442">reads a register</text>
+<text x="245" y="325.3" font-size="15" font-weight="700" fill="#5B21B6">Guarded handler</text>
+<text x="245" y="350.1" font-size="13" fill="#2B3442">handler lock, then bus</text>
+<text x="245" y="369" font-size="13" fill="#2B3442">lock</text>
+<text x="245" y="483.3" font-size="15" font-weight="700" fill="#14532D">pf1550 driver</text>
+<text x="245" y="508.2" font-size="13" fill="#2B3442">calls its WriteRead</text>
+<text x="245" y="527" font-size="13" fill="#2B3442">hook</text>
+<text x="245" y="641.3" font-size="15" font-weight="700" fill="#5B21B6">kb binding</text>
+<text x="245" y="666.2" font-size="13" fill="#2B3442">Pf1550Port</text>
+<text x="245" y="780.3" font-size="15" font-weight="700" fill="#0B5F59">ESP32 I2cDevice</text>
+<text x="245" y="805.2" font-size="13" fill="#2B3442">the only step that</text>
+<text x="245" y="824" font-size="13" fill="#2B3442">knows the MCU</text>
+<rect x="246.9" y="238.7" width="113.1" height="20" rx="10" fill="#FFFFFF"/>
+<text x="303.5" y="253" font-size="12" font-weight="500" text-anchor="middle" fill="#566070">Call(timeout, op)</text>
+<rect x="247" y="396.7" width="72.1" height="20" rx="10" fill="#FFFFFF"/>
+<text x="283" y="411" font-size="12" font-weight="500" text-anchor="middle" fill="#566070">driver call</text>
+<rect x="246.8" y="554.7" width="75.5" height="20" rx="10" fill="#FFFFFF"/>
+<text x="284.5" y="569" font-size="12" font-weight="500" text-anchor="middle" fill="#566070">WriteRead</text>
+<rect x="246.8" y="693.7" width="121.3" height="20" rx="10" fill="#FFFFFF"/>
+<text x="307.5" y="708" font-size="12" font-weight="500" text-anchor="middle" fill="#566070">WriteRead(spans)</text>
+<rect x="409" y="723.4" width="106" height="20" rx="10" fill="#FFFFFF"/>
+<text x="462" y="737.7" font-size="12" font-weight="500" text-anchor="middle" fill="#566070">ok or I2cFailure</text>
+<rect x="408.8" y="584.4" width="114.4" height="20" rx="10" fill="#FFFFFF"/>
+<text x="466" y="598.7" font-size="12" font-weight="500" text-anchor="middle" fill="#566070">bool, failure kept</text>
+<rect x="409.1" y="426.4" width="49.8" height="20" rx="10" fill="#FFFFFF"/>
+<text x="434" y="440.7" font-size="12" font-weight="500" text-anchor="middle" fill="#566070">Result</text>
+<rect x="408.8" y="268.4" width="72.4" height="20" rx="10" fill="#FFFFFF"/>
+<text x="445" y="282.7" font-size="12" font-weight="500" text-anchor="middle" fill="#566070">kb::Result</text>
+<rect x="32" y="856.9" width="14" height="14" rx="4" fill="#FDF0FF" stroke="#A21CAF" stroke-width="1.4"/>
+<text x="54" y="868.5" font-size="12.5" fill="#566070">HAL</text>
+<rect x="104.5" y="856.9" width="14" height="14" rx="4" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1.4"/>
+<text x="126.5" y="868.5" font-size="12.5" fill="#566070">handler and binding</text>
+<rect x="274.9" y="856.9" width="14" height="14" rx="4" fill="#EAF7EF" stroke="#15803D" stroke-width="1.4"/>
+<text x="296.9" y="868.5" font-size="12.5" fill="#566070">driver</text>
+<rect x="357.3" y="856.9" width="14" height="14" rx="4" fill="#E6F6F4" stroke="#0B7A72" stroke-width="1.4"/>
+<text x="379.3" y="868.5" font-size="12.5" fill="#566070">MCU port</text>
+<path d="M464 863.2L494 863.2" fill="none" stroke="#7C8798" stroke-width="1.6" marker-end="url(#call-sequence-arrow-rail)"/>
+<text x="508" y="868.5" font-size="12.5" fill="#566070">call</text>
+<path d="M32 888.2L62 888.2" fill="none" stroke="#7C8798" stroke-width="1.6" stroke-dasharray="7 5" marker-end="url(#call-sequence-arrow-rail)"/>
+<text x="76" y="893.5" font-size="12.5" fill="#566070">return</text>
 </svg>

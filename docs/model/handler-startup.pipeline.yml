@@ -1,0 +1,64 @@
+---
+# The handler start-up pipeline.
+kind: pipeline
+id: handler-startup
+title: The handler start-up pipeline
+kicker: Handlers
+subtitle: One runner, a plan of declared stages per chip. Each stage is synchronous or polled, and bounded.
+alt: >-
+  Eight start-up stages in order, Power, HostReset, Boot, Link, Identify, Secure, Configure and Verify, ending in
+  Ready, beside the plans of most drivers, the bno08x and the se05x, each using only some of the stages.
+reads: >-
+  Two columns. Stages, in order: one runner and a declared plan of stages per chip, in a fixed order: Power (rail or
+  enable pin), HostReset (reset pulse, hold, release), Boot (boot time, ready pin, advertisement), Link (transport
+  session, T=1 or SHTP), Identify (ID, select, probe, capabilities), Secure (secure channel, platform SCP03),
+  Configure (apply the configuration), Verify (read-back, lifecycle state), then Ready, when the handler serves
+  calls. Plans of three chips: a plan lists only the stages its chip needs, and every stage is synchronous or polled
+  and bounded by a deadline. Most drivers declare one step, Start, that calls the driver's EnsureInitialized();
+  Identify and Configure happen inside the driver. The bno08x resets with Begin(cfg), synchronous, boots and links
+  by calling Poll() until Ready(), polled, and configures with SetFeature operations until OpDone, polled. The se05x
+  sets platform keys with SetPlatformKeys() (no I/O), opens the link, identifies and secures with Open(),
+  synchronous and bounded by the link, and optionally verifies the lifecycle state. An optional stage is skipped,
+  not failed, when the HAL supplies no pin, rail or key for it.
+print: portrait
+column_width: 270
+gap: 40
+legend:
+  - [violet, stage]
+  - [green, ready]
+  - [blue, plan of one chip]
+columns:
+  - id: stages
+    title: Stages, in order
+    tone: violet
+    items:
+      - {id: s1, title: 1 Power, lines: [rail or enable pin]}
+      - {id: s2, title: 2 HostReset, lines: ["reset pulse, hold, release"]}
+      - {id: s3, title: 3 Boot, lines: ["boot time, ready pin"]}
+      - {id: s4, title: 4 Link, lines: ["transport: T=1, SHTP"]}
+      - {id: s5, title: 5 Identify, lines: ["ID, probe, capabilities"]}
+      - {id: s6, title: 6 Secure, lines: [platform SCP03]}
+      - {id: s7, title: 7 Configure, lines: [apply the configuration]}
+      - {id: s8, title: 8 Verify, lines: ["read-back, lifecycle"]}
+      - {id: ready, title: Ready, lines: [serves calls], tone: green}
+  - id: plans
+    title: Plans of three chips
+    tone: blue
+    items:
+      - {id: most, title: Most drivers, lines: ["Start = EnsureInitialized()"]}
+      - id: bno
+        title: bno08x
+        lines: ["HostReset = Begin(cfg)", "Boot, Link = Poll()", "Configure = SetFeature"]
+      - id: se
+        title: se05x
+        lines: ["keys = SetPlatformKeys()", "Link, Identify, Secure = Open()", "Verify = lifecycle, optional"]
+      - {id: opt, title: Optional stages, lines: ["no pin, rail or key:", "skipped, not failed"], tone: slate}
+links:
+  - {from: s1, to: s2}
+  - {from: s2, to: s3}
+  - {from: s3, to: s4}
+  - {from: s4, to: s5}
+  - {from: s5, to: s6}
+  - {from: s6, to: s7}
+  - {from: s7, to: s8}
+  - {from: s8, to: ready}

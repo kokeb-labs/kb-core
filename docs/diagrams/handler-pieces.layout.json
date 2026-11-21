@@ -1,0 +1,87 @@
+{
+ "direction": "TB",
+ "edges": [
+  {
+   "from": "hal",
+   "to": "facade",
+   "via": []
+  },
+  {
+   "from": "facade",
+   "to": "core",
+   "via": []
+  },
+  {
+   "from": "facade",
+   "to": "dom",
+   "via": []
+  },
+  {
+   "from": "core",
+   "to": "drv",
+   "via": []
+  },
+  {
+   "from": "drv",
+   "to": "port",
+   "via": []
+  },
+  {
+   "from": "port",
+   "to": "iface",
+   "via": []
+  }
+ ],
+ "engine": "graphviz dot 13.1.0 (recorded for the reader; render never reads it)",
+ "figkit_layout": 1,
+ "id": "handler-pieces",
+ "input": "0254ed8b3c071e414cdcfd3469ba08e88458b3c03006ef5a8a9b25e69ab78744",
+ "nodes": {
+  "core": [
+   0,
+   372,
+   190,
+   125
+  ],
+  "dom": [
+   246,
+   390,
+   231,
+   88
+  ],
+  "drv": [
+   0,
+   567,
+   190,
+   88
+  ],
+  "facade": [
+   133,
+   158,
+   190,
+   144
+  ],
+  "hal": [
+   130,
+   0,
+   197,
+   88
+  ],
+  "iface": [
+   0,
+   883,
+   190,
+   88
+  ],
+  "port": [
+   0,
+   725,
+   190,
+   88
+  ]
+ },
+ "size": [
+  476,
+  971
+ ]
+}

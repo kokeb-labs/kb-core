@@ -45,9 +45,9 @@ several kinds.
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="../diagrams/handler-startup.dark.svg">
   <img src="../diagrams/handler-startup.svg"
-    alt="Pipeline of eight start-up stages in order, Power, HostReset, Boot, Link, Identify, Secure,
-    Configure and Verify, ending in Ready; beside it the plans of most drivers, the bno08x and the
-    se05x, each using only some of the stages.">
+    alt="Eight start-up stages in order, Power, HostReset, Boot, Link, Identify, Secure, Configure and
+    Verify, ending in Ready, beside the plans of most drivers, the bno08x and the se05x, each using only
+    some of the stages.">
 </picture>
 <!-- /figure -->
 
@@ -98,9 +98,8 @@ handler calls inside a held bus transaction.
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="../diagrams/handler-health.dark.svg">
   <img src="../diagrams/handler-health.svg"
-    alt="State machine: Unknown to Starting to Ready; Ready and Degraded swap on a failing and a passing
-    call; Starting, Degraded and Ready can go to Faulted; Faulted goes to Recovering and back to Ready
-    or Faulted; Deinitialize returns Ready or Faulted to Unknown.">
+    alt="State machine of a handler with the states Unknown, Starting, Ready, Degraded, Faulted and
+    Recovering, and the calls and failures that move it between them.">
 </picture>
 <!-- /figure -->
 
@@ -127,10 +126,9 @@ Each bus declares one model; the handler's access facade must match it (compile 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="../diagrams/handler-threading.dark.svg">
   <img src="../diagrams/handler-threading.svg"
-    alt="Two side by side models. Owner task: other tasks read a lock-free snapshot or post requests to a
-    queue that the owner task publishes to and drains, and the owner task steps the handlers on an
-    unlocked bus domain. Guarded facade: tasks call a guarded handler that takes the handler lock then a
-    bounded bus lock.">
+    alt="Two thread models, one above the other: in model O other tasks read a lock-free snapshot or queue
+    requests that the owner task publishes and drains, and in model G tasks call guarded handlers that
+    take the handler lock and then a bounded bus lock.">
 </picture>
 <!-- /figure -->
 

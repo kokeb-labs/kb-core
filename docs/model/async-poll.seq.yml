@@ -1,0 +1,45 @@
+---
+# One asynchronous read on an owner bus.
+kind: seq
+id: async-poll
+title: One asynchronous read
+kicker: Handlers
+subtitle: Started in one owner pass, collected in a later one. No pass waits.
+alt: >-
+  Sequence in which the owner task starts a read through the poller and the port in pass n, polls and gets Pending,
+  the interrupt completes the transfer, and in pass n+1 the poll returns Done with the byte count.
+reads: >-
+  The Owner task starts the transfer in one service pass and collects the result in a later one; no pass waits. In
+  pass n the Owner task calls StartWriteRead on the AsyncPoller, which owns the buffers and asks the Port (I2cAsync or
+  SpiAsync) to start with a deadline; the port answers Ok at once. A Step(now) in the same pass makes the poller call
+  Poll(now), which reports Pending. The peripheral ISR then finishes the transfer and sets the owner's event flag. In
+  pass n+1 the poll reports Done, Ok with the count, and Completion() is Ok with the bytes held. Past the deadline the
+  result is Done with Timeout, late data included; Cancel() makes the poller Idle and releases the buffers.
+print: portrait
+min_gap: 140
+legend:
+  - [brown, owner task]
+  - [violet, poller]
+  - [teal, port and interrupt]
+  - ["~solid", call]
+  - ["~dashed", return]
+participants:
+  - {id: owner, label: Owner task, tone: brown}
+  - {id: poller, label: AsyncPoller, tone: violet}
+  - {id: port, label: Port, tone: teal}
+  - {id: isr, label: ISR, tone: teal}
+steps:
+  - {note: pass n, over: [owner]}
+  - {from: owner, to: poller, label: StartWriteRead, tone: brown}
+  - {from: poller, to: port, label: "Start(deadline)", tone: violet}
+  - {from: port, to: poller, label: Ok at once, return: true, tone: teal}
+  - {from: owner, to: poller, label: "Step(now)", tone: brown}
+  - {from: poller, to: port, label: "Poll(now)", tone: violet}
+  - {from: port, to: poller, label: Pending, return: true, tone: teal}
+  - {from: isr, to: port, label: "done, flag set", tone: teal}
+  - {note: pass n+1, over: [owner]}
+  - {from: owner, to: poller, label: "Step(now)", tone: brown}
+  - {from: poller, to: port, label: "Poll(now)", tone: violet}
+  - {from: port, to: poller, label: "Done, Ok, count", return: true, tone: teal}
+  - {from: poller, to: owner, label: Completion Ok, return: true, tone: violet}
+  - {note: "past the deadline: Timeout; Cancel: Idle", over: [poller, port]}

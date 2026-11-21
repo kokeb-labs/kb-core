@@ -1,0 +1,85 @@
+{
+ "direction": "TB",
+ "edges": [
+  {
+   "from": "hal",
+   "to": "handler",
+   "via": []
+  },
+  {
+   "from": "handler",
+   "to": "driver",
+   "via": []
+  },
+  {
+   "from": "driver",
+   "to": "binding",
+   "via": []
+  },
+  {
+   "from": "binding",
+   "to": "i2c",
+   "via": []
+  },
+  {
+   "from": "i2c",
+   "to": "binding",
+   "via": []
+  },
+  {
+   "from": "binding",
+   "to": "driver",
+   "via": []
+  },
+  {
+   "from": "driver",
+   "to": "handler",
+   "via": []
+  },
+  {
+   "from": "handler",
+   "to": "hal",
+   "via": []
+  }
+ ],
+ "engine": "graphviz dot 13.1.0 (recorded for the reader; render never reads it)",
+ "figkit_layout": 1,
+ "id": "call-sequence",
+ "input": "63cc5f569406123490684f53115ab3e14b1d1bb8a1ccd2c7e55ad0df5138cf52",
+ "nodes": {
+  "binding": [
+   0,
+   455,
+   190,
+   69
+  ],
+  "driver": [
+   0,
+   297,
+   190,
+   88
+  ],
+  "hal": [
+   0,
+   0,
+   190,
+   69
+  ],
+  "handler": [
+   0,
+   139,
+   190,
+   88
+  ],
+  "i2c": [
+   0,
+   594,
+   190,
+   88
+  ]
+ },
+ "size": [
+  190,
+  682
+ ]
+}

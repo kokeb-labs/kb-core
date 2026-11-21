@@ -1,0 +1,108 @@
+{
+ "direction": "TB",
+ "edges": [
+  {
+   "from": "app",
+   "to": "board",
+   "via": []
+  },
+  {
+   "from": "board",
+   "to": "halc",
+   "via": []
+  },
+  {
+   "from": "board",
+   "to": "port",
+   "via": []
+  },
+  {
+   "from": "kboard",
+   "to": "halc",
+   "via": []
+  },
+  {
+   "from": "kboard",
+   "to": "port",
+   "via": []
+  },
+  {
+   "from": "halc",
+   "to": "core",
+   "via": []
+  },
+  {
+   "from": "port",
+   "to": "core",
+   "via": []
+  },
+  {
+   "from": "core",
+   "to": "drv",
+   "via": []
+  },
+  {
+   "from": "core",
+   "to": "tools",
+   "via": []
+  }
+ ],
+ "engine": "graphviz dot 13.1.0 (recorded for the reader; render never reads it)",
+ "figkit_layout": 1,
+ "id": "repo-family",
+ "input": "f873869838a92967eefc7088847988f69a5e01c9a205d5055c41a4929c6f3e58",
+ "nodes": {
+  "app": [
+   0,
+   0,
+   190,
+   69
+  ],
+  "board": [
+   0,
+   139,
+   190,
+   88
+  ],
+  "core": [
+   123,
+   455,
+   190,
+   69
+  ],
+  "drv": [
+   246,
+   594,
+   190,
+   107
+  ],
+  "halc": [
+   0,
+   297,
+   190,
+   88
+  ],
+  "kboard": [
+   246,
+   139,
+   190,
+   88
+  ],
+  "port": [
+   246,
+   297,
+   190,
+   88
+  ],
+  "tools": [
+   0,
+   594,
+   190,
+   107
+  ]
+ },
+ "size": [
+  436,
+  701
+ ]
+}

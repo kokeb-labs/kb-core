@@ -1,0 +1,103 @@
+{
+ "direction": "TB",
+ "edges": [
+  {
+   "from": "pre",
+   "to": "pr",
+   "via": []
+  },
+  {
+   "from": "pr",
+   "to": "always",
+   "via": []
+  },
+  {
+   "from": "pr",
+   "to": "gated",
+   "via": []
+  },
+  {
+   "from": "gated",
+   "to": "drv",
+   "via": []
+  },
+  {
+   "from": "always",
+   "to": "gate",
+   "via": []
+  },
+  {
+   "from": "gated",
+   "to": "gate",
+   "via": []
+  },
+  {
+   "from": "gate",
+   "to": "tag",
+   "via": []
+  },
+  {
+   "from": "tag",
+   "to": "sched",
+   "via": []
+  }
+ ],
+ "engine": "graphviz dot 13.1.0 (recorded for the reader; render never reads it)",
+ "figkit_layout": 1,
+ "id": "ci-flow",
+ "input": "1997bf79e70248b8aa10c498fefa11d61e8c3cc2db3fbbc630e8a902381fb400",
+ "nodes": {
+  "always": [
+   0,
+   292,
+   190,
+   163
+  ],
+  "drv": [
+   246,
+   535,
+   190,
+   88
+  ],
+  "gate": [
+   0,
+   535,
+   190,
+   88
+  ],
+  "gated": [
+   246,
+   292,
+   190,
+   163
+  ],
+  "pr": [
+   123,
+   168,
+   190,
+   44
+  ],
+  "pre": [
+   123,
+   0,
+   190,
+   88
+  ],
+  "sched": [
+   0,
+   871,
+   190,
+   88
+  ],
+  "tag": [
+   0,
+   703,
+   190,
+   88
+  ]
+ },
+ "size": [
+  436,
+  959
+ ]
+}

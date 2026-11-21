@@ -8,10 +8,9 @@ loop, is alive. Two pieces serve that: the liveness verdict (`kb::handlers::Live
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="../diagrams/fault-journal.dark.svg">
   <img src="../diagrams/fault-journal.svg"
-    alt="Flow: handler health edges and the liveness verdict go to the health journal, which appends one
-    record to a CRC-checked ring in a port-provided store that survives a reset; the boot reset reason
-    is recorded too; the watchdog is kicked only when nothing is stale; after a reset Open finds the
-    newest record.">
+    alt="Flow in which handler health edges and the liveness verdict go to the health journal, which appends
+    one record to a CRC-checked ring in a port store that survives a reset, with the boot reset reason
+    recorded and the watchdog kicked only when nothing is stale.">
 </picture>
 <!-- /figure -->
 

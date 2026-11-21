@@ -1,0 +1,61 @@
+---
+# The kb-core CI flow.
+kind: graph
+id: ci-flow
+title: The CI flow
+kicker: Testing
+subtitle: Every CI job has a local equivalent in tools/preflight.sh, run before any push.
+alt: >-
+  Flow from the local preflight to a pull request, then always-run and path-gated checks into one required gate,
+  with the drivers' own tests never re-run, and a tag producing the release assets that a schedule re-scans.
+reads: >-
+  From the top. Every change first passes tools/preflight.sh on a workstation, then reaches CI as a pull request or
+  push. Always run: repository checks (DCO, lint, handbook, drift), layering (include checker, CMake DAG, poison build,
+  symbol lint), layout and examples (root allowlist, retired locations, example index), own parts (host build and
+  tests on GCC and Clang, clang-tidy, cppcheck), MISRA at level high (CodeQL pack plus kokeb-cpp20, host and
+  Cortex-M) and pin hygiene (gitlink, lock and a release or rc tag with a green gate, never a branch). Run when the
+  paths under components/drivers, handlers, interfaces, ports or cmake match, and on main and tags: quality
+  (coverage, sanitizers, fuzz, mutation kill-rate gate), integration (the binding, port, MCU and RTOS matrix from
+  catalog/compat.yml), the ESP-IDF v5.5 build of the port and the catalogue (regenerate compat.yml, fail on drift).
+  Never re-run for components/drivers: the drivers' own tests, fuzz, mutation, MISRA, tidy and docs, which each
+  driver runs in its own repository and which are trusted through pin hygiene. Everything ends in one required gate,
+  ru-ci-gate; a tag vX.Y.Z adds the release assets (per-part packages, SHA256SUMS, compat.yml, release lock, SBOM,
+  CVE scan, licence report, provenance), and a schedule re-scans releases for known vulnerabilities and records the
+  tested version set kb YYYY.N.
+direction: TB
+print: portrait
+legend:
+  - [brown, start]
+  - [green, always]
+  - [blue, path-gated]
+  - [slate, never re-run]
+  - [brand, gate and release]
+nodes:
+  - {id: pre, label: tools/preflight.sh, tone: brown, lines: [local, before every push], accent: true}
+  - {id: pr, label: Pull request or push, tone: brown, accent: true}
+  - id: always
+    label: Always
+    tone: green
+    lines: [repository checks, layering, layout and examples, own parts, MISRA level high, pin hygiene]
+    accent: true
+  - id: gated
+    label: Path-gated
+    tone: blue
+    lines: [quality, integration, ESP-IDF port job, catalogue, on matching paths, main and tags]
+    accent: true
+  - id: drv
+    label: Driver tests
+    tone: slate
+    lines: [never re-run here, trusted by pin hygiene]
+  - {id: gate, label: ru-ci-gate, tone: brand, lines: [the single required check], accent: true}
+  - {id: tag, label: Tag vX.Y.Z, tone: brand, lines: [release assets, "SBOM, CVE scan"], accent: true}
+  - {id: sched, label: Scheduled, tone: brand, lines: [CVE re-scan, tested set kb YYYY.N], accent: true}
+edges:
+  - {from: pre, to: pr, label: push}
+  - {from: pr, to: always, label: runs}
+  - {from: pr, to: gated, label: paths match}
+  - {from: gated, to: drv, label: skips, dashed: true}
+  - {from: always, to: gate}
+  - {from: gated, to: gate, label: all pass}
+  - {from: gate, to: tag, tone: brand}
+  - {from: tag, to: sched, tone: brand}

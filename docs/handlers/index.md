@@ -12,10 +12,9 @@ error map, the start-up plan) and a handler class on the shared core. Decisions:
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="../diagrams/handler-pieces.dark.svg">
   <img src="../diagrams/handler-pieces.svg"
-    alt="Stack: a HAL manager calls an access facade, OwnerAccess or Guarded; the facade calls the handler
-    core with a service key and owns the bus domain; the core holds the start-up runner, health,
-    snapshot and liveness beat and builds the driver, which reaches the HAL's bus through the binding's
-    port and the kb::iface contract.">
+    alt="Stack in which a HAL manager calls an access facade, the facade runs the handler core with a service
+    key and owns the bus domain, and the core builds the driver, which reaches the HAL's bus through the
+    binding's port and the kb::iface contract.">
 </picture>
 <!-- /figure -->
 
@@ -36,9 +35,8 @@ error map, the start-up plan) and a handler class on the shared core. Decisions:
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="../diagrams/handler-health.dark.svg">
   <img src="../diagrams/handler-health.svg"
-    alt="State machine: Unknown to Starting to Ready; Ready and Degraded swap on a failing and a passing
-    call; Starting, Degraded and Ready can go to Faulted; Faulted goes to Recovering and back to Ready
-    or Faulted; Deinitialize returns Ready or Faulted to Unknown.">
+    alt="State machine of a handler with the states Unknown, Starting, Ready, Degraded, Faulted and
+    Recovering, and the calls and failures that move it between them.">
 </picture>
 <!-- /figure -->
 

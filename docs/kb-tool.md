@@ -57,9 +57,9 @@ submodule is still at its pinned commit. `kb_image.cmake` and the presets point 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="diagrams/update-path.dark.svg">
   <img src="diagrams/update-path.svg"
-    alt="Five steps: read the lock, catalogue and image; order kb-core, port and drivers; apply the driver
-    gates and hold back what fails; write one row per component; write the new image, lock, CMake files,
-    fetch script and report, then review, fetch, build and test.">
+    alt="Five steps from reading the lock, catalogue and image through ordering, gating, one row per
+    component and writing the new files, with failing versions held back and a final review, fetch,
+    build and test by hand.">
 </picture>
 <!-- /figure -->
 
