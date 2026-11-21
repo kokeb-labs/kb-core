@@ -1,0 +1,148 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kokeb-labs.github.io/kb-core/schemas/vulnerabilities.schema.json",
+  "title": "kb-vulns/1: known vulnerabilities of the pinned components, as of one date",
+  "description": "Written by tools/vuln/scan.py from the OSV database for the components kb-core pins (drivers, RTOS kernel, SDK). A snapshot: checked_at is the UTC date of the scan, and a reader older than stale_after_days days must say so. Read by docs/assurance/vulnerabilities.md and the configurator (data/vulnerabilities.js). Sorted keys. SPDX-License-Identifier: MIT. Copyright (c) 2026 The kb-core authors.",
+  "type": "object",
+  "required": [
+    "schema",
+    "checked_at",
+    "source",
+    "scanner",
+    "stale_after_days",
+    "kb_core",
+    "status",
+    "totals",
+    "components"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "kb-vulns/1"
+    },
+    "checked_at": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "source": {
+      "const": "OSV"
+    },
+    "scanner": {
+      "type": "string",
+      "pattern": "^kb-vuln-scan/[0-9]+$"
+    },
+    "stale_after_days": {
+      "const": 10
+    },
+    "kb_core": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "none known",
+        "advisories found"
+      ]
+    },
+    "totals": {
+      "type": "object",
+      "required": [
+        "components",
+        "with_advisories",
+        "advisories"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "components": {
+          "type": "integer"
+        },
+        "with_advisories": {
+          "type": "integer"
+        },
+        "advisories": {
+          "type": "integer"
+        }
+      }
+    },
+    "components": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "version",
+          "purl",
+          "commit",
+          "status",
+          "count",
+          "advisories"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "purl": {
+            "type": "string",
+            "pattern": "^pkg:github/[^@]+@.+$"
+          },
+          "commit": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{40}$"
+          },
+          "status": {
+            "enum": [
+              "none known",
+              "advisories found"
+            ]
+          },
+          "count": {
+            "type": "integer"
+          },
+          "advisories": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "id",
+                "severity",
+                "summary",
+                "url"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "severity": {
+                  "enum": [
+                    "critical",
+                    "high",
+                    "medium",
+                    "low",
+                    "none",
+                    "unrated"
+                  ]
+                },
+                "cvss": {
+                  "type": "string",
+                  "pattern": "^CVSS:[0-9.]+/"
+                },
+                "summary": {
+                  "type": "string"
+                },
+                "url": {
+                  "type": "string",
+                  "pattern": "^https://"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

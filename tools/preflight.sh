@@ -105,7 +105,7 @@ if [ -x "$CLANG_TIDY" ] && [ -f "$work/clang/compile_commands.json" ]; then step
 step layout-root python3 -I tools/layout/layout.py root
 step layout-stale python3 -I tools/layout/layout.py stale
 step examples-index python3 tools/examples/examples.py check
-step layout-tool-tests bash -c "python3 tools/layout/tests/run.py && python3 tools/examples/tests/run.py"
+step layout-tool-tests bash -c "python3 tools/layout/tests/run.py && python3 tools/examples/tests/run.py && python3 tools/vuln/tests/run.py"
 step misra-lint python3 -I tools/lint/misra_lint.py --root . --ci-tools "$CI_TOOLS_DIR" --strict --strict-precedence \
   --void-casts $(library)
 step eval-order bash -c "python3 -I tools/lint/eval_order_check.py --root . \$(git ls-files -co --exclude-standard -- \"$LIB/*/tests/*.cpp\" \"$LIB/*/fuzz/*.cpp\" \"$HOST_PORT/*.cpp\" \"$EXAMPLES/*.cpp\")"
