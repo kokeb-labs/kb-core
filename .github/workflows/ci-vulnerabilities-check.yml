@@ -1,0 +1,27 @@
+# Validation of the vulnerability data, called from ci.yml so it is part of the CI gate: the scan and renderer tests on
+# fixtures and the schema/equality check of the committed snapshot. No network, nothing is rescanned.
+name: Vulnerability data checks
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Fixtures and schema
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Scan and renderer tests (fixtures, no network)
+        run: python3 tools/vuln/tests/run.py
+      - name: Committed snapshot is valid
+        run: python3 tools/vuln/scan.py --check
+      - name: Generated files match the snapshot
+        run: python3 tools/vuln/collect.py --site configurator/data --docs docs/assurance/vulnerabilities.md --check
