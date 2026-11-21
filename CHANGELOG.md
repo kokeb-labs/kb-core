@@ -6,44 +6,27 @@ lists its changes per part, the ESP32 port and its driver pins. The format follo
 
 ## [Unreleased]
 
-### Added
+## [0.1.0-rc.1] - 2026-11-21
 
-- The se05x driver as a submodule (`components/drivers/driver-se05x`, v0.1.0-rc.1) with its lock entry; its binding and
-  integration test are now part of the integration, layering and catalogue checks.
+The first release candidate: every part, the ESP32 and host ports and 23 pinned chip drivers, tested in CI. APIs
+may still change before 0.1.0.
 
-### Changed
+### Repository
 
-- **Repository layout** ([Repository layout](docs/layout.md)): the libraries, the ports and the driver submodules now
-  sit next to each other under `components/`; the host RTOS backend is the host port in `components/ports/host/`;
-  the JSON schemas moved into `catalog/`. A pure move (`git mv`, history kept), with every reference updated.
-
-  | Old | New |
-  | --- | --- |
-  | `lib/` | `components/lib/` |
-  | `ports/` | `components/ports/` |
-  | `drivers/` (submodules `drivers/driver-<chip>`, `drivers/drivers.lock.yml`) | `components/drivers/` |
-  | `host/rtos/CMakeLists.txt` | `components/ports/host/CMakeLists.txt` |
-  | `host/rtos/README.md` | `components/ports/host/README.md` |
-  | `host/rtos/host_backend.cpp` | `components/ports/host/src/host_backend.cpp` |
-  | `schemas/` | `catalog/schemas/` |
-
-  Unchanged at the root: `.github/`, `.kokeb/`, `_config/`, `catalog/`, `cmake/`, `configurator/`, `deviations/`,
-  `docs/`, `examples/`, `tests/`, `tools/`. Where things live is named once, in `tools/layout/paths.yml`; CMake
+- Layout ([Repository layout](docs/layout.md)): the libraries, the ports and the driver submodules sit next to each
+  other under `components/` (`components/lib/`, `components/ports/`, `components/drivers/`); the JSON schemas live in
+  `catalog/schemas/`. Where things live is named once, in `tools/layout/paths.yml`; CMake
   (`cmake/kb_layout.cmake`), the tools, `tools/preflight.sh` and the tests read it. `tools/layout/layout.py root`
-  fails on a top-level entry that is not in the allowlist in the same file, and `layout.py stale` fails on a
-  reference to a retired location (run by preflight, ctest and `ci-layout.yml`).
-  Consumers that keep a pinned copy of kb-core (`port-esp32`, `port-stm32`, `third_party/kb-core.lock`): the lock
-  format is unchanged; the copied paths move with the table above, and the copy gains `cmake/kb_layout.cmake` and
-  `tools/layout/paths.yml` (`layout.py vendor` prints the list). `path` values of in-tree ports in
-  `kb-image.lock.yml` and the catalogue are the new ones. Installed packages are unaffected.
-
-### Added
-
+  fails on a top-level entry outside the allowlist, and `layout.py stale` fails on a reference to a retired location.
+  Consumers that keep a pinned copy of kb-core (`port-esp32`, `port-stm32`, `third_party/kb-core.lock`) get the list
+  of copied files from `layout.py vendor`.
 - Examples are first-class (`examples/README.md`): `examples/examples.yml` indexes them; host examples
   (`utils_checks`, `rtos_thread`, `interfaces_fakes`) are built with `KB_BUILD_EXAMPLES` and run as ctest tests
-  `example_<id>` in the host job on every pull request; the documentation shows their source through snippet
-  includes (`docs/parts/*.md`) and `docs/examples.md` lists the examples still to add; the configurator catalogue
-  carries the index (`examples`). `tools/examples/examples.py check` keeps all of it in step.
+  `example_<id>` on every pull request; the documentation shows their source through snippet includes
+  (`docs/parts/*.md`); the configurator catalogue carries the index (`examples`). `tools/examples/examples.py check`
+  keeps all of it in step.
+- Figures: every diagram is a committed light and dark SVG drawn by the Kokeb figure kit, readable at phone width;
+  no Mermaid ([Figures](docs/figures.md)).
 
 ### dma
 
@@ -57,7 +40,7 @@ lists its changes per part, the ESP32 port and its driver pins. The format follo
   catalogue (`tools/mutants/dma.txt`).
 - ADR-0030 to ADR-0032 (numbers provisional).
 
-### Repository
+### Build, CI and tools
 
 - Test infrastructure: a dependency-free harness (`tests/harness/`), strict flags, header self-containment checks,
   compile-fail and fuzz helpers (`cmake/kb_testing.cmake`); `kb_parts_cross` for the Cortex-M build and scan.
@@ -118,14 +101,13 @@ lists its changes per part, the ESP32 port and its driver pins. The format follo
   files, `kb-fetch.sh` and `kb-upgrade.md`; codes `KB-UPG-*`. The configurator's *Open an existing project* reads
   the files locally and shows the same plan with the same downloads (`plan` in `resolver.mjs`). Shared vectors in
   `tests/resolver/vectors/upgrade/`, Python-JavaScript agreement tests on mutated inputs, a YAML-reader parity test.
-- Update path, review round 1: a lock whose commit or kind differs from the catalogue is shown and warned
+- Update path checks: a lock whose commit or kind differs from the catalogue is shown and warned
   (`KB-UPG-W04`); the site's YAML reader is linear with line caps, refuses `__proto__`, non-string keys and the
   plain forms PyYAML reads as numbers or dates; held-back versions cannot be picked and a refused pick keeps the
   table; release candidates are hidden behind a *Show release candidates* switch; "request it" and footer links to
   `kokeb-labs-drivers/driver-requests`; per-version `requires_owner` in the site catalogue and `kb` reads the
   site's `data/catalog.json` as the page does (a wrong catalogue is exit 2); the kb tool tests fail instead of
   skipping in CI without PyYAML.
-- Test fix: the request-channel race test always sees both a completed and a timed-out request.
 - ADR-0015 (proposed): non-blocking bus access (`Start`/`Poll`, ports may adapt synchronous calls for now) and held
   bus transactions; design pages [Bus access](docs/design/bus-access.md) and
   [Fault evidence](docs/design/fault-journal.md) with their figures.
@@ -160,22 +142,22 @@ lists its changes per part, the ESP32 port and its driver pins. The format follo
   `...FromIsr` ones.
 - Backends: `none` (deterministic fake clock, timers fire as time advances), `freertos` (two boundary files, static
   allocation only, built into the ESP-IDF component `kb`), the test-only `host` backend over std::thread in
-  `host/rtos/`; `KB_RTOS=THREADX` refused with a "not yet" message.
+  `components/ports/host/`.
 - One contract test suite over `none` and over the FreeRTOS boundary with a fake kernel (`tests/fakes/freertos/`),
   FreeRTOS link-seam tests, multi-threaded host tests, compile-fail tests; ESP32-C6 smoke app `kb_rtos_smoke`.
 - ThreadX backend (ADR-0015): `KB_RTOS=THREADX` over Eclipse ThreadX, one boundary file
-  (`lib/rtos/backends/threadx/threadx_boundary.cpp`), static allocation only, priority-inheriting mutexes, the
-  semaphore maximum, odd-sized queue items, delay-until with overrun count, nested critical sections and the stack
-  high-water mark; the kernel is a product's (`KB_THREADX_INCLUDE_DIRS`) or the pinned submodule
-  `third_party/threadx` (`v6.5.2.202603b_rel`, MIT, SOUP) built for `KB_THREADX_PORT`; the configure stops without
-  one. Tested over a fake kernel (`tests/fakes/threadx/`, the contract suite and the seam), on the real kernel's
-  Linux port (`KB_THREADX_HOST_TESTS`: the threaded suite and priority inheritance) and cross-compiled with the
-  kernel for Cortex-M0+, M4F and M7F (`tools/preflight/threadx_cross.sh`, CI job ThreadX Cortex-M). Docs:
+  (`components/lib/rtos/backends/threadx/threadx_boundary.cpp`), static allocation only, priority-inheriting mutexes,
+  the semaphore maximum, odd-sized queue items, delay-until with overrun count, nested critical sections and the stack
+  high-water mark; the kernel is a product's (`KB_THREADX_INCLUDE_DIRS`) or the pinned submodule `third_party/threadx`
+  (`v6.5.2.202603b_rel`, MIT, SOUP) built for `KB_THREADX_PORT`; the configure stops without one. Tested over a fake
+  kernel (`tests/fakes/threadx/`, the contract suite and the seam), on the real kernel's Linux port
+  (`KB_THREADX_HOST_TESTS`: the threaded suite and priority inheritance) and cross-compiled with the kernel for
+  Cortex-M0+, M4F and M7F (`tools/preflight/threadx_cross.sh`, CI job ThreadX Cortex-M). Docs:
   `docs/parts/rtos-threadx.md`. The catalogue, the configurator and `kb resolve` list ThreadX as supported.
-  `KB_THREADX_TICK_HZ` is the tick the kernel and the backend are built for (required with a product kernel; the
-  backend fails to compile when the kernel's `TX_TIMER_TICKS_PER_SECOND` differs); `KB_THREADX_THREAD_BYTES`
-  optionally checks that the backend sees the product kernel's control-block layout. kb threads never run as
-  urgently as the ThreadX timer thread, and a delay-until that wakes after its grid point counts as an overrun.
+  `KB_THREADX_TICK_HZ` is the tick the kernel and the backend are built for (required with a product kernel; the backend
+  fails to compile when the kernel's `TX_TIMER_TICKS_PER_SECOND` differs); `KB_THREADX_THREAD_BYTES` optionally checks
+  that the backend sees the product kernel's control-block layout. kb threads never run as urgently as the ThreadX timer
+  thread, and a delay-until that wakes after its grid point counts as an overrun.
 - The seam and the API gain what the ThreadX backend needed and every backend now implements:
   `RecursiveMutex`/`RecursiveLockGuard`, `Thread::StartAndWaitToVerify`, `RequestPark`/`Resume`/`ResumeFromIsr`,
   `Thread::StackFreeBytes()` (FreeRTOS: the task high-water mark), `Semaphore::IsCreated()`; on a ThreadX build queue
@@ -194,13 +176,12 @@ lists its changes per part, the ESP32 port and its driver pins. The format follo
   `LogLevel`, `Duty`.
 - A type-erased `*Ref` per contract (context pointer and constant function table), each checked against its concept.
 - Host port `kb::interfaces_host`: fakes of every contract with fault injection.
-- Proof against the pinned drivers tmc5160, bno08x and pcal9555 (v0.1.0-rc.1 submodules): thin adapters satisfy
+- Proof against the pinned drivers tmc5160, bno08x and pcal9555: thin adapters satisfy
   their port concepts over the fakes and over the `*Ref` values; compile-fail tests for misuse.
 - The asynchronous contract (`async.hpp`, ADR-0015): `I2cAsync`, `SpiAsync`, `AsyncOperation`, `NonBlocking`,
   `AsyncPoll`; `AsyncFromSync<Bus, Clock>` serves it from a synchronous port with the same deadline rules. Host
   fakes `FakeAsyncI2c` and `FakeAsyncSpi` inject latency, hangs, late completions, NACKs and the cancel race.
 
-- The host test port moves to `lib/interfaces/host/`; the interfaces part compiles no MCU code.
 
 ### handlers
 
@@ -218,7 +199,7 @@ lists its changes per part, the ESP32 port and its driver pins. The format follo
 - `Seqlock<T>`, `LivenessMonitor<N>`, the hook bases `I2cHooks`, `SpiHooks`, `UartHooks`, `AdcHooks`, `GpioHooks`
   and `HookTiming` (the at-least delay split, clock narrowing), and the driver-result helpers.
 - One binding and handler per driver (`kb/handlers/bindings/<name>.hpp`) for all 22 pinned drivers and for se05x
-  (se05x is a pinned submodule at v0.1.0-rc.1 too): port over kb contracts, the error map, the
+  (se05x included): port over kb contracts, the error map, the
   start-up plan, the thread model and a small typed app API. One page per handler under `docs/handlers/`.
 - Tests: unit tests of the core on the none backend, thread tests on the host backend (contention, timeouts,
   recovery storms), compile-fail tests, a fuzz target of the request queue, integration tests of every binding
@@ -245,14 +226,21 @@ lists its changes per part, the ESP32 port and its driver pins. The format follo
 - Tests: unit tests of each, thread tests of held calls under contention (TSan), mutation catalogue entries
   `BH-*`, `GH-*`, `OH-*`, `AP-*`, `LV-02` to `LV-04`, `HJ-*`.
 
-### ports/esp32
+### ports
 
-- New location `ports/esp32/` (from `lib/interfaces/ports/esp32/`), its own CMake project and ESP-IDF component,
-  its own deviation files; ESP-IDF examples move to `ports/esp32/examples/`.
+- `components/ports/esp32/`: the ESP32 family port, its own CMake project and ESP-IDF component with its own deviation
+  files and ESP-IDF examples. `components/ports/host/`: the host port (RTOS backend over std::thread and fakes of
+  every contract) used by the tests.
 
 ### Driver pins
 
-- tmc5160, bno08x and pcal9555 at v0.1.0-rc.1 (submodules under `drivers/`, recorded in `drivers.lock.yml`).
-- The other 19 published drivers at v0.1.0-rc.1: mcp9700, ntc_thermistor, at25040b, pca9685, ads7952, as5047u,
-  bmp581, ads9324, max22200, tle92466ed, sfm_flow_meter, pf1550, ws2812_rmt, fdo2, alicat_basis2, dynamixel,
-  canopen_client, isf15acp4 and tmc9660; `catalog/compat.yml` regenerated.
+Submodules under `components/drivers/`, recorded in `components/drivers/drivers.lock.yml`; `catalog/compat.yml`
+generated from them.
+
+- se05x at v0.1.0-rc.2.
+- At v0.1.0-rc.1: ads7952, ads9324, alicat_basis2, as5047u, at25040b, bmp581, bno08x, canopen_client, dynamixel,
+  fdo2, isf15acp4, max22200, mcp9700, ntc_thermistor, pca9685, pcal9555, pf1550, sfm_flow_meter, tle92466ed,
+  tmc5160, tmc9660 and ws2812_rmt.
+
+[Unreleased]: https://github.com/kokeb-labs/kb-core/compare/v0.1.0-rc.1...HEAD
+[0.1.0-rc.1]: https://github.com/kokeb-labs/kb-core/releases/tag/v0.1.0-rc.1
