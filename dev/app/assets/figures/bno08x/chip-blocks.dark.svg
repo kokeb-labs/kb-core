@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="599" viewBox="0 0 1200 599" role="img" aria-labelledby="chip-blocks-title chip-blocks-desc" font-family="Inter, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
+<title id="chip-blocks-title">Inside the BNO08x</title>
+<desc id="chip-blocks-desc">Block diagram of the BNO08x: its function blocks, how they connect and which package pins reach each block.</desc>
+<defs><marker id="fk-arrow-rail" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#6C7889"/></marker></defs>
+<rect x="0.5" y="0.5" width="1199" height="598" rx="16" fill="#0E131A" stroke="#283241"/>
+<text x="32" y="44" font-size="12.5" font-weight="700" letter-spacing="1.2" fill="#F8D27A">HARDWARE</text>
+<text x="32" y="77.3" font-size="26" font-weight="700" fill="#E8EDF3">Inside the BNO08x</text>
+<text x="32" y="103.8" font-size="15" fill="#9AA6B5">Function blocks and their links, from the datasheet's block diagram (1 Functional overview, p. 7). Pins on the edge carry their package number.</text>
+<rect x="32" y="119.8" width="1136" height="1" fill="#252F3C"/>
+<rect x="216" y="137.8" width="832" height="400" rx="14" fill="#1B232E" stroke="#3A4656" stroke-width="1.2"/>
+<path d="M223 241.8 L256 241.8" fill="none" stroke="#60A5FA" stroke-width="1.8"/>
+<path d="M223 265.8 L256 265.8" fill="none" stroke="#60A5FA" stroke-width="1.8"/>
+<path d="M223 289.8 L256 289.8" fill="none" stroke="#4ADE80" stroke-width="1.8"/>
+<path d="M223 417.8 L256 417.8" fill="none" stroke="#2BB3A3" stroke-width="1.8"/>
+<path d="M223 441.8 L256 441.8" fill="none" stroke="#2BB3A3" stroke-width="1.8"/>
+<path d="M223 465.8 L256 465.8" fill="none" stroke="#2BB3A3" stroke-width="1.8"/>
+<path d="M1041 425.8 L1040 425.8 L1040 361.8 L720 361.8 L720 425.8 L704 425.8" fill="none" stroke="#A78BFA" stroke-width="1.8"/>
+<path d="M1041 449.8 L1024 449.8 L1024 521.8 L720 521.8 L720 449.8 L704 449.8" fill="none" stroke="#A78BFA" stroke-width="1.8"/>
+<path d="M1041 473.8 L1000 473.8" fill="none" stroke="#FB7185" stroke-width="1.8"/>
+<path d="M1041 497.8 L1000 497.8" fill="none" stroke="#FB7185" stroke-width="1.8"/>
+<path d="M412 265.8 L548 265.8" fill="none" stroke="#6C7889" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rail)" marker-start="url(#fk-arrow-rail)"/>
+<path d="M844 265.8 L708 265.8" fill="none" stroke="#6C7889" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rail)"/>
+<path d="M624 373.8 L624 333.8" fill="none" stroke="#6C7889" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rail)"/>
+<path d="M412 441.8 L418 441.8 Q424 441.8 424 435.8 L424 313.8 Q424 305.8 432 305.8 L548 305.8" fill="none" stroke="#6C7889" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rail)"/>
+<rect x="256" y="201.8" width="152" height="128" rx="10" fill="#13233A" stroke="#60A5FA" stroke-width="1.4"/>
+<rect x="256" y="209.8" width="4" height="112" rx="2" fill="#60A5FA"/>
+<rect x="552" y="201.8" width="152" height="128" rx="10" fill="#2A2113" stroke="#F4B942" stroke-width="1.4"/>
+<rect x="552" y="209.8" width="4" height="112" rx="2" fill="#F4B942"/>
+<rect x="848" y="201.8" width="152" height="128" rx="10" fill="#0F2A28" stroke="#2BB3A3" stroke-width="1.4"/>
+<rect x="848" y="209.8" width="4" height="112" rx="2" fill="#2BB3A3"/>
+<rect x="552" y="377.8" width="152" height="128" rx="10" fill="#2C2310" stroke="#FBBF24" stroke-width="1.4"/>
+<rect x="552" y="385.8" width="4" height="112" rx="2" fill="#FBBF24"/>
+<rect x="256" y="377.8" width="152" height="128" rx="10" fill="#1B232E" stroke="#94A3B8" stroke-width="1.4"/>
+<rect x="256" y="385.8" width="4" height="112" rx="2" fill="#94A3B8"/>
+<rect x="848" y="377.8" width="152" height="128" rx="10" fill="#1B232E" stroke="#94A3B8" stroke-width="1.4"/>
+<rect x="848" y="385.8" width="4" height="112" rx="2" fill="#94A3B8"/>
+<rect x="209" y="234.8" width="14" height="14" rx="3" fill="#13233A" stroke="#60A5FA" stroke-width="1.4"/>
+<rect x="209" y="258.8" width="14" height="14" rx="3" fill="#13233A" stroke="#60A5FA" stroke-width="1.4"/>
+<rect x="209" y="282.8" width="14" height="14" rx="3" fill="#11281A" stroke="#4ADE80" stroke-width="1.4"/>
+<rect x="209" y="410.8" width="14" height="14" rx="3" fill="#0F2A28" stroke="#2BB3A3" stroke-width="1.4"/>
+<rect x="209" y="434.8" width="14" height="14" rx="3" fill="#0F2A28" stroke="#2BB3A3" stroke-width="1.4"/>
+<rect x="209" y="458.8" width="14" height="14" rx="3" fill="#0F2A28" stroke="#2BB3A3" stroke-width="1.4"/>
+<rect x="1041" y="418.8" width="14" height="14" rx="3" fill="#221A3A" stroke="#A78BFA" stroke-width="1.4"/>
+<rect x="1041" y="442.8" width="14" height="14" rx="3" fill="#221A3A" stroke="#A78BFA" stroke-width="1.4"/>
+<rect x="1041" y="466.8" width="14" height="14" rx="3" fill="#321820" stroke="#FB7185" stroke-width="1.4"/>
+<rect x="1041" y="490.8" width="14" height="14" rx="3" fill="#321820" stroke="#FB7185" stroke-width="1.4"/>
+<text x="232" y="162.8" font-size="13" font-weight="700" fill="#E2E8F0">BNO08X</text>
+<text x="302.7" y="162.8" font-size="12" fill="#E2E8F0">LGA-28</text>
+<text x="276" y="228.6" font-size="15" font-weight="700" fill="#BFDBFE">Host interface</text>
+<text x="276" y="253.4" font-size="13" fill="#D2DAE4">I2C, SPI,</text>
+<text x="276" y="272.2" font-size="13" fill="#D2DAE4">UART-SHTP,</text>
+<text x="276" y="291.1" font-size="13" fill="#D2DAE4">UART-RVC</text>
+<text x="572" y="228.6" font-size="15" font-weight="700" fill="#F8D27A">Cortex-M0+</text>
+<text x="572" y="248.1" font-size="15" font-weight="700" fill="#F8D27A">and SH-2</text>
+<text x="572" y="272.9" font-size="13" fill="#D2DAE4">MotionEngine,</text>
+<text x="572" y="291.8" font-size="13" fill="#D2DAE4">SHTP, FRS flash</text>
+<text x="868" y="228.6" font-size="15" font-weight="700" fill="#A7F3E6">Three MEMS</text>
+<text x="868" y="248.1" font-size="15" font-weight="700" fill="#A7F3E6">sensors</text>
+<text x="868" y="272.9" font-size="13" fill="#D2DAE4">accelerometer,</text>
+<text x="868" y="291.8" font-size="13" fill="#D2DAE4">gyroscope,</text>
+<text x="868" y="310.6" font-size="13" fill="#D2DAE4">magnetometer</text>
+<text x="572" y="404.6" font-size="15" font-weight="700" fill="#FDE68A">Environmental</text>
+<text x="572" y="424.1" font-size="15" font-weight="700" fill="#FDE68A">bus</text>
+<text x="572" y="448.9" font-size="13" fill="#D2DAE4">pressure, light,</text>
+<text x="572" y="467.8" font-size="13" fill="#D2DAE4">humidity,</text>
+<text x="572" y="486.6" font-size="13" fill="#D2DAE4">proximity</text>
+<text x="276" y="404.6" font-size="15" font-weight="700" fill="#E2E8F0">Reset, boot</text>
+<text x="276" y="424.1" font-size="15" font-weight="700" fill="#E2E8F0">and clock</text>
+<text x="276" y="448.9" font-size="13" fill="#D2DAE4">NRST, BOOTN,</text>
+<text x="276" y="467.8" font-size="13" fill="#D2DAE4">PS1, PS0, 32.768</text>
+<text x="276" y="486.6" font-size="13" fill="#D2DAE4">kHz</text>
+<text x="868" y="404.6" font-size="15" font-weight="700" fill="#E2E8F0">Power</text>
+<text x="868" y="429.4" font-size="13" fill="#D2DAE4">VDD, VDDIO, CAP</text>
+<text x="202" y="246.3" font-size="12.5" font-weight="600" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" text-anchor="end" fill="#E8EDF3">H_SCL/SCK/RX  19</text>
+<text x="202" y="270.3" font-size="12.5" font-weight="600" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" text-anchor="end" fill="#E8EDF3">H_SDA/H_MISO/TX  20</text>
+<text x="202" y="294.3" font-size="12.5" font-weight="600" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" text-anchor="end" fill="#E8EDF3">H_INTN  14</text>
+<text x="202" y="422.3" font-size="12.5" font-weight="600" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" text-anchor="end" fill="#E8EDF3">NRST  11</text>
+<text x="202" y="446.3" font-size="12.5" font-weight="600" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" text-anchor="end" fill="#E8EDF3">BOOTN  4</text>
+<text x="202" y="470.3" font-size="12.5" font-weight="600" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" text-anchor="end" fill="#E8EDF3">PS1  5</text>
+<text x="1062" y="430.3" font-size="12.5" font-weight="600" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" fill="#E8EDF3">ENV_SCL  15</text>
+<text x="1062" y="454.3" font-size="12.5" font-weight="600" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" fill="#E8EDF3">ENV_SDA  16</text>
+<text x="1062" y="478.3" font-size="12.5" font-weight="600" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" fill="#E8EDF3">VDD  3</text>
+<text x="1062" y="502.3" font-size="12.5" font-weight="600" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" fill="#E8EDF3">VDDIO  28</text>
+<circle cx="256" cy="241.8" r="3" fill="#60A5FA"/>
+<circle cx="256" cy="265.8" r="3" fill="#60A5FA"/>
+<circle cx="256" cy="289.8" r="3" fill="#4ADE80"/>
+<circle cx="256" cy="417.8" r="3" fill="#2BB3A3"/>
+<circle cx="256" cy="441.8" r="3" fill="#2BB3A3"/>
+<circle cx="256" cy="465.8" r="3" fill="#2BB3A3"/>
+<circle cx="704" cy="425.8" r="3" fill="#A78BFA"/>
+<circle cx="704" cy="449.8" r="3" fill="#A78BFA"/>
+<circle cx="1000" cy="473.8" r="3" fill="#FB7185"/>
+<circle cx="1000" cy="497.8" r="3" fill="#FB7185"/>
+<rect x="456.9" y="255.8" width="46.2" height="20" rx="10" fill="#0E131A"/>
+<text x="480" y="270.1" font-size="12" font-weight="500" text-anchor="middle" fill="#9AA6B5">SHTP</text>
+<rect x="744.6" y="255.8" width="62.8" height="20" rx="10" fill="#0E131A"/>
+<text x="776" y="270.1" font-size="12" font-weight="500" text-anchor="middle" fill="#9AA6B5">samples</text>
+<rect x="592.6" y="343.8" width="62.8" height="20" rx="10" fill="#0E131A"/>
+<text x="624" y="358.1" font-size="12" font-weight="500" text-anchor="middle" fill="#9AA6B5">samples</text>
+<rect x="435.9" y="295.8" width="100.1" height="20" rx="10" fill="#0E131A"/>
+<text x="486" y="310.1" font-size="12" font-weight="500" text-anchor="middle" fill="#9AA6B5">reset and boot</text>
+<rect x="32" y="553.2" width="14" height="14" rx="4" fill="#321820" stroke="#FB7185" stroke-width="1.4"/>
+<text x="54" y="564.8" font-size="12.5" fill="#9AA6B5">power</text>
+<rect x="117.6" y="553.2" width="14" height="14" rx="4" fill="#13233A" stroke="#60A5FA" stroke-width="1.4"/>
+<text x="139.6" y="564.8" font-size="12.5" fill="#9AA6B5">bus</text>
+<rect x="186.6" y="553.2" width="14" height="14" rx="4" fill="#0F2A28" stroke="#2BB3A3" stroke-width="1.4"/>
+<text x="208.6" y="564.8" font-size="12.5" fill="#9AA6B5">digital in</text>
+<rect x="285" y="553.2" width="14" height="14" rx="4" fill="#11281A" stroke="#4ADE80" stroke-width="1.4"/>
+<text x="307" y="564.8" font-size="12.5" fill="#9AA6B5">digital out</text>
+<rect x="392.4" y="553.2" width="14" height="14" rx="4" fill="#221A3A" stroke="#A78BFA" stroke-width="1.4"/>
+<text x="414.4" y="564.8" font-size="12.5" fill="#9AA6B5">digital in/out</text>
+<path d="M515.7 559.4L545.7 559.4" fill="none" stroke="#6C7889" stroke-width="1.6" marker-end="url(#fk-arrow-rail)"/>
+<text x="559.7" y="564.8" font-size="12.5" fill="#9AA6B5">signal or data between blocks</text>
+</svg>

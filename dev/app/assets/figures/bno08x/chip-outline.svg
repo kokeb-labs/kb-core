@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="731" viewBox="0 0 760 731" role="img" aria-labelledby="chip-outline-title chip-outline-desc" font-family="Inter, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
+<title id="chip-outline-title">BNO08x package, LGA-28</title>
+<desc id="chip-outline-desc">Outline of the BNO08x in LGA-28 drawn to scale from above: body 5.2 x 3.8 x 1.1 mm, 28 pins.</desc>
+<rect x="0.5" y="0.5" width="759" height="730" rx="16" fill="#FFFFFF" stroke="#E2E7EE"/>
+<text x="32" y="44" font-size="12.5" font-weight="700" letter-spacing="1.2" fill="#7A360E">HARDWARE</text>
+<text x="32" y="77.3" font-size="26" font-weight="700" fill="#0E1726">BNO08x package, LGA-28</text>
+<text x="32" y="103.8" font-size="15" fill="#566070">Package body from above, to scale, pin 1 marked; arrows give the datasheet's dimensions.</text>
+<text x="32" y="125.5" font-size="15" fill="#566070">The pads are centred on each side, evenly spaced: the land pattern is in the datasheet.</text>
+<text x="32" y="147.3" font-size="15" fill="#566070">Datasheet: 7.1 Package Outline, p. 53.</text>
+<rect x="32" y="163.3" width="696" height="1" fill="#E2E7EE"/>
+<path d="M334.4 199.3 L358.4 199.3" fill="none" stroke="#8893A2" stroke-width="1" stroke-dasharray="3 3"/>
+<path d="M334.4 499.3 L358.4 499.3" fill="none" stroke="#8893A2" stroke-width="1" stroke-dasharray="3 3"/>
+<path d="M111.2 503.3 L111.2 527.3" fill="none" stroke="#8893A2" stroke-width="1" stroke-dasharray="3 3"/>
+<path d="M330.4 503.3 L330.4 527.3" fill="none" stroke="#8893A2" stroke-width="1" stroke-dasharray="3 3"/>
+<path d="M87.2 638.8 L354.4 638.8" fill="none" stroke="#8893A2" stroke-width="1.2"/>
+<path d="M334.4 575.3 L366.4 575.3" fill="none" stroke="#8893A2" stroke-width="1" stroke-dasharray="3 3"/>
+<path d="M334.4 638.8 L366.4 638.8" fill="none" stroke="#8893A2" stroke-width="1" stroke-dasharray="3 3"/>
+<rect x="111.2" y="199.3" width="219.2" height="300" rx="8" fill="#F5F7FA" stroke="#2B3442" stroke-width="2"/>
+<rect x="111.2" y="239" width="20.5" height="16.1" rx="2" fill="#F6F5F4" stroke="#B5AFA9" stroke-width="1.4"/>
+<rect x="111.2" y="268.2" width="20.5" height="16.1" rx="2" fill="#F6F5F4" stroke="#B5AFA9" stroke-width="1.4"/>
+<rect x="111.2" y="297.4" width="20.5" height="16.1" rx="2" fill="#FDF0FF" stroke="#A21CAF" stroke-width="1.4"/>
+<rect x="111.2" y="326.6" width="20.5" height="16.1" rx="2" fill="#E6F6F4" stroke="#0B7A72" stroke-width="1.4"/>
+<rect x="111.2" y="355.9" width="20.5" height="16.1" rx="2" fill="#E6F6F4" stroke="#0B7A72" stroke-width="1.4"/>
+<rect x="111.2" y="385.1" width="20.5" height="16.1" rx="2" fill="#F6F5F4" stroke="#B5AFA9" stroke-width="1.4"/>
+<rect x="111.2" y="414.3" width="20.5" height="16.1" rx="2" fill="#F6F5F4" stroke="#B5AFA9" stroke-width="1.4"/>
+<rect x="111.2" y="443.6" width="20.5" height="16.1" rx="2" fill="#EAF7EF" stroke="#15803D" stroke-width="1.4"/>
+<rect x="139.7" y="478.8" width="16.1" height="20.5" rx="2" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1.4"/>
+<rect x="168.9" y="478.8" width="16.1" height="20.5" rx="2" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1.4"/>
+<rect x="198.2" y="478.8" width="16.1" height="20.5" rx="2" fill="#E6F6F4" stroke="#0B7A72" stroke-width="1.4"/>
+<rect x="227.4" y="478.8" width="16.1" height="20.5" rx="2" fill="#E6F6F4" stroke="#0B7A72" stroke-width="1.4"/>
+<rect x="256.6" y="478.8" width="16.1" height="20.5" rx="2" fill="#EAF2FF" stroke="#2563EB" stroke-width="1.4"/>
+<rect x="285.9" y="478.8" width="16.1" height="20.5" rx="2" fill="#EAF2FF" stroke="#2563EB" stroke-width="1.4"/>
+<rect x="310" y="239" width="20.5" height="16.1" rx="2" fill="#FFEEF2" stroke="#DB2752" stroke-width="1.4"/>
+<rect x="310" y="268.2" width="20.5" height="16.1" rx="2" fill="#FDF0FF" stroke="#A21CAF" stroke-width="1.4"/>
+<rect x="310" y="297.4" width="20.5" height="16.1" rx="2" fill="#FDF0FF" stroke="#A21CAF" stroke-width="1.4"/>
+<rect x="310" y="326.6" width="20.5" height="16.1" rx="2" fill="#F1F4F8" stroke="#64748B" stroke-width="1.4"/>
+<rect x="310" y="355.9" width="20.5" height="16.1" rx="2" fill="#F6F5F4" stroke="#B5AFA9" stroke-width="1.4"/>
+<rect x="310" y="385.1" width="20.5" height="16.1" rx="2" fill="#F6F5F4" stroke="#B5AFA9" stroke-width="1.4"/>
+<rect x="310" y="414.3" width="20.5" height="16.1" rx="2" fill="#F6F5F4" stroke="#B5AFA9" stroke-width="1.4"/>
+<rect x="310" y="443.6" width="20.5" height="16.1" rx="2" fill="#F6F5F4" stroke="#B5AFA9" stroke-width="1.4"/>
+<rect x="139.7" y="199.3" width="16.1" height="20.5" rx="2" fill="#E6F6F4" stroke="#0B7A72" stroke-width="1.4"/>
+<rect x="168.9" y="199.3" width="16.1" height="20.5" rx="2" fill="#E6F6F4" stroke="#0B7A72" stroke-width="1.4"/>
+<rect x="198.2" y="199.3" width="16.1" height="20.5" rx="2" fill="#E6F6F4" stroke="#0B7A72" stroke-width="1.4"/>
+<rect x="227.4" y="199.3" width="16.1" height="20.5" rx="2" fill="#FFEEF2" stroke="#DB2752" stroke-width="1.4"/>
+<rect x="256.6" y="199.3" width="16.1" height="20.5" rx="2" fill="#F1F4F8" stroke="#64748B" stroke-width="1.4"/>
+<rect x="285.9" y="199.3" width="16.1" height="20.5" rx="2" fill="#F6F5F4" stroke="#B5AFA9" stroke-width="1.4"/>
+<circle cx="316.4" cy="213.3" r="6" fill="#2B3442"/>
+<path d="M352.4 199.3 L352.4 499.3" fill="none" stroke="#2B3442" stroke-width="1.2"/>
+<path d="M352.4 199.3 L355.4 206.3 L349.4 206.3 Z" fill="#2B3442"/>
+<path d="M352.4 499.3 L349.4 492.3 L355.4 492.3 Z" fill="#2B3442"/>
+<path d="M111.2 521.3 L330.4 521.3" fill="none" stroke="#2B3442" stroke-width="1.2"/>
+<path d="M111.2 521.3 L118.2 518.3 L118.2 524.3 Z" fill="#2B3442"/>
+<path d="M330.4 521.3 L323.4 524.3 L323.4 518.3 Z" fill="#2B3442"/>
+<rect x="111.2" y="575.3" width="219.2" height="63.5" rx="2" fill="#F5F7FA" stroke="#2B3442" stroke-width="2"/>
+<path d="M360.4 575.3 L360.4 638.8" fill="none" stroke="#2B3442" stroke-width="1.2"/>
+<path d="M360.4 575.3 L363.4 582.3 L357.4 582.3 Z" fill="#2B3442"/>
+<path d="M360.4 638.8 L357.4 631.8 L363.4 631.8 Z" fill="#2B3442"/>
+<text x="121.4" y="251.1" font-size="11.5" font-weight="700" text-anchor="middle" fill="#57534E">7</text>
+<text x="121.4" y="280.4" font-size="11.5" font-weight="700" text-anchor="middle" fill="#57534E">8</text>
+<text x="121.4" y="309.6" font-size="11.5" font-weight="700" text-anchor="middle" fill="#86198F">9</text>
+<text x="147.8" y="213.7" font-size="11.5" font-weight="700" text-anchor="middle" fill="#0B5F59">6</text>
+<text x="177" y="213.7" font-size="11.5" font-weight="700" text-anchor="middle" fill="#0B5F59">5</text>
+<text x="206.2" y="213.7" font-size="11.5" font-weight="700" text-anchor="middle" fill="#0B5F59">4</text>
+<text x="235.4" y="213.7" font-size="11.5" font-weight="700" text-anchor="middle" fill="#9F1239">3</text>
+<text x="264.7" y="213.7" font-size="11.5" font-weight="700" text-anchor="middle" fill="#334155">2</text>
+<text x="293.9" y="213.7" font-size="11.5" font-weight="700" text-anchor="middle" fill="#57534E">1</text>
+<text x="220.8" y="341.3" font-size="20" font-weight="700" text-anchor="middle" fill="#0E1726">BNO08x</text>
+<text x="220.8" y="363.3" font-size="13" text-anchor="middle" fill="#566070">LGA-28</text>
+<text x="362.4" y="353.8" font-size="12.5" font-weight="600" fill="#2B3442">5.2 mm</text>
+<text x="220.8" y="539.3" font-size="12.5" font-weight="600" text-anchor="middle" fill="#2B3442">3.8 mm</text>
+<text x="370.4" y="611.5" font-size="12.5" font-weight="600" fill="#2B3442">1.1 mm</text>
+<text x="97.2" y="611.5" font-size="12.5" text-anchor="end" fill="#566070">Side view</text>
+<text x="472.8" y="221.3" font-size="22" font-weight="700" fill="#0E1726">5.2 x 3.8 x 1.1 mm</text>
+<text x="472.8" y="249.3" font-size="13.5" fill="#566070">LGA-28, 28 pins</text>
+<text x="472.8" y="271.3" font-size="13.5" fill="#566070">Pads inside the body edge</text>
+<rect x="32" y="660.1" width="14" height="14" rx="4" fill="#FFEEF2" stroke="#DB2752" stroke-width="1.4"/>
+<text x="54" y="671.8" font-size="12.5" fill="#566070">power</text>
+<rect x="117.6" y="660.1" width="14" height="14" rx="4" fill="#F1F4F8" stroke="#64748B" stroke-width="1.4"/>
+<text x="139.6" y="671.8" font-size="12.5" fill="#566070">ground</text>
+<rect x="208.5" y="660.1" width="14" height="14" rx="4" fill="#EAF2FF" stroke="#2563EB" stroke-width="1.4"/>
+<text x="230.5" y="671.8" font-size="12.5" fill="#566070">bus</text>
+<rect x="277.4" y="660.1" width="14" height="14" rx="4" fill="#E6F6F4" stroke="#0B7A72" stroke-width="1.4"/>
+<text x="299.4" y="671.8" font-size="12.5" fill="#566070">digital in</text>
+<rect x="375.8" y="660.1" width="14" height="14" rx="4" fill="#EAF7EF" stroke="#15803D" stroke-width="1.4"/>
+<text x="397.8" y="671.8" font-size="12.5" fill="#566070">digital out</text>
+<rect x="483.3" y="660.1" width="14" height="14" rx="4" fill="#F3EEFF" stroke="#7C3AED" stroke-width="1.4"/>
+<text x="505.3" y="671.8" font-size="12.5" fill="#566070">digital in/out</text>
+<rect x="606.6" y="660.1" width="14" height="14" rx="4" fill="#FDF0FF" stroke="#A21CAF" stroke-width="1.4"/>
+<text x="628.6" y="671.8" font-size="12.5" fill="#566070">analog</text>
+<rect x="32" y="685.1" width="14" height="14" rx="4" fill="#F6F5F4" stroke="#B5AFA9" stroke-width="1.4"/>
+<text x="54" y="696.8" font-size="12.5" fill="#566070">not connected</text>
+</svg>

@@ -222,6 +222,48 @@
     
     
     
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
     
       <div class="md-header__source">
         <a href="https://github.com/kokeb-labs/kb-core" title="Go to repository" class="md-source" data-md-component="source">
@@ -813,10 +855,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#the-four-steps" class="md-nav__link">
+  <a href="#the-steps" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The four steps
+        The steps
       
     </span>
   </a>
@@ -1114,6 +1156,8 @@
       
         
       
+        
+      
     
     
     
@@ -1248,10 +1292,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#the-four-steps" class="md-nav__link">
+  <a href="#the-steps" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The four steps
+        The steps
       
     </span>
   </a>
@@ -1331,8 +1375,11 @@
 <p>The configurator is a page that turns a few choices into a pinned, repeatable kb-core project with its evidence
 (<a href="../adr/ADR-0013-hosted-configurator/">ADR-0013</a>, <a href="../adr/ADR-0014-kb-core-is-the-assembler/">ADR-0014</a>). It runs
 entirely in the browser: nothing is sent anywhere, no cookie is set, and the selection lives in the address bar,
-so a copied link reproduces it exactly. To use it without a network, open <code>configurator/offline.html</code> from disk.</p>
-<h2 id="the-four-steps">The four steps<a class="headerlink" href="#the-four-steps" title="Permanent link">&para;</a></h2>
+so a copied link reproduces it exactly. To use it without a network, take the offline copy (the link in its footer,
+or <code>configurator/offline.html</code> in the repository) and open it from disk.</p>
+<p><strong><a href="../app/">Open the configurator</a></strong>: pick a platform, add drivers, download the project. The defaults
+already resolve, so a first project takes four choices and one click.</p>
+<h2 id="the-steps">The steps<a class="headerlink" href="#the-steps" title="Permanent link">&para;</a></h2>
 <ol>
 <li><strong>Platform.</strong> Pick the MCU family (ESP32, STM32, host), the target and the board. The target fixes how many
    I2C, SPI, UART, CAN and RMT instances exist; a named development board also gives the number of free pins.
@@ -1345,21 +1392,30 @@ so a copied link reproduces it exactly. To use it without a network, open <code>
    a part that needs a newer standard is then refused with the newest version that fits, and a driver added
    afterwards gets that version (<a href="../language-floor/">Language floor</a>). Left at <em>Not declared</em>, nothing is checked.</li>
 <li><strong>Drivers.</strong> Search the catalogue by chip, bus or capability, or filter by bus. Each card shows the chip, its
-   package, the buses it speaks, its capabilities, its licence, its status and a pinout or block diagram (click it
-   for every figure). Each driver has a version selector with its published releases; the default is kb-core's pin,
-   else the newest release. Release candidates (marked <em>rc</em>) are <strong>hidden by default</strong>: turn on <em>Show release
-   candidates</em> to list them and to add a driver that has only release candidates. The switch is kept in the link
-   (<code>c=1</code>) and turns on by itself when a link or an opened project already uses an rc. A search with no match offers
-   <strong>request it</strong>: a link to the driver request form of <code>kokeb-labs-drivers/driver-requests</code>, prefilled with the
-   search text reduced to letters, digits, <code>.</code>, <code>_</code> and <code>-</code>; the footer links to the request forms for a driver and
-   for a port or target. The page itself sends nothing.</li>
-<li><strong>Buses and thread models.</strong> Each driver goes on a bus (<code>i2c0</code>, <code>spi1</code>, <code>uart1</code>, <code>pio0</code>, ...). Give each bus one
+   package, the buses it speaks, its capabilities, its licence, its status and a pinout or block diagram (click it for
+   every figure). Each driver has a version selector with its published releases; the default is kb-core's pin, else the
+   newest release. Release candidates (marked <em>rc</em>) are <strong>hidden by default</strong>: turn on <em>Show release candidates</em> to list
+   them and to add a driver that has only release candidates. The switch is kept in the link (<code>c=1</code>) and turns on by
+   itself when a link or an opened project already uses an rc, and while kb-core itself has only release candidates (the
+   page then starts on the newest one instead of an empty selection). A search with no match offers <strong>request it</strong>: a
+   link to the driver request form of <code>kokeb-labs-drivers/driver-requests</code>, prefilled with the search text reduced to
+   letters, digits, <code>.</code>, <code>_</code> and <code>-</code>; the footer links to the request forms for a driver and for a port or target. The
+   page itself sends nothing.</li>
+<li>
+<p><strong>Buses and thread models.</strong> Each driver goes on a bus (<code>i2c0</code>, <code>spi1</code>, <code>uart1</code>, <code>pio0</code>, ...). Give each bus one
    thread model (<a href="../adr/ADR-0009-handler-thread-models/">ADR-0009</a>): an <strong>owner task</strong> that serves every device
    on it, or a <strong>guarded facade</strong> that locks around each call. Chips that must be serviced continuously (bno08x)
-   need an owner task. The pin meter adds up the bus pins and the optional control pins.</li>
+   need an owner task. The pin meter adds up the bus pins and the optional control pins.</p>
+</li>
+<li>
+<p><strong>Inside and tested.</strong> For the kb-core version of the selection: the <em>Architecture</em> map (the parts, the port
+   and your drivers; pick one for what it holds, needs and how it was tested), the <em>Evidence</em> of that release (the
+   test protocol and its results, read from the release's CI artifacts, each chart with its table; also on
+   <a href="../assurance/evidence/">Test evidence</a>) and <em>Versions</em> (every kb-core version with its headline evidence).</p>
+</li>
 </ol>
 <h2 id="open-an-existing-project">Open an existing project<a class="headerlink" href="#open-an-existing-project" title="Permanent link">&para;</a></h2>
-<p><em>Open an existing project</em>, above step 1, takes your project's <code>kb-image.yml</code> and its <code>kb-image.lock.yml</code> (pick
+<p><em>Open an existing project</em>, folded above step 1, takes your project's <code>kb-image.yml</code> and its <code>kb-image.lock.yml</code> (pick
 both at once; a lock alone also works). The page reads them in the browser with the file picker: nothing is
 uploaded or stored. The address bar gets only catalogue identifiers: the project's own image name stays out of it
 while the project is open, and drivers this catalogue does not list are left out of the selection (and named under
@@ -1569,8 +1625,6 @@ of targets and boards are approximate where the catalogue says so; check the boa
     
     
       <script src="../assets/javascripts/bundle.c21346df.min.js"></script>
-      
-        <script src="../search/main.js"></script>
       
     
   </body>

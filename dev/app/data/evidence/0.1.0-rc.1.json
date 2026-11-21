@@ -1,0 +1,536 @@
+{
+ "coverage": {
+  "below_full": [
+   {
+    "branch": 50.0,
+    "condition": 50.0,
+    "file": "components/lib/dma/inc/kb/dma/region.hpp",
+    "line": 100.0
+   },
+   {
+    "branch": 71.4,
+    "condition": 100.0,
+    "file": "components/lib/utils/inc/kb/utils/result.hpp",
+    "line": 100.0
+   },
+   {
+    "branch": 92.2,
+    "condition": 97.8,
+    "file": "components/lib/dma/inc/kb/dma/buffer.hpp",
+    "line": 100.0
+   },
+   {
+    "branch": 94.0,
+    "condition": 91.7,
+    "file": "components/lib/handlers/inc/kb/handlers/common/request_channel.hpp",
+    "line": 100.0
+   },
+   {
+    "branch": 95.0,
+    "condition": 95.0,
+    "file": "components/lib/rtos/inc/kb/rtos/mutex.hpp",
+    "line": 100.0
+   },
+   {
+    "branch": 97.5,
+    "condition": 97.3,
+    "file": "components/lib/dma/inc/kb/dma/stream.hpp",
+    "line": 100.0
+   },
+   {
+    "branch": 97.6,
+    "condition": 97.6,
+    "file": "components/lib/rtos/backends/freertos/freertos_boundary.cpp",
+    "line": 100.0
+   },
+   {
+    "branch": 99.0,
+    "condition": 99.0,
+    "file": "components/lib/handlers/inc/kb/handlers/common/hooks.hpp",
+    "line": 100.0
+   },
+   {
+    "branch": 99.2,
+    "condition": 99.2,
+    "file": "components/lib/handlers/inc/kb/handlers/common/handler_core.hpp",
+    "line": 100.0
+   }
+  ],
+  "branch": {
+   "covered": 1371,
+   "percent": 98.7,
+   "total": 1389
+  },
+  "condition": {
+   "covered": 1350,
+   "percent": 99.1,
+   "total": 1362
+  },
+  "condition_kind": "MC/DC (GCC -fcondition-coverage)",
+  "files": 48,
+  "floors": {
+   "branch": 75,
+   "condition": "report",
+   "line": 85
+  },
+  "function": {
+   "covered": 2329,
+   "percent": 94.4,
+   "total": 2466
+  },
+  "line": {
+   "covered": 3653,
+   "percent": 100.0,
+   "total": 3653
+  },
+  "parts": [
+   {
+    "branch": 98.8,
+    "condition": 100.0,
+    "files": 11,
+    "function": 97.0,
+    "line": 100.0,
+    "part": "utils"
+   },
+   {
+    "branch": 99.4,
+    "condition": 99.4,
+    "files": 14,
+    "function": 96.5,
+    "line": 100.0,
+    "part": "rtos"
+   },
+   {
+    "branch": 94.9,
+    "condition": 96.8,
+    "files": 5,
+    "function": 98.7,
+    "line": 100.0,
+    "part": "dma"
+   },
+   {
+    "branch": 100.0,
+    "condition": 100.0,
+    "files": 4,
+    "function": 99.2,
+    "line": 100.0,
+    "part": "interfaces"
+   },
+   {
+    "branch": 99.1,
+    "condition": 98.9,
+    "files": 14,
+    "function": 90.6,
+    "line": 100.0,
+    "part": "handlers"
+   }
+  ],
+  "source": "host-quality-reports-coverage/coverage-summary.json (gcovr, GCC 14, library code only)"
+ },
+ "fuzz": {
+  "engine": "libFuzzer with AddressSanitizer and UndefinedBehaviorSanitizer (clang 18)",
+  "planned_seconds": 720,
+  "result": "pass",
+  "seconds_per_target": 120,
+  "source": "run.json (job fuzz, step Fuzz) and layering-report (the fuzz targets CMake defines)",
+  "step_seconds": 727,
+  "targets": [
+   "fuzz_dma_stream",
+   "fuzz_handlers_channel",
+   "fuzz_utils_bytes",
+   "fuzz_utils_crc",
+   "fuzz_utils_journal",
+   "fuzz_utils_ring"
+  ]
+ },
+ "lighthouse": {
+  "budgets": {
+   "accessibility": 0.95,
+   "best_practices": 0.9,
+   "performance": 0.8,
+   "seo": 0.9
+  },
+  "pages": [
+   {
+    "accessibility": 1,
+    "best_practices": 0.96,
+    "page": "/",
+    "pass": true,
+    "performance": 0.98,
+    "runs": 3,
+    "seo": 1
+   },
+   {
+    "accessibility": 1,
+    "best_practices": 0.96,
+    "page": "/architecture/",
+    "pass": true,
+    "performance": 0.99,
+    "runs": 3,
+    "seo": 1
+   },
+   {
+    "accessibility": 1,
+    "best_practices": 0.96,
+    "page": "/parts/utils/",
+    "pass": true,
+    "performance": 0.98,
+    "runs": 3,
+    "seo": 1
+   }
+  ],
+  "source": "lighthouse-report/*.report.json (mobile emulation, median of three runs per page)"
+ },
+ "links": {
+  "result": "pass",
+  "source": "run.json (job Docs, step Check links on the built site)",
+  "tool": "lychee, offline"
+ },
+ "misra": {
+  "advisory_with_findings": [
+   "Rule 0.0.2",
+   "Rule 0.2.3",
+   "Rule 0.2.4",
+   "Rule 4.1.2",
+   "Rule 10.1.1",
+   "Rule 15.1.4"
+  ],
+  "configurations": [
+   {
+    "complete": true,
+    "name": "host",
+    "source_files": 65,
+    "translation_units": 272
+   },
+   {
+    "complete": true,
+    "name": "cortex-m",
+    "source_files": 65,
+    "translation_units": 265
+   }
+  ],
+  "deviation_records": [
+   "DEV-KBC-001",
+   "DEV-KBC-002",
+   "DEV-KBC-003",
+   "DEV-KBC-004",
+   "MD-CPP-001",
+   "MD-CPP-002",
+   "MD-CPP-003",
+   "MD-CPP-004",
+   "MD-CPP-005",
+   "MD-CPP-006",
+   "MD-CPP-007",
+   "MD-CPP-008",
+   "MD-CPP-009"
+  ],
+  "edition": "MISRA C++:2023",
+  "failing_guidelines": [],
+  "findings": {
+   "deviated": 29,
+   "review": 862,
+   "violations": 33
+  },
+  "guidelines": {
+   "by_category": {
+    "advisory": 50,
+    "mandatory": 5,
+    "required": 124
+   },
+   "checked": 179,
+   "clean": 148,
+   "deviated": 3,
+   "with_findings": 6
+  },
+  "level": "high",
+  "passed": true,
+  "source": "misra-report/misra-summary.json (CodeQL MISRA C++:2023 queries, cppcheck, clang-tidy)"
+ },
+ "mutation": {
+  "equivalent": 124,
+  "killed": 1125,
+  "not_compiled": 157,
+  "parts": [
+   {
+    "equivalent": 50,
+    "killed": 447,
+    "part": "utils",
+    "score": 100.0,
+    "survived": 0
+   },
+   {
+    "equivalent": 55,
+    "killed": 309,
+    "part": "rtos",
+    "score": 100.0,
+    "survived": 0
+   },
+   {
+    "equivalent": 16,
+    "killed": 267,
+    "part": "dma",
+    "score": 100.0,
+    "survived": 0
+   },
+   {
+    "equivalent": 2,
+    "killed": 46,
+    "part": "interfaces",
+    "score": 100.0,
+    "survived": 0
+   },
+   {
+    "equivalent": 1,
+    "killed": 56,
+    "part": "handlers",
+    "score": 100.0,
+    "survived": 0
+   }
+  ],
+  "score": 100.0,
+  "source": "mutation-report/mutation-results.json (kb-core's mutation tool, four shards)",
+  "statuses": {
+   "compile_error": 157,
+   "equivalent": 124,
+   "killed": 1125
+  },
+  "survived": 0,
+  "threshold": 100.0
+ },
+ "passed": true,
+ "protocol": [
+  {
+   "check": "Unit tests",
+   "gate": "every test passes",
+   "id": "unit-tests",
+   "result": "193 tests, 0 failed",
+   "scope": "every part built and tested alone, GCC",
+   "status": "pass",
+   "tool": "CTest"
+  },
+  {
+   "check": "Coverage",
+   "gate": "line 85 %, branch 75 %, MC/DC reported",
+   "id": "coverage",
+   "result": "line 100.0 %, branch 98.7 %, MC/DC 99.1 %",
+   "scope": "library code, line, branch and MC/DC",
+   "status": "pass",
+   "tool": "gcovr, GCC 14"
+  },
+  {
+   "check": "Mutation testing",
+   "gate": "kill rate 100 %",
+   "id": "mutation",
+   "result": "100.0 % (1125 killed, 0 survived, 124 equivalent)",
+   "scope": "every mutant of the library code",
+   "status": "pass",
+   "tool": "kb-core mutation tool"
+  },
+  {
+   "check": "MISRA C++:2023",
+   "gate": "level high: no required finding outside a deviation",
+   "id": "misra",
+   "result": "179 guidelines; 33 findings in 6 advisory guidelines, 29 deviated",
+   "scope": "host and Cortex-M configurations",
+   "status": "pass",
+   "tool": "CodeQL, cppcheck, clang-tidy"
+  },
+  {
+   "check": "Fuzzing",
+   "gate": "120 s per target, no crash",
+   "id": "fuzz",
+   "result": "720 s planned, step ran 727 s",
+   "scope": "6 targets",
+   "status": "pass",
+   "tool": "libFuzzer, ASan, UBSan"
+  },
+  {
+   "check": "Sanitizers",
+   "gate": "every test passes",
+   "id": "sanitizers",
+   "result": "pass",
+   "scope": "the unit tests",
+   "status": "pass",
+   "tool": "ASan, UBSan (clang)"
+  },
+  {
+   "check": "Docs: Lighthouse",
+   "gate": "performance 0.8, accessibility 0.95, best practices 0.9, SEO 0.9",
+   "id": "lighthouse",
+   "result": "/ 0.98/1.00, /architecture/ 0.99/1.00, /parts/utils/ 0.98/1.00",
+   "scope": "3 pages, mobile",
+   "status": "pass",
+   "tool": "Lighthouse CI"
+  },
+  {
+   "check": "Docs: links",
+   "gate": "no broken link",
+   "id": "links",
+   "result": "pass",
+   "scope": "the built site, offline",
+   "status": "pass",
+   "tool": "lychee"
+  },
+  {
+   "check": "Driver pins",
+   "gate": "release or rc tags only, CI passed",
+   "id": "pins",
+   "result": "23 of 23 pins valid",
+   "scope": "every submodule",
+   "status": "pass",
+   "tool": "ru-pin-hygiene"
+  },
+  {
+   "check": "Known vulnerabilities",
+   "gate": "reported",
+   "id": "vulnerabilities",
+   "result": "0 known",
+   "scope": "kb-core and its pinned parts",
+   "status": "pass",
+   "tool": "OSV scanner"
+  }
+ ],
+ "release": {
+  "commit": "b0ddc2f19612aab8bff249688a833a507b3034fb",
+  "kind": "rc",
+  "tag": "v0.1.0-rc.1",
+  "version": "0.1.0-rc.1"
+ },
+ "sanitizers": {
+  "compiler": "clang",
+  "kinds": [
+   "AddressSanitizer",
+   "UndefinedBehaviorSanitizer"
+  ],
+  "result": "pass",
+  "source": "run.json (job complexity, coverage, sanitizers, step Test under the sanitizers)"
+ },
+ "schema": "kb-evidence/1",
+ "source": {
+  "artifacts": [
+   "catalog",
+   "cmake-matrix-17d9a666-dma",
+   "cmake-matrix-17d9a666-handlers",
+   "cmake-matrix-17d9a666-interfaces",
+   "cmake-matrix-17d9a666-rtos",
+   "cmake-matrix-17d9a666-utils",
+   "cppcheck-report",
+   "host-ci-reports",
+   "host-quality-reports-complexity",
+   "host-quality-reports-coverage",
+   "layering-report",
+   "lighthouse-report",
+   "misra-report",
+   "misra-report-cortex-m",
+   "misra-report-host",
+   "mutation-report",
+   "mutation-report-mutants",
+   "pin-hygiene-report",
+   "release"
+  ],
+  "conclusion": "success",
+  "date": "2026-11-21T05:36:25Z",
+  "run_id": 44871665969,
+  "run_url": "https://github.com/kokeb-labs/kb-core/actions/runs/44871665969"
+ },
+ "static_analysis": {
+  "complexity": {
+   "limits": {
+    "ccn": 15,
+    "length": 60,
+    "params": 6
+   },
+   "over_limit": 0
+  },
+  "cppcheck": {
+   "by_severity": {
+    "information": 143
+   },
+   "findings": 143
+  },
+  "layering": {
+   "findings": 0
+  }
+ },
+ "supply": {
+  "pins": {
+   "drivers": 23,
+   "kinds": {
+    "rc": 23
+   },
+   "ok": 23
+  },
+  "release_assets": [
+   {
+    "name": "kb-core-0.1.0-rc.1.spdx.json",
+    "sha256": "26aeb3a3e88bd038eee5eaf2cb678affe73b365c0a176f9fbb0d264eaefcf1a9"
+   },
+   {
+    "name": "kb-core-0.1.0-rc.1.tar.gz",
+    "sha256": "9f5ecf72d296c3ed7ff74bc6a6b8694244580832a061452937a5b7316b36fc4a"
+   }
+  ],
+  "sbom": {
+   "file": "kb-core-0.1.0-rc.1.spdx.json",
+   "format": "SPDX 2.3",
+   "packages": 25
+  },
+  "vulnerabilities": {
+   "findings": 0,
+   "scanner": "osv-scanner (Catalogue job)"
+  }
+ },
+ "tests": {
+  "failures": 0,
+  "parts": [
+   {
+    "failures": 0,
+    "part": "utils",
+    "seconds": 8.5,
+    "skipped": 0,
+    "status": "passed",
+    "tests": 24,
+    "toolchain": "host-gcc"
+   },
+   {
+    "failures": 0,
+    "part": "rtos",
+    "seconds": 17.7,
+    "skipped": 0,
+    "status": "passed",
+    "tests": 33,
+    "toolchain": "host-gcc"
+   },
+   {
+    "failures": 0,
+    "part": "dma",
+    "seconds": 14.1,
+    "skipped": 0,
+    "status": "passed",
+    "tests": 43,
+    "toolchain": "host-gcc"
+   },
+   {
+    "failures": 0,
+    "part": "interfaces",
+    "seconds": 12.0,
+    "skipped": 0,
+    "status": "passed",
+    "tests": 39,
+    "toolchain": "host-gcc"
+   },
+   {
+    "failures": 0,
+    "part": "handlers",
+    "seconds": 22.0,
+    "skipped": 0,
+    "status": "passed",
+    "tests": 54,
+    "toolchain": "host-gcc"
+   }
+  ],
+  "skipped": 0,
+  "source": "cmake-matrix-*/result.json (Standalone parts: each part built and tested alone)",
+  "total": 193
+ }
+}

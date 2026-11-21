@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="kb">
+  <rect width="64" height="64" rx="14" fill="#0b57d0"/>
+  <g fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round">
+    <rect x="18" y="18" width="28" height="28" rx="4"/>
+    <path d="M24 18v-7M32 18v-7M40 18v-7M24 53v-7M32 53v-7M40 53v-7M18 24h-7M18 32h-7M18 40h-7M53 24h-7M53 32h-7M53 40h-7"/>
+  </g>
+  <text x="32" y="37.5" text-anchor="middle" font-family="ui-monospace, Menlo, monospace" font-size="13" font-weight="700" fill="#ffffff">kb</text>
+</svg>
