@@ -2334,13 +2334,37 @@
   ],
   "releases": [
    {
-    "bindings": [],
-    "commit": "593c482020c550d11080c21fa41c8f67c88e9aa1",
-    "date": "2026-11-21T02:47:07Z",
-    "kind": "dev",
+    "bindings": [
+     "ads7952",
+     "ads9324",
+     "alicat_basis2",
+     "as5047u",
+     "at25040b",
+     "bmp581",
+     "bno08x",
+     "canopen_client",
+     "dynamixel",
+     "fdo2",
+     "isf15acp4",
+     "max22200",
+     "mcp9700",
+     "ntc_thermistor",
+     "pca9685",
+     "pcal9555",
+     "pf1550",
+     "se05x",
+     "sfm_flow_meter",
+     "tle92466ed",
+     "tmc5160",
+     "tmc9660",
+     "ws2812_rmt"
+    ],
+    "commit": "b0ddc2f19612aab8bff249688a833a507b3034fb",
+    "date": "2026-11-21T04:51:38Z",
+    "kind": "rc",
     "osv": null,
-    "tag": null,
-    "version": "0.0.0"
+    "tag": "v0.1.0-rc.1",
+    "version": "0.1.0-rc.1"
    }
   ],
   "repo": "kokeb-labs/kb-core",
@@ -2373,6 +2397,6 @@
   }
  ],
  "schema": 1,
- "source_date": "2026-11-21T02:47:07Z",
+ "source_date": "2026-11-21T04:51:38Z",
  "tested_sets": []
 }
