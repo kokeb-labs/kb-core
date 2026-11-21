@@ -143,3 +143,17 @@ functions; each case passes on the good model and is shown to fail on a model wi
 | `RequireElementBytes<Element, Bytes>` | a stream element differs in size from the board declaration |
 | `Region` concept | line or unit is not a power of two, the unit is smaller than a line, or a cached region has no line |
 | `Stream<Frame, 1, ...>` | fewer than two frames |
+| `RequireInterruptTier<Stream, Rtos>` | a stream that notifies a task runs above the RTOS syscall limit, or its priority is outside the implemented bits |
+| `RequireSamePriority<S1, S2>` | the streams of one peripheral run at different interrupt priorities |
+| `RequireBusCarries<Bus, Bytes>` | the driver's largest frame exceeds what the bus carries in the mode the board gave it |
+| `RequireShape<Decl, Frame, Frames>` | the handler's frame size or ring length differs from the board's stream declaration |
+
+## Board declarations
+
+`kb/dma/assignment.hpp` holds the values the board generator writes into `board_dma.hpp` from `board.yml`: a
+`StreamAssignment` per DMA stream (engine, stream, request line, arbitration priority, interrupt priority, how the
+interrupt notifies the owner, which interrupts are on, normal or circular), the `InterruptLimits` of the RTOS, the
+`BusLimits` of each bus (DMA or not, the largest frame each way, the receive-length multiple, the alignment unit) and
+the `StreamShape` of each stream. A port receives a resolved assignment and only checks it with the helpers above; it
+never looks for a free stream at run time. What `engine`, `stream` and `request` number is the port's to define (its
+`docs/dma.md`).

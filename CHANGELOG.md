@@ -21,6 +21,14 @@ lists its changes per part, the ESP32 port and its driver pins. The format follo
 - Configurator: a **C++ standard** choice in step 2 (in the share link as `x=`), each version shows the standard it
   needs, and an opened `kb-image.yml` keeps its `language` block.
 
+### dma
+
+- Board declarations (`kb/dma/assignment.hpp`): `StreamAssignment`, `InterruptLimits`, `BusLimits` and `StreamShape`,
+  the values the board generator writes from `board.yml`, with the compile-time checks `RequireInterruptTier`,
+  `RequireSamePriority`, `RequireBusCarries` and `RequireShape` and four compile-fail tests.
+- The pinned copy a port keeps (`tools/layout/layout.py vendor`) now includes `components/lib/dma` (headers and the
+  host model with the conformance suite), so a port runs the suite against its own boundary.
+
 ### Fixed
 
 - ADR numbers: the asynchronous bus and held transactions record is ADR-0016 (it shared 0015 with the ThreadX

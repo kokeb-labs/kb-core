@@ -6,7 +6,7 @@
 kb_add_part(dma DEPENDS utils)
 
 kb_header_checks(dma _kb_dma_checks HEADERS
-  kb/dma/buffer.hpp kb/dma/cache.hpp kb/dma/capabilities.hpp kb/dma/completion.hpp kb/dma/dma.hpp
+  kb/dma/assignment.hpp kb/dma/buffer.hpp kb/dma/cache.hpp kb/dma/capabilities.hpp kb/dma/completion.hpp kb/dma/dma.hpp
   kb/dma/region.hpp kb/dma/stream.hpp)
 set_property(GLOBAL APPEND PROPERTY KB_CROSS_SOURCES ${_kb_dma_checks})
 set_property(GLOBAL APPEND PROPERTY KB_CROSS_LIBS kb::dma)
