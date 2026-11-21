@@ -10,8 +10,9 @@ buffer and stream model, and one handler per driver that gives every chip the sa
 behaviour. Five parts, each its own CMake target, one version. No heap, no exceptions, MISRA C++:2023 checked in
 CI, built for IEC 62304 Class C evidence.
 
-> **Status: pre-release.** The parts, 23 pinned chip drivers and the ESP32 and host ports are in place and tested
-> in CI; no version is tagged yet, so APIs may still change before the first release.
+> **Status: release candidate.** [v0.1.0-rc.1](https://github.com/kokeb-labs/kb-core/releases/tag/v0.1.0-rc.1) is
+> the first release candidate: the parts, 23 pinned chip drivers and the ESP32 and host ports, tested in CI. APIs may
+> still change before 0.1.0.
 
 ## Quick start
 
