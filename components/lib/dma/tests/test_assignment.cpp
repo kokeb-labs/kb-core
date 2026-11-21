@@ -119,3 +119,39 @@ KB_TEST("assignment: defaults describe no stream") {
   const d::StreamShape shape{};
   KB_CHECK_EQ(shape.FrameBytes(), std::size_t{1U});
 }
+
+KB_TEST("assignment: the enumerator values are the generator's wire values") {
+  KB_CHECK_EQ(static_cast<unsigned>(d::IrqUse::All), 0U);
+  KB_CHECK_EQ(static_cast<unsigned>(d::IrqUse::ErrorsOnly), 1U);
+  KB_CHECK_EQ(static_cast<unsigned>(d::ChannelPriority::Low), 0U);
+  KB_CHECK_EQ(static_cast<unsigned>(d::ChannelPriority::Medium), 1U);
+  KB_CHECK_EQ(static_cast<unsigned>(d::ChannelPriority::High), 2U);
+  KB_CHECK_EQ(static_cast<unsigned>(d::ChannelPriority::VeryHigh), 3U);
+  KB_CHECK_EQ(static_cast<unsigned>(d::ChannelMode::Normal), 0U);
+  KB_CHECK_EQ(static_cast<unsigned>(d::ChannelMode::Circular), 1U);
+}
+
+KB_TEST("assignment: an unwritten declaration is the safe default") {
+  const d::StreamAssignment stream{};
+  KB_CHECK_EQ(static_cast<unsigned>(stream.engine), 0U);
+  KB_CHECK_EQ(static_cast<unsigned>(stream.stream), 0U);
+  KB_CHECK_EQ(static_cast<unsigned>(stream.request), 0U);
+  KB_CHECK_EQ(static_cast<unsigned>(stream.irq_priority), 0U);
+  KB_CHECK(stream.priority == d::ChannelPriority::Medium);
+  KB_CHECK(stream.notify == d::Notify::Task);
+  KB_CHECK(stream.irq == d::IrqUse::All);
+  KB_CHECK(stream.mode == d::ChannelMode::Normal);
+  const d::InterruptLimits limits{};
+  KB_CHECK_EQ(static_cast<unsigned>(limits.max_syscall_priority), 0U);
+  KB_CHECK_EQ(static_cast<unsigned>(limits.priority_bits), 8U);
+  const d::BusLimits bus{};
+  KB_CHECK(!bus.dma);
+  KB_CHECK_EQ(bus.max_frame_dma, std::size_t{0U});
+  KB_CHECK_EQ(bus.max_frame_no_dma, std::size_t{0U});
+  KB_CHECK_EQ(bus.rx_length_multiple, std::size_t{1U});
+  KB_CHECK_EQ(bus.align_bytes, std::size_t{1U});
+  const d::StreamShape shape{};
+  KB_CHECK_EQ(shape.frames, std::size_t{2U});
+  KB_CHECK_EQ(shape.element_bytes, std::size_t{1U});
+  KB_CHECK_EQ(shape.elements, std::size_t{1U});
+}
