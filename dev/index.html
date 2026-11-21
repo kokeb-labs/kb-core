@@ -1214,8 +1214,9 @@ package, one version:</p>
 <p>MCU ports (<code>components/ports/esp32/</code> first) are separate CMake projects in this repository until they move to their own
 repositories (<a href="design/ports/">MCU ports and repositories</a>).</p>
 <blockquote>
-<p>Status: pre-release. The parts and the ESP32 and host ports are in place and tested in CI; no version is tagged
-yet, so APIs may still change.</p>
+<p>Status: release candidate. <a href="https://github.com/kokeb-labs/kb-core/releases/tag/v0.1.0-rc.1">v0.1.0-rc.1</a> is the
+first release candidate: the parts, 23 pinned chip drivers and the ESP32 and host ports, tested in CI. APIs may
+still change before 0.1.0.</p>
 </blockquote>
 <h2 id="in-30-seconds">In 30 seconds<a class="headerlink" href="#in-30-seconds" title="Permanent link">&para;</a></h2>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>cmake<span class="w"> </span>-S<span class="w"> </span>.<span class="w"> </span>-B<span class="w"> </span>build<span class="w">                     </span><span class="c1"># host: every part, no driver</span>
