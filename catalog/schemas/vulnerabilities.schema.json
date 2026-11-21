@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://kokeb-labs.github.io/kb-core/schemas/vulnerabilities.schema.json",
   "title": "kb-vulns/1: known vulnerabilities of the pinned components, as of one date",
-  "description": "Written by tools/vuln/scan.py from the OSV database for the components kb-core pins (drivers, RTOS kernel, SDK). A snapshot: checked_at is the UTC date of the scan, and a reader older than stale_after_days days must say so. Read by docs/assurance/vulnerabilities.md and the configurator (data/vulnerabilities.js). Sorted keys. SPDX-License-Identifier: MIT. Copyright (c) 2026 The kb-core authors.",
+  "description": "Written by tools/vuln/scan.py from the OSV database for the components kb-core pins (drivers, RTOS kernel, SDK). Advisories that tools/vuln/reviewed.json (kb-vex/1) covers carry a review and are counted as reviewed, not open; status is none known only without any advisory, advisories open while one has no review, else what the reviews say. Still kb-vulns/1: the format was not released before this field set. A snapshot: checked_at is the UTC date of the scan, and a reader older than stale_after_days days must say so. Read by docs/assurance/vulnerabilities.md and the configurator (data/vulnerabilities.js). Sorted keys. SPDX-License-Identifier: MIT. Copyright (c) 2026 The kb-core authors.",
   "type": "object",
   "required": [
     "schema",
@@ -40,7 +40,10 @@
     "status": {
       "enum": [
         "none known",
-        "advisories found"
+        "advisories open",
+        "reviewed: fixed in the pinned version",
+        "reviewed: not affected",
+        "reviewed"
       ]
     },
     "totals": {
@@ -48,7 +51,9 @@
       "required": [
         "components",
         "with_advisories",
-        "advisories"
+        "advisories",
+        "open",
+        "reviewed"
       ],
       "additionalProperties": false,
       "properties": {
@@ -59,6 +64,12 @@
           "type": "integer"
         },
         "advisories": {
+          "type": "integer"
+        },
+        "open": {
+          "type": "integer"
+        },
+        "reviewed": {
           "type": "integer"
         }
       }
@@ -75,7 +86,9 @@
           "commit",
           "status",
           "count",
-          "advisories"
+          "advisories",
+          "open",
+          "reviewed"
         ],
         "additionalProperties": false,
         "properties": {
@@ -96,7 +109,10 @@
           "status": {
             "enum": [
               "none known",
-              "advisories found"
+              "advisories open",
+              "reviewed: fixed in the pinned version",
+              "reviewed: not affected",
+              "reviewed"
             ]
           },
           "count": {
@@ -137,9 +153,45 @@
                 "url": {
                   "type": "string",
                   "pattern": "^https://"
+                },
+                "review": {
+                  "type": "object",
+                  "required": [
+                    "status",
+                    "reason",
+                    "source",
+                    "reviewed"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "status": {
+                      "enum": [
+                        "fixed_in_pinned_version",
+                        "not_affected"
+                      ]
+                    },
+                    "reason": {
+                      "type": "string",
+                      "pattern": "^.+$"
+                    },
+                    "source": {
+                      "type": "string",
+                      "pattern": "^https://"
+                    },
+                    "reviewed": {
+                      "type": "string",
+                      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+                    }
+                  }
                 }
               }
             }
+          },
+          "open": {
+            "type": "integer"
+          },
+          "reviewed": {
+            "type": "integer"
           }
         }
       }

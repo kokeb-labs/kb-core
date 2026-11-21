@@ -4,7 +4,8 @@
 // The right-hand panel: what the selection pulls in and what is known about it, not a wall of combinations.
 //   SBOM        SPDX 2.3 and CycloneDX 1.6 downloads, component count, licences, pinned versions
 //   CVE         the weekly scan (data/vulnerabilities.js, kb-vulns/1) for the selected components only; "none known"
-//               only with data, "not scanned" for a component the scan does not hold, a warning past 10 days
+//               only with data, "not scanned" for a component the scan does not hold, a warning past 10 days; an
+//               advisory with a `review` (tools/vuln/reviewed.json) is "fixed in the pinned version" and not open
 //   Provenance  the release asset of the selected kb-core version and the command that verifies its attestation
 //   Safety      tests, coverage and MISRA as three chips per driver, from kb-core's evidence until a driver has its own
 //   Blockers    only the resolver's errors, next to the cause; warnings and notes sit in a closed "Details"
@@ -41,6 +42,10 @@
   }
 
   const safeUrl = (u) => (/^https:\/\/[^\s"'<>]+$/.test(u || '') ? u : null);
+  // A review is shown only when it says why and where from: a known status, a reason and an https source.
+  const reviewOf = (r) => (r && (r.status === 'fixed_in_pinned_version' || r.status === 'not_affected') && r.reason && safeUrl(r.source)
+    ? { status: r.status, reason: String(r.reason), source: r.source, reviewed: String(r.reviewed || '') } : null);
+  const reviewWord = (r) => (r.status === 'not_affected' ? 'not affected' : 'fixed in the pinned version');
 
   // One entry per selected component: scanned (none known or advisories) or "not scanned". A pinned version is matched
   // without its leading v; the SDK and RTOS, which the lock does not pin, match by name.
@@ -50,15 +55,19 @@
       const e = fr.state === 'missing' ? null
         : data.components.find((x) => x.name === c.name && (!c.version || bare(x.version) === bare(c.version)));
       const base = { name: c.name, label: c.label, version: (e && e.version) || c.version };
-      if (!e) return { ...base, state: 'not scanned', count: 0, advisories: [] };
-      const adv = (e.advisories || []).map((a) => ({ id: a.id, severity: a.severity, summary: a.summary, url: safeUrl(a.url) }));
+      if (!e) return { ...base, state: 'not scanned', count: 0, open: 0, reviewed: 0, advisories: [] };
+      const adv = (e.advisories || []).map((a) => ({ id: a.id, severity: a.severity, summary: a.summary, url: safeUrl(a.url), review: reviewOf(a.review) }));
       const count = Math.max(adv.length, num(e.count) ? e.count : 0);
-      return { ...base, state: count ? 'advisories' : 'none known', count, advisories: adv };
+      const reviewed = adv.filter((a) => a.review).length;
+      const open = count - reviewed;
+      return { ...base, state: open ? 'advisories' : reviewed ? 'reviewed' : 'none known', count, open, reviewed, advisories: adv };
     });
     const scanned = items.filter((i) => i.state !== 'not scanned').length;
     const advisories = items.reduce((a, i) => a + i.count, 0);
-    const status = fr.state === 'missing' ? 'no data' : advisories ? 'advisories found' : scanned ? 'none known' : 'not scanned';
-    return { fresh: fr, items, scanned, notScanned: items.length - scanned, advisories, status,
+    const open = items.reduce((a, i) => a + i.open, 0);
+    const reviewed = advisories - open;
+    const status = fr.state === 'missing' ? 'no data' : open ? 'advisories found' : reviewed ? 'reviewed' : scanned ? 'none known' : 'not scanned';
+    return { fresh: fr, items, scanned, notScanned: items.length - scanned, advisories, open, reviewed, status,
       stale: fr.state === 'stale', missing: fr.state === 'missing' };
   }
 
@@ -166,7 +175,8 @@
     const bl = blockers(result.findings);
     const cveText = sc.missing ? 'vulnerability data missing' : sc.stale ? `vulnerability data ${sc.fresh.age} days old`
       : sc.status === 'none known' ? `no known vulnerabilities in ${sc.scanned} of ${comps.length} scanned`
-        : sc.status === 'advisories found' ? plural(sc.advisories, 'known vulnerability', 'known vulnerabilities') : 'not scanned';
+        : sc.status === 'advisories found' || sc.status === 'reviewed'
+          ? `${plural(sc.open, 'open vulnerability', 'open vulnerabilities')}${sc.reviewed ? `, ${sc.reviewed} reviewed` : ''}` : 'not scanned';
     return { comps, ev, cve: sc, bom, blockers: bl, details: details(result.findings), safety: safety(ev, image),
       provenance: provenance(ev, catalog.kb_core.repo),
       summary: `${bom.ready ? `${plural(bom.count, 'component')}, ${bom.licences.text}` : 'No SBOM yet'}; ${cveText}; ${bl.length ? plural(bl.length, 'blocker') : 'no blockers'}.` };
@@ -214,20 +224,30 @@
     // CVE.
     const c = m.cve;
     const tone = c.missing || c.status === 'not scanned' ? 'muted' : c.status === 'advisories found' ? 'err' : c.stale ? 'warn' : 'ok';
-    const word = c.missing ? 'No data' : c.status === 'advisories found' ? plural(c.advisories, 'advisory', 'advisories')
+    const word = c.missing ? 'No data' : c.status === 'advisories found' || c.status === 'reviewed' ? `${c.open} open, ${c.reviewed} reviewed`
       : c.status === 'none known' ? (c.notScanned ? `None known in ${c.scanned} of ${c.items.length}` : 'None known') : 'Not scanned';
-    const withAdv = c.items.filter((i) => i.advisories.length || i.state === 'advisories');
+    const withOpen = c.items.filter((i) => i.open);
+    const withRev = c.items.filter((i) => i.reviewed);
     const unscanned = c.items.filter((i) => i.state === 'not scanned');
+    const advLine = (a) => [link(a.url, a.id), a.severity ? ` (${a.severity})` : ''];
+    const reviewedBox = (i) => h('details', { id: 'cve-rev-' + i.name, class: 'dis', open: openOf('cve-rev-' + i.name) || null },
+      h('summary', { text: `${i.label} ${i.version}: ${i.reviewed} reviewed, fixed in the pinned version` }),
+      h('ul', { class: 'adv-list' }, i.advisories.filter((a) => a.review).map((a) => h('li', {}, advLine(a), ' ',
+        h('span', { class: 'badge ok', title: a.review.reason, text: reviewWord(a.review) }), ' ', h('span', { class: 'sub', text: a.review.reason }), ' ',
+        link(a.review.source, 'source'), a.review.reviewed ? h('span', { class: 'sub', text: ` reviewed ${a.review.reviewed}` }) : null))));
     const cveBox = sec('cve', 'Known vulnerabilities',
       line('chips', chip(tone, word), c.missing ? null : h('span', { class: 'sub', text: `checked ${c.fresh.checked}` })),
       c.missing ? line('warn-line', 'The vulnerability data is missing, so nothing can be said about known vulnerabilities.') : null,
       c.stale ? line('warn-line', `The scan is ${c.fresh.age} days old (more than ${STALE_DAYS}); newer advisories may be missing.`) : null,
-            h('ul', { class: 'adv-list' }, withAdv.map((i) => h('li', {}, h('strong', { text: i.label }), ` ${i.version}: `,
-        i.advisories.length ? i.advisories.map((a, k) => [k ? ', ' : '', link(a.url, a.id), a.severity ? ` (${a.severity})` : '']) : `${i.count} advisory, see the scan`))),
+      h('ul', { class: 'adv-list' }, withOpen.map((i) => h('li', {}, h('strong', { text: i.label }), ` ${i.version}: `,
+        i.advisories.some((a) => !a.review) ? i.advisories.filter((a) => !a.review).map((a, k) => [k ? ', ' : '', advLine(a)])
+          : `${i.open} advisory, see the scan`))),
+      withRev.map(reviewedBox),
       unscanned.length ? line('note', `Not scanned: ${unscanned.map((i) => i.label).join(', ')}.`) : null,
       h('details', { id: 'cve-all', class: 'dis', open: openOf('cve-all') || null }, h('summary', { text: 'Per component' }),
         h('ul', { class: 'adv-list' }, c.items.map((i) => h('li', {}, h('strong', { text: i.label }), ` ${i.version || ''} `,
-          h('span', { class: 'badge ' + (i.state === 'none known' ? 'ok' : i.state === 'advisories' ? 'err' : 'muted'), text: i.state === 'advisories' ? `${i.count} found` : i.state }))))));
+          h('span', { class: 'badge ' + (i.state === 'advisories' ? 'err' : i.state === 'not scanned' ? 'muted' : 'ok'),
+            text: i.state === 'advisories' ? `${i.open} open${i.reviewed ? `, ${i.reviewed} reviewed` : ''}` : i.state === 'reviewed' ? `0 open, ${i.reviewed} reviewed` : i.state }))))));
 
     // Provenance.
     const p = m.provenance;

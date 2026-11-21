@@ -156,3 +156,43 @@ test('the summary line reads the selection: counts, licences, vulnerabilities an
   assert.match(old.summary, /vulnerability data \d+ days old/);
   assert.equal(m.blockers.length, 0);
 });
+
+const rv = (extra = {}) => ({ status: 'fixed_in_pinned_version', reason: 'Upstream lists the pinned version as patched.', source: 'https://github.com/eclipse-threadx/threadx/security/advisories/GHSA-x', reviewed: '2026-11-21', ...extra });
+const withReviews = (reviews) => ({ schema: 'kb-vulns/1', checked_at: '2026-11-20', stale_after_days: 10, components: [
+  { name: 'threadx', version: 'v6.5.2.202603b_rel', status: 'x', count: reviews.length, advisories: reviews.map((r, i) => ({ id: `CVE-${i}`, severity: 'high', summary: 's', url: `https://osv.dev/vulnerability/CVE-${i}`, ...(r ? { review: r } : {}) })) }] });
+const tx = [{ name: 'threadx', label: 'ThreadX', version: null }];
+
+test('reviewed advisories are "fixed in the pinned version" and are not open; the chip reads "0 open, 8 reviewed"', () => {
+  const c = M.cve(withReviews(Array(8).fill(rv())), tx, day('2026-11-21'));
+  assert.equal(c.status, 'reviewed');
+  assert.deepEqual([c.advisories, c.open, c.reviewed], [8, 0, 8]);
+  assert.equal(c.items[0].state, 'reviewed');
+  assert.equal(c.items[0].advisories[0].review.reason, 'Upstream lists the pinned version as patched.');
+  const mixed = M.cve(withReviews([rv(), null, rv()]), tx, day('2026-11-21'));
+  assert.equal(mixed.status, 'advisories found');
+  assert.deepEqual([mixed.advisories, mixed.open, mixed.reviewed], [3, 1, 2]);
+  assert.equal(mixed.items[0].state, 'advisories');
+  // a review without a reason, an unknown status or a non-https source is ignored: the advisory stays open
+  for (const bad of [rv({ reason: '' }), rv({ status: 'not_built' }), rv({ source: 'javascript:alert(1)' }), rv({ source: 'http://x' })]) {
+    const o = M.cve(withReviews([bad]), tx, day('2026-11-21'));
+    assert.deepEqual([o.open, o.reviewed, o.status], [1, 0, 'advisories found']);
+  }
+  const real = M.cve(ctx.KB_VULNERABILITIES, tx, day(ctx.KB_VULNERABILITIES.checked_at));
+  assert.deepEqual([real.advisories, real.open, real.reviewed, real.status], [8, 0, 8, 'reviewed']);
+  assert.ok(real.items[0].advisories.every((a) => a.review && a.review.source.startsWith('https://github.com/eclipse-threadx/threadx/security/advisories/GHSA-')));
+});
+
+test('a reviewed component keeps the stale rule, and the summary names open and reviewed counts', () => {
+  const stale = M.cve(withReviews([rv()]), tx, day('2026-12-01'));
+  assert.equal(stale.stale, true);
+  assert.equal(stale.reviewed, 1);
+  const r = run(['bmp581'], 'esp32', 'esp32s3', 'threadx');
+  assert.ok(M.components(r.output).some((c) => c.name === 'threadx'));
+  const keep = ctx.KB_VULNERABILITIES;
+  ctx.KB_VULNERABILITIES = withReviews([rv(), rv()]);
+  try {
+    const m = M.summaryOf(r, day('2026-11-21'), KB.generate.lockComponents);
+    assert.match(m.summary, /; 0 open vulnerabilities, 2 reviewed; /);
+    assert.ok(!/not built/i.test(m.summary));
+  } finally { ctx.KB_VULNERABILITIES = keep; }
+});

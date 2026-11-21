@@ -10,7 +10,9 @@ globalThis.KB_VULNERABILITIES = {
    "commit": "a1b977597782bde428df5cce1eaf763a6ef25dbb",
    "count": 0,
    "name": "driver-ads7952",
+   "open": 0,
    "purl": "pkg:github/kokeb-labs-drivers/driver-ads7952@v0.1.0-rc.1",
+   "reviewed": 0,
    "status": "none known",
    "version": "v0.1.0-rc.1"
   },
@@ -19,7 +21,9 @@ globalThis.KB_VULNERABILITIES = {
    "commit": "8ade1b1e83c496e743517bcd055407f6f2d48d0c",
    "count": 0,
    "name": "driver-ads9324",
+   "open": 0,
    "purl": "pkg:github/kokeb-labs-drivers/driver-ads9324@v0.1.0-rc.1",
+   "reviewed": 0,
    "status": "none known",
    "version": "v0.1.0-rc.1"
   },
@@ -28,7 +32,9 @@ globalThis.KB_VULNERABILITIES = {
    "commit": "51b9d0c9550598f48d555cef74ea02a8f2eebf93",
    "count": 0,
    "name": "driver-alicat-basis2",
+   "open": 0,
    "purl": "pkg:github/kokeb-labs-drivers/driver-alicat-basis2@v0.1.0-rc.1",
+   "reviewed": 0,
    "status": "none known",
    "version": "v0.1.0-rc.1"
   },
@@ -37,7 +43,9 @@ globalThis.KB_VULNERABILITIES = {
    "commit": "714970c08c73bbf80a37a7f821419b59edec4a7d",
    "count": 0,
    "name": "driver-as5047u",
+   "open": 0,
    "purl": "pkg:github/kokeb-labs-drivers/driver-as5047u@v0.1.0-rc.1",
+   "reviewed": 0,
    "status": "none known",
    "version": "v0.1.0-rc.1"
   },
@@ -46,7 +54,9 @@ globalThis.KB_VULNERABILITIES = {
    "commit": "a9a2e61dd984fcdb2e78580eb15331a913ae0bda",
    "count": 0,
    "name": "driver-at25040b",
+   "open": 0,
    "purl": "pkg:github/kokeb-labs-drivers/driver-at25040b@v0.1.0-rc.1",
+   "reviewed": 0,
    "status": "none known",
    "version": "v0.1.0-rc.1"
   },
@@ -55,7 +65,9 @@ globalThis.KB_VULNERABILITIES = {
    "commit": "eda3237c8fc72a745411282acf46b387c0205430",
    "count": 0,
    "name": "driver-bmp581",
+   "open": 0,
    "purl": "pkg:github/kokeb-labs-drivers/driver-bmp581@v0.1.0-rc.1",
+   "reviewed": 0,
    "status": "none known",
    "version": "v0.1.0-rc.1"
   },
@@ -64,7 +76,9 @@ globalThis.KB_VULNERABILITIES = {
    "commit": "0d032fc8feb545b8f3959f803a625877406c7bea",
    "count": 0,
    "name": "driver-bno08x",
+   "open": 0,
    "purl": "pkg:github/kokeb-labs-drivers/driver-bno08x@v0.1.0-rc.1",
+   "reviewed": 0,
    "status": "none known",
    "version": "v0.1.0-rc.1"
   },
@@ -73,7 +87,9 @@ globalThis.KB_VULNERABILITIES = {
    "commit": "88c344eda4ee37162cd78edb36444fb44c727656",
    "count": 0,
    "name": "driver-canopen-client",
+   "open": 0,
    "purl": "pkg:github/kokeb-labs-drivers/driver-canopen-client@v0.1.0-rc.1",
+   "reviewed": 0,
    "status": "none known",
    "version": "v0.1.0-rc.1"
   },
@@ -82,7 +98,9 @@ globalThis.KB_VULNERABILITIES = {
    "commit": "137d802cf1a47d5a37c0dc9553f32b7390825498",
    "count": 0,
    "name": "driver-dynamixel",
+   "open": 0,
    "purl": "pkg:github/kokeb-labs-drivers/driver-dynamixel@v0.1.0-rc.1",
+   "reviewed": 0,
    "status": "none known",
    "version": "v0.1.0-rc.1"
   },
@@ -91,7 +109,9 @@ globalThis.KB_VULNERABILITIES = {
    "commit": "61218e3ebcb94066860a27b429b6928ed4524ac7",
    "count": 0,
    "name": "driver-fdo2",
+   "open": 0,
    "purl": "pkg:github/kokeb-labs-drivers/driver-fdo2@v0.1.0-rc.1",
+   "reviewed": 0,
    "status": "none known",
    "version": "v0.1.0-rc.1"
   },
@@ -100,7 +120,9 @@ globalThis.KB_VULNERABILITIES = {
    "commit": "62260440dc5c53ccc6fd8b762cd76540ccaf7823",
    "count": 0,
    "name": "driver-isf15acp4",
+   "open": 0,
    "purl": "pkg:github/kokeb-labs-drivers/driver-isf15acp4@v0.1.0-rc.1",
+   "reviewed": 0,
    "status": "none known",
    "version": "v0.1.0-rc.1"
   },
@@ -109,7 +131,9 @@ globalThis.KB_VULNERABILITIES = {
    "commit": "31a0c217dca108073e3a5369dcb6c8e3c00a7fb4",
    "count": 0,
    "name": "driver-max22200",
+   "open": 0,
    "purl": "pkg:github/kokeb-labs-drivers/driver-max22200@v0.1.0-rc.1",
+   "reviewed": 0,
    "status": "none known",
    "version": "v0.1.0-rc.1"
   },
@@ -118,7 +142,9 @@ globalThis.KB_VULNERABILITIES = {
    "commit": "f435359e4ca126d5cf0f1ba97f84ec7d0b41e571",
    "count": 0,
    "name": "driver-mcp9700",
+   "open": 0,
    "purl": "pkg:github/kokeb-labs-drivers/driver-mcp9700@v0.1.0-rc.1",
+   "reviewed": 0,
    "status": "none known",
    "version": "v0.1.0-rc.1"
   },
@@ -127,7 +153,9 @@ globalThis.KB_VULNERABILITIES = {
    "commit": "731831ed59bff27a755db3a0df48b882ac43caa0",
    "count": 0,
    "name": "driver-ntc-thermistor",
+   "open": 0,
    "purl": "pkg:github/kokeb-labs-drivers/driver-ntc-thermistor@v0.1.0-rc.1",
+   "reviewed": 0,
    "status": "none known",
    "version": "v0.1.0-rc.1"
   },
@@ -136,7 +164,9 @@ globalThis.KB_VULNERABILITIES = {
    "commit": "ba554fcf9bfff462ea3e2d05e38f4e91753f1f97",
    "count": 0,
    "name": "driver-pca9685",
+   "open": 0,
    "purl": "pkg:github/kokeb-labs-drivers/driver-pca9685@v0.1.0-rc.1",
+   "reviewed": 0,
    "status": "none known",
    "version": "v0.1.0-rc.1"
   },
@@ -145,7 +175,9 @@ globalThis.KB_VULNERABILITIES = {
    "commit": "b9dabab24897cc5392c35e024e63fbc970fe7f19",
    "count": 0,
    "name": "driver-pcal9555",
+   "open": 0,
    "purl": "pkg:github/kokeb-labs-drivers/driver-pcal9555@v0.1.0-rc.1",
+   "reviewed": 0,
    "status": "none known",
    "version": "v0.1.0-rc.1"
   },
@@ -154,7 +186,9 @@ globalThis.KB_VULNERABILITIES = {
    "commit": "c45f52351738a9107f65ad0d4bb895cb8e1ff5d3",
    "count": 0,
    "name": "driver-pf1550",
+   "open": 0,
    "purl": "pkg:github/kokeb-labs-drivers/driver-pf1550@v0.1.0-rc.1",
+   "reviewed": 0,
    "status": "none known",
    "version": "v0.1.0-rc.1"
   },
@@ -163,7 +197,9 @@ globalThis.KB_VULNERABILITIES = {
    "commit": "d7b75124f4e722b089f26d87acad611cb19e6e73",
    "count": 0,
    "name": "driver-sfm-flow-meter",
+   "open": 0,
    "purl": "pkg:github/kokeb-labs-drivers/driver-sfm-flow-meter@v0.1.0-rc.1",
+   "reviewed": 0,
    "status": "none known",
    "version": "v0.1.0-rc.1"
   },
@@ -172,7 +208,9 @@ globalThis.KB_VULNERABILITIES = {
    "commit": "4a33db170d1059e0a321819bdebf82777f77eb7f",
    "count": 0,
    "name": "driver-tle92466ed",
+   "open": 0,
    "purl": "pkg:github/kokeb-labs-drivers/driver-tle92466ed@v0.1.0-rc.1",
+   "reviewed": 0,
    "status": "none known",
    "version": "v0.1.0-rc.1"
   },
@@ -181,7 +219,9 @@ globalThis.KB_VULNERABILITIES = {
    "commit": "9ef0483e64ffe1bb1d6744a063c7577b992a4e51",
    "count": 0,
    "name": "driver-tmc5160",
+   "open": 0,
    "purl": "pkg:github/kokeb-labs-drivers/driver-tmc5160@v0.1.0-rc.1",
+   "reviewed": 0,
    "status": "none known",
    "version": "v0.1.0-rc.1"
   },
@@ -190,7 +230,9 @@ globalThis.KB_VULNERABILITIES = {
    "commit": "b0a125d222c09c35632f0803cd2e693be785a341",
    "count": 0,
    "name": "driver-tmc9660",
+   "open": 0,
    "purl": "pkg:github/kokeb-labs-drivers/driver-tmc9660@v0.1.0-rc.1",
+   "reviewed": 0,
    "status": "none known",
    "version": "v0.1.0-rc.1"
   },
@@ -199,7 +241,9 @@ globalThis.KB_VULNERABILITIES = {
    "commit": "2790be043fce5c620281aafa5b2bc2e0880af829",
    "count": 0,
    "name": "driver-ws2812-rmt",
+   "open": 0,
    "purl": "pkg:github/kokeb-labs-drivers/driver-ws2812-rmt@v0.1.0-rc.1",
+   "reviewed": 0,
    "status": "none known",
    "version": "v0.1.0-rc.1"
   },
@@ -208,7 +252,9 @@ globalThis.KB_VULNERABILITIES = {
    "commit": "8c750b088c7cd857d079c0eeb495da199b359461",
    "count": 0,
    "name": "esp-idf",
+   "open": 0,
    "purl": "pkg:github/espressif/esp-idf@v5.5",
+   "reviewed": 0,
    "status": "none known",
    "version": "v5.5"
   },
@@ -217,6 +263,12 @@ globalThis.KB_VULNERABILITIES = {
     {
      "cvss": "CVSS:4.0/AV:L/AC:L/AT:N/PR:L/UI:N/VC:H/VI:H/VA:L/SC:N/SI:N/SA:N",
      "id": "CVE-2026-102709",
+     "review": {
+      "reason": "The upstream advisory GHSA-ffg5-m7vh-vwrp lists 6.5.2.202603b as patched; the pinned tag v6.5.2.202603b_rel is that version. OSV's range for CVE-2026-102709 ends at this commit (last_affected) without a fixed event.",
+      "reviewed": "2026-11-21",
+      "source": "https://github.com/eclipse-threadx/threadx/security/advisories/GHSA-ffg5-m7vh-vwrp",
+      "status": "fixed_in_pinned_version"
+     },
      "severity": "unrated",
      "summary": "In Eclipse ThreadX versions 6.0.1 through 6.5.2.202603, the four non-secure-callable secure stack functions of the TrustZone-M ports dereference a thread poi...",
      "url": "https://osv.dev/vulnerability/CVE-2026-102709"
@@ -224,6 +276,12 @@ globalThis.KB_VULNERABILITIES = {
     {
      "cvss": "CVSS:4.0/AV:L/AC:L/AT:N/PR:L/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N",
      "id": "CVE-2026-102710",
+     "review": {
+      "reason": "The upstream advisory GHSA-xr9m-8j99-rw4m lists 6.5.2.202603b as patched; the pinned tag v6.5.2.202603b_rel is that version. OSV's range for CVE-2026-102710 ends at this commit (last_affected) without a fixed event.",
+      "reviewed": "2026-11-21",
+      "source": "https://github.com/eclipse-threadx/threadx/security/advisories/GHSA-xr9m-8j99-rw4m",
+      "status": "fixed_in_pinned_version"
+     },
      "severity": "unrated",
      "summary": "In Eclipse ThreadX versions 6.0.1 through 6.5.2.202603, built with TX_ENABLE_EVENT_TRACE, the Module Manager lets a user-mode, memory-protected module regist...",
      "url": "https://osv.dev/vulnerability/CVE-2026-102710"
@@ -231,6 +289,12 @@ globalThis.KB_VULNERABILITIES = {
     {
      "cvss": "CVSS:4.0/AV:L/AC:L/AT:N/PR:L/UI:N/VC:H/VI:N/VA:L/SC:N/SI:N/SA:N",
      "id": "CVE-2026-102711",
+     "review": {
+      "reason": "The upstream advisory GHSA-f53h-37j4-mqxx lists 6.5.2.202603b as patched; the pinned tag v6.5.2.202603b_rel is that version. OSV's range for CVE-2026-102711 ends at this commit (last_affected) without a fixed event.",
+      "reviewed": "2026-11-21",
+      "source": "https://github.com/eclipse-threadx/threadx/security/advisories/GHSA-f53h-37j4-mqxx",
+      "status": "fixed_in_pinned_version"
+     },
      "severity": "unrated",
      "summary": "Out-of-bounds Read and Unverified Entry Pointers in the ThreadX Module Loader",
      "url": "https://osv.dev/vulnerability/CVE-2026-102711"
@@ -238,6 +302,12 @@ globalThis.KB_VULNERABILITIES = {
     {
      "cvss": "CVSS:4.0/AV:L/AC:L/AT:P/PR:L/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N",
      "id": "CVE-2026-113421",
+     "review": {
+      "reason": "The upstream advisory GHSA-8pgj-qvjv-j4fq lists 6.5.2.202603b as patched; the pinned tag v6.5.2.202603b_rel is that version. OSV's range for CVE-2026-113421 ends at this commit (last_affected) without a fixed event.",
+      "reviewed": "2026-11-21",
+      "source": "https://github.com/eclipse-threadx/threadx/security/advisories/GHSA-8pgj-qvjv-j4fq",
+      "status": "fixed_in_pinned_version"
+     },
      "severity": "unrated",
      "summary": "ThreadX Modules invokes trace-full callbacks after module unload",
      "url": "https://osv.dev/vulnerability/CVE-2026-113421"
@@ -245,6 +315,12 @@ globalThis.KB_VULNERABILITIES = {
     {
      "cvss": "CVSS:4.0/AV:L/AC:L/AT:N/PR:L/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N",
      "id": "CVE-2026-115231",
+     "review": {
+      "reason": "The upstream advisory GHSA-q2rc-f35r-2hw6 lists 6.5.2.202603b as patched; the pinned tag v6.5.2.202603b_rel is that version. OSV's range for CVE-2026-115231 ends at this commit (last_affected) without a fixed event.",
+      "reviewed": "2026-11-21",
+      "source": "https://github.com/eclipse-threadx/threadx/security/advisories/GHSA-q2rc-f35r-2hw6",
+      "status": "fixed_in_pinned_version"
+     },
      "severity": "unrated",
      "summary": "User-mode module can post forged callback requests to another module's callback queue, running its code with that module's privilege",
      "url": "https://osv.dev/vulnerability/CVE-2026-115231"
@@ -252,6 +328,12 @@ globalThis.KB_VULNERABILITIES = {
     {
      "cvss": "CVSS:4.0/AV:L/AC:L/AT:N/PR:L/UI:N/VC:L/VI:H/VA:H/SC:N/SI:N/SA:N",
      "id": "CVE-2026-115653",
+     "review": {
+      "reason": "The upstream advisory GHSA-c38r-v552-gh5g lists 6.5.2.202603b as patched; the pinned tag v6.5.2.202603b_rel is that version. OSV's range for CVE-2026-115653 ends at this commit (last_affected) without a fixed event.",
+      "reviewed": "2026-11-21",
+      "source": "https://github.com/eclipse-threadx/threadx/security/advisories/GHSA-c38r-v552-gh5g",
+      "status": "fixed_in_pinned_version"
+     },
      "severity": "unrated",
      "summary": "Cortex-M module ports save a preempted user-mode module thread's registers through its unchecked stack pointer in privileged mode",
      "url": "https://osv.dev/vulnerability/CVE-2026-115653"
@@ -259,6 +341,12 @@ globalThis.KB_VULNERABILITIES = {
     {
      "cvss": "CVSS:4.0/AV:L/AC:L/AT:N/PR:L/UI:N/VC:N/VI:L/VA:H/SC:N/SI:N/SA:N",
      "id": "CVE-2026-115654",
+     "review": {
+      "reason": "The upstream advisory GHSA-5q6x-rxf3-5q5f lists 6.5.2.202603b as patched; the pinned tag v6.5.2.202603b_rel is that version. OSV's range for CVE-2026-115654 ends at this commit (last_affected) without a fixed event.",
+      "reviewed": "2026-11-21",
+      "source": "https://github.com/eclipse-threadx/threadx/security/advisories/GHSA-5q6x-rxf3-5q5f",
+      "status": "fixed_in_pinned_version"
+     },
      "severity": "unrated",
      "summary": "User-mode module can suspend, terminate, re-prioritise and abort the waits of threads it does not own",
      "url": "https://osv.dev/vulnerability/CVE-2026-115654"
@@ -266,6 +354,12 @@ globalThis.KB_VULNERABILITIES = {
     {
      "cvss": "CVSS:4.0/AV:L/AC:L/AT:N/PR:L/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N",
      "id": "CVE-2026-118052",
+     "review": {
+      "reason": "The upstream advisory GHSA-67ww-q8x2-g487 lists 6.5.2.202603b as patched; the pinned tag v6.5.2.202603b_rel is that version. OSV's range for CVE-2026-118052 ends at this commit (last_affected) without a fixed event.",
+      "reviewed": "2026-11-21",
+      "source": "https://github.com/eclipse-threadx/threadx/security/advisories/GHSA-67ww-q8x2-g487",
+      "status": "fixed_in_pinned_version"
+     },
      "severity": "unrated",
      "summary": "Module Manager loaders leave the manager mutex held when a module preamble's sizes overflow, blocking every later module operation",
      "url": "https://osv.dev/vulnerability/CVE-2026-118052"
@@ -274,8 +368,10 @@ globalThis.KB_VULNERABILITIES = {
    "commit": "b2868c3d2849aab95d04cedcf8885d3f81798c86",
    "count": 8,
    "name": "threadx",
+   "open": 0,
    "purl": "pkg:github/eclipse-threadx/threadx@v6.5.2.202603b_rel",
-   "status": "advisories found",
+   "reviewed": 8,
+   "status": "reviewed: fixed in the pinned version",
    "version": "v6.5.2.202603b_rel"
   }
  ],
@@ -284,10 +380,12 @@ globalThis.KB_VULNERABILITIES = {
  "schema": "kb-vulns/1",
  "source": "OSV",
  "stale_after_days": 10,
- "status": "advisories found",
+ "status": "reviewed: fixed in the pinned version",
  "totals": {
   "advisories": 8,
   "components": 24,
+  "open": 0,
+  "reviewed": 8,
   "with_advisories": 1
  }
 };

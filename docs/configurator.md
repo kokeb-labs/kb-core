@@ -121,9 +121,11 @@ checks, and a one-line summary in a live region says what changed.
 - **Known vulnerabilities.** The weekly scan ([Vulnerability data](#vulnerability-data)) for the selected components
   only: kb-core, the port, each driver at its pinned tag, the RTOS and, on ESP32, ESP-IDF. A status chip and
   "checked <date>"; **none known** is shown plainly, but only for components the data holds. A component it does not
-  hold (or holds at another version) is listed as *not scanned*; advisory ids link to their OSV pages. Data more than
-  10 days older than today's date in the browser (UTC) gets a visible warning from the 11th day; missing data says
-  so and never reads "none known".
+  hold (or holds at another version) is listed as *not scanned*; advisory ids link to their OSV pages. The chip counts
+  only **open** advisories ("2 open, 8 reviewed"; "0 open, 8 reviewed" when every advisory is reviewed). A reviewed
+  advisory is listed in a folded block per component as *fixed in the pinned version*, with the reason (also as a
+  tooltip) and a link to the primary source. Data more than 10 days older than today's date in the browser (UTC) gets
+  a visible warning from the 11th day; missing data says so and never reads "none known".
 - **Provenance.** The release asset of the selected kb-core version and the one-line
   `gh attestation verify <asset> --repo <owner/repo>` with a *Copy* button. The evidence data holds no attestation
   fact, so the chip says *Per release process* (the release workflow attests its files,
@@ -175,20 +177,44 @@ The known vulnerabilities of the pinned components (every driver at its pinned t
 come from a weekly job, not from the page. `.github/workflows/ci-vulnerabilities.yml` runs on Mondays at 05:17 UTC
 (and on demand): `tools/vuln/scan.py` asks the [OSV](https://osv.dev) database about the commit of each pin and writes
 `configurator/data/vulnerabilities.json` (schema `kb-vulns/1`: the UTC date checked, the source, the scanner, and per
-component its version, package URL, status and advisories). `tools/vuln/collect.py` renders that file as
-`vulnerabilities.js`, which the page reads like the evidence data (it has a strict content-security policy and no
-network access), and as the page [Known vulnerabilities](assurance/vulnerabilities.md). The weekly run rebuilds and
+component its version, package URL, status, open and reviewed counts and advisories). `tools/vuln/collect.py`
+renders that file as `vulnerabilities.js`, which the page reads like the evidence data (it has a strict
+content-security policy and no network access), and as the page
+[Known vulnerabilities](assurance/vulnerabilities.md). The weekly run rebuilds and
 republishes the site with the fresh data; it commits nothing, so the file in the repository is only the snapshot of the
 last time someone ran the scan by hand.
 
-- A component with no advisory says **none known**, plainly, with the date checked.
-- When the database lists an advisory for a pin, the job opens one issue, "Known vulnerabilities in pinned
-  components", or updates it when the list changes. It never opens a pull request.
+- A component with no advisory says **none known**, plainly, with the date checked. Only a component without any
+  advisory says that.
+- When the database lists an advisory for a pin that no reviewed entry covers (an **open** advisory), the job opens one
+  issue, "Known vulnerabilities in pinned components", or updates it when the list changes. Reviewed advisories are
+  only listed in a folded note of that issue, never alone. It never opens a pull request.
 - When the scan itself fails (the database or the network is unreachable, an answer cannot be read, a pin cannot be
   resolved) the job fails, so a broken check is never mistaken for a clean one.
 - The 10-day rule: data whose checked-at date is more than 10 days before the day the page is opened is shown as out
   of date, and the Markdown page says the same when it is built from data that old. A skipped or failing week
   therefore shows within days.
+
+### The reviewed list
+
+`tools/vuln/reviewed.json` (schema `kb-vex/1`, `catalog/schemas/vex.schema.json`) is a VEX-style list of advisories
+that were read against their primary source. Each entry has the advisory `id` and its `aliases`, the `component` and
+the `component_version` it was reviewed for, a `status` (`fixed_in_pinned_version`; the schema also allows
+`not_affected`, unused so far), the `reason`, the `source` URL and the `reviewed` date. The review rule: the primary
+source, the upstream security advisory, names our exact pinned version as patched. The scan adds the entry to the
+advisory as `review` and counts it as reviewed instead of open. An entry applies only while the scanned version of the
+component equals `component_version`: if the pin moves, the advisory is open again until someone reviews it for the
+new version. How to add one is described in `tools/vuln/README.md`.
+
+### Known data issues
+
+For the eight ThreadX advisories on the pin `v6.5.2.202603b_rel` (CVE-2026-102709, -102710, -102711, -113421,
+-115231, -115653, -115654 and -118052), the upstream GitHub advisories list `6.5.2.202603b` as patched (checked
+2026-11-21 with `gh api repos/eclipse-threadx/threadx/security-advisories/GHSA-...`), while the OSV records give a git
+range from commit `6a018a4cfda9` to `last_affected` `b2868c3d2849`, which is the commit of the pinned tag, and no
+`fixed` event. That range looks like an error in OSV's data: it ends at the release the advisories name as the fix.
+This is noted here for a later report to the upstream project and to OSV; nothing has been filed. Until the records
+change, the scan keeps listing the eight advisories and shows them as reviewed.
 
 Pull requests that touch the scan only run its tests on fixtures and validate the committed snapshot (no network); the
 configurator job checks that the generated files equal the snapshot, and never rescans.

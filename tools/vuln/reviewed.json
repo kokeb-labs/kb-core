@@ -1,0 +1,101 @@
+{
+ "entries": [
+  {
+   "aliases": [
+    "GHSA-ffg5-m7vh-vwrp"
+   ],
+   "component": "threadx",
+   "component_version": "v6.5.2.202603b_rel",
+   "id": "CVE-2026-102709",
+   "reason": "The upstream advisory GHSA-ffg5-m7vh-vwrp lists 6.5.2.202603b as patched; the pinned tag v6.5.2.202603b_rel is that version. OSV's range for CVE-2026-102709 ends at this commit (last_affected) without a fixed event.",
+   "reviewed": "2026-11-21",
+   "source": "https://github.com/eclipse-threadx/threadx/security/advisories/GHSA-ffg5-m7vh-vwrp",
+   "status": "fixed_in_pinned_version"
+  },
+  {
+   "aliases": [
+    "GHSA-xr9m-8j99-rw4m"
+   ],
+   "component": "threadx",
+   "component_version": "v6.5.2.202603b_rel",
+   "id": "CVE-2026-102710",
+   "reason": "The upstream advisory GHSA-xr9m-8j99-rw4m lists 6.5.2.202603b as patched; the pinned tag v6.5.2.202603b_rel is that version. OSV's range for CVE-2026-102710 ends at this commit (last_affected) without a fixed event.",
+   "reviewed": "2026-11-21",
+   "source": "https://github.com/eclipse-threadx/threadx/security/advisories/GHSA-xr9m-8j99-rw4m",
+   "status": "fixed_in_pinned_version"
+  },
+  {
+   "aliases": [
+    "GHSA-f53h-37j4-mqxx"
+   ],
+   "component": "threadx",
+   "component_version": "v6.5.2.202603b_rel",
+   "id": "CVE-2026-102711",
+   "reason": "The upstream advisory GHSA-f53h-37j4-mqxx lists 6.5.2.202603b as patched; the pinned tag v6.5.2.202603b_rel is that version. OSV's range for CVE-2026-102711 ends at this commit (last_affected) without a fixed event.",
+   "reviewed": "2026-11-21",
+   "source": "https://github.com/eclipse-threadx/threadx/security/advisories/GHSA-f53h-37j4-mqxx",
+   "status": "fixed_in_pinned_version"
+  },
+  {
+   "aliases": [
+    "GHSA-8pgj-qvjv-j4fq"
+   ],
+   "component": "threadx",
+   "component_version": "v6.5.2.202603b_rel",
+   "id": "CVE-2026-113421",
+   "reason": "The upstream advisory GHSA-8pgj-qvjv-j4fq lists 6.5.2.202603b as patched; the pinned tag v6.5.2.202603b_rel is that version. OSV's range for CVE-2026-113421 ends at this commit (last_affected) without a fixed event.",
+   "reviewed": "2026-11-21",
+   "source": "https://github.com/eclipse-threadx/threadx/security/advisories/GHSA-8pgj-qvjv-j4fq",
+   "status": "fixed_in_pinned_version"
+  },
+  {
+   "aliases": [
+    "GHSA-q2rc-f35r-2hw6"
+   ],
+   "component": "threadx",
+   "component_version": "v6.5.2.202603b_rel",
+   "id": "CVE-2026-115231",
+   "reason": "The upstream advisory GHSA-q2rc-f35r-2hw6 lists 6.5.2.202603b as patched; the pinned tag v6.5.2.202603b_rel is that version. OSV's range for CVE-2026-115231 ends at this commit (last_affected) without a fixed event.",
+   "reviewed": "2026-11-21",
+   "source": "https://github.com/eclipse-threadx/threadx/security/advisories/GHSA-q2rc-f35r-2hw6",
+   "status": "fixed_in_pinned_version"
+  },
+  {
+   "aliases": [
+    "GHSA-c38r-v552-gh5g"
+   ],
+   "component": "threadx",
+   "component_version": "v6.5.2.202603b_rel",
+   "id": "CVE-2026-115653",
+   "reason": "The upstream advisory GHSA-c38r-v552-gh5g lists 6.5.2.202603b as patched; the pinned tag v6.5.2.202603b_rel is that version. OSV's range for CVE-2026-115653 ends at this commit (last_affected) without a fixed event.",
+   "reviewed": "2026-11-21",
+   "source": "https://github.com/eclipse-threadx/threadx/security/advisories/GHSA-c38r-v552-gh5g",
+   "status": "fixed_in_pinned_version"
+  },
+  {
+   "aliases": [
+    "GHSA-5q6x-rxf3-5q5f"
+   ],
+   "component": "threadx",
+   "component_version": "v6.5.2.202603b_rel",
+   "id": "CVE-2026-115654",
+   "reason": "The upstream advisory GHSA-5q6x-rxf3-5q5f lists 6.5.2.202603b as patched; the pinned tag v6.5.2.202603b_rel is that version. OSV's range for CVE-2026-115654 ends at this commit (last_affected) without a fixed event.",
+   "reviewed": "2026-11-21",
+   "source": "https://github.com/eclipse-threadx/threadx/security/advisories/GHSA-5q6x-rxf3-5q5f",
+   "status": "fixed_in_pinned_version"
+  },
+  {
+   "aliases": [
+    "GHSA-67ww-q8x2-g487"
+   ],
+   "component": "threadx",
+   "component_version": "v6.5.2.202603b_rel",
+   "id": "CVE-2026-118052",
+   "reason": "The upstream advisory GHSA-67ww-q8x2-g487 lists 6.5.2.202603b as patched; the pinned tag v6.5.2.202603b_rel is that version. OSV's range for CVE-2026-118052 ends at this commit (last_affected) without a fixed event.",
+   "reviewed": "2026-11-21",
+   "source": "https://github.com/eclipse-threadx/threadx/security/advisories/GHSA-67ww-q8x2-g487",
+   "status": "fixed_in_pinned_version"
+  }
+ ],
+ "schema": "kb-vex/1"
+}

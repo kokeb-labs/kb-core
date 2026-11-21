@@ -18,5 +18,24 @@ scan itself failed (network, an answer it cannot read, a component it cannot res
 `collect.py` writes `vulnerabilities.js` (the file as a script for the page) and the Markdown page; its `--check`
 judges the page as of the scan's own date, so it never depends on the clock and never rescans.
 
-Schema: `catalog/schemas/vulnerabilities.schema.json` (`kb-vulns/1`). Guide:
+## The reviewed list
+
+`reviewed.json` (`kb-vex/1`, `catalog/schemas/vex.schema.json`) holds advisories that were checked against their
+primary source. `scan.py` reads it, adds a `review` to each advisory an entry covers, and counts it as reviewed, not
+open; only open advisories open the weekly issue. Fields: `id`, `aliases`, `component`, `component_version`, `status`
+(`fixed_in_pinned_version`; `not_affected` is allowed and unused), `reason`, `source` (https URL), `reviewed` (date).
+
+To add an entry, the **review rule** applies: the primary source (for ThreadX the upstream GitHub security advisory,
+`gh api repos/eclipse-threadx/threadx/security-advisories/GHSA-...`) must name our exact pinned version as patched.
+Check that, then write the reason as plain fact (what the source says, which version is pinned), put the advisory URL
+in `source` and today's date in `reviewed`. Do not add inference (for example that code is not compiled) to the data.
+`component_version` is the version string the scan prints for the component; an entry stops applying when the pin
+moves, and the advisory is open again. Then run `scan.py` and `collect.py` and commit the regenerated files.
+
+Known data issue (nothing filed): OSV's range for the eight ThreadX advisories ends with `last_affected` at the pinned
+commit and has no `fixed` event, although the upstream advisories list the pinned release as patched; see
+[Known data issues](../../docs/configurator.md#known-data-issues).
+
+Schema: `catalog/schemas/vulnerabilities.schema.json` (`kb-vulns/1`; `status` is `none known`, `advisories open` or
+`reviewed: ...`). Guide:
 [Vulnerability data](../../docs/configurator.md#vulnerability-data).

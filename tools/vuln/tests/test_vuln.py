@@ -18,6 +18,7 @@ sys.path.insert(0, str(VULN))
 import collect  # noqa: E402
 import issue_body  # noqa: E402
 import scan  # noqa: E402
+from kb import sbom  # noqa: E402
 
 FIX = HERE / "fixtures"
 DATA = ROOT / "configurator" / "data"
@@ -45,14 +46,14 @@ class ScanTests(unittest.TestCase):
         self.assertEqual(rc, 0, text)
         doc = json.loads(out.read_text())
         self.assertEqual(scan.problems(doc), [])
-        self.assertEqual(doc["status"], "advisories found")
+        self.assertEqual(doc["status"], "advisories open")
         self.assertEqual(doc["checked_at"], "2026-11-21")
         self.assertEqual(doc["source"], "OSV")
         by = {c["name"]: c for c in doc["components"]}
         self.assertEqual(by["threadx"]["count"], 2)
         self.assertEqual(by["threadx"]["commit"], "1" * 40)
         self.assertEqual(by["esp-idf"]["commit"], "2" * 40)
-        self.assertEqual(by["driver-ads7952"]["status"], "advisories found")
+        self.assertEqual(by["driver-ads7952"]["status"], "advisories open")
         self.assertEqual(doc["totals"]["components"], len(doc["components"]))
         self.assertEqual(doc["totals"]["advisories"], 4)
         self.assertEqual(doc["totals"]["with_advisories"], 3)
@@ -117,6 +118,124 @@ class ScanTests(unittest.TestCase):
                          ["none", "low", "medium", "medium", "high", "high", "critical"])
 
 
+def entry(vid, version=None, status="fixed_in_pinned_version", aliases=()):
+    return {"id": vid, "aliases": list(aliases), "component": "threadx", "component_version": version or sbom.THREADX_PIN,
+            "status": status, "reason": "The upstream advisory lists the pinned version as patched.",
+            "source": "https://github.com/eclipse-threadx/threadx/security/advisories/GHSA-x", "reviewed": "2026-11-21"}
+
+
+class ReviewedTests(unittest.TestCase):
+    def scan(self, entries):
+        fx = scan.Fixture(FIX / "osv.json")
+        return scan.scan(ROOT, "2026-11-21", fx, fx.resolve, fx.pin, reviewed=entries)
+
+    def threadx(self, doc):
+        return next(c for c in doc["components"] if c["name"] == "threadx")
+
+    def test_committed_list_is_valid_and_holds_only_what_was_checked(self):
+        entries = scan.load_reviewed(ROOT)
+        self.assertEqual(len(entries), 8)
+        for e in entries:
+            self.assertEqual(e["status"], "fixed_in_pinned_version")
+            self.assertEqual(e["component"], "threadx")
+            self.assertEqual(e["component_version"], sbom.THREADX_PIN)
+            self.assertEqual(len(e["aliases"]), 1)
+            self.assertEqual(e["source"], "https://github.com/eclipse-threadx/threadx/security/advisories/" + e["aliases"][0])
+            self.assertIn("lists 6.5.2.202603b as patched", e["reason"])
+            self.assertNotIn("not built", e["reason"].lower())
+        self.assertEqual(len({e["id"] for e in entries}), 8)
+
+    def test_bad_list_is_refused(self):
+        with tempfile.TemporaryDirectory() as t:
+            root = pathlib.Path(t)
+            (root / "catalog" / "schemas").mkdir(parents=True)
+            (root / "tools" / "vuln").mkdir(parents=True)
+            (root / "catalog" / "schemas" / "vex.schema.json").write_text((ROOT / "catalog/schemas/vex.schema.json").read_text())
+            for bad in [{"schema": "kb-vex/1", "entries": [{"id": "x"}]},
+                        {"schema": "kb-vex/1", "entries": [{**entry("A"), "status": "not_built"}]},
+                        {"schema": "kb-vex/1", "entries": [{**entry("A"), "source": "http://x"}]}]:
+                (root / "tools" / "vuln" / "reviewed.json").write_text(json.dumps(bad))
+                with self.assertRaises(scan.ScanError):
+                    scan.load_reviewed(root)
+
+    def test_review_applies_and_counts_open_and_reviewed(self):
+        doc = self.scan([entry("CVE-2099-0001")])
+        self.assertEqual(scan.problems(doc), [])
+        tx = self.threadx(doc)
+        by = {a["id"]: a for a in tx["advisories"]}
+        self.assertEqual(by["CVE-2099-0001"]["review"]["status"], "fixed_in_pinned_version")
+        self.assertEqual(by["CVE-2099-0001"]["review"]["reviewed"], "2026-11-21")
+        self.assertNotIn("review", by["CVE-2099-0002"])
+        self.assertEqual((tx["count"], tx["open"], tx["reviewed"], tx["status"]), (2, 1, 1, "advisories open"))
+        self.assertEqual((doc["totals"]["advisories"], doc["totals"]["open"], doc["totals"]["reviewed"]), (4, 3, 1))
+        self.assertEqual(doc["status"], "advisories open")
+
+    def test_all_reviewed_and_alias_match(self):
+        doc = self.scan([entry("OTHER", aliases=["CVE-2099-0001"]), entry("CVE-2099-0002")])
+        self.assertEqual(scan.problems(doc), [])
+        tx = self.threadx(doc)
+        self.assertEqual((tx["open"], tx["reviewed"], tx["status"]), (0, 2, "reviewed: fixed in the pinned version"))
+        self.assertEqual(doc["status"], "advisories open")  # the two drivers are still open
+        only = scan.Fixture(FIX / "osv.json")
+        only.data["commits"] = {only.data["pins"]["third_party/threadx"]: ["CVE-2099-0001", "CVE-2099-0002"]}
+        doc = scan.scan(ROOT, "2026-11-21", only, only.resolve, only.pin,
+                        reviewed=[entry("CVE-2099-0001"), entry("CVE-2099-0002")])
+        self.assertEqual(doc["status"], "reviewed: fixed in the pinned version")
+        self.assertEqual(doc["totals"]["open"], 0)
+
+    def test_entry_stops_applying_when_the_pin_moves(self):
+        doc = self.scan([entry("CVE-2099-0001", version="v6.5.2.202603_rel")])
+        tx = self.threadx(doc)
+        self.assertTrue(all("review" not in a for a in tx["advisories"]))
+        self.assertEqual((tx["open"], tx["reviewed"], tx["status"]), (2, 0, "advisories open"))
+        other = scan.Fixture(FIX / "osv.json")
+        doc = scan.scan(ROOT, "2026-11-21", other, other.resolve, other.pin,
+                        reviewed=[{**entry("CVE-2099-0001"), "component": "esp-idf"}])
+        self.assertTrue(all("review" not in a for a in self.threadx(doc)["advisories"]))
+
+    def test_none_known_only_without_advisories(self):
+        fx = scan.Fixture(FIX / "clean.json")
+        doc = scan.scan(ROOT, "2026-11-21", fx, fx.resolve, fx.pin, reviewed=[entry("CVE-2099-0001")])
+        self.assertEqual(doc["status"], "none known")
+        self.assertEqual((doc["totals"]["open"], doc["totals"]["reviewed"]), (0, 0))
+
+    def test_committed_snapshot_has_the_reviews(self):
+        doc = json.loads((DATA / "vulnerabilities.json").read_text())
+        tx = self.threadx(doc)
+        self.assertEqual((tx["count"], tx["open"], tx["reviewed"]), (8, 0, 8))
+        self.assertEqual(tx["status"], "reviewed: fixed in the pinned version")
+        self.assertEqual((doc["totals"]["open"], doc["totals"]["reviewed"]), (0, 8))
+
+    def test_checks_catch_a_review_that_does_not_add_up(self):
+        doc = self.scan([entry("CVE-2099-0001")])
+        self.threadx(doc)["open"] = 2
+        self.assertTrue(scan.problems(doc))
+        doc = self.scan([entry("CVE-2099-0001")])
+        self.threadx(doc)["status"] = "none known"
+        self.assertTrue(scan.problems(doc))
+
+    def test_page_lists_reviewed_apart_and_never_says_not_built(self):
+        doc = json.loads((DATA / "vulnerabilities.json").read_text())
+        page = collect.render_docs(doc, doc["checked_at"])
+        self.assertIn("**0 open, 8 reviewed**", page)
+        self.assertIn("### Reviewed: fixed in the pinned version", page)
+        self.assertIn("https://github.com/eclipse-threadx/threadx/security/advisories/GHSA-ffg5-m7vh-vwrp", page)
+        self.assertNotIn("not built", page.lower())
+        self.assertTrue(all(len(x) <= 120 for x in page.splitlines() if not x.startswith("|")))
+
+    def test_issue_lists_only_open_advisories(self):
+        doc = self.scan([entry("CVE-2099-0001")])
+        text = issue_body.body(doc)
+        self.assertIn("CVE-2099-0002", text)
+        self.assertNotIn("- [CVE-2099-0001](https://osv.dev/vulnerability/CVE-2099-0001) (critical)", text)
+        self.assertIn("<details>", text)
+        self.assertIn("1 reviewed: fixed in the pinned version", text)
+        self.assertNotIn("threadx:CVE-2099-0001", issue_body.marker(doc))
+        self.assertIn("threadx:CVE-2099-0002", issue_body.marker(doc))
+        committed = json.loads((DATA / "vulnerabilities.json").read_text())
+        self.assertEqual(issue_body.ids(committed), [])
+
+
 class CheckTests(unittest.TestCase):
     def good(self):
         return json.loads((DATA / "vulnerabilities.json").read_text())
@@ -158,7 +277,7 @@ class CheckTests(unittest.TestCase):
         d["totals"]["advisories"] += 1
         self.assertTrue(scan.problems(d))
         d = self.good()
-        d["status"] = "none known" if d["status"] == "advisories found" else "advisories found"
+        d["status"] = "none known" if d["status"] != "none known" else "advisories open"
         self.assertTrue(scan.problems(d))
         d = self.good()
         d["checked_at"] = "2026-13-45"

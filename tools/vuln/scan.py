@@ -8,6 +8,11 @@ components/drivers/drivers.lock.yml), the ThreadX kernel (the gitlink of third_p
 release the ESP32 port builds against (tools/kb/sbom.py). Each is asked about by the commit of its pinned tag, so a
 release candidate and a moved tag are judged by the code that is actually pinned.
 
+A reviewed list (tools/vuln/reviewed.json, kb-vex/1) records advisories that were checked against their primary source
+and found fixed in the pinned version. An entry applies only while the scanned version of the component equals the
+entry's component_version; when the pin moves, the advisory is open again. Reviewed advisories stay in the output,
+with a `review`, and are counted apart from the open ones.
+
 Usage:
   scan.py --out configurator/data/vulnerabilities.json     scan (network: api.osv.dev, git ls-remote) and write
   scan.py --offline-fixture FILE --out FILE --date D       no network: answers come from the fixture (tests)
@@ -46,9 +51,14 @@ STALE_AFTER_DAYS = 10
 OSV = "https://api.osv.dev/v1"
 DEFAULT_OUT = "configurator/data/vulnerabilities.json"
 SCHEMA = "catalog/schemas/vulnerabilities.schema.json"
+REVIEWED = "tools/vuln/reviewed.json"
+VEX_SCHEMA = "catalog/schemas/vex.schema.json"
 BATCH = 500  # OSV accepts up to 1000 queries per batch
 NONE_KNOWN = "none known"
-FOUND = "advisories found"
+OPEN = "advisories open"
+REVIEWED_STATUS = {"fixed_in_pinned_version": "reviewed: fixed in the pinned version",
+                   "not_affected": "reviewed: not affected"}
+REVIEWED_MIXED = "reviewed"
 
 
 class ScanError(Exception):
@@ -246,9 +256,45 @@ def advisory(doc: dict) -> dict:
     return out
 
 
+# --- reviewed list ----------------------------------------------------------------------------------------------
+
+def load_reviewed(root: pathlib.Path) -> list[dict]:
+    """The entries of tools/vuln/reviewed.json, validated against the kb-vex/1 schema."""
+    try:
+        doc = json.loads((root / REVIEWED).read_text(encoding="utf-8"))
+        schema = json.loads((root / VEX_SCHEMA).read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise ScanError(f"cannot read the reviewed list: {exc}") from exc
+    errs = minischema.errors(schema, doc)
+    if errs:
+        raise ScanError(f"{REVIEWED} is not valid: " + "; ".join(errs))
+    return doc["entries"]
+
+
+def review_of(entries: list[dict], comp: dict, adv: dict) -> dict | None:
+    """The review that applies to an advisory of a component: same component, same version as scanned, and the
+    advisory is the entry's id or one of its aliases."""
+    for e in entries:
+        if (e["component"] == comp["name"] and e["component_version"] == comp["version"]
+                and adv["id"] in [e["id"], *e["aliases"]]):
+            return {"status": e["status"], "reason": e["reason"], "source": e["source"], "reviewed": e["reviewed"]}
+    return None
+
+
+def status_of(advs: list[dict]) -> str:
+    """none known only without any advisory; advisories open while one lacks a review; else what the reviews say."""
+    if not advs:
+        return NONE_KNOWN
+    if any("review" not in a for a in advs):
+        return OPEN
+    kinds = {a["review"]["status"] for a in advs}
+    return REVIEWED_STATUS[kinds.pop()] if len(kinds) == 1 else REVIEWED_MIXED
+
+
 # --- scan -------------------------------------------------------------------------------------------------------
 
-def scan(root: pathlib.Path, today: str, backend, resolve, pin=gitlink) -> dict:
+def scan(root: pathlib.Path, today: str, backend, resolve, pin=gitlink, reviewed: list[dict] | None = None) -> dict:
+    entries = load_reviewed(root) if reviewed is None else reviewed
     kb_version, comps = components(root, resolve=resolve, pin=pin)
     by_commit = backend.query_commits(sorted({c["commit"] for c in comps}))
     seen: dict[str, dict] = {}
@@ -258,16 +304,30 @@ def scan(root: pathlib.Path, today: str, backend, resolve, pin=gitlink) -> dict:
         for vid in by_commit.get(c["commit"], []):
             if vid not in seen:
                 seen[vid] = advisory(backend.vuln(vid))
-            advs.append(seen[vid])
+            a = dict(seen[vid])
+            rv = review_of(entries, c, a)
+            if rv:
+                a["review"] = rv
+            advs.append(a)
         advs.sort(key=lambda a: a["id"])
-        out.append({**c, "status": FOUND if advs else NONE_KNOWN, "count": len(advs), "advisories": advs})
-    n = sum(c["count"] for c in out)
+        n_rev = sum(1 for a in advs if "review" in a)
+        out.append({**c, "status": status_of(advs), "count": len(advs), "open": len(advs) - n_rev,
+                    "reviewed": n_rev, "advisories": advs})
     return {
         "schema": "kb-vulns/1", "checked_at": today, "source": "OSV", "scanner": SCANNER,
-        "stale_after_days": STALE_AFTER_DAYS, "kb_core": kb_version, "status": FOUND if n else NONE_KNOWN,
-        "totals": {"components": len(out), "with_advisories": sum(1 for c in out if c["count"]), "advisories": n},
-        "components": out,
+        "stale_after_days": STALE_AFTER_DAYS, "kb_core": kb_version, "status": overall(out),
+        "totals": totals(out), "components": out,
     }
+
+
+def totals(comps: list[dict]) -> dict:
+    return {"components": len(comps), "with_advisories": sum(1 for c in comps if c["count"]),
+            "advisories": sum(c["count"] for c in comps), "open": sum(c["open"] for c in comps),
+            "reviewed": sum(c["reviewed"] for c in comps)}
+
+
+def overall(comps: list[dict]) -> str:
+    return status_of([a for c in comps for a in c["advisories"]])
 
 
 def dumps(doc: dict) -> str:
@@ -284,17 +344,19 @@ def problems(doc, root: pathlib.Path = ROOT) -> list[str]:
     for c in doc["components"]:
         if c["count"] != len(c["advisories"]):
             out.append(f"{c['name']}: count {c['count']} but {len(c['advisories'])} advisories listed")
-        if c["status"] != (FOUND if c["advisories"] else NONE_KNOWN):
+        n_rev = sum(1 for a in c["advisories"] if "review" in a)
+        if (c["open"], c["reviewed"]) != (len(c["advisories"]) - n_rev, n_rev):
+            out.append(f"{c['name']}: open {c['open']} / reviewed {c['reviewed']} do not match its advisories")
+        if c["status"] != status_of(c["advisories"]):
             out.append(f"{c['name']}: status {c['status']!r} does not match its advisories")
         ids = [a["id"] for a in c["advisories"]]
         if ids != sorted(set(ids)):
             out.append(f"{c['name']}: advisories are not sorted and unique")
     t = doc["totals"]
-    want = {"components": len(doc["components"]), "with_advisories": sum(1 for c in doc["components"] if c["count"]),
-            "advisories": sum(c["count"] for c in doc["components"])}
+    want = totals(doc["components"])
     if t != want:
         out.append(f"totals {t} do not match the components {want}")
-    if doc["status"] != (FOUND if want["advisories"] else NONE_KNOWN):
+    if doc["status"] != overall(doc["components"]):
         out.append(f"status {doc['status']!r} does not match the totals")
     names = [c["name"] for c in doc["components"]]
     if names != sorted(set(names)):
@@ -339,13 +401,15 @@ def main(argv: list[str] | None = None) -> int:
         out.write_text(dumps(doc), encoding="utf-8")
         t = doc["totals"]
         print(f"scan: {out}: {t['components']} components, {t['with_advisories']} with advisories, "
-              f"{t['advisories']} advisories (checked {today})")
+              f"{t['advisories']} advisories: {t['open']} open, {t['reviewed']} reviewed (checked {today})")
         for c in doc["components"]:
             if c["count"]:
-                print(f"scan:   {c['name']} {c['version']}: " + ", ".join(a["id"] for a in c["advisories"]))
+                print(f"scan:   {c['name']} {c['version']}: " + ", ".join(
+                    a["id"] + (" (reviewed)" if "review" in a else "") for a in c["advisories"]))
         if os.environ.get("GITHUB_OUTPUT"):
             with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as fh:
-                fh.write(f"advisories={t['advisories']}\ncomponents_with_advisories={t['with_advisories']}\n")
+                fh.write(f"advisories={t['advisories']}\nopen={t['open']}\nreviewed={t['reviewed']}\n"
+                         f"components_with_advisories={t['with_advisories']}\n")
         return 0
     except ScanError as exc:
         print(f"scan: FAILED: {exc}")

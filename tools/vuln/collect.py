@@ -75,25 +75,45 @@ def render_docs(doc: dict, today: str) -> str:
     if t["advisories"] == 0:
         out += [f"**None known** for any of the {t['components']} pinned components.", ""]
     else:
-        out += [f"**{t['advisories']} advisor{'y' if t['advisories'] == 1 else 'ies'}** for {t['with_advisories']} of "
-                f"the {t['components']} pinned components; **none known** for the others.", ""]
+        out += _wrap(f"**{t['open']} open, {t['reviewed']} reviewed** of {t['advisories']} "
+                     f"advisor{'y' if t['advisories'] == 1 else 'ies'} for {t['with_advisories']} of the "
+                     f"{t['components']} pinned components; **none known** for the others.") + [""]
     out += _wrap("An advisory means the database lists the pinned commit as affected. It is not a verdict on whether "
                  "kb-core or a product built from it is exposed: read the advisory, then decide, and record the "
                  "decision in the [SOUP list](soup.md).")
+    if t["reviewed"]:
+        out += [""] + _wrap(
+            "A reviewed advisory is one on the reviewed list, `tools/vuln/reviewed.json` "
+            "(`kb-vex/1`): its primary source, the upstream advisory, names the exact pinned version as patched, and "
+            "the entry holds the reason, the source and the date of the review. It stays in the list, marked "
+            "*fixed in the pinned version*, and does not count as open. An entry applies only while the scanned "
+            "version equals the one it was reviewed for; if the pin moves, the advisory is open again. See "
+            "[Known data issues](../configurator.md#known-data-issues).")
     out += ["", "## Components", "",
-            "| Component | Version | Commit | Status | Advisories |", "| --- | --- | --- | --- | --- |"]
+            "| Component | Version | Commit | Status | Open | Reviewed |", "| --- | --- | --- | --- | --- | --- |"]
     for c in doc["components"]:
-        status = "none known" if c["count"] == 0 else "advisories found"
-        out.append(f"| `{_cell(c['name'])}` | `{_cell(c['version'])}` | `{c['commit'][:12]}` | {status} | {c['count']} |")
+        out.append(f"| `{_cell(c['name'])}` | `{_cell(c['version'])}` | `{c['commit'][:12]}` | {c['status']} | "
+                   f"{c['open']} | {c['reviewed']} |")
     out.append("")
     for c in doc["components"]:
         if not c["count"]:
             continue
-        out += [f"## {c['name']} {c['version']}", "", f"Package URL `{c['purl']}`.", "",
-                "| Advisory | Severity | Summary |", "| --- | --- | --- |"]
-        for a in c["advisories"]:
-            out.append(f"| [{a['id']}]({a['url']}) | {a['severity']} | {_cell(a['summary'])} |")
-        out.append("")
+        out += [f"## {c['name']} {c['version']}", "", f"Package URL `{c['purl']}`.", ""]
+        opened = [a for a in c["advisories"] if "review" not in a]
+        done = [a for a in c["advisories"] if "review" in a]
+        if opened:
+            out += ["### Open", "", "| Advisory | Severity | Summary |", "| --- | --- | --- |"]
+            for a in opened:
+                out.append(f"| [{a['id']}]({a['url']}) | {a['severity']} | {_cell(a['summary'])} |")
+            out.append("")
+        if done:
+            out += ["### Reviewed: fixed in the pinned version", ""]
+            for a in done:
+                r = a["review"]
+                head = f"- [{a['id']}]({a['url']}) ({a['severity']}), reviewed {r['reviewed']}. "
+                out += textwrap.wrap(head + r["reason"] + f" Source: <{r['source']}>", 118, subsequent_indent="  ",
+                                     break_long_words=False, break_on_hyphens=False)
+            out.append("")
     return "\n".join(out).rstrip("\n") + "\n"
 
 

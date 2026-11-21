@@ -7,6 +7,9 @@
   issue_body.py FILE --ids      only the sorted ids ("component:id"), one per line (what the marker holds)
   issue_body.py --marker TEXT   the marker line found in an existing body, or nothing
 
+Only OPEN advisories (no entry of tools/vuln/reviewed.json applies) are listed and put in the marker; reviewed ones
+appear in a collapsed note, and only when the issue is opened for an open advisory.
+
 The workflow compares the marker of the open issue with the new one: equal, the issue is left alone; different, the
 body is replaced and a comment says what changed.
 """
@@ -22,7 +25,8 @@ MARK = "<!-- kb-vulns:"
 
 
 def ids(doc: dict) -> list[str]:
-    return sorted(f"{c['name']}:{a['id']}" for c in doc["components"] for a in c["advisories"])
+    """component:id of the open advisories (the ones without a review)."""
+    return sorted(f"{c['name']}:{a['id']}" for c in doc["components"] for a in c["advisories"] if "review" not in a)
 
 
 def marker(doc: dict) -> str:
@@ -31,16 +35,27 @@ def marker(doc: dict) -> str:
 
 def body(doc: dict) -> str:
     t = doc["totals"]
-    out = [f"The weekly scan ({doc['scanner']}, {doc['source']}) on **{doc['checked_at']}** found {t['advisories']} "
-           f"advisor{'y' if t['advisories'] == 1 else 'ies'} for {t['with_advisories']} of {t['components']} "
-           "pinned components. An advisory means the database lists the pinned commit as affected; read it, decide "
-           "whether kb-core is exposed, and record the decision (SOUP list, or move the pin).", ""]
+    n = t["open"]
+    out = [f"The weekly scan ({doc['scanner']}, {doc['source']}) on **{doc['checked_at']}** found {n} open "
+           f"advisor{'y' if n == 1 else 'ies'} for the pinned components. An open advisory means the database lists "
+           "the pinned commit as affected and no reviewed entry applies; read it, decide whether kb-core is exposed, "
+           "and record the decision (SOUP list, a reviewed entry in `tools/vuln/reviewed.json`, or move the pin).", ""]
     for c in doc["components"]:
-        if not c["count"]:
+        opened = [a for a in c["advisories"] if "review" not in a]
+        if not opened:
             continue
         out += [f"### {c['name']} {c['version']} (`{c['commit'][:12]}`)", ""]
-        out += [f"- [{a['id']}]({a['url']}) ({a['severity']}): {a['summary']}" for a in c["advisories"]]
+        out += [f"- [{a['id']}]({a['url']}) ({a['severity']}): {a['summary']}" for a in opened]
         out.append("")
+    if t["reviewed"]:
+        out += ["<details>", f"<summary>{t['reviewed']} reviewed: fixed in the pinned version (not open)</summary>", ""]
+        for c in doc["components"]:
+            for a in c["advisories"]:
+                if "review" in a:
+                    r = a["review"]
+                    out.append(f"- {c['name']} {c['version']}: [{a['id']}]({a['url']}), reviewed {r['reviewed']}, "
+                               f"[source]({r['source']})")
+        out += ["", "</details>", ""]
     out += ["The full list is in `docs/assurance/vulnerabilities.md` on the published site. This issue is kept up to "
             "date by `.github/workflows/ci-vulnerabilities.yml`; it is not closed automatically.", "", marker(doc), ""]
     return "\n".join(out)

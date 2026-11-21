@@ -292,6 +292,22 @@ try {
     globalThis.KB_VULNERABILITIES = keep; KB.ui.refresh(); return r; })()`);
   check('panel: missing vulnerability data is said, never "none known"', gone.chip === 'No data' && /missing/.test(gone.warn) && !gone.none, gone);
 
+  // The page offers no ThreadX on ESP32, so the real ThreadX entry (8 reviewed advisories) is shown under the name of a
+  // component the selection does hold.
+  await open(example, {});
+  const rev = await evaluate(`(() => { const keep = KB_VULNERABILITIES; const tx = keep.components.find((c) => c.name === 'threadx');
+    KB.panel.now = () => new Date(keep.checked_at + 'T12:00:00Z');
+    globalThis.KB_VULNERABILITIES = { ...keep, components: keep.components.map((c) => (c.name === 'esp-idf' ? { ...tx, name: 'esp-idf', version: c.version } : c)) }; KB.ui.refresh();
+    const sec = document.getElementById('h-cve').parentElement; const d = sec.querySelector('details[id^=cve-rev-]');
+    const r = { real: tx.reviewed + '/' + tx.open, chip: sec.querySelector('.badge').textContent, text: sec.textContent, d: d ? d.id : null, n: d ? d.querySelectorAll('li').length : 0,
+      badge: d ? (d.querySelector('li .badge') || {}).textContent : null, title: d ? (d.querySelector('li .badge') || {}).title : null,
+      href: d ? (d.querySelector('li a:last-of-type') || {}).href : null, sum: document.getElementById('supply-sum').textContent };
+    globalThis.KB_VULNERABILITIES = keep; KB.ui.refresh(); return r; })()`);
+  check('panel: reviewed advisories read "fixed in the pinned version", not open, with reason and source link',
+    rev.real === '8/0' && rev.chip === '0 open, 8 reviewed' && rev.d === 'cve-rev-esp-idf' && rev.n === 8 && rev.badge === 'fixed in the pinned version'
+    && /lists 6\.5\.2\.202603b as patched/.test(rev.title || '') && /security\/advisories\/GHSA-/.test(rev.href || '') && !/not built/i.test(rev.text)
+    && /0 open vulnerabilities, 8 reviewed/.test(rev.sum), rev);
+
   await open('#v=1&f=stm32&t=stm32h7&b=nucleo-h743zi&r=threadx&n=planned', {});
   check('planned family and RTOS flagged', (await evaluate(`[...document.querySelectorAll('.finding.error code')].map(e => e.textContent)`)).includes('CFG-MCU-004'));
 

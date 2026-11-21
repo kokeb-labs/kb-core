@@ -1,9 +1,9 @@
 ---
 # Known vulnerabilities of the pinned components (tools/vuln, schema kb-vulns/1, docs/assurance/vulnerabilities.md).
-# Weekly (Mondays 05:17 UTC) and on demand: scan the pins in OSV, open or update ONE issue when an advisory is listed,
-# fail (red) when the scan itself fails, then rebuild and republish the site with the fresh data embedded at build
-# time (the page has no network access). Nothing is committed. The fixture tests and snapshot check run in the CI gate
-# (ci-vulnerabilities-check.yml, called from ci.yml).
+# Weekly (Mondays 05:17 UTC) and on demand: scan the pins in OSV, open or update ONE issue when an OPEN advisory is
+# listed (one that tools/vuln/reviewed.json does not cover), fail (red) when the scan itself fails, then rebuild and
+# republish the site with the fresh data embedded at build time (the page has no network access). Nothing is
+# committed. The fixture tests and snapshot check run in the CI gate (ci-vulnerabilities-check.yml, called from ci.yml).
 name: Vulnerabilities
 
 on:
@@ -35,8 +35,8 @@ jobs:
       - name: Scan (a failure here fails the job; nothing below runs)
         id: scan
         run: python3 tools/vuln/scan.py --out "$RUNNER_TEMP/vulnerabilities.json"
-      - name: Report advisories in the one open issue
-        if: ${{ steps.scan.outputs.advisories != '0' }}
+      - name: Report open advisories in the one open issue
+        if: ${{ steps.scan.outputs.open != '0' }}
         run: |
           set -euo pipefail
           file="$RUNNER_TEMP/vulnerabilities.json"
@@ -59,15 +59,15 @@ jobs:
               --body "The list of advisories changed in the scan of $(date -u +%F); the description is updated."
             echo "### Updated issue #$number" >> "$GITHUB_STEP_SUMMARY"
           fi
-      - name: Tell an open issue that nothing is listed any more
-        if: ${{ steps.scan.outputs.advisories == '0' }}
+      - name: Tell an open issue that no advisory is open any more
+        if: ${{ steps.scan.outputs.open == '0' }}
         run: |
           set -euo pipefail
           number=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open --limit 100 --json number,title \
             --jq "[.[] | select(.title == \"$TITLE\")] | first | .number // empty")
           if [ -n "$number" ]; then
             gh issue comment "$number" --repo "$GITHUB_REPOSITORY" \
-              --body "The scan of $(date -u +%F) lists no advisory for the pinned components; close this issue."
+              --body "The scan of $(date -u +%F) lists no open advisory for the pinned components; close this issue."
           fi
 
   # Rebuild the site with the fresh scan and publish it. ci-docs.yml (the docs publish, a caller of ci-tools'
