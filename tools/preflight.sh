@@ -64,7 +64,7 @@ build() {  # build <dir> <cxx> [cmake args]: configure, build and test
   local dir="$1" cxx="$2"; shift 2
   cmake -S . -B "$dir" -G Ninja -DCMAKE_CXX_COMPILER="$cxx" -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DKB_BUILD_TESTS=ON \
     -DKB_BUILD_EXAMPLES=ON ${py_args[@]+"${py_args[@]}"} "$@" && cmake --build "$dir" --parallel ${JOBS:+"$JOBS"} && \
-    KB_REQUIRE_PYYAML=1 ctest --test-dir "$dir" --output-on-failure --parallel "${JOBS:-8}"
+    KB_REQUIRE_PYYAML=1 ctest --test-dir "$dir" --output-on-failure --timeout 300 --parallel "${JOBS:-8}"
 }
 if have "$CXX_GCC"; then step gcc build "$work/gcc" "$CXX_GCC"; else skipped+=("gcc"); fi
 if [ -n "$CXX_CLANG" ]; then step clang build "$work/clang" "$CXX_CLANG"; else skipped+=("clang"); fi

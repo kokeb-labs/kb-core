@@ -10,6 +10,9 @@ lists its changes per part, the ESP32 port and its driver pins. The format follo
 
 ### Changed
 
+- Tests: every kb-core CTest test gets a `TIMEOUT` (`KB_TEST_TIMEOUT`, 120 s by default), and `tools/preflight.sh`
+  and `tools/preflight/gates.sh` run ctest with `--timeout 300`, so a hung test fails in minutes rather than
+  holding a CI runner or a workstation (a rare hang of `kb_handlers_threads` on macOS ran for 45 minutes).
 - Configurator: while kb-core has only release candidates the page starts on the newest one (the release-candidate
   switch turns on) instead of opening with an error; *Open an existing project* is folded; on small screens a bar
   at the bottom shows whether the selection resolves and offers the ZIP.

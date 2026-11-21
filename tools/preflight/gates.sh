@@ -17,7 +17,7 @@ cov() {
   local f="--coverage -O0 -g -fcondition-coverage"
   cmake -S . -B "$out/cov" -G Ninja -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=g++-14 -DCMAKE_CXX_FLAGS="$f" \
     -DCMAKE_EXE_LINKER_FLAGS=--coverage -DKB_BUILD_TESTS=ON &&
-  cmake --build "$out/cov" --parallel "$jobs" && ctest --test-dir "$out/cov" --output-on-failure --parallel "$jobs" || return 1
+  cmake --build "$out/cov" --parallel "$jobs" && ctest --test-dir "$out/cov" --output-on-failure --timeout 300 --parallel "$jobs" || return 1
   mapfile -t d < <(find "$out/cov" -name '*.gcda' -printf '%h\n' | sort -u)
   local filters=(); for p in $paths; do filters+=(--filter "^${p%/}/"); done
   gcovr --root . --gcov-executable gcov-14 "${filters[@]}" --exclude-unreachable-branches --exclude-throw-branches \
@@ -34,7 +34,7 @@ san() {
   local f="-fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer -O1 -g"
   cmake -S . -B "$out/san" -G Ninja -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=clang++-18 -DCMAKE_CXX_FLAGS="$f" \
     -DCMAKE_EXE_LINKER_FLAGS="$f" -DKB_BUILD_TESTS=ON && cmake --build "$out/san" --parallel "$jobs" &&
-  ctest --test-dir "$out/san" --output-on-failure --parallel "$jobs"
+  ctest --test-dir "$out/san" --output-on-failure --timeout 300 --parallel "$jobs"
 }
 fuzz() {
   cmake -S . -B "$out/fz" -G Ninja -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=clang++-18 -DKB_BUILD_TESTS=ON \
