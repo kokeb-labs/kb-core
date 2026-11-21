@@ -57,3 +57,7 @@ jobs:
         run: python3 configurator/tools/bundle_offline.py --check
       - name: Evidence data and page are current (kb-evidence/1, tools/evidence/collect.py)
         run: python3 tools/evidence/collect.py --site configurator/data --docs docs/assurance/evidence.md --check
+      - name: Vulnerability data is valid and its outputs match it (kb-vulns/1; a snapshot, never rescanned here)
+        run: |
+          python3 tools/vuln/scan.py --check
+          python3 tools/vuln/collect.py --site configurator/data --docs docs/assurance/vulnerabilities.md --check

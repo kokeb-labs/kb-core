@@ -32,3 +32,4 @@ jobs:
         run: |
           python3 tools/layout/tests/run.py
           python3 tools/examples/tests/run.py
+          python3 tools/vuln/tests/run.py

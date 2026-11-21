@@ -66,6 +66,7 @@ nav:
       - Assurance records: assurance/README.md
       - Test evidence: assurance/evidence.md
       - SOUP list: assurance/soup.md
+      - Known vulnerabilities: assurance/vulnerabilities.md
   - Project:
       - Versioning and release: versioning.md
       - Contributing: contributing.md
