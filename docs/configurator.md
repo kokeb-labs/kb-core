@@ -25,7 +25,8 @@ Three steps, in this order; each one shows only what the earlier ones allow.
 3. **Output.** *Download starter project (.zip)* and *Copy share link*. The defaults already resolve, so a first
    project is the target, two drivers and the download: four clicks, which `headless_check.mjs` counts and fails above.
 
-The result bar (small screens) and the *Check* panel keep the findings of the shared rules and the site checks in view.
+The *Supply chain* panel (below) shows what the selection pulls in; on small screens a bar at the bottom shows whether
+it resolves, links to the panel and offers the ZIP.
 
 ## Cascading selection
 
@@ -40,7 +41,7 @@ selection can use. The page holds no rule of its own, so a new port or driver ne
   ("ws2812_rmt removed: needs MCU family esp32, not host") with an *Undo* button, and a live region announces it.
   *Undo* restores the earlier selection whole.
 - A link that already holds a driver the target cannot use is kept as it is: the tray marks it *unavailable* with the
-  reason and the Check panel reports the resolver's error. Only a change you make drops anything.
+  reason and the panel lists the resolver's error. Only a change you make drops anything.
 
 ## Views
 
@@ -100,7 +101,7 @@ and **Available upgrades** lists one row per component (kb-core, an extracted po
 - the newest release and a newer release candidate, the versions *held back* and why;
 - known vulnerabilities of both versions (or *not scanned*) and the ones the upgrade fixes.
 
-**Use the upgraded versions** moves the selection to the plan; the Check panel then shows the usual findings
+**Use the upgraded versions** moves the selection to the plan; the panel then shows the usual findings
 for it, including the tested-set status. **Download kb-upgrade.md**, **kb-image.yml** and **kb-image.lock.yml** give
 the same bytes as `kb upgrade kb-image.yml --catalog data/catalog.json -o .` run on the page's own catalogue
 (`configurator/data/catalog.json`, which `kb` reads as it is; [the kb tool](kb-tool.md#find-and-apply-upgrades)).
@@ -108,9 +109,39 @@ Both run the [upgrade rules](design/assembler.md#upgrades) of the shared specifi
 a test plans every driver of the shipped catalogue in both and compares the files. With a different catalogue (a
 kb release's `catalog.json` built later, with other versions or scans) the answers differ as the catalogues do.
 
+## The supply-chain panel
+
+The panel on the right (below the steps on a phone, where the bottom bar links to it and keeps *Download .zip* in
+reach) shows, for the selection only, what it pulls in and what is known about it. `js/panel.js` loads after the
+first view (deferred, with `data/vulnerabilities.js`); its figures are pure functions that `tests/panel.test.mjs`
+checks, and a one-line summary in a live region says what changed.
+
+- **SBOM.** *Download SPDX 2.3* and *Download CycloneDX 1.6* (the files of the zip), the component count, the
+  licences ("all MIT", or the list) and how many versions are pinned by tag and commit.
+- **Known vulnerabilities.** The weekly scan ([Vulnerability data](#vulnerability-data)) for the selected components
+  only: kb-core, the port, each driver at its pinned tag, the RTOS and, on ESP32, ESP-IDF. A status chip and
+  "checked <date>"; **none known** is shown plainly, but only for components the data holds. A component it does not
+  hold (or holds at another version) is listed as *not scanned*; advisory ids link to their OSV pages. Data more than
+  10 days older than today's date in the browser (UTC) gets a visible warning from the 11th day; missing data says
+  so and never reads "none known".
+- **Provenance.** The release asset of the selected kb-core version and the one-line
+  `gh attestation verify <asset> --repo <owner/repo>` with a *Copy* button. The evidence data holds no attestation
+  fact, so the chip says *Per release process* (the release workflow attests its files,
+  `.github/workflows/release.yml`), not "verified"; a development revision has no release asset and no command.
+- **Safety evidence.** Per selected driver, three chips: tests, coverage and MISRA, each linking to its source. Drivers
+  have no evidence of their own yet, so the chips are kb-core's (`kb-evidence/1`) and each row says
+  *kb-core evidence*. When the evidence data gains a per-driver block the row says *driver evidence*
+  ([the data shape](assurance/README.md#per-driver-evidence-planned)).
+- **Blockers.** Only the resolver's errors (an incompatible target, a bus clash, a missing version): at the top of the
+  panel, each with *Go to cause* (it opens *Advanced* where needed and moves keyboard focus), and a *blocker* mark on
+  the cause's chip in the *Selected* tray. Warnings and notes sit in a closed *Details* disclosure. While blockers
+  remain the SBOM and the zip are not offered.
+- The file tabs stay under *Advanced*, *Preview files*; *Download starter project (.zip)* is the primary button.
+
 ## Checks
 
-Every change runs two rule sets and lists their findings in plain words, each with its code:
+Every change runs two rule sets and lists their findings in plain words, each with its code (errors as blockers, the
+rest under *Details*):
 
 - the **shared rules** of the `kb` tool (`KB-RES-*`, [Assembler and resolver](design/assembler.md)): MCU gates,
   RTOS per family, `kb_core_min`, one thread model per bus, `kRequiresOwner`, versions that exist;

@@ -52,9 +52,10 @@ test('size budgets of the page: first-view scripts 120 KB, stylesheet 25 KB (vis
   const html = readFileSync(join(root, 'index.html'), 'utf8');
   const own = [...html.matchAll(/<script src="(js\/[a-z]+\.js)"/g)].map((m) => m[1]);
   // The first view is the shell: the page, its picker and the resolver and generator it runs. The explorer (views.js),
-  // "Open an existing project" (project.js, upgrade.js), the vendored library, the data and resolver.mjs load beside it
+  // "Open an existing project" (project.js, upgrade.js), the supply-chain panel (panel.js, deferred), the vendored
+  // library, the data and resolver.mjs load beside it
   // but are budgeted on their own.
-  const later = ['js/views.js', 'js/project.js', 'js/upgrade.js'];
+  const later = ['js/views.js', 'js/project.js', 'js/upgrade.js', 'js/panel.js'];
   const first = own.filter((f) => !later.includes(f));
   assert.ok(first.includes('js/ui.js') && first.includes('js/picker.js'), first.join());
   const bytes = first.reduce((a, f) => a + statSync(join(root, f)).size, 0);

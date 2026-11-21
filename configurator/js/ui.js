@@ -2,7 +2,7 @@
 // Copyright (c) 2026 The kb-core authors
 //
 // The page: reads the catalogue (data/catalog.js), keeps the selection in the URL hash, runs the resolver on every
-// change and shows the findings and the files; opens an existing project's kb-image.yml and lock (read locally)
+// change and shows the files and, in the supply-chain panel (js/panel.js), what the selection pulls in; opens an existing project's kb-image.yml and lock (read locally)
 // and shows its upgrades with the shared planner. No network access, no cookies; the only stored value is the
 // colour theme, in localStorage, when the browser allows it. Opened files stay in memory, never in the URL.
 (function (g) {
@@ -612,36 +612,12 @@
     }));
   }
 
-  // -- result: findings, evidence, files ----------------------------------------------------------------------
+  // -- result: the small-screen bar; the panel itself is js/panel.js ---------------------------------------------
   function renderFindings() {
-    const n = { error: 0, warning: 0, info: 0 };
-    for (const f of result.findings) n[f.severity]++;
-    // The small-screen bar: where the result stands, a jump to it and the download, without scrolling past the steps.
-    $('bar-status').textContent = n.error ? `${n.error} error${n.error === 1 ? '' : 's'} to fix` : `Ready, ${n.warning} warning${n.warning === 1 ? '' : 's'}`;
-    $('bar-status').className = n.error ? 'bar-status err' : 'bar-status ok';
-    $('summary').replaceChildren(
-      n.error ? h('span', { class: 'badge err', text: `${n.error} error${n.error === 1 ? '' : 's'}` }) : h('span', { class: 'badge ok', text: 'No errors' }),
-      h('span', { class: 'badge warn', text: `${n.warning} warning${n.warning === 1 ? '' : 's'}` }),
-      h('span', { class: 'badge muted', text: `${n.info} note${n.info === 1 ? '' : 's'}` }));
-    const icon = { error: '!', warning: '!', info: 'i' };
-    $('findings').replaceChildren(...result.findings.map((f) => h('li', { class: 'finding ' + f.severity },
-      h('span', { class: 'icon', 'aria-hidden': 'true', text: icon[f.severity] }),
-      h('span', {}, h('span', { class: 'visually-hidden', text: f.severity + ': ' }), h('code', { text: f.code }),
-        f.mirrors ? h('code', { text: f.mirrors, title: 'The shared kb rule this check mirrors' }) : null, f.message))));
-    const ctx = result.context;
-    const tested = result.resolved.tested_sets.length ? `Tested (${result.resolved.tested_sets.join(', ')})` : 'Untested combination';
-    const comps = output.rows;
-    const scanned = comps.filter((c) => c.osv);
-    const findings = scanned.reduce((a, c) => a + c.osv.findings.length, 0);
-    const cve = !scanned.length ? 'Not scanned' : scanned.length < comps.length
-      ? `${findings} known, ${comps.length - scanned.length} not scanned` : findings ? `${findings} known` : 'None known';
-    const licences = [...new Set(comps.map((c) => c.licence).concat(output.soup.map((s) => s.licence)))].sort().join(', ') || 'none';
-    const count = (k) => comps.filter((c) => c.kind === k).length;
-    const pins = [['release', count('release')], ['rc', count('rc')], ['dev', count('dev')]].filter(([, n]) => n).map(([k, n]) => `${n} ${k}`).join(', ') || 'none';
-    $('evidence').replaceChildren(
-      ...[['Tested set', tested], ['Known CVEs', cve], ['Licences', licences], ['Pins', pins]]
-        .map(([k, v]) => h('div', {}, h('dt', { text: k }), h('dd', { text: v }))));
-    void ctx;
+    const errors = result.findings.filter((f) => f.severity === 'error').length;
+    const warnings = result.findings.filter((f) => f.severity === 'warning').length;
+    $('bar-status').textContent = errors ? `${errors} blocker${errors === 1 ? '' : 's'} to fix` : `Ready, ${warnings} warning${warnings === 1 ? '' : 's'}`;
+    $('bar-status').className = errors ? 'bar-status err' : 'bar-status ok';
   }
 
   function download(name, data, type) {
@@ -733,6 +709,7 @@
       renderFindings();
       renderOutputs();
       KB.upgrade.render();
+      if (KB.panel) KB.panel.render({ catalog, image, result, output, h, download, copy, announce, zip: () => $('zip').click() });
       if (KB.views) KB.views.render(catalog, image, result.shared && result.shared.ok ? result.shared.lock : null);
     });
     syncHash();

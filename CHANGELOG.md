@@ -8,6 +8,12 @@ lists its changes per part, the ESP32 port and its driver pins. The format follo
 
 ### Added
 
+- Configurator: the *Check* panel is replaced by a *Supply chain* panel (`js/panel.js`, loaded after the first view):
+  SPDX 2.3 and CycloneDX 1.6 downloads with component count, licences and pins; known vulnerabilities of the selected
+  components from the weekly scan (none known, not scanned, missing data, a warning from the 11th day); the release
+  asset and its `gh attestation verify` command; tests, coverage and MISRA chips per driver (kb-core's evidence until
+  drivers have their own); real blockers next to their cause, warnings and notes under a closed *Details*. The
+  stylesheet now uses `light-dark()` instead of a second copy of the dark palette.
 
 ### Changed
 

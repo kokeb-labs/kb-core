@@ -10,7 +10,7 @@
 <title>kb configurator</title>
 <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
 <link rel="modulepreload" href="resolver.mjs" integrity="sha384-6mQktHJ5fijZ8OkG0oUYE7yjtx4oqY78V9mLTmLqfAx8J0oOwX/J5xjm1ELlN/NA">
-<link rel="stylesheet" href="css/app.css" integrity="sha384-sISzFqvJEvEutBvl2g5CRzfcCbset5PwzSQq520Qx0EwDrujS0Z+yFhrK+ZED7Rb">
+<link rel="stylesheet" href="css/app.css" integrity="sha384-zeO5n54VIUB1JAxp8Nc7vUBR+hvaWK7BJYTJRRcSV9g2w75VU1jD8LxCERept8OO">
 </head>
 <body class="booting">
 <a class="skip" href="#main">Skip to the configurator</a>
@@ -42,7 +42,7 @@ catalogue it reads is <a href="data/catalog.json">data/catalog.json</a>.</p></no
 <main id="main" class="layout" tabindex="-1">
   <nav class="result-bar" aria-label="Result">
     <span id="bar-status" class="bar-status" role="status"></span>
-    <a href="#h-check">Check</a>
+    <a href="#h-supply">Supply chain</a>
     <button type="button" class="primary" id="bar-zip">Download .zip</button>
   </nav>
   <div class="steps">
@@ -170,12 +170,11 @@ catalogue it reads is <a href="data/catalog.json">data/catalog.json</a>.</p></no
     </details>
   </div>
 
-  <aside class="side" aria-label="Result">
-    <section class="panel" aria-labelledby="h-check">
-      <h2 id="h-check">Check</h2>
-      <div class="summary-line" id="summary" role="status" aria-live="polite"></div>
-      <dl class="evidence" id="evidence"></dl>
-      <ul class="findings" id="findings" aria-label="Findings"></ul>
+  <aside class="side" aria-labelledby="h-supply">
+    <section class="panel">
+      <h2 id="h-supply">Supply chain</h2>
+      <p class="sub" id="supply-sum" role="status" aria-live="polite"></p>
+      <div id="supply"><p class="note">Loading the supply-chain summary.</p></div>
     </section>
   </aside>
 </main>
@@ -200,15 +199,17 @@ catalogue it reads is <a href="data/catalog.json">data/catalog.json</a>.</p></no
 <script src="data/catalog.js" integrity="sha384-k/bIIx+NjkpIvbHKk9ZvjYFXFkqX2Bv+OY4zKEw9oypKP6F6Sz1YlW9BQDh5Mfiy"></script>
 <script src="js/core.js" integrity="sha384-w90ycptWLHSy39vTbREpkFzJL/XHhRYhRUMOJiuptwKUQVWagUynVy4NblwC3TFy"></script>
 <script src="js/resolver.js" integrity="sha384-IXgZ1EoqJZ55co37pFfSWfK3u3XsbWS5pkz9lxQx2tl05Pe7rlLfVQVvg3fckQ7v"></script>
-<script src="js/generate.js" integrity="sha384-I0fy8D2y8uxluy5gynqVyLqiVUSb/I6HCU5C+fvt3cGIMWbPCAt9AS/fnb9lXrd8"></script>
+<script src="js/generate.js" integrity="sha384-c+a5mlbFBWvoHyHipJsNOiq5E81jqxmTZ+xPRir0xJsYydHu1EKUgM1E6S3zEsEQ"></script>
 <script src="js/picker.js" integrity="sha384-OOcOBekY7PMNWYVfDDQAqI/7WeSGHgTE5zeEvJU1ikSy6JLqZerjpwtnRFNrf7g7"></script>
 <script src="js/state.js" integrity="sha384-Ucf/oyz7qrwhMT+/vq9B4VuT9kBDyCfMOWK8+w4myJ5AL9qezxLgchF70Zhkf/j0"></script>
 <script src="js/shared.js" integrity="sha384-sxG0W6iIUu6e63T9ZAXKwPKFfmBoZDSfmk40xj5dyWgUXp/OuTwwl3czIAWmSTdE"></script>
 <script src="js/project.js" integrity="sha384-+uMc6JUk/0hp4cuVCeoitLGWgX4s13C72rZ8NUi+4CmGhJZh0PVxUkfd+lSqNDHV"></script>
 <script src="data/evidence.js" integrity="sha384-SmnfmRJc3yNFT3Y0CbNeDB+ZZmrIF7Koz6PvMQVKkfLegbqPdW/BQ5Wfh2hx3Jfa"></script>
 <script src="js/views.js" integrity="sha384-LjXAswiFFdNgOuoKLXju0t88GNR6P2vb4HmLgsUK0tpTAMwD+USxNhSKthvU2UM4"></script>
+<script src="data/vulnerabilities.js" integrity="sha384-5gbfx3QFX+8O0r/LiYKhd4QvaGRIZimDlqYJdJ7UmyRhbgLEM+rB8Ip2tz8CGTCT" defer></script>
+<script src="js/panel.js" integrity="sha384-INuWXD1C4u0e+xrlKuHKPkRNMRrp2PWfjgqMYLNjWY/5hIZUIt7/K15Z1RmZqDom" defer></script>
 <script src="js/upgrade.js" integrity="sha384-g36ym/04MQqUD5kV5Vst6LBgcjMhLuV771aNOVq1Rnmd4X/94r4ly0mTmaJVf5ly"></script>
-<script src="js/ui.js" integrity="sha384-9AvDB1wyUjSuxhOrtneL3/qbxO603oY/7ujOucjmDC5ziSxOQbfd+68yeefLT0bL"></script>
+<script src="js/ui.js" integrity="sha384-QWKzGJV0sRSShXIz424QIJGOmsct/TrOK4iVn8O/qKG2QXIsi2MN6CTDrxm8j6JM"></script>
 <script type="module" src="js/boot.mjs" integrity="sha384-xQwFO3CxtutDfQdOosbkKnYCNCVSi2sjJpWJF5ljlTVnCe2dQ1N7O1Edt9a/rzZY"></script>
 </body>
 </html>

@@ -344,7 +344,7 @@
     return files;
   }
 
-  const UNAVAILABLE = (what) => `# ${what} is written once the selection resolves: fix the errors listed under Check.\n`;
+  const UNAVAILABLE = (what) => `# ${what} is written once the selection resolves: fix the blockers listed in the supply-chain panel.\n`;
 
   function generate(catalog, image, res) {
     const shared = res.shared;

@@ -184,7 +184,7 @@ try {
   check('advanced is one closed disclosure holding versions, open project, buses, explorer and previews', await evaluate(`(() => {
     const a = document.getElementById('advanced'); if (!a || a.open || a.tagName !== 'DETAILS') return false;
     return ['step-open', 'step-versions', 'step-buses', 'explore', 'tabs'].every((id) => a.contains(document.getElementById(id)))
-      && !document.getElementById('board') && !document.getElementById('pins') && [...document.querySelectorAll('details')].filter((d) => !d.closest('#advanced')).map((d) => d.id).join() === 'tag-details';
+      && !document.getElementById('board') && !document.getElementById('pins') && [...document.querySelectorAll('details')].filter((d) => !d.closest('#advanced') && !d.closest('#supply')).map((d) => d.id).join() === 'tag-details';
   })()`));
   check('default hash written', (await evaluate('location.hash')).startsWith('#v=1'));
   // Release candidates are hidden by default once kb-core has a final release; before that the page starts on the
@@ -253,6 +253,44 @@ try {
   await evaluate(`document.getElementById('step-buses').scrollIntoView()`);
   await sleep(200);
   await shot('05-conflicts-light');
+
+  // The supply-chain panel: blockers inline next to the cause, a bus clash, and the cause button moves focus there.
+  const blk = await evaluate(`(() => ({ boxes: document.querySelectorAll('#supply .blockers .finding.error').length,
+    marked: [...document.querySelectorAll('#tray .tray-chip .blocker')].length,
+    sbom: document.getElementById('sbom-spdx').disabled, zip: document.getElementById('panel-zip').disabled,
+    sum: document.getElementById('supply-sum').textContent }))()`);
+  check('panel: a bus clash shows as a blocker with its cause marked in the tray; the SBOM waits', blk.boxes >= 3 && blk.marked >= 2 && blk.sbom && blk.zip
+    && /3 blockers/.test(blk.sum), blk);
+  await click('.blockers .finding:nth-child(2) button.go');
+  check('panel: "Go to cause" opens Advanced and focuses the bus', await evaluate(`document.getElementById('advanced').open && document.activeElement.id === 'bus-h-uart1'`));
+
+  // The panel for the default selection, a driver change, stale and missing data, the details disclosure.
+  await open('');
+  const base = await evaluate(`(() => { const v = (id) => document.getElementById(id); return {
+    sections: [...document.querySelectorAll('#supply .sc h3')].map((e) => e.textContent).join('|'),
+    spdx: !v('sbom-spdx').disabled, cdx: !v('sbom-cdx').disabled, zip: !v('panel-zip').disabled,
+    cmd: (v('verify-cmd') || {}).textContent, chip: document.querySelector('#h-cve').parentElement.querySelector('.badge').textContent,
+    details: v('supply-details').open, perDetail: !!v('supply-details').textContent.match(/warning/), comps: v('cve-all').querySelectorAll('li').length,
+    live: v('supply-sum').getAttribute('aria-live'), sum: v('supply-sum').textContent,
+    inFiles: document.querySelectorAll('#advanced #tabs [role=tab]').length }; })()`);
+  check('panel: SBOM, vulnerabilities, provenance and safety sections for the default selection', base.sections === 'SBOM|Known vulnerabilities|Provenance|Safety evidence'
+    && base.spdx && base.cdx && base.zip && /^gh attestation verify kb-core-.*\.tar\.gz --repo kokeb-labs\/kb-core$/.test(base.cmd) && /None known/.test(base.chip), base);
+  check('panel: details closed by default, summary in a live region, files tabs stay under Advanced', !base.details && base.perDetail && base.live === 'polite'
+    && /components/.test(base.sum) && base.inFiles === 9, base);
+  await click('#add-bmp581');
+  const added = await evaluate(`({ comps: document.getElementById('cve-all').querySelectorAll('li').length, text: document.getElementById('cve-all').textContent,
+    safe: [...document.querySelectorAll('#supply .evi li')].map((e) => e.textContent).join('|') })`);
+  check('panel: adding a driver adds its component and its evidence row', added.comps === base.comps + 1 && /BMP581/.test(added.text) && /kb-core evidence/.test(added.safe), added);
+  const stale = await evaluate(`(() => { const day = KB_VULNERABILITIES.checked_at; KB.panel.now = () => new Date('2099-01-01T00:00:00Z'); KB.ui.refresh();
+    const r = { warn: (document.querySelector('#supply .warn-line') || {}).textContent, sum: document.getElementById('supply-sum').textContent };
+    KB.panel.now = () => new Date(day + 'T12:00:00Z'); KB.ui.refresh();
+    r.back = !document.querySelector('#supply .warn-line'); return r; })()`);
+  check('panel: data older than 10 days shows a visible warning and clears when fresh', /days old/.test(stale.warn) && /days old/.test(stale.sum) && stale.back, stale);
+  const gone = await evaluate(`(() => { const keep = KB_VULNERABILITIES; KB.panel.now = () => new Date(keep.checked_at + 'T12:00:00Z'); globalThis.KB_VULNERABILITIES = undefined; KB.ui.refresh();
+    const r = { chip: document.querySelector('#h-cve').parentElement.querySelector('.badge').textContent, warn: (document.querySelector('#supply .warn-line') || {}).textContent,
+      none: /None known/.test(document.getElementById('h-cve').parentElement.textContent) };
+    globalThis.KB_VULNERABILITIES = keep; KB.ui.refresh(); return r; })()`);
+  check('panel: missing vulnerability data is said, never "none known"', gone.chip === 'No data' && /missing/.test(gone.warn) && !gone.none, gone);
 
   await open('#v=1&f=stm32&t=stm32h7&b=nucleo-h743zi&r=threadx&n=planned', {});
   check('planned family and RTOS flagged', (await evaluate(`[...document.querySelectorAll('.finding.error code')].map(e => e.textContent)`)).includes('CFG-MCU-004'));
