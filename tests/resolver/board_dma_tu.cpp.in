@@ -1,3 +1,5 @@
+// Copied next to the generated board_dma.hpp as board_dma_tu.cpp by the board-dma scripts (a .in file, so the
+// include checker does not look for the generated header in the tree).
 // A translation unit that includes the generated board_dma.hpp and uses its checks: the
 // static_asserts of the header run when this compiles (ctest kb_board_gen_host, CI job board-dma).
 // SPDX-License-Identifier: MIT

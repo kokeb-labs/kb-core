@@ -24,7 +24,8 @@ for board in "$root"/examples/boards/*/board.yml; do
   if ! "$py" "$root/tools/kb/kb.py" board gen "$board" -o "$gen"; then echo "FAIL $name: kb board gen"; rc=1; continue; fi
   flags=(-std="c++$std" -Wall -Wextra -Werror -fno-exceptions -fno-rtti "${incs[@]}" -I"$gen")
   if "$cxx" "${flags[@]}" -c "$gen/board_dma.cpp" -o "$gen/board_dma.o" &&
-     "$cxx" "${flags[@]}" -c "$root/tests/resolver/board_dma_tu.cpp" -o "$gen/tu.o"; then
+     cp "$root/tests/resolver/board_dma_tu.cpp.in" "$gen/board_dma_tu.cpp" &&
+     "$cxx" "${flags[@]}" -c "$gen/board_dma_tu.cpp" -o "$gen/tu.o"; then
     echo "PASS $name"
   else
     echo "FAIL $name: compile"; rc=1

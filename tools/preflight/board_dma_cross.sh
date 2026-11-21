@@ -17,7 +17,8 @@ cpu=(-mcpu=cortex-m7 -mthumb -mfpu=fpv5-d16 -mfloat-abi=hard)
 flags=("${cpu[@]}" -std=c++20 -Os -Wall -Wextra -Werror -fno-exceptions -fno-rtti -ffunction-sections -fdata-sections
        -I"$root/components/lib/dma/inc" -I"$root/components/lib/utils/inc" -I"$gen")
 arm-none-eabi-g++ "${flags[@]}" -c "$gen/board_dma.cpp" -o "$out/board_dma.o"
-arm-none-eabi-g++ "${flags[@]}" -c "$root/tests/resolver/board_dma_tu.cpp" -o "$out/tu.o"
+cp "$root/tests/resolver/board_dma_tu.cpp.in" "$gen/board_dma_tu.cpp"
+arm-none-eabi-g++ "${flags[@]}" -c "$gen/board_dma_tu.cpp" -o "$out/tu.o"
 arm-none-eabi-g++ "${cpu[@]}" -nostartfiles -nostdlib -Wl,--gc-sections -Wl,-Map,"$out/board.map" \
   -T "$root/tests/resolver/board_dma_cross.ld" -L"$gen" "$out/board_dma.o" "$out/tu.o" -o "$out/board.elf"
 arm-none-eabi-readelf -S "$out/board.elf" | grep -E "kb_dma|Name" || true
