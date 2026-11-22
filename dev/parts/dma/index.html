@@ -1595,7 +1595,7 @@ register code; a driver or handler gets a buffer it cannot misuse. Decisions: <a
 <p>Drawn from: <a href="../../model/dma-lease.state.yml"><code>docs/model/dma-lease.state.yml</code></a>.</p>
 </details>
 <p>A <code>Buffer</code> is a static object: aligned to its region's unit, padded to a whole number of units, so cache
-maintenance over it never reaches a neighbour. <code>CpuView()</code> returns the data while the CPU owns the buffer and an
+maintenance over it never reaches a neighbour. It holds no address of itself and its all-zero bytes are its start state (CPU-owned, counters 0), so it may live in <code>.bss</code> or in a <code>NOLOAD</code> DMA section that the board's start-up code zeroes before use, as the generated linker fragment places it. <code>CpuView()</code> returns the data while the CPU owns the buffer and an
 empty span otherwise (counted in <code>Stats().cpu_denied</code>). The port moves it with a <code>PortKey</code>, a passkey only the
 port's own class can construct:</p>
 <div class="language-cpp highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">Lease</span><span class="o">&lt;</span><span class="n">Region</span><span class="o">&gt;</span><span class="w"> </span><span class="n">lease</span><span class="p">;</span>
