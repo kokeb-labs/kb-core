@@ -51,3 +51,35 @@ jobs:
           command -v ninja >/dev/null || { sudo apt-get update -q && sudo apt-get install -y -q ninja-build; }
       - name: Backend and kernel for cortex_m0, cortex_m4, cortex_m7
         run: tools/preflight/threadx_cross.sh .
+
+  # The generated DMA board files (docs/design/board-dma.md): the H7 example board's board_dma.cpp compiled for a
+  # Cortex-M7 and linked with a minimal linker script that includes the generated kb_dma.ld, so the real linker proves
+  # the sections and the ASSERTs. Same toolchain pin as above.
+  board-dma:
+    name: Board DMA files (Cortex-M7 link)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Install PyYAML
+        run: python3 -m pip install --user pyyaml
+      - name: Install the Arm GNU toolchain 14.3.rel1 (pinned, hash-checked)
+        env:
+          VERSION: "14.3.rel1"
+          SHA256: "8f6903f8ceb084d9227b9ef991490413014d991874a1e34074443c2a72b14dbd"
+        run: |
+          set -euo pipefail
+          file="arm-gnu-toolchain-${VERSION}-x86_64-arm-none-eabi.tar.xz"
+          curl -fsSL --retry 6 --retry-all-errors --retry-delay 10 --connect-timeout 30 --max-time 600 \
+            "https://developer.arm.com/-/media/Files/downloads/gnu/${VERSION}/binrel/${file}" -o "$RUNNER_TEMP/$file"
+          echo "${SHA256}  $RUNNER_TEMP/$file" | sha256sum -c -
+          mkdir -p "$RUNNER_TEMP/arm"
+          tar -xJf "$RUNNER_TEMP/$file" -C "$RUNNER_TEMP/arm" --strip-components=1
+          rm "$RUNNER_TEMP/$file"
+          echo "$RUNNER_TEMP/arm/bin" >> "$GITHUB_PATH"
+      - name: Generate, compile for cortex-m7 and link with kb_dma.ld
+        run: tools/preflight/board_dma_cross.sh "$RUNNER_TEMP/board-dma"

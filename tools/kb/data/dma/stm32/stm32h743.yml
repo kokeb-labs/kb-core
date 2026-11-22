@@ -1,0 +1,190 @@
+# DMA routing and reach of the STM32H743: DMA1, DMA2 (DMAMUX1), BDMA (DMAMUX2), MDMA. Field meanings: ../README.md.
+# Request lines: STM32Cube HAL stm32h7xx_hal_dma.h (DMA_REQUEST_*, BDMA_REQUEST_*) at the commit pinned by the STM32
+# port (stm32h7xx-hal-driver v1.11.7, 65e5c7e40456f4d76d79f972738a16cb3a17762c), restricted to the lines of RM0433
+# DMAMUX1 (1-115; line 54 is reserved) and DMAMUX2 (1-17). The reference manual itself could not be fetched.
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 The kb-core authors
+device: STM32H743
+family: h7
+source:
+  document: RM0433
+  revision: "unchecked"
+  sections: ["16 DMA", "17 BDMA", "18 DMAMUX", "2 Memory and bus architecture (bus matrix)"]
+  requests_from: stm32h7xx_hal_dma.h v1.11.7 (65e5c7e40456f4d76d79f972738a16cb3a17762c)
+  memory_geometry_from: cmsis-device-h7 v1.10.8 (277b283ad9ab79ea85ee42920e371b019d7defb0) stm32h743xx.h
+verified:
+  mux: hal-header
+  memories: unverified      # base and size agree with the CMSIS device header; the reach follows design 3.1
+  errata: unverified        # section numbers cited from the design; re-check against ES0392 before citing
+cores: [cm7]
+nvic_priority_bits: 4
+engines:
+  dma1: {id: 1, master_bit: 0, units: streams, first: 0, count: 8, mux: dmamux1, mux_channel_base: 0}
+  dma2: {id: 2, master_bit: 1, units: streams, first: 0, count: 8, mux: dmamux1, mux_channel_base: 8}
+  bdma: {id: 3, master_bit: 2, units: channels, first: 0, count: 8, mux: dmamux2, mux_channel_base: 0}
+  mdma: {id: 4, master_bit: 3, units: channels, first: 0, count: 16, mux: none}
+routing: mux
+mux_groups:
+  dmamux1: {channels: 16, engines: [dma1, dma2], max_request: 115, generators: 8}
+  dmamux2: {channels: 8, engines: [bdma], max_request: 17, generators: 8}
+mux:
+  dmamux1:
+    GENERATOR0: 1
+    GENERATOR1: 2
+    GENERATOR2: 3
+    GENERATOR3: 4
+    GENERATOR4: 5
+    GENERATOR5: 6
+    GENERATOR6: 7
+    GENERATOR7: 8
+    ADC1: 9
+    ADC2: 10
+    TIM1_CH1: 11
+    TIM1_CH2: 12
+    TIM1_CH3: 13
+    TIM1_CH4: 14
+    TIM1_UP: 15
+    TIM1_TRIG: 16
+    TIM1_COM: 17
+    TIM2_CH1: 18
+    TIM2_CH2: 19
+    TIM2_CH3: 20
+    TIM2_CH4: 21
+    TIM2_UP: 22
+    TIM3_CH1: 23
+    TIM3_CH2: 24
+    TIM3_CH3: 25
+    TIM3_CH4: 26
+    TIM3_UP: 27
+    TIM3_TRIG: 28
+    TIM4_CH1: 29
+    TIM4_CH2: 30
+    TIM4_CH3: 31
+    TIM4_UP: 32
+    I2C1_RX: 33
+    I2C1_TX: 34
+    I2C2_RX: 35
+    I2C2_TX: 36
+    SPI1_RX: 37
+    SPI1_TX: 38
+    SPI2_RX: 39
+    SPI2_TX: 40
+    USART1_RX: 41
+    USART1_TX: 42
+    USART2_RX: 43
+    USART2_TX: 44
+    USART3_RX: 45
+    USART3_TX: 46
+    TIM8_CH1: 47
+    TIM8_CH2: 48
+    TIM8_CH3: 49
+    TIM8_CH4: 50
+    TIM8_UP: 51
+    TIM8_TRIG: 52
+    TIM8_COM: 53
+    TIM5_CH1: 55
+    TIM5_CH2: 56
+    TIM5_CH3: 57
+    TIM5_CH4: 58
+    TIM5_UP: 59
+    TIM5_TRIG: 60
+    SPI3_RX: 61
+    SPI3_TX: 62
+    UART4_RX: 63
+    UART4_TX: 64
+    UART5_RX: 65
+    UART5_TX: 66
+    DAC1_CH1: 67
+    DAC1_CH2: 68
+    TIM6_UP: 69
+    TIM7_UP: 70
+    USART6_RX: 71
+    USART6_TX: 72
+    I2C3_RX: 73
+    I2C3_TX: 74
+    DCMI: 75
+    CRYP_IN: 76
+    CRYP_OUT: 77
+    HASH_IN: 78
+    UART7_RX: 79
+    UART7_TX: 80
+    UART8_RX: 81
+    UART8_TX: 82
+    SPI4_RX: 83
+    SPI4_TX: 84
+    SPI5_RX: 85
+    SPI5_TX: 86
+    SAI1_A: 87
+    SAI1_B: 88
+    SAI2_A: 89
+    SAI2_B: 90
+    SWPMI_RX: 91
+    SWPMI_TX: 92
+    SPDIF_RX_DT: 93
+    SPDIF_RX_CS: 94
+    HRTIM_MASTER: 95
+    HRTIM_TIMER_A: 96
+    HRTIM_TIMER_B: 97
+    HRTIM_TIMER_C: 98
+    HRTIM_TIMER_D: 99
+    HRTIM_TIMER_E: 100
+    DFSDM1_FLT0: 101
+    DFSDM1_FLT1: 102
+    DFSDM1_FLT2: 103
+    DFSDM1_FLT3: 104
+    TIM15_CH1: 105
+    TIM15_UP: 106
+    TIM15_TRIG: 107
+    TIM15_COM: 108
+    TIM16_CH1: 109
+    TIM16_UP: 110
+    TIM17_CH1: 111
+    TIM17_UP: 112
+    SAI3_A: 113
+    SAI3_B: 114
+    ADC3: 115
+  dmamux2:
+    GENERATOR0: 1
+    GENERATOR1: 2
+    GENERATOR2: 3
+    GENERATOR3: 4
+    GENERATOR4: 5
+    GENERATOR5: 6
+    GENERATOR6: 7
+    GENERATOR7: 8
+    LPUART1_RX: 9
+    LPUART1_TX: 10
+    SPI6_RX: 11
+    SPI6_TX: 12
+    I2C4_RX: 13
+    I2C4_TX: 14
+    SAI4_A: 15
+    SAI4_B: 16
+    ADC3: 17
+memories:
+  itcm: {base: "0x00000000", size: "0x10000", masters: [mdma], cached: false}
+  dtcm: {base: "0x20000000", size: "0x20000", masters: [mdma], cached: false}
+  axi_sram: {base: "0x24000000", size: "0x80000", masters: [dma1, dma2, mdma], cached: true}
+  sram1: {base: "0x30000000", size: "0x20000", masters: [dma1, dma2, mdma], cached: true}
+  sram2: {base: "0x30020000", size: "0x20000", masters: [dma1, dma2, mdma], cached: true}
+  sram3: {base: "0x30040000", size: "0x8000", masters: [dma1, dma2, mdma], cached: true}
+  sram4: {base: "0x38000000", size: "0x10000", masters: [dma1, dma2, bdma, mdma], cached: true}
+  backup_sram: {base: "0x38800000", size: "0x1000", masters: [dma1, dma2, bdma, mdma], cached: true}
+  sdram: {base: "0xC0000000", size: "0x10000000", masters: [dma1, dma2, mdma], cached: true, external: true}
+mpu: {regions: 16, min_size: 32}
+dcache_line: 32
+errata:
+  - id: ES0392-2.4.1
+    rule: bdma_individual_flag_clear
+    applies_to: [bdma]
+    verified: unverified
+    text: >-
+      BDMA: a channel can fail to disable, and a transfer error flag can be missed, when a transfer error and a
+      global flag clear coincide. Clear individual flags only (never CGIFx alone) and check TEIF before disabling.
+  - id: ES0392-2.5.1
+    rule: no_dmamux_sync
+    applies_to: [dmamux1, dmamux2]
+    verified: unverified
+    text: >-
+      DMAMUX: the synchronisation overrun flag SOFx may not be asserted when DMAMUX_CFR is written at the same time.
+      Synchronisation and request generators are refused until a port feature handles the erratum.

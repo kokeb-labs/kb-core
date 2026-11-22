@@ -1,0 +1,173 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kokeb-labs.github.io/kb-core/schemas/board.schema.json",
+  "title": "kb board (board.yml, DMA declarations)",
+  "description": "The one source of a board's DMA resources: the part, the RTOS interrupt limit, the memory regions, the DMA buffers and streams, the buses that use them and the handlers that read them. `kb image check` and the configurator check it (rules R1 to R15, ADR-0033); `kb board gen` writes board_dma.hpp, board_dma.cpp, kb_dma.ld and board_mpu.hpp from it. Numbers are integers or hex strings; expressions are not accepted. SPDX-License-Identifier: MIT. Copyright (c) 2026 The kb-core authors.",
+  "type": "object",
+  "required": ["board", "mcu"],
+  "additionalProperties": false,
+  "$defs": {
+    "name": {"type": "string", "pattern": "^[a-z][a-z0-9]*(_[a-z0-9]+)*$"},
+    "int": {"anyOf": [{"type": "integer"}, {"type": "string", "pattern": "^(0[xX][0-9a-fA-F_]+|[0-9_]+)$"}], "description": "An integer, or a decimal or hex string such as \"0x30000000\""},
+    "percent": {"type": "number"},
+    "cores": {"anyOf": [{"type": "string"}, {"type": "array", "items": {"type": "string"}, "minItems": 1}], "description": "A core name, or several (an error for a stream: one stream belongs to one core)"}
+  },
+  "properties": {
+    "board": {"type": "string", "description": "The board's name; it appears in the generated files' first line"},
+    "mcu": {
+      "type": "object",
+      "required": ["family"],
+      "additionalProperties": false,
+      "properties": {
+        "family": {"enum": ["stm32", "esp32"]},
+        "device": {"type": "string", "description": "STM32: the part, for example STM32H747XI; the routing data is found by its longest matching device name", "examples": ["STM32H743"]},
+        "target": {"type": "string", "description": "ESP32: the target", "examples": ["esp32c6"]},
+        "core": {"type": "string", "description": "The core this image runs on (dual-core parts); default: the device's first core", "examples": ["cm7"]}
+      }
+    },
+    "rtos": {
+      "type": "object",
+      "required": ["max_syscall_priority"],
+      "additionalProperties": false,
+      "description": "What the RTOS allows interrupts to do (FreeRTOS configMAX_SYSCALL_INTERRUPT_PRIORITY in NVIC value units)",
+      "properties": {
+        "name": {"type": "string"},
+        "max_syscall_priority": {"$ref": "#/$defs/int"},
+        "priority_bits": {"$ref": "#/$defs/int", "default": 4}
+      }
+    },
+    "memory": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "regions": {
+          "type": "object",
+          "propertyNames": {"$ref": "#/$defs/name"},
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "base": {"$ref": "#/$defs/int"},
+              "size": {"$ref": "#/$defs/int"},
+              "cache": {"enum": ["none", "maintained", "coherent"], "default": "none", "description": "none: non-cacheable (an MPU region) when the core has a data cache, coherent when it has none"},
+              "line": {"$ref": "#/$defs/int", "description": "Cache line in bytes; default: the core's data cache line for maintained, 1 otherwise"},
+              "align": {"$ref": "#/$defs/int", "description": "Alignment and padding unit of a buffer; default: the larger of line and the core's cache line (4 without a cache)"},
+              "mpu_region": {"$ref": "#/$defs/int"},
+              "masters": {"type": "array", "items": {"type": "string"}, "description": "Bus masters that reach the region; default: every master the memory allows"}
+            }
+          }
+        }
+      }
+    },
+    "dma": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "buffers": {
+          "type": "object",
+          "propertyNames": {"$ref": "#/$defs/name"},
+          "additionalProperties": {
+            "type": "object",
+            "required": ["region", "bytes"],
+            "additionalProperties": false,
+            "properties": {"region": {"type": "string"}, "bytes": {"$ref": "#/$defs/int"}}
+          }
+        },
+        "streams": {
+          "type": "object",
+          "propertyNames": {"$ref": "#/$defs/name"},
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "engine": {"type": "string", "description": "STM32: dma1, dma2, bdma or mdma"},
+              "stream": {"$ref": "#/$defs/int", "description": "STM32: the stream (F4, H7: 0 to 7) or channel (G4, L4: 1 to 8) of the engine"},
+              "request": {"anyOf": [{"type": "string"}, {"type": "integer"}], "description": "STM32: the request name (SPI1_RX) or, on a DMAMUX part, its line"},
+              "priority": {"enum": ["low", "medium", "high", "very_high"]},
+              "irq_priority": {"$ref": "#/$defs/int", "description": "NVIC priority value (lower is more urgent)"},
+              "notify": {"enum": ["none", "task"], "default": "task"},
+              "irq": {"enum": ["all", "errors_only"], "default": "all"},
+              "mode": {"enum": ["normal", "circular"], "default": "normal"},
+              "buffer": {"type": "string"},
+              "frames": {"$ref": "#/$defs/int"},
+              "element_bytes": {"$ref": "#/$defs/int"},
+              "elements": {"$ref": "#/$defs/int"},
+              "frames_per_pass": {"$ref": "#/$defs/int"},
+              "trigger": {"type": "string"},
+              "rate_hz": {"$ref": "#/$defs/int"},
+              "stall_periods": {"$ref": "#/$defs/int"},
+              "fallback": {
+                "anyOf": [
+                  {"enum": ["oneshot", "polled", "irq"]},
+                  {"type": "object", "additionalProperties": false, "properties": {"kind": {"enum": ["oneshot", "polled", "irq"]}, "cpu_percent": {"$ref": "#/$defs/percent"}}}
+                ]
+              },
+              "core": {"$ref": "#/$defs/cores"},
+              "dmamux_sync": {"type": "boolean"},
+              "dmamux_request_generator": {"type": "boolean"},
+              "driver": {"enum": ["spi_master", "adc_continuous", "uhci", "rmt", "i2s"], "description": "ESP32: the SDK driver that allocates the DMA pair"},
+              "host": {"type": "string", "description": "ESP32: the SPI host, for example SPI2"},
+              "frame_bytes": {"$ref": "#/$defs/int"},
+              "iram_safe": {"type": "boolean"},
+              "half_duplex_both_phases": {"type": "boolean"}
+            }
+          }
+        }
+      }
+    },
+    "buses": {
+      "type": "object",
+      "propertyNames": {"$ref": "#/$defs/name"},
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "kind": {"enum": ["spi", "uart", "i2c"], "description": "Default: from the bus name (spi1, uart2, i2c0, ...)"},
+          "model": {"enum": ["owner", "guarded"], "default": "owner"},
+          "dma": {"anyOf": [{"type": "boolean"}, {"type": "array", "items": {"type": "string"}}], "default": false, "description": "false: no DMA; true: DMA with staging_bytes; a list: the streams that serve the bus"},
+          "staging_bytes": {"$ref": "#/$defs/int"},
+          "devices": {
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {"type": "string"},
+                {"type": "object", "required": ["driver"], "additionalProperties": false, "properties": {"driver": {"type": "string"}, "max_frame_bytes": {"$ref": "#/$defs/int"}}}
+              ]
+            }
+          }
+        }
+      }
+    },
+    "handlers": {
+      "type": "object",
+      "propertyNames": {"$ref": "#/$defs/name"},
+      "additionalProperties": {
+        "type": "object",
+        "required": ["stream"],
+        "additionalProperties": false,
+        "properties": {"stream": {"type": "string"}, "frame_bytes": {"$ref": "#/$defs/int"}, "frames": {"$ref": "#/$defs/int"}, "conversions": {"$ref": "#/$defs/int"}}
+      }
+    },
+    "budget": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {"fallback_cpu_percent": {"$ref": "#/$defs/percent"}}
+    },
+    "linker": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "fixed_sections": {
+          "type": "array",
+          "items": {"type": "object", "required": ["name", "base", "size"], "additionalProperties": false, "properties": {"name": {"type": "string"}, "base": {"$ref": "#/$defs/int"}, "size": {"$ref": "#/$defs/int"}}}
+        },
+        "noload_list": {"type": "string", "pattern": "^[A-Za-z_][A-Za-z0-9_]*$", "default": "__kb_dma", "description": "Prefix of the linker symbols of the generated NOLOAD sections"}
+      }
+    },
+    "errata": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {"workarounds": {"type": "array", "items": {"type": "string"}, "description": "Errata rules (for example f4_dma2_ahb_apb2) whose workaround the board has in place"}}
+    }
+  }
+}

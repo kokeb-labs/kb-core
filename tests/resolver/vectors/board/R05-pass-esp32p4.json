@@ -1,0 +1,55 @@
+{
+  "description": "ESP32-P4: internal RAM is maintained with a 64-byte line, staging 1024 and frame 256 are multiples of 64",
+  "board": {
+    "board": "example-c6",
+    "mcu": {
+      "family": "esp32",
+      "target": "esp32p4"
+    },
+    "memory": {
+      "regions": {
+        "internal": {
+          "cache": "maintained",
+          "line": 64,
+          "align": 64
+        }
+      }
+    },
+    "dma": {
+      "streams": {
+        "spi2": {
+          "driver": "spi_master",
+          "host": "SPI2"
+        },
+        "adc": {
+          "driver": "adc_continuous",
+          "frame_bytes": 256,
+          "frames": 4,
+          "iram_safe": true
+        }
+      }
+    },
+    "buses": {
+      "spi2": {
+        "kind": "spi",
+        "model": "owner",
+        "dma": true,
+        "staging_bytes": 1024,
+        "devices": [
+          {
+            "driver": "bno08x",
+            "max_frame_bytes": 1024
+          }
+        ]
+      }
+    }
+  },
+  "sdkconfig": {
+    "CONFIG_ADC_CONTINUOUS_ISR_IRAM_SAFE": "y"
+  },
+  "expect": {
+    "ok": true,
+    "exit": 0,
+    "findings": []
+  }
+}

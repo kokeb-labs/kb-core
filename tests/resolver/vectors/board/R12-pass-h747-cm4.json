@@ -1,0 +1,54 @@
+{
+  "description": "H747, image on the CM4: the stream is the CM4's and its buffer is in D2 SRAM",
+  "board": {
+    "board": "vector-h747",
+    "mcu": {
+      "family": "stm32",
+      "device": "STM32H747XI",
+      "core": "cm4"
+    },
+    "rtos": {
+      "name": "freertos",
+      "max_syscall_priority": 5,
+      "priority_bits": 4
+    },
+    "memory": {
+      "regions": {
+        "d2_dma": {
+          "base": "0x30000000",
+          "size": "0x8000",
+          "cache": "none",
+          "masters": [
+            "dma1",
+            "dma2"
+          ]
+        }
+      }
+    },
+    "dma": {
+      "buffers": {
+        "spi1_rx_buf": {
+          "region": "d2_dma",
+          "bytes": 256
+        }
+      },
+      "streams": {
+        "spi1_rx": {
+          "engine": "dma1",
+          "stream": 0,
+          "request": "SPI1_RX",
+          "priority": "high",
+          "irq_priority": 5,
+          "notify": "task",
+          "buffer": "spi1_rx_buf",
+          "core": "cm4"
+        }
+      }
+    }
+  },
+  "expect": {
+    "ok": true,
+    "exit": 0,
+    "findings": []
+  }
+}

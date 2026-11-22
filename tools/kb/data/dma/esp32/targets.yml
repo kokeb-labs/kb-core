@@ -1,0 +1,118 @@
+# DMA facts per ESP32 target for the board checker (rules R5, R8, R9, R11, R13). Units and the meaning of every
+# field are in ../README.md.
+# Source: ESP-IDF release/v5.5, commit a45de8ccca14543ede6e6342f1e16931a9c601ac (branch head, 2026-11-15; latest
+# tag at that time v5.5.6): components/soc/<target>/include/soc/soc_caps.h, components/hal/include/hal/dma_types.h,
+# components/esp_system/port/soc/<target>/Kconfig.cache, components/esp_adc/Kconfig,
+# components/esp_driver_spi/Kconfig, docs/en/api-reference/peripherals/spi_master.rst ("Known Issues", items 1 and 5),
+# docs/en/api-reference/peripherals/adc_continuous.rst ("IRAM Safe").
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 The kb-core authors
+source:
+  sdk: esp-idf
+  branch: release/v5.5
+  commit: a45de8ccca14543ede6e6342f1e16931a9c601ac
+  verified: soc_caps
+common:
+  max_dma_frame_bytes: 4092          # DMA_DESCRIPTOR_BUFFER_MAX_SIZE_4B_ALIGNED (4095 - 3), hal/dma_types.h
+  max_frame_no_dma_bytes: 64         # SOC_SPI_MAXIMUM_BUFFER_SIZE, all four targets
+  adc_data_bytes_per_conv: 4         # SOC_ADC_DIGI_DATA_BYTES_PER_CONV, all four targets
+  pair_consumers: [spi_master, adc_continuous, uhci, rmt, i2s]   # drivers that take a GDMA pair at init
+  sdkconfig:
+    adc_continuous_iram_safe: CONFIG_ADC_CONTINUOUS_ISR_IRAM_SAFE
+    spi_master_isr_iram: CONFIG_SPI_MASTER_ISR_IN_IRAM
+    spi_master_iram: CONFIG_SPI_MASTER_IN_IRAM
+targets:
+  esp32:
+    soc_caps: components/soc/esp32/include/soc/soc_caps.h
+    gdma:
+      groups: []                     # no GDMA (SOC_GDMA_SUPPORTED not defined)
+      pairs_total: 0
+    dedicated_dma:
+      spi_dma: {hosts: [SPI2, SPI3], channels: [1, 2]}   # SOC_SPI_DMA_CHAN_NUM 2; SPI_DMA_CH_AUTO picks one
+      i2s_dma: {note: "ADC continuous runs on I2S0 and takes its DMA (adc_continuous.rst)", adc_unit_via: I2S0}
+    master_bits: {spi_dma: 1, i2s_dma: 2}
+    spi_hosts_with_dma: [SPI2, SPI3]
+    pair_consumer_kinds:             # which drivers can use DMA here
+      spi_master: dedicated          # SPI2/SPI3 DMA channel, no GDMA pair
+      adc_continuous: dedicated      # I2S0 DMA
+      uhci: false                    # SOC_UHCI_SUPPORTED not defined
+      rmt: false
+      i2s: dedicated
+    spi_rx_length_multiple: 4        # spi_master.rst Known Issues 5 (ESP32 only): RX buffer word aligned, length x4
+    buffer_align_bytes: 4
+    data_cache_line_bytes: 0         # no cache between CPU and DMA-capable internal DRAM
+    psram_cache_line_bytes: []
+    psram_dma: false
+    errata:
+      - id: spi_master.rst-known-issue-1
+        rule: esp32_half_duplex_dma_both_phases
+        text: >-
+          Half-duplex SPI transactions are not compatible with DMA when both the write and the read phase are used
+          (spi_master.rst Known Issues 1). Use full duplex, no DMA, or the command and address fields for the write
+          phase.
+        applies_to: [spi_master]
+  esp32s3:
+    soc_caps: components/soc/esp32s3/include/soc/soc_caps.h
+    gdma:
+      groups:
+        - {kind: ahb, pairs: 5}      # SOC_GDMA_NUM_GROUPS_MAX 1, SOC_GDMA_PAIRS_PER_GROUP 5
+      pairs_total: 5
+    dedicated_dma: {}
+    master_bits: {gdma: 0}
+    spi_hosts_with_dma: [SPI2, SPI3]  # SOC_SPI_PERIPH_NUM 3 (SPI1 is the flash host)
+    pair_consumer_kinds:
+      spi_master: gdma
+      adc_continuous: gdma
+      uhci: gdma                     # SOC_UHCI_SUPPORTED, SOC_UHCI_NUM 1
+      rmt: gdma                      # SOC_RMT_SUPPORT_DMA (flags.with_dma)
+      i2s: gdma
+    spi_rx_length_multiple: 1
+    buffer_align_bytes: 4            # AHB GDMA descriptor alignment; internal SRAM, no cache
+    data_cache_line_bytes: 0         # internal SRAM is not cached
+    psram_cache_line_bytes: [16, 32, 64]   # CONFIG_ESP32S3_DATA_CACHE_LINE_{16,32,64}B (Kconfig.cache), default 32
+    psram_cache_line_default: 32
+    psram_dma: true                  # SOC_PSRAM_DMA_CAPABLE, SOC_AHB_GDMA_SUPPORT_PSRAM
+    errata: []
+  esp32c6:
+    soc_caps: components/soc/esp32c6/include/soc/soc_caps.h
+    gdma:
+      groups:
+        - {kind: ahb, pairs: 3}      # SOC_GDMA_NUM_GROUPS_MAX 1U, SOC_GDMA_PAIRS_PER_GROUP_MAX 3
+      pairs_total: 3
+    dedicated_dma: {}
+    master_bits: {gdma: 0}
+    spi_hosts_with_dma: [SPI2]       # SOC_SPI_PERIPH_NUM 2 (SPI1 is the flash host)
+    pair_consumer_kinds:
+      spi_master: gdma
+      adc_continuous: gdma
+      uhci: gdma
+      rmt: false                     # SOC_RMT_SUPPORT_DMA not defined
+      i2s: gdma                      # SOC_I2S_NUM 1
+    spi_rx_length_multiple: 1
+    buffer_align_bytes: 4
+    data_cache_line_bytes: 0
+    psram_cache_line_bytes: []
+    psram_dma: false
+    errata: []
+  esp32p4:
+    soc_caps: components/soc/esp32p4/include/soc/soc_caps.h
+    gdma:
+      groups:
+        - {kind: ahb, pairs: 3}      # SOC_AHB_GDMA_SUPPORTED, SOC_GDMA_PAIRS_PER_GROUP_MAX 3
+        - {kind: axi, pairs: 3}      # SOC_AXI_GDMA_SUPPORTED, SOC_GDMA_NUM_GROUPS_MAX 2
+      pairs_total: 6
+    dedicated_dma: {}
+    master_bits: {gdma: 0, axi_gdma: 3}
+    spi_hosts_with_dma: [SPI2, SPI3]  # SOC_SPI_PERIPH_NUM 3
+    pair_consumer_kinds:
+      spi_master: gdma
+      adc_continuous: gdma
+      uhci: gdma
+      rmt: gdma                      # SOC_RMT_SUPPORT_DMA
+      i2s: gdma                      # SOC_I2S_NUM 3
+    spi_rx_length_multiple: 64       # internal RAM goes through the L1 cache (SOC_CACHE_INTERNAL_MEM_VIA_L1CACHE)
+    buffer_align_bytes: 64
+    data_cache_line_bytes: 64        # CONFIG_CACHE_L1_CACHE_LINE_SIZE default 64 (Kconfig.cache)
+    psram_cache_line_bytes: [64, 128]   # CONFIG_CACHE_L2_CACHE_LINE_{64B,128B}: 64 (128/256 KB L2), 128 (512 KB)
+    psram_dma: true                  # SOC_AHB_GDMA_SUPPORT_PSRAM, SOC_AXI_GDMA_SUPPORT_PSRAM
+    errata: []

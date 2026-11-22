@@ -1,0 +1,58 @@
+{
+  "description": "the device's frame size comes from the driver catalogue file (--drivers), 1024 fits",
+  "board": {
+    "board": "example-c6",
+    "mcu": {
+      "family": "esp32",
+      "target": "esp32c6"
+    },
+    "memory": {
+      "regions": {
+        "internal": {
+          "cache": "none",
+          "align": 4
+        }
+      }
+    },
+    "dma": {
+      "streams": {
+        "spi2": {
+          "driver": "spi_master",
+          "host": "SPI2"
+        },
+        "adc": {
+          "driver": "adc_continuous",
+          "frame_bytes": 256,
+          "frames": 4,
+          "iram_safe": true
+        }
+      }
+    },
+    "buses": {
+      "spi2": {
+        "kind": "spi",
+        "model": "owner",
+        "dma": true,
+        "staging_bytes": 1028,
+        "devices": [
+          {
+            "driver": "bno08x"
+          }
+        ]
+      }
+    }
+  },
+  "sdkconfig": {
+    "CONFIG_ADC_CONTINUOUS_ISR_IRAM_SAFE": "y"
+  },
+  "drivers": {
+    "bno08x": {
+      "max_frame_bytes": 1024
+    }
+  },
+  "expect": {
+    "ok": true,
+    "exit": 0,
+    "findings": []
+  }
+}

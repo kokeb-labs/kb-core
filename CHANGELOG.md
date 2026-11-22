@@ -105,6 +105,15 @@ may still change before 0.1.0.
   to fail on the model with its defect; compile-fail tests, a stream fuzz target, a threaded test and a mutation
   catalogue (`tools/mutants/dma.txt`).
 - ADR-0030 to ADR-0032 (numbers provisional).
+- Board DMA: `board.yml` declares regions, buffers and streams; `kb image check BOARD` refuses conflicts by the rules R1
+  to R15 (stream and channel use, request routing, reach, cache and MPU, interrupt priorities, GDMA budget, frame
+  limits, errata, dual core, region layout) against the routing data in `tools/kb/data/dma/` and exits 1 on an error;
+  `kb board gen BOARD -o DIR` writes `board_dma.hpp`, `board_dma.cpp`, `kb_dma.ld`, `board_mpu.hpp` and a report, byte
+  for byte the same each time. `kb image check --selftest` runs 85 vectors (`tests/resolver/vectors/board/`, a pass and
+  a fail for every rule); `tools/kb/dmadata.py --export-json` writes the data as one JSON bundle for the configurator.
+  Two example boards (STM32H743, ESP32-C6), a host ctest `kb_board_gen_host` that compiles the generated code against
+  `kb::dma`, and a cross-compile job that links the H7 output with `kb_dma.ld` ([Board DMA](docs/design/board-dma.md)).
+- ADR-0033, DMA resources declared once (number provisional).
 
 ### Build, CI and tools
 
