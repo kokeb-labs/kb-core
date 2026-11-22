@@ -114,6 +114,20 @@ class PortSdk(unittest.TestCase):
         with self.assertRaisesRegex(port_sdk.SdkError, "not X.Y.Z"):
             port_sdk.build(ROOT, os.path.join(self.tmp, "c"), None, "1.2")
 
+    def test_the_privileged_release_workflow_runs_nothing_from_the_tagged_tree(self):
+        """release.yml has write access: no checkout of the tagged commit, no script of this repository, and the SDK
+        comes from the unprivileged CI run's artifact."""
+        text = open(os.path.join(ROOT, ".github", "workflows", "release.yml"), encoding="utf-8").read()
+        body = text[text.index("\njobs:"):text.index("\n  attest:")]
+        self.assertNotRegex(body, r"ref:\s*\$\{\{\s*github\.event\.workflow_run\.head_sha")
+        self.assertNotIn("tools/release/port_sdk.py", body)
+        self.assertIn("persist-credentials: false", body)
+        self.assertIn("run-id: ${{ github.event.workflow_run.id }}", body)
+        ci = open(os.path.join(ROOT, ".github", "workflows", "ci-port-sdk.yml"), encoding="utf-8").read()
+        self.assertIn("contents: read", ci)
+        self.assertNotIn("contents: write", ci)
+        self.assertIn("name: kb-port-sdk", ci)
+
     @unittest.skipUnless(shutil.which("cmake"), "needs cmake")
     def test_a_minimal_port_builds_from_the_extracted_asset_and_passes_the_conformance_suite(self):
         """Nothing from the kb-core checkout but the extracted archive: configure, build, run."""

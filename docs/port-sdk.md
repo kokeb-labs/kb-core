@@ -70,10 +70,19 @@ manifest, or a release manifest that disagrees with the one inside.
 
 `tools/release/port_sdk.py build --tag vX.Y.Z-rc.N --out DIR` reads the tracked files under the `vendor` entries and
 writes a reproducible archive (sorted members, owner 0, time 0, gzip without a name or time), so the same commit gives
-the same bytes. It refuses a tag whose `X.Y.Z` differs from `cmake/kb_version.cmake`: the version a port reads in the
-archive name and the one CMake reports are the same. `.github/workflows/release.yml` builds and verifies it from the
-tagged commit and hands it to the release asset script as an extra file (SBOM entry, `SHA256SUMS` line); the
-attestation job then covers it with the others.
+the same bytes. It refuses a tag whose `X.Y.Z` differs from `cmake/kb_version.cmake`: the version a port reads in
+the archive name and the one CMake reports are the same.
+
+The release is split by privilege, so no code from the tagged tree runs with write access:
+
+1. On a pushed `v*` tag the CI workflow runs `ci-port-sdk.yml` with read-only permissions. It builds the SDK from the
+   tag, verifies it (`port_sdk.py verify`) and uploads it as the artifact `kb-port-sdk`.
+2. When that CI run succeeds, `release.yml` (privileged: `contents: write`, `actions: read`) downloads the artifact
+   of the triggering run by its run id. It checks out only the default branch (for the tag's history, nothing of it is
+   run), confirms the tag points at the run's commit, and checks the artifact: exactly the archive and the manifest,
+   the archive's SHA-256 equal to the manifest's, the manifest's version equal to the tag and its commit equal to the
+   released commit. Then the pinned ci-tools asset script attaches both files as extra release files (a line in
+   `SHA256SUMS`, an entry in the SPDX SBOM) and the attestation job covers them with the others.
 
 ## What a port does with it
 

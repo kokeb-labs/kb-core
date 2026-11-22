@@ -148,15 +148,22 @@ jobs:
     name: Vulnerability data
     uses: ./.github/workflows/ci-vulnerabilities-check.yml
 
+  port-sdk:
+    name: Port SDK
+    if: github.ref_type == 'tag'
+    uses: ./.github/workflows/ci-port-sdk.yml
+    permissions:
+      contents: read
+
   ci-gate:
     name: CI gate
     needs:
       [changes, host, quality, misra, cross, esp32, docs, configurator, exports, checks, standalone, integration,
-       mutation, pins, layering, catalog, layout, vulnerabilities]
+       mutation, pins, layering, catalog, layout, vulnerabilities, port-sdk]
     if: always()
     uses: kokeb-labs/ci-tools/.github/workflows/ru-ci-gate.yml@v1
     permissions:
       contents: read
     with:
       needs_json: ${{ toJSON(needs) }}
-      allow_skipped: misra, mutation, exports
+      allow_skipped: misra, mutation, exports, port-sdk
