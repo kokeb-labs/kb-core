@@ -325,7 +325,7 @@ public:
       head_.store(head + 1U, std::memory_order_release);
       status = kb::Status::Ok;
     }
-    last_us_.store(at.Us(), std::memory_order_release);
+    stampFrame(at);
     return status;
   }
 
@@ -440,7 +440,7 @@ public:
   /** @brief Marks the stream running from `now` (arms the stall clock). Call before enabling the
    * hardware. */
   void Start(kb::Instant now) noexcept {
-    last_us_.store(now.Us(), std::memory_order_release);
+    armed_us_ = now.Us();
     running_.store(true, std::memory_order_release);
     stall_reported_ = false;
     bad_in_row_ = 0U;
@@ -460,11 +460,15 @@ public:
   [[nodiscard]] bool CheckStall(kb::Instant now) noexcept {
     bool stalled = false;
     if (running_.load(std::memory_order_acquire) && (config_.frame_period.Count() != 0U)) {
-      const int64_t elapsed =
-          SignedElapsedUs(now, kb::Instant{last_us_.load(std::memory_order_acquire)});
-      const uint64_t budget =
-          static_cast<uint64_t>(config_.frame_period.Count()) * config_.stall_periods;
-      stalled = (elapsed > 0) && std::cmp_greater_equal(elapsed, budget);
+      // A producer that kept the stamp busy through every read try is writing frames: no stall.
+      uint64_t frame_us = 0U;
+      const StampRead read = readFrameStamp(&frame_us);
+      if (read != StampRead::Busy) {
+        const int64_t elapsed = SignedElapsedUs(now, laterOf(read, frame_us));
+        const uint64_t budget =
+            static_cast<uint64_t>(config_.frame_period.Count()) * config_.stall_periods;
+        stalled = (elapsed > 0) && std::cmp_greater_equal(elapsed, budget);
+      }
     }
     if (stalled && !stall_reported_) {
       stall_reported_ = true;
@@ -544,9 +548,14 @@ public:
     return s;
   }
 
-  /** @brief The time of the last published (or dropped) frame, as the producer stamped it. */
+  /**
+   * @brief The time of the last published (or dropped) frame as the producer stamped it, or of the
+   * last `Start` / restart / mode switch when that is later (owner task only).
+   */
   [[nodiscard]] kb::Instant LastFrameAt() const noexcept {
-    return kb::Instant{last_us_.load(std::memory_order_acquire)};
+    uint64_t frame_us = 0U;
+    const StampRead read = readFrameStamp(&frame_us);
+    return laterOf(read, frame_us);
   }
 
 private:
@@ -574,6 +583,55 @@ private:
     given_.store(taken_, std::memory_order_release);
   }
 
+  /// Producer only: publishes the frame time through the sequence lock.
+  void stampFrame(kb::Instant at) noexcept {
+    constexpr uint32_t kShift = 32U;
+    const uint64_t us = at.Us();
+    const uint32_t seq = stamp_seq_.load(std::memory_order_relaxed);
+    stamp_seq_.store(seq + 1U, std::memory_order_relaxed);
+    std::atomic_thread_fence(std::memory_order_release);
+    stamp_lo_.store(static_cast<uint32_t>(us & 0xFFFFFFFFU), std::memory_order_relaxed);
+    stamp_hi_.store(static_cast<uint32_t>(us >> kShift), std::memory_order_relaxed);
+    stamp_seq_.store(seq + 2U, std::memory_order_release);
+  }
+
+  /// What a read of the frame stamp found.
+  enum class StampRead : uint8_t {
+    None = 0,  ///< No frame stamped yet.
+    Value = 1, ///< A consistent value (written to `*out` when `out` is not null).
+    Busy = 2,  ///< The producer wrote during every try.
+  };
+
+  /// The later of the frame stamp (when one was read) and the owner's last arm time.
+  [[nodiscard]] kb::Instant laterOf(StampRead read, uint64_t frame_us) const noexcept {
+    const kb::Instant armed{armed_us_};
+    const kb::Instant frame{frame_us};
+    return ((read == StampRead::Value) && (SignedElapsedUs(frame, armed) > 0)) ? frame : armed;
+  }
+
+  /// Consumer: reads the frame time through the sequence lock, at most a few tries.
+  [[nodiscard]] StampRead readFrameStamp(uint64_t* out = nullptr) const noexcept {
+    constexpr uint32_t kTries = 8U;
+    constexpr uint32_t kShift = 32U;
+    StampRead result = StampRead::Busy;
+    bool settled = false;
+    for (uint32_t i = 0U; (i < kTries) && !settled; ++i) {
+      const uint32_t before = stamp_seq_.load(std::memory_order_acquire);
+      const uint32_t lo = stamp_lo_.load(std::memory_order_relaxed);
+      const uint32_t hi = stamp_hi_.load(std::memory_order_relaxed);
+      std::atomic_thread_fence(std::memory_order_acquire);
+      const uint32_t after = stamp_seq_.load(std::memory_order_relaxed);
+      if (((before & 1U) == 0U) && (before == after)) {
+        settled = true;
+        result = (before == 0U) ? StampRead::None : StampRead::Value;
+        if ((result == StampRead::Value) && (out != nullptr)) {
+          *out = (static_cast<uint64_t>(hi) << kShift) | static_cast<uint64_t>(lo);
+        }
+      }
+    }
+    return result;
+  }
+
   [[nodiscard]] bool restartTooRecent(kb::Instant now) const noexcept {
     bool recent = false;
     if (had_restart_) {
@@ -588,7 +646,7 @@ private:
     bump(epoch_);
     bad_in_row_ = 0U;
     stall_reported_ = false;
-    last_us_.store(now.Us(), std::memory_order_release);
+    armed_us_ = now.Us();
   }
 
   StreamConfig config_{};
@@ -609,7 +667,13 @@ private:
   bool had_restart_{false};
   kb::Instant restart_at_;
   // Shared.
-  std::atomic<uint64_t> last_us_{0U};
+  // The producer's last frame time: a single-writer sequence lock over two 32-bit words, because a
+  // 64-bit atomic is not lock-free on 32-bit cores (it would need libatomic, which bare-metal
+  // toolchains do not ship). Odd sequence: a write is in progress.
+  std::atomic<uint32_t> stamp_seq_{0U};
+  std::atomic<uint32_t> stamp_lo_{0U};
+  std::atomic<uint32_t> stamp_hi_{0U};
+  uint64_t armed_us_{0U}; // owner side: the last Start, restart or mode switch
   std::atomic<bool> running_{false};
   std::atomic<StreamMode> mode_{StreamMode::Dma};
   std::atomic<uint32_t> epoch_{0U};

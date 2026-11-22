@@ -7,7 +7,9 @@
  * (the board's generated file puts it in the region's linker section). Its storage is padded to
  * whole alignment units of the region and aligned to the unit, and the buffer's bookkeeping sits in
  * its own units after the data, so no other object shares a cache line with the data and an
- * invalidate can never destroy a neighbour.
+ * invalidate can never destroy a neighbour. A buffer whose bytes are all zero is in its start state
+ * (CPU-owned, counters 0) and holds no address of itself, so it may sit in a `NOLOAD` section that
+ * the board's start-up code zeroes before use, as well as in `.bss`.
  *
  * **Ownership.** A buffer is in one of three states:
  *
@@ -88,25 +90,18 @@ struct BufferStats {
  * @brief The bookkeeping every buffer carries, readable by ports and registries.
  *
  * Only `Buffer` and `Lease` change it. The class is public so that a port (or the host model) can
- * hold a pointer to it and watch `Current()`.
+ * hold a pointer to it and watch `Current()`. It holds no address: its all-zero state is the start
+ * state (CPU-owned, counters 0), so a buffer in a section that start-up code zeroes (a `NOLOAD`
+ * DMA section) is valid without any initialiser running.
  */
 class BufferHeader {
 public:
-  /** @brief A header for `capacity` bytes at `base`. */
-  constexpr BufferHeader(std::byte* base, std::size_t capacity) noexcept
-      : base_(base), capacity_(capacity) {}
+  /** @brief A header in the start state. */
+  constexpr BufferHeader() noexcept = default;
 
   /** @brief Who owns the memory now. */
   [[nodiscard]] BufferState Current() const noexcept {
     return state_.load(std::memory_order_acquire);
-  }
-  /** @brief The first byte of the data (a placement-check input, not an access path). */
-  [[nodiscard]] const std::byte* Base() const noexcept {
-    return base_;
-  }
-  /** @brief The padded size of the data in bytes. */
-  [[nodiscard]] std::size_t Capacity() const noexcept {
-    return capacity_;
   }
   /** @brief The counters. */
   [[nodiscard]] BufferStats Stats() const noexcept {
@@ -132,8 +127,6 @@ private:
     static_cast<void>(counter.fetch_add(1U, std::memory_order_relaxed));
   }
 
-  std::byte* base_;
-  std::size_t capacity_;
   std::atomic<BufferState> state_{BufferState::Cpu};
   std::atomic<uint32_t> lends_{0U};
   std::atomic<uint32_t> completions_{0U};
@@ -222,8 +215,12 @@ public:
   Lease& operator=(const Lease&) = delete;
   Lease& operator=(Lease&&) = delete;
   /** @brief Takes over `other`'s lend; `other` becomes inactive. */
-  Lease(Lease&& other) noexcept : header_(other.header_), dir_(other.dir_), used_(other.used_) {
+  Lease(Lease&& other) noexcept
+      : header_(other.header_), base_(other.base_), capacity_(other.capacity_), dir_(other.dir_),
+        used_(other.used_) {
     other.header_ = nullptr;
+    other.base_ = nullptr;
+    other.capacity_ = 0U;
     other.used_ = 0U;
   }
   /**
@@ -257,8 +254,7 @@ public:
   template <typename Tag>
   [[nodiscard]] std::span<std::byte> DeviceView(PortKey<Tag> key) noexcept {
     static_cast<void>(key);
-    return (header_ != nullptr) ? std::span<std::byte>(header_->base_, header_->capacity_)
-                                : std::span<std::byte>{};
+    return (header_ != nullptr) ? std::span<std::byte>(base_, capacity_) : std::span<std::byte>{};
   }
 
   /**
@@ -275,10 +271,12 @@ public:
     kb::Status status = kb::Status::InvalidArgument;
     if (header_ != nullptr) {
       BufferHeader* const header = header_;
-      detail::MaintainOnReturn<R>(dir_, header->base_, RoundUp(used_, R::kLineBytes), ops);
+      detail::MaintainOnReturn<R>(dir_, base_, RoundUp(used_, R::kLineBytes), ops);
       header->state_.store(BufferState::Cpu, std::memory_order_release);
       BufferHeader::bump((outcome == Outcome::Ok) ? header->completions_ : header->errors_);
       header_ = nullptr;
+      base_ = nullptr;
+      capacity_ = 0U;
       used_ = 0U;
       status = kb::Status::Ok;
     }
@@ -301,7 +299,7 @@ public:
     if (header_ != nullptr) {
       BufferHeader* const header = header_;
       if (evidence == StopEvidence::Confirmed) {
-        detail::MaintainOnReturn<R>(dir_, header->base_, header->capacity_, ops);
+        detail::MaintainOnReturn<R>(dir_, base_, capacity_, ops);
         header->state_.store(BufferState::Cpu, std::memory_order_release);
         BufferHeader::bump(header->aborts_);
         status = kb::Status::Ok;
@@ -311,6 +309,8 @@ public:
         status = kb::Status::Fault;
       }
       header_ = nullptr;
+      base_ = nullptr;
+      capacity_ = 0U;
       used_ = 0U;
     }
     return status;
@@ -321,6 +321,8 @@ private:
   friend class Buffer;
 
   BufferHeader* header_{nullptr};
+  std::byte* base_{nullptr};
+  std::size_t capacity_{0U};
   Direction dir_{Direction::ToDevice};
   std::size_t used_{0U};
 };
@@ -328,7 +330,8 @@ private:
 /**
  * @brief A static DMA buffer of `Bytes` bytes in region `R`, padded to whole units and aligned.
  *
- * Never copied or moved; define it at namespace scope (constant-initialised, no constructor runs).
+ * Never copied or moved; define it at namespace scope (constant-initialised to all zero, no
+ * constructor runs; a zeroed `NOLOAD` section is a valid home).
  *
  * @tparam R     The region tag (`Region`).
  * @tparam Bytes The usable size, at least 1.
@@ -349,7 +352,7 @@ public:
   static_assert((kCapacity % R::kLineBytes) == 0U, "the capacity is a whole number of cache lines");
   static_assert(kCapacity >= Bytes, "the padding never shrinks the buffer");
 
-  constexpr Buffer() noexcept : header_(bytes_.data(), kCapacity) {}
+  constexpr Buffer() noexcept = default;
   Buffer(const Buffer&) = delete;
   Buffer& operator=(const Buffer&) = delete;
   Buffer(Buffer&&) = delete;
@@ -402,6 +405,16 @@ public:
     return header_;
   }
 
+  /** @brief The first byte of the data (a placement-check input, not an access path). */
+  [[nodiscard]] const std::byte* Base() const noexcept {
+    return bytes_.data();
+  }
+
+  /** @brief The padded size of the data in bytes. */
+  [[nodiscard]] static constexpr std::size_t Capacity() noexcept {
+    return kCapacity;
+  }
+
   /**
    * @brief Lends the buffer for a transfer of `used` bytes (port only).
    *
@@ -432,6 +445,8 @@ public:
       header_.state_.store(BufferState::Device, std::memory_order_release);
       BufferHeader::bump(header_.lends_);
       out.header_ = &header_;
+      out.base_ = bytes_.data();
+      out.capacity_ = kCapacity;
       out.dir_ = dir;
       out.used_ = used;
     }

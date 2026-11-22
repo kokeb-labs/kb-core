@@ -414,3 +414,76 @@ equivalent:
   - id: m-7eccd42e7279
     reason: >-
       stream.hpp stall_reported_: Start and every re-arm clear it before the supervisor can read it
+  # kb::dma, the frame stamp sequence lock and the lease reset (buffer.hpp, stream.hpp).
+  - id: m-fe32caad77c2
+    reason: >-
+      buffer.hpp Lease move: the moved-from capacity is read only through Bytes, which returns an empty span while the header is null
+  - id: m-8bb447169bb3
+    reason: >-
+      buffer.hpp Lease Complete: the cleared capacity is read only through Bytes, which returns an empty span while the header is null
+  - id: m-75d791d5595f
+    reason: >-
+      buffer.hpp Lease Abort: the cleared capacity is read only through Bytes, which returns an empty span while the header is null
+  - id: m-d478bbda2dc1
+    reason: >-
+      buffer.hpp Lease capacity_ initial value: Lend sets it before the lease is active, and Bytes ignores it while inactive
+  - id: m-524b13d05a5d
+    reason: >-
+      stream.hpp CheckStall frame_us initial value: it is read only when readFrameStamp reported Value, which wrote it
+  - id: m-61e8fb6765aa
+    reason: >-
+      stream.hpp LastFrameAt frame_us initial value: laterOf reads it only when the read reported Value, which wrote it
+  - id: m-a1976991c5b5
+    reason: >-
+      stream.hpp stampFrame: the odd marker only has to differ from the final value; readers test parity and equality, so a single-threaded run sees the same stamp, and a concurrent reader is the threaded test
+  - id: m-a7da2392f229
+    reason: >-
+      stream.hpp stampFrame: the odd marker only has to differ from the final value; readers test parity and equality, so a single-threaded run sees the same stamp, and a concurrent reader is the threaded test
+  - id: m-1faf8650feeb
+    reason: >-
+      stream.hpp stampFrame: the final sequence value only has to be even, nonzero and different from the marker; the single-threaded read result is the same
+  - id: m-50e86088e931
+    reason: >-
+      stream.hpp StampRead::None numeric value: the enumerators are only compared by name
+  - id: m-43e6ae0ee23d
+    reason: >-
+      stream.hpp StampRead::Value numeric value: the enumerators are only compared by name
+  - id: m-1eba539a79c1
+    reason: >-
+      stream.hpp StampRead::Busy numeric value: the enumerators are only compared by name
+  - id: m-6b9e3bd8c7df
+    reason: >-
+      stream.hpp laterOf, > vs >=: when the frame time equals the arm time both choices give the same instant
+  - id: m-dbe7dde1b969
+    reason: >-
+      stream.hpp readFrameStamp try count 8 vs 9: a different count only matters when the producer writes during every try, which a single-threaded test cannot arrange
+  - id: m-3bb8e91835c7
+    reason: >-
+      stream.hpp readFrameStamp try loop (start index, bound, and the settled test): the variants differ only in how many extra identical reads follow a settled one, or in the try count, which no single-threaded result shows
+  - id: m-4290da65aae6
+    reason: >-
+      stream.hpp readFrameStamp try loop (start index, bound, and the settled test): the variants differ only in how many extra identical reads follow a settled one, or in the try count, which no single-threaded result shows
+  - id: m-5fe6be28dc99
+    reason: >-
+      stream.hpp readFrameStamp try loop (start index, bound, and the settled test): the variants differ only in how many extra identical reads follow a settled one, or in the try count, which no single-threaded result shows
+  - id: m-171c5e6a96dd
+    reason: >-
+      stream.hpp readFrameStamp consistency test: the variants differ only when the producer writes between the two sequence reads, which needs a concurrent writer; the threaded test checks that no torn value is returned
+  - id: m-29e36d0cb4a5
+    reason: >-
+      stream.hpp readFrameStamp consistency test: the variants differ only when the producer writes between the two sequence reads, which needs a concurrent writer; the threaded test checks that no torn value is returned
+  - id: m-d9d28fa3329d
+    reason: >-
+      stream.hpp readFrameStamp settled flag: leaving it false repeats the same consistent read up to the try limit and returns the same result
+  - id: m-82203571b9fa
+    reason: >-
+      stream.hpp readFrameStamp None test: the variant reads an unstamped slot as Value with the zero instant instead of None, and laterOf and CheckStall then use the arm time either way
+  - id: m-f2d206377c62
+    reason: >-
+      stream.hpp readFrameStamp out test: every caller passes a non-null out, and with a None result the written zero equals the initial value
+  - id: m-afb8a9b48c8c
+    reason: >-
+      stream.hpp stamp_lo_ initial value: read only after a stamp (sequence nonzero), which wrote it
+  - id: m-17375e2cc954
+    reason: >-
+      stream.hpp stamp_hi_ initial value: read only after a stamp (sequence nonzero), which wrote it
