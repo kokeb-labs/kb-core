@@ -1,6 +1,9 @@
 ---
-# Release of a pushed v* tag after its CI passed: per-part packages, SHA256SUMS and catalog/compat.yml
-# (docs/versioning.md), then signed build provenance. Calls kokeb-labs/ci-tools ru-release and ru-attest-release.
+# Release of a pushed v* tag after its CI passed: the source archive, the port SDK (kb-port-sdk-<version>.tar.gz and
+# its manifest, docs/port-sdk.md), the SPDX SBOM and SHA256SUMS, then signed build provenance for every file in
+# SHA256SUMS (kokeb-labs/ci-tools ru-attest-release). The release job is this file's own, not ru-release, only because
+# ru-release cannot attach extra files yet. The port SDK is built by the unprivileged CI (ci-port-sdk.yml) on the tag;
+# this privileged workflow runs no code from the tagged tree.
 # The per-part package artifacts come from a packaging job that arrives with the first part's source.
 # PENDING (ADR-0012, ADR-0013; needs ci-tools ru-release-evidence): a job before `release` that writes
 # kb-core-<version>.lock.yml (this tag's own commit SHA, every pin with tag and commit, toolchain and SOUP versions),
@@ -23,12 +26,91 @@ jobs:
       github.event.workflow_run.conclusion == 'success' &&
       github.event.workflow_run.event == 'push' &&
       startsWith(github.event.workflow_run.head_branch, 'v')
-    uses: kokeb-labs/ci-tools/.github/workflows/ru-release.yml@v1
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
     permissions:
       contents: write
-    with:
-      tag_name: ${{ github.event.workflow_run.head_branch }}
-      prerelease: ${{ contains(github.event.workflow_run.head_branch, '-') }}
+      actions: read  # download the port SDK artifact of the triggering run
+    env:
+      TAG: ${{ github.event.workflow_run.head_branch }}
+      COMMIT: ${{ github.event.workflow_run.head_sha }}
+    steps:
+      # This workflow runs with write access, so nothing from the tagged tree is checked out as code or run: the
+      # checkout is the default branch (what ru-release does), used only for git history, and the tag is read
+      # through `git archive` by the pinned asset script below.
+      - name: Checkout the default branch for the tag's history
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Check the tag points to the released commit
+        run: |
+          set -euo pipefail
+          tagged="$(git rev-parse "refs/tags/${TAG}^{commit}" 2>/dev/null || true)"
+          if [ "$tagged" != "$COMMIT" ]; then
+            echo "::error::tag ${TAG} points to ${tagged:-nothing}, not to the released commit ${COMMIT}"
+            exit 1
+          fi
+
+      # The port SDK (docs/port-sdk.md) was built and verified from the tag by the unprivileged CI workflow
+      # (ci-port-sdk.yml) of this very run; here it is only downloaded and checked against its manifest.
+      - name: Download the port SDK of the triggering CI run
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333  # v8.0.2
+        with:
+          name: kb-port-sdk
+          path: ${{ runner.temp }}/sdk
+          run-id: ${{ github.event.workflow_run.id }}
+          repository: ${{ github.repository }}
+          github-token: ${{ github.token }}
+
+      - name: Check the port SDK against its manifest
+        run: |
+          set -euo pipefail
+          cd "$RUNNER_TEMP/sdk"
+          v="${TAG#v}"
+          files="$(find . -mindepth 1 -printf '%f\n' | sort | tr '\n' ' ')"
+          [ "$files" = "kb-port-sdk-${v}.manifest.json kb-port-sdk-${v}.tar.gz " ] || {
+            echo "::error::the artifact holds unexpected files: ${files}"; exit 1; }
+          want="$(jq -r .archive.sha256 "kb-port-sdk-${v}.manifest.json")"
+          have="$(sha256sum "kb-port-sdk-${v}.tar.gz" | cut -d' ' -f1)"
+          [ "$want" = "$have" ] || { echo "::error::archive SHA-256 ${have} differs from the manifest ${want}"; exit 1; }
+          [ "$(jq -r .version "kb-port-sdk-${v}.manifest.json")" = "$v" ] || {
+            echo "::error::manifest version differs from the tag"; exit 1; }
+          [ "$(jq -r .commit "kb-port-sdk-${v}.manifest.json")" = "$COMMIT" ] || {
+            echo "::error::manifest commit differs from the released commit"; exit 1; }
+
+      # The same asset script ru-release runs, pinned to a ci-tools commit (commit 2643196, 2026-11-07) because
+      # ru-release has no input for extra files. Move back to ru-release@v1 when it gains one.
+      - name: Checkout the release asset script
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          repository: kokeb-labs/ci-tools
+          ref: 264319677ca5431e1650c47234a16b0b6938489d
+          path: .release-assets
+          sparse-checkout: tools/release_assets
+          persist-credentials: false
+
+      - name: Build source archive, SBOM and checksums
+        run: |
+          set -euo pipefail
+          python3 -I .release-assets/tools/release_assets/release_assets.py --tag "$TAG" --out "$RUNNER_TEMP/dist" \
+            --files "$RUNNER_TEMP/sdk/*"
+          {
+            echo '### Release files'
+            echo '```text'
+            cat "$RUNNER_TEMP/dist/SHA256SUMS"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Create Release
+        uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64  # v3.0.3
+        with:
+          tag_name: ${{ github.event.workflow_run.head_branch }}
+          prerelease: ${{ contains(github.event.workflow_run.head_branch, '-') }}
+          files: ${{ runner.temp }}/dist/*
+          fail_on_unmatched_files: true
+          generate_release_notes: true
 
   attest:
     name: Attest release files

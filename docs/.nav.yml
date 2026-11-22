@@ -9,6 +9,7 @@ nav:
       - Layering rules: layering.md
       - Figures: figures.md
       - Port contracts: port-contracts.md
+      - Port SDK: port-sdk.md
       - RTOS boundary: rtos-boundary.md
       - Language floor: language-floor.md
   - Parts:
