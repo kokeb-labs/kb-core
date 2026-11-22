@@ -15,6 +15,7 @@
 
   | File | What |
   | --- | --- |
+  | `kb-port-sdk-<version>.tar.gz`, `kb-port-sdk-<version>.manifest.json` | What a port needs from kb-core, as one file ([Port SDK](port-sdk.md)) |
   | `kb-core-<version>.lock.yml` | kb-core's own tag and commit SHA, every pin (tag, commit, release or rc), the toolchain and SOUP versions CI used, the SHA-256 of every release file |
   | `kb-core-<version>.spdx.json`, `kb-core-<version>.cdx.json` | SBOM in SPDX 2.3 and CycloneDX 1.6 |
   | `kb-core-<version>.cve.json` | Known-CVE scan of the SBOM, with scan date and database version (re-scanned on a schedule) |

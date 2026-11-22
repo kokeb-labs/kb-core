@@ -8,6 +8,15 @@ lists its changes per part, the ESP32 port and its driver pins. The format follo
 
 ### Added
 
+- Port SDK: every release carries `kb-port-sdk-<version>.tar.gz` (the public headers of the interfaces and `kb::dma`,
+  the host models and fakes, the DMA conformance suite, the CMake helpers, the layout file, a slice of
+  `catalog/compat.yml` and the licence: the `vendor` list of `tools/layout/paths.yml`) and
+  `kb-port-sdk-<version>.manifest.json` (per-file SHA-256, the archive's SHA-256). Both are in `SHA256SUMS` and the
+  SPDX SBOM and covered by the release's signed build provenance. `tools/release/port_sdk.py` builds the archive
+  reproducibly and verifies one; the release workflow now runs its own release job (ru-release has no input for extra
+  files) and refuses a tag whose version differs from `cmake/kb_version.cmake`. The test `kb_port_sdk` builds the
+  archive, extracts it into an empty folder and builds a minimal port (`tests/port_sdk/minimal_port/`) that runs the
+  DMA conformance suite. Documentation: [Port SDK](docs/port-sdk.md).
 - Vulnerability tooling: a reviewed list (`tools/vuln/reviewed.json`, schema `kb-vex/1`) of advisories whose primary
   source names the exact pinned version as patched; the eight ThreadX advisories on `v6.5.2.202603b_rel` are on it
   (upstream GHSA `patched_versions` 6.5.2.202603b, checked 2026-11-21). The scan marks them as reviewed (`review`,

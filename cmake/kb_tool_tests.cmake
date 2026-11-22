@@ -8,6 +8,8 @@
 #   kb_examples_index       examples/examples.yml, the folders, the README, the doc snippets and the catalogue agree
 #   kb_board_gen_host       kb board gen on both example boards; the generated files compile against kb::dma (needs the dma part)
 #   kb_language_floor       configuring with KB_CPP_STANDARD below the floor in kb.yml fails with its message
+#   kb_port_sdk             the port SDK asset (tools/release): content, checks, and a minimal port built from the
+#                           extracted archive alone, running the DMA conformance suite (docs/port-sdk.md)
 # Included from the root CMakeLists.txt; adds nothing unless KB_BUILD_TESTS is ON.
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2026 The kb-core authors
@@ -36,6 +38,13 @@ if(Python3_Interpreter_FOUND)
     add_test(NAME kb_layout_root COMMAND ${Python3_EXECUTABLE} -I ${KB_TOOLS_DIR}/layout/layout.py root)
     add_test(NAME kb_layout_stale COMMAND ${Python3_EXECUTABLE} -I ${KB_TOOLS_DIR}/layout/layout.py stale)
     set_tests_properties(kb_layout_root kb_layout_stale PROPERTIES LABELS tools)
+  endif()
+  # The port SDK: the archive is built from the checkout, extracted, and a minimal port is configured against it.
+  # Needs git (the file list is the tracked files) and cmake.
+  if(EXISTS "${KB_ROOT}/.git")
+    add_test(NAME kb_port_sdk COMMAND ${Python3_EXECUTABLE} ${KB_TOOLS_DIR}/release/tests/run.py)
+    set_tests_properties(kb_port_sdk PROPERTIES LABELS tools TIMEOUT 600
+      ENVIRONMENT "KB_PORT_SDK_CXX=${CMAKE_CXX_COMPILER}")
   endif()
   # The vulnerability scan and its renderer, answered from fixtures (no network) and checked against the snapshot.
   add_test(NAME kb_vuln_unit COMMAND ${Python3_EXECUTABLE} ${KB_TOOLS_DIR}/vuln/tests/run.py)

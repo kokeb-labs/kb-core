@@ -99,7 +99,8 @@ lock"). The lock format does not change. What changes is the set of paths the sn
 
 The count rises by two files (`cmake/kb_layout.cmake`, `tools/layout/paths.yml`); the host RTOS backend is two files
 before and after. The authoritative list is `python3 tools/layout/layout.py vendor` in the kb-core checkout, and the
-test `kb_layout_unit` copies exactly that list into an empty folder and configures it, so the list cannot go stale
+test `kb_layout_unit` copies exactly that list (every release also publishes it as the
+[port SDK](port-sdk.md)) into an empty folder and configures it, so the list cannot go stale
 unnoticed. A copy without `tools/layout/paths.yml` stops at configure time and says so.
 
 Other places in a consumer that name kb-core paths change the same way: layering rules that match
