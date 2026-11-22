@@ -228,6 +228,12 @@ async function viaChrome(path) {
     sock.close();
     proc.kill('SIGKILL');
     server.close();
-    rmSync(profile, { recursive: true, force: true });
+    // Chrome may still be writing into its profile for a moment after SIGKILL: retry, and never fail the run
+    // over a temp directory.
+    try {
+      rmSync(profile, { recursive: true, force: true, maxRetries: 10, retryDelay: 500 });
+    } catch (e) {
+      console.warn(`warn: could not remove ${profile}: ${e.code ?? e.message}`);
+    }
   }
 }
