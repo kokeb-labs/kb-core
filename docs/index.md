@@ -14,9 +14,9 @@ package, one version:
 MCU ports (`components/ports/esp32/` first) are separate CMake projects in this repository until they move to their own
 repositories ([MCU ports and repositories](design/ports.md)).
 
-> Status: release candidate. [v0.1.0-rc.1](https://github.com/kokeb-labs/kb-core/releases/tag/v0.1.0-rc.1) is the
-> first release candidate: the parts, 23 pinned chip drivers and the ESP32 and host ports, tested in CI. APIs may
-> still change before 0.1.0.
+> Status: release candidate. [v0.1.0-rc.2](https://github.com/kokeb-labs/kb-core/releases/tag/v0.1.0-rc.2) is the
+> second release candidate: the parts, DMA assignment from a declared board, 23 pinned chip drivers, the ESP32 and
+> host ports and the port SDK, tested in CI. APIs may still change before 0.1.0.
 
 ## In 30 seconds
 

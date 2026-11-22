@@ -113,7 +113,8 @@ class CliTest(unittest.TestCase):
         code, out, _ = self.run_cli("catalog", "build", "--drivers-dir", drv, "--kb-core-dir", common.ROOT,
                                     "--include-head", "-o", "-")
         self.assertEqual(code, 0)
-        self.assertEqual(json.loads(out)["kb_core"]["versions"][-1]["kind"], "dev")
+        # Newest first: the development revision sorts among the tags by its version, not at a fixed end.
+        self.assertEqual([v["kind"] for v in json.loads(out)["kb_core"]["versions"]].count("dev"), 1)
         bad = gitfixture.driver_repo(os.path.join(self.dir, "driver-bad"), "bad", [("v0.2.0", "0.1.0", "[i2c]")])
         self.assertEqual(self.run_cli("catalog", "build", "--drivers-dir", bad, "-o", "-")[0], cli.EXIT_RESOLVE)
         self.assertEqual(self.run_cli("catalog", "build", "--drivers-dir", "/nonexistent", "-o", "-")[0],
