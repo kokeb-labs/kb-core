@@ -1,0 +1,26 @@
+var searchData=
+[
+  ['adc_2ehpp_0',['adc.hpp',['../adc_8hpp.html',1,'']]],
+  ['adcchannelops_1',['AdcChannelOps',['../structkb_1_1iface_1_1AdcChannelOps.html',1,'kb::iface']]],
+  ['adcchannelref_2',['adcchannelref',['../classkb_1_1iface_1_1AdcChannelRef.html',1,'kb::iface::AdcChannelRef'],['../classkb_1_1iface_1_1AdcChannelRef.html#a5122123e79e6367b2b7a14334f8a9fe8',1,'kb::iface::AdcChannelRef::AdcChannelRef()']]],
+  ['addressnack_3',['AddressNack',['../types_8hpp.html#a72c60ac2e413633a22d7bc3b9033bc41a56f991230a68b28c915c9edf0a29e9eb',1,'kb::iface']]],
+  ['alreadystarted_4',['AlreadyStarted',['../status_8hpp.html#a4b273b5f99ae6c980840ff524cafd442a4cd1f9329bcc73c384a4f418d9e53c79',1,'kb']]],
+  ['api_20reference_5',['kb-core API reference',['../index.html',1,'']]],
+  ['append_6',['append',['../classkb_1_1utils_1_1FixedString.html#a1db3b4ff2e1c51f02d9ac48a0805fc6b',1,'kb::utils::FixedString::Append()'],['../classkb_1_1utils_1_1FaultJournal.html#a72a21d8277a1f60c6aaef045d622fa4c',1,'kb::utils::FaultJournal::Append()']]],
+  ['appendbool_7',['AppendBool',['../classkb_1_1utils_1_1FixedString.html#a5994804ee8755c047bc7a169f2468fc0',1,'kb::utils::FixedString']]],
+  ['appendchar_8',['AppendChar',['../classkb_1_1utils_1_1FixedString.html#aabf453764356f76a9f73892b8d85ce8d',1,'kb::utils::FixedString']]],
+  ['appendhex_9',['AppendHex',['../classkb_1_1utils_1_1FixedString.html#ac756e8a50ad3571bbfbca9026834eeef',1,'kb::utils::FixedString']]],
+  ['appends_10',['appends',['../structkb_1_1utils_1_1JournalStats.html#a58276da1ce2638bee7507f8fde9bf6ca',1,'kb::utils::JournalStats']]],
+  ['appendsigned_11',['AppendSigned',['../classkb_1_1utils_1_1FixedString.html#a57b8d349983a3e4c7a5405c92559e236',1,'kb::utils::FixedString']]],
+  ['appendunsigned_12',['AppendUnsigned',['../classkb_1_1utils_1_1FixedString.html#ad008afb7f79d3596e16def3bbdd3a238',1,'kb::utils::FixedString']]],
+  ['asmutablespan_13',['AsMutableSpan',['../classkb_1_1utils_1_1StaticVector.html#afbd3aa8df3e21ceb16667b2bc633999d',1,'kb::utils::StaticVector']]],
+  ['assigned16_14',['AsSigned16',['../endian_8hpp.html#ad2225dcf9bbf1f4169358af02b508971',1,'kb::utils']]],
+  ['assigned32_15',['AsSigned32',['../endian_8hpp.html#a690a8e890fab154242c2e4ac920cd3ce',1,'kb::utils']]],
+  ['asspan_16',['AsSpan',['../classkb_1_1utils_1_1StaticVector.html#a0025a7f0dfa8f2a35433ff71fcf45426',1,'kb::utils::StaticVector']]],
+  ['async_2ehpp_17',['async.hpp',['../async_8hpp.html',1,'']]],
+  ['asyncfromsync_18',['asyncfromsync',['../classkb_1_1iface_1_1AsyncFromSync.html#a3e6d352522a91f3c9093b9406eb88648',1,'kb::iface::AsyncFromSync::AsyncFromSync()'],['../classkb_1_1iface_1_1AsyncFromSync.html',1,'kb::iface::AsyncFromSync&lt; Bus, Clock &gt;']]],
+  ['asyncpoll_19',['AsyncPoll',['../structkb_1_1iface_1_1AsyncPoll.html',1,'kb::iface']]],
+  ['asyncstate_20',['AsyncState',['../async_8hpp.html#a095d4c5d314ea03c4d97ca538b2dc70f',1,'kb::iface']]],
+  ['at_21',['At',['../classkb_1_1utils_1_1StaticVector.html#ac4e256200d3bd7716b02adce47f99058',1,'kb::utils::StaticVector']]],
+  ['atend_22',['AtEnd',['../classkb_1_1utils_1_1ByteReader.html#afe6ca263e92633527df5b237ee48156f',1,'kb::utils::ByteReader']]]
+];
