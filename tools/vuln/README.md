@@ -2,7 +2,7 @@
 
 The known-vulnerability scan of the components this kb-core revision pins: every driver at its pinned tag, the
 ThreadX kernel and the ESP-IDF release. Each is looked up in the [OSV](https://osv.dev) database by the commit of its
-pin. Standard library only; the weekly workflow is `.github/workflows/ci-vulnerabilities.yml`.
+pin. Standard library only; the scan workflow is `.github/workflows/ci-vulnerabilities.yml`.
 
 ```bash
 python3 tools/vuln/scan.py                          # scan (network) and write configurator/data/vulnerabilities.json
@@ -22,7 +22,7 @@ judges the page as of the scan's own date, so it never depends on the clock and 
 
 `reviewed.json` (`kb-vex/1`, `catalog/schemas/vex.schema.json`) holds advisories that were checked against their
 primary source. `scan.py` reads it, adds a `review` to each advisory an entry covers, and counts it as reviewed, not
-open; only open advisories open the weekly issue. Fields: `id`, `aliases`, `component`, `component_version`, `status`
+open; only open advisories open the issue. Fields: `id`, `aliases`, `component`, `component_version`, `status`
 (`fixed_in_pinned_version`; `not_affected` is allowed and unused), `reason`, `source` (https URL), `reviewed` (date).
 
 To add an entry, the **review rule** applies: the primary source (for ThreadX the upstream GitHub security advisory,

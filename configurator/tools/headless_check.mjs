@@ -134,10 +134,13 @@ async function evaluate(expr) {
   if (r.exceptionDetails) throw new Error(r.exceptionDetails.exception?.description || 'evaluate failed');
   return r.result.value;
 }
+// A JSON string literal that is safe inside generated page code (also escapes the characters that end a script).
+const UNSAFE = { '<': '\\u003C', '>': '\\u003E', '/': '\\u002F', '\u2028': '\\u2028', '\u2029': '\\u2029' };
+const literal = (v) => JSON.stringify(v).replace(/[<>/\u2028\u2029]/g, (c) => UNSAFE[c]);
 // A real mouse click at the centre of an element (so the page sees what a person's click does); each one is counted.
 let clicks = 0;
 async function click(selector) {
-  const box = await evaluate(`(() => { const el = document.querySelector(${JSON.stringify(selector)}); if (!el) return null;
+  const box = await evaluate(`(() => { const el = document.querySelector(${literal(selector)}); if (!el) return null;
     el.scrollIntoView({ block: 'center' }); const r = el.getBoundingClientRect();
     return { x: r.x + r.width / 2, y: r.y + r.height / 2, disabled: !!el.disabled }; })()`);
   if (!box) throw new Error(`no element ${selector}`);

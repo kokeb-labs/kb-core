@@ -8,7 +8,7 @@ need if it later qualifies a component, written as the parts land:
 | Record | File |
 | --- | --- |
 | SOUP list (FreeRTOS, ESP-IDF, toolchains): version, purpose, known anomalies | [soup.md](soup.md) |
-| Known vulnerabilities of the pinned components, checked weekly (OSV) | [vulnerabilities.md](vulnerabilities.md) |
+| Known vulnerabilities of the pinned components, checked by a scan (OSV) | [vulnerabilities.md](vulnerabilities.md) |
 | MISRA C++:2023 compliance matrix | `misra-matrix.md` (with the first source) |
 | Requirement to test traceability, per part | `traceability-<part>.md` (with the first source) |
 | Independent review records | `reviews/` (one per review round) |

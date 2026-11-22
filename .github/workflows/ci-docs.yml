@@ -1,7 +1,7 @@
 ---
 # Documentation: strict MkDocs build, figure and generated-region checks, Doxygen per part under /api/, link check,
 # publish on main and tags. Calls kokeb-labs/ci-tools ru-mkdocs-publish. The vulnerability data is rendered into the
-# build (collect.py, with the build date, so the page can say it is stale); the weekly run rescans first.
+# build (collect.py, with the build date, so the page can say it is stale); the scan run rescans first.
 name: Docs
 
 on:
@@ -10,7 +10,7 @@ on:
       refresh_vulnerabilities:
         description: >-
           Rescan the pinned components (tools/vuln/scan.py, network) before the build, so the site embeds today's
-          data; set by the weekly ci-vulnerabilities.yml, never committed.
+          data; set by the scan workflow ci-vulnerabilities.yml, never committed.
         type: boolean
         default: false
 

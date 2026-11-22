@@ -1,15 +1,19 @@
 ---
 # Known vulnerabilities of the pinned components (tools/vuln, schema kb-vulns/1, docs/assurance/vulnerabilities.md).
-# Weekly (Mondays 05:17 UTC) and on demand: scan the pins in OSV, open or update ONE issue when an OPEN advisory is
-# listed (one that tools/vuln/reviewed.json does not cover), fail (red) when the scan itself fails, then rebuild and
-# republish the site with the fresh data embedded at build time (the page has no network access). Nothing is
-# committed. The fixture tests and snapshot check run in the CI gate (ci-vulnerabilities-check.yml, called from ci.yml).
+# Scan the pins in OSV on a push to main that changes the scan or its reviewed list, or when called. A weekly
+# schedule needs a trigger-policy exception in ci-tools (docs/triggers.md) and is not set up yet. The scan opens or
+# updates ONE issue when an OPEN advisory is listed (one that tools/vuln/reviewed.json does not cover), fails (red)
+# when the scan itself fails, then rebuilds and republishes the site with the fresh data embedded at build time (the
+# page has no network access). Nothing is
+# committed. The fixture tests and snapshot check run in the CI gate (ci-vulnerabilities-check.yml, from ci.yml).
 name: Vulnerabilities
 
 on:
-  schedule:
-    - cron: "17 5 * * 1"
-  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - tools/vuln/**
+  workflow_call:
 
 permissions: {}
 

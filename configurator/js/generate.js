@@ -208,7 +208,7 @@
 
   // -- reports ----------------------------------------------------------------------------------------------
   function mdCell(s) {
-    return String(s === null || s === undefined ? '' : s).replace(/\|/g, '\\|');
+    return String(s === null || s === undefined ? '' : s).replace(/[\\|]/g, '\\$&');
   }
 
   // One row per selected component, from the site catalogue (works before the lock exists).

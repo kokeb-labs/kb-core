@@ -12,12 +12,12 @@ lists its changes per part, the ESP32 port and its driver pins. The format follo
   source names the exact pinned version as patched; the eight ThreadX advisories on `v6.5.2.202603b_rel` are on it
   (upstream GHSA `patched_versions` 6.5.2.202603b, checked 2026-11-21). The scan marks them as reviewed (`review`,
   counts `open` and `reviewed`; the schema stays `kb-vulns/1`, unreleased until now); an entry stops applying when the
-  pin moves. The weekly issue opens only for open advisories; the page and the Supply chain panel show reviewed ones as
+  pin moves. The issue opens only for open advisories; the page and the Supply chain panel show reviewed ones as
   *fixed in the pinned version* with reason and source, and the chip reads "0 open, 8 reviewed". The OSV range error
   for these ids is noted under *Known data issues* in the configurator guide; nothing was reported upstream.
 - Configurator: the *Check* panel is replaced by a *Supply chain* panel (`js/panel.js`, loaded after the first view):
   SPDX 2.3 and CycloneDX 1.6 downloads with component count, licences and pins; known vulnerabilities of the selected
-  components from the weekly scan (none known, not scanned, missing data, a warning from the 11th day); the release
+  components from the scan (none known, not scanned, missing data, a warning from the 11th day); the release
   asset and its `gh attestation verify` command; tests, coverage and MISRA chips per driver (kb-core's evidence until
   drivers have their own); real blockers next to their cause, warnings and notes under a closed *Details*. The
   stylesheet now uses `light-dark()` instead of a second copy of the dark palette.

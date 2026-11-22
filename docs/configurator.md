@@ -118,7 +118,7 @@ checks, and a one-line summary in a live region says what changed.
 
 - **SBOM.** *Download SPDX 2.3* and *Download CycloneDX 1.6* (the files of the zip), the component count, the
   licences ("all MIT", or the list) and how many versions are pinned by tag and commit.
-- **Known vulnerabilities.** The weekly scan ([Vulnerability data](#vulnerability-data)) for the selected components
+- **Known vulnerabilities.** The scan ([Vulnerability data](#vulnerability-data)) for the selected components
   only: kb-core, the port, each driver at its pinned tag, the RTOS and, on ESP32, ESP-IDF. A status chip and
   "checked <date>"; **none known** is shown plainly, but only for components the data holds. A component it does not
   hold (or holds at another version) is listed as *not scanned*; advisory ids link to their OSV pages. The chip counts
@@ -174,13 +174,14 @@ timestamp is the newest commit date of the selected components.
 ## Vulnerability data
 
 The known vulnerabilities of the pinned components (every driver at its pinned tag, the ThreadX kernel and ESP-IDF)
-come from a weekly job, not from the page. `.github/workflows/ci-vulnerabilities.yml` runs on Mondays at 05:17 UTC
-(and on demand): `tools/vuln/scan.py` asks the [OSV](https://osv.dev) database about the commit of each pin and writes
+come from a scan job, not from the page. `.github/workflows/ci-vulnerabilities.yml` runs on a push to main that
+changes the scan or its reviewed list (a weekly schedule needs a trigger-policy exception in ci-tools first).
+`tools/vuln/scan.py` asks the [OSV](https://osv.dev) database about the commit of each pin and writes
 `configurator/data/vulnerabilities.json` (schema `kb-vulns/1`: the UTC date checked, the source, the scanner, and per
 component its version, package URL, status, open and reviewed counts and advisories). `tools/vuln/collect.py`
 renders that file as `vulnerabilities.js`, which the page reads like the evidence data (it has a strict
 content-security policy and no network access), and as the page
-[Known vulnerabilities](assurance/vulnerabilities.md). The weekly run rebuilds and
+[Known vulnerabilities](assurance/vulnerabilities.md). The scan run rebuilds and
 republishes the site with the fresh data; it commits nothing, so the file in the repository is only the snapshot of the
 last time someone ran the scan by hand.
 

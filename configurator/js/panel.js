@@ -3,7 +3,7 @@
 //
 // The right-hand panel: what the selection pulls in and what is known about it, not a wall of combinations.
 //   SBOM        SPDX 2.3 and CycloneDX 1.6 downloads, component count, licences, pinned versions
-//   CVE         the weekly scan (data/vulnerabilities.js, kb-vulns/1) for the selected components only; "none known"
+//   CVE         the scan (data/vulnerabilities.js, kb-vulns/1) for the selected components only; "none known"
 //               only with data, "not scanned" for a component the scan does not hold, a warning past 10 days; an
 //               advisory with a `review` (tools/vuln/reviewed.json) is "fixed in the pinned version" and not open
 //   Provenance  the release asset of the selected kb-core version and the command that verifies its attestation

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2026 The kb-core authors
-"""The text of the one GitHub issue the weekly scan keeps open, from a vulnerabilities.json.
+"""The text of the one GitHub issue the scan keeps open, from a vulnerabilities.json.
 
   issue_body.py FILE            the issue body on stdout, ending with a marker line that lists the advisory ids
   issue_body.py FILE --ids      only the sorted ids ("component:id"), one per line (what the marker holds)
@@ -36,7 +36,7 @@ def marker(doc: dict) -> str:
 def body(doc: dict) -> str:
     t = doc["totals"]
     n = t["open"]
-    out = [f"The weekly scan ({doc['scanner']}, {doc['source']}) on **{doc['checked_at']}** found {n} open "
+    out = [f"The scan ({doc['scanner']}, {doc['source']}) on **{doc['checked_at']}** found {n} open "
            f"advisor{'y' if n == 1 else 'ies'} for the pinned components. An open advisory means the database lists "
            "the pinned commit as affected and no reviewed entry applies; read it, decide whether kb-core is exposed, "
            "and record the decision (SOUP list, a reviewed entry in `tools/vuln/reviewed.json`, or move the pin).", ""]
