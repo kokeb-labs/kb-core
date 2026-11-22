@@ -1,0 +1,52 @@
+{
+  "catalog": "catalogs/site-availability.json",
+  "description": "A planned family has no port yet: every driver is unavailable for that one reason.",
+  "expect": {
+    "available": [],
+    "unavailable": [
+      {
+        "code": "KB-RES-004",
+        "name": "bmp581",
+        "reason": "no port for STM32 (STM32Cube) yet"
+      },
+      {
+        "code": "KB-RES-004",
+        "name": "gcc_chip",
+        "reason": "no port for STM32 (STM32Cube) yet"
+      },
+      {
+        "code": "KB-RES-004",
+        "name": "mcp9700",
+        "reason": "no port for STM32 (STM32Cube) yet"
+      },
+      {
+        "code": "KB-RES-004",
+        "name": "modern_chip",
+        "reason": "no port for STM32 (STM32Cube) yet"
+      },
+      {
+        "code": "KB-RES-004",
+        "name": "new_core_chip",
+        "reason": "no port for STM32 (STM32Cube) yet"
+      },
+      {
+        "code": "KB-RES-004",
+        "name": "rtos_chip",
+        "reason": "no port for STM32 (STM32Cube) yet"
+      },
+      {
+        "code": "KB-RES-004",
+        "name": "uart_chip",
+        "reason": "no port for STM32 (STM32Cube) yet"
+      },
+      {
+        "code": "KB-RES-004",
+        "name": "ws2812_rmt",
+        "reason": "no port for STM32 (STM32Cube) yet"
+      }
+    ]
+  },
+  "selection": {
+    "family": "stm32"
+  }
+}

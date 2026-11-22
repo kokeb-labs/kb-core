@@ -8,7 +8,7 @@ import { spawnSync } from "node:child_process";
 import { readdirSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { canonicalJson, files, resolve } from "../../configurator/resolver.mjs";
+import { availability, canonicalJson, files, resolve } from "../../configurator/resolver.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const dir = process.argv[2] || join(here, "vectors");
@@ -21,6 +21,18 @@ for (const name of readdirSync(dir).filter((n) => n.endsWith(".json")).sort()) {
   const vector = JSON.parse(readFileSync(join(dir, name), "utf8"));
   const catalog = typeof vector.catalog === "string"
     ? JSON.parse(readFileSync(join(dir, vector.catalog), "utf8")) : vector.catalog;
+  if ("selection" in vector) {
+    // An availability vector: the site catalogue and a selection give the available and unavailable drivers.
+    if (canonicalJson(availability(catalog, vector.selection)) !== canonicalJson(vector.expect)) {
+      failed += 1;
+      console.log(`FAIL ${name}`);
+      console.log(`  expected ${canonicalJson(vector.expect).slice(0, 2000)}`);
+      console.log(`  got      ${canonicalJson(availability(catalog, vector.selection)).slice(0, 2000)}`);
+    } else {
+      console.log(`ok   ${name}`);
+    }
+    continue;
+  }
   const got = resolve(catalog, vector.image);
   const exp = vector.expect;
   const actual = { ok: got.ok, errors: pick(got.errors), warnings: pick(got.warnings) };

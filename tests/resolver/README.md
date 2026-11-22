@@ -14,5 +14,10 @@ vector and must agree with its expectation byte for byte.
   subjects, `rows`, the new `image` and `lock`, and every emitted file. `tools/kb/tests/test_upgrade.py` and
   `run_js_upgrade_vectors.mjs` (started by `run_js_vectors.mjs` when it is given no folder) run them.
 
+- `vectors/033-*.json` and up, availability: `description`, `catalog` (a site catalogue under `vectors/catalogs/`),
+  `selection` (family, target, rtos, language, kb_core) in place of `image`, and `expect`: `available` and
+  `unavailable` (`name`, `code`, `reason`). `test_vectors.py` and `run_js_vectors.mjs` run them through
+  `availability()` of each resolver.
+
 A rule change updates the specification, both resolvers and the affected vectors in one pull request. Review an
 expectation by reading it: the vectors are the specification's examples, not snapshots to refresh blindly.

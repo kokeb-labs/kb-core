@@ -99,6 +99,7 @@ globalThis.KB_CATALOG = {
      "text": "Two alarm thresholds per channel on GPIO0 and GPIO1; four GPIOs on TSSOP; power-down"
     }
    ],
+   "category": "sensor",
    "chip": "ADS7952",
    "figures": [
     {
@@ -125,9 +126,33 @@ globalThis.KB_CATALOG = {
    "package": "TSSOP-38",
    "pinned": "0.1.0-rc.1",
    "repo": "kokeb-labs-drivers/driver-ads7952",
+   "requires": {
+    "bus": [
+     "spi"
+    ],
+    "kb_core_min": null,
+    "language": {
+     "compilers": {
+      "arm_gcc": "10",
+      "clang": "13",
+      "esp_idf": "5.0",
+      "gcc": "10",
+      "msvc": "19.30"
+     },
+     "standard": 20
+    },
+    "mcus": [
+     "any"
+    ],
+    "peripheral": null,
+    "rtos": []
+   },
    "requires_owner": false,
    "status": "rc",
    "summary": "C++20 driver for the TI ADS7950, ADS7951, ADS7952 and ADS7953 12-bit SPI SAR ADCs.",
+   "tags": [
+    "adc"
+   ],
    "url": "https://github.com/kokeb-labs-drivers/driver-ads7952.git",
    "versions": [
     {
@@ -188,6 +213,7 @@ globalThis.KB_CATALOG = {
      "text": "The daisy chain (Limitations)"
     }
    ],
+   "category": "sensor",
    "chip": "ADS9324",
    "figures": [
     {
@@ -220,9 +246,33 @@ globalThis.KB_CATALOG = {
    "package": "VQFN-64",
    "pinned": "0.1.0-rc.1",
    "repo": "kokeb-labs-drivers/driver-ads9324",
+   "requires": {
+    "bus": [
+     "spi"
+    ],
+    "kb_core_min": null,
+    "language": {
+     "compilers": {
+      "arm_gcc": "10",
+      "clang": "13",
+      "esp_idf": "5.0",
+      "gcc": "10",
+      "msvc": "19.30"
+     },
+     "standard": 20
+    },
+    "mcus": [
+     "any"
+    ],
+    "peripheral": null,
+    "rtos": []
+   },
    "requires_owner": false,
    "status": "rc",
    "summary": "C++20 driver for the TI ADS9324 16-channel, 16-bit, 1 MSPS simultaneous-sampling SAR ADC with integrated PGA and SPI interface.",
+   "tags": [
+    "adc"
+   ],
    "url": "https://github.com/kokeb-labs-drivers/driver-ads9324.git",
    "versions": [
     {
@@ -279,6 +329,7 @@ globalThis.KB_CATALOG = {
      "text": "ASCII \"BASIS Protocol 2\" (default) and Modbus RTU, both complete, one typed API"
     }
    ],
+   "category": "sensor",
    "chip": "BASIS 2 (B and BC series)",
    "figures": [
     {
@@ -311,9 +362,34 @@ globalThis.KB_CATALOG = {
    "package": "JST GH 6-pin connector",
    "pinned": "0.1.0-rc.1",
    "repo": "kokeb-labs-drivers/driver-alicat-basis2",
+   "requires": {
+    "bus": [
+     "uart",
+     "modbus"
+    ],
+    "kb_core_min": null,
+    "language": {
+     "compilers": {
+      "arm_gcc": "10",
+      "clang": "13",
+      "esp_idf": "5.0",
+      "gcc": "10",
+      "msvc": "19.30"
+     },
+     "standard": 20
+    },
+    "mcus": [
+     "any"
+    ],
+    "peripheral": null,
+    "rtos": []
+   },
    "requires_owner": false,
    "status": "rc",
    "summary": "C++20 driver for the Alicat BASIS 2 gas mass flow meters (B series) and controllers (BC series) over a serial line, with the ASCII protocol and Modbus RTU behind one API.",
+   "tags": [
+    "flow-sensor"
+   ],
    "url": "https://github.com/kokeb-labs-drivers/driver-alicat-basis2.git",
    "versions": [
     {
@@ -371,6 +447,7 @@ globalThis.KB_CATALOG = {
      "text": "ABI quadrature, UVW commutation and PWM outputs; one-time-programmable (OTP) settings"
     }
    ],
+   "category": "sensor",
    "chip": "AS5047U",
    "figures": [
     {
@@ -397,9 +474,33 @@ globalThis.KB_CATALOG = {
    "package": "TSSOP-14",
    "pinned": "0.1.0-rc.1",
    "repo": "kokeb-labs-drivers/driver-as5047u",
+   "requires": {
+    "bus": [
+     "spi"
+    ],
+    "kb_core_min": null,
+    "language": {
+     "compilers": {
+      "arm_gcc": "10",
+      "clang": "13",
+      "esp_idf": "5.0",
+      "gcc": "10",
+      "msvc": "19.30"
+     },
+     "standard": 20
+    },
+    "mcus": [
+     "any"
+    ],
+    "peripheral": null,
+    "rtos": []
+   },
    "requires_owner": false,
    "status": "rc",
    "summary": "C++20 driver for the AS5047U 14-bit magnetic rotary position sensor.",
+   "tags": [
+    "magnetic-encoder"
+   ],
    "url": "https://github.com/kokeb-labs-drivers/driver-as5047u.git",
    "versions": [
     {
@@ -456,6 +557,7 @@ globalThis.KB_CATALOG = {
      "text": "WP pin (driven by the driver if your port has the hook), write enable latch, non-volatile block protection"
     }
    ],
+   "category": "memory",
    "chip": "AT25040B",
    "figures": [
     {
@@ -482,9 +584,33 @@ globalThis.KB_CATALOG = {
    "package": "SOIC-8",
    "pinned": "0.1.0-rc.1",
    "repo": "kokeb-labs-drivers/driver-at25040b",
+   "requires": {
+    "bus": [
+     "spi"
+    ],
+    "kb_core_min": null,
+    "language": {
+     "compilers": {
+      "arm_gcc": "10",
+      "clang": "13",
+      "esp_idf": "5.0",
+      "gcc": "10",
+      "msvc": "19.30"
+     },
+     "standard": 20
+    },
+    "mcus": [
+     "any"
+    ],
+    "peripheral": null,
+    "rtos": []
+   },
    "requires_owner": false,
    "status": "rc",
    "summary": "C++20 driver for the Microchip AT25010B, AT25020B and AT25040B SPI serial EEPROMs.",
+   "tags": [
+    "eeprom"
+   ],
    "url": "https://github.com/kokeb-labs-drivers/driver-at25040b.git",
    "versions": [
     {
@@ -541,6 +667,7 @@ globalThis.KB_CATALOG = {
      "text": "Forced, normal and continuous modes, oversampling, IIR filter, FIFO, interrupt sources, out-of-range"
     }
    ],
+   "category": "sensor",
    "chip": "BMP581",
    "figures": [
     {
@@ -570,9 +697,34 @@ globalThis.KB_CATALOG = {
    "package": "LGA-10",
    "pinned": "0.1.0-rc.1",
    "repo": "kokeb-labs-drivers/driver-bmp581",
+   "requires": {
+    "bus": [
+     "i2c",
+     "spi"
+    ],
+    "kb_core_min": null,
+    "language": {
+     "compilers": {
+      "arm_gcc": "10",
+      "clang": "13",
+      "esp_idf": "5.0",
+      "gcc": "10",
+      "msvc": "19.30"
+     },
+     "standard": 20
+    },
+    "mcus": [
+     "any"
+    ],
+    "peripheral": null,
+    "rtos": []
+   },
    "requires_owner": false,
    "status": "rc",
    "summary": "C++20 driver for the Bosch BMP581 barometric pressure and temperature sensor on I2C and SPI.",
+   "tags": [
+    "pressure-sensor"
+   ],
    "url": "https://github.com/kokeb-labs-drivers/driver-bmp581.git",
    "versions": [
     {
@@ -630,6 +782,7 @@ globalThis.KB_CATALOG = {
      "text": "NRST and BOOTN when your port has SetReset() and SetBootn(); reads H_INTN"
     }
    ],
+   "category": "sensor",
    "chip": "BNO08x",
    "figures": [
     {
@@ -665,9 +818,35 @@ globalThis.KB_CATALOG = {
    "package": "LGA-28",
    "pinned": "0.1.0-rc.1",
    "repo": "kokeb-labs-drivers/driver-bno08x",
+   "requires": {
+    "bus": [
+     "i2c",
+     "spi",
+     "uart"
+    ],
+    "kb_core_min": null,
+    "language": {
+     "compilers": {
+      "arm_gcc": "10",
+      "clang": "13",
+      "esp_idf": "5.0",
+      "gcc": "10",
+      "msvc": "19.30"
+     },
+     "standard": 20
+    },
+    "mcus": [
+     "any"
+    ],
+    "peripheral": null,
+    "rtos": []
+   },
    "requires_owner": true,
    "status": "rc",
    "summary": "C++20 driver for the CEVA BNO080, BNO085 and BNO086 smart sensor hubs (SH-2 over SHTP on I2C, SPI and UART, and the UART-RVC mode).",
+   "tags": [
+    "imu"
+   ],
    "url": "https://github.com/kokeb-labs-drivers/driver-bno08x.git",
    "versions": [
     {
@@ -722,6 +901,7 @@ globalThis.KB_CATALOG = {
      "text": "TI SN65HVD230, 3.3 V (Hardware)"
     }
    ],
+   "category": "motor",
    "chip": "SN65HVD230",
    "figures": [
     {
@@ -754,9 +934,33 @@ globalThis.KB_CATALOG = {
    "package": "SOIC-8",
    "pinned": "0.1.0-rc.1",
    "repo": "kokeb-labs-drivers/driver-canopen-client",
+   "requires": {
+    "bus": [
+     "canopen"
+    ],
+    "kb_core_min": null,
+    "language": {
+     "compilers": {
+      "arm_gcc": "10",
+      "clang": "13",
+      "esp_idf": "5.0",
+      "gcc": "10",
+      "msvc": "19.30"
+     },
+     "standard": 20
+    },
+    "mcus": [
+     "any"
+    ],
+    "peripheral": null,
+    "rtos": []
+   },
    "requires_owner": true,
    "status": "rc",
    "summary": "A generic, product-agnostic CANopen client: NMT master, SDO client, heartbeat, EMCY, SYNC, PDO helpers and a CiA 402 drive state machine over a classic CAN frame port.",
+   "tags": [
+    "motor-driver"
+   ],
    "url": "https://github.com/kokeb-labs-drivers/driver-canopen-client.git",
    "versions": [
     {
@@ -809,6 +1013,7 @@ globalThis.KB_CATALOG = {
      "text": "Ping and ID scan, Read, Write, Reg Write, Action, Reboot, Factory Reset, Clear, Backup, Sync and Bulk Read and Write, Fast Sync and Bulk Read"
     }
    ],
+   "category": "motor",
    "chip": "DYNAMIXEL",
    "figures": [
     {
@@ -841,9 +1046,33 @@ globalThis.KB_CATALOG = {
    "package": "TTL servo",
    "pinned": "0.1.0-rc.1",
    "repo": "kokeb-labs-drivers/driver-dynamixel",
+   "requires": {
+    "bus": [
+     "uart"
+    ],
+    "kb_core_min": null,
+    "language": {
+     "compilers": {
+      "arm_gcc": "10",
+      "clang": "13",
+      "esp_idf": "5.0",
+      "gcc": "10",
+      "msvc": "19.30"
+     },
+     "standard": 20
+    },
+    "mcus": [
+     "any"
+    ],
+    "peripheral": null,
+    "rtos": []
+   },
    "requires_owner": false,
    "status": "rc",
    "summary": "C++20 driver for the ROBOTIS DYNAMIXEL servo protocols 1.0 and 2.0 over a half-duplex UART.",
+   "tags": [
+    "servo"
+   ],
    "url": "https://github.com/kokeb-labs-drivers/driver-dynamixel.git",
    "versions": [
     {
@@ -900,6 +1129,7 @@ globalThis.KB_CATALOG = {
      "text": "An optional supply switch, through the port's GpioSet()"
     }
    ],
+   "category": "sensor",
    "chip": "FDO2",
    "figures": [
     {
@@ -932,9 +1162,33 @@ globalThis.KB_CATALOG = {
    "package": "Module, 4-pin",
    "pinned": "0.1.0-rc.1",
    "repo": "kokeb-labs-drivers/driver-fdo2",
+   "requires": {
+    "bus": [
+     "uart"
+    ],
+    "kb_core_min": null,
+    "language": {
+     "compilers": {
+      "arm_gcc": "10",
+      "clang": "13",
+      "esp_idf": "5.0",
+      "gcc": "10",
+      "msvc": "19.30"
+     },
+     "standard": 20
+    },
+    "mcus": [
+     "any"
+    ],
+    "peripheral": null,
+    "rtos": []
+   },
    "requires_owner": false,
    "status": "rc",
    "summary": "C++20 driver for the PyroScience FDO2-G2 and FDO2 optical oxygen sensor modules on UART.",
+   "tags": [
+    "oxygen-sensor"
+   ],
    "url": "https://github.com/kokeb-labs-drivers/driver-fdo2.git",
    "versions": [
     {
@@ -995,6 +1249,7 @@ globalThis.KB_CATALOG = {
      "text": "SPST normally open, read by Poll(): debounce, press, release, long press, repeat; idle dim and sleep"
     }
    ],
+   "category": "io",
    "chip": "ISF15ACP4",
    "figures": [
     {
@@ -1027,9 +1282,33 @@ globalThis.KB_CATALOG = {
    "package": "Module",
    "pinned": "0.1.0-rc.1",
    "repo": "kokeb-labs-drivers/driver-isf15acp4",
+   "requires": {
+    "bus": [
+     "spi"
+    ],
+    "kb_core_min": null,
+    "language": {
+     "compilers": {
+      "arm_gcc": "10",
+      "clang": "13",
+      "esp_idf": "5.0",
+      "gcc": "10",
+      "msvc": "19.30"
+     },
+     "standard": 20
+    },
+    "mcus": [
+     "any"
+    ],
+    "peripheral": null,
+    "rtos": []
+   },
    "requires_owner": false,
    "status": "rc",
    "summary": "C++20 driver for the NKK ISF15ACP4 frameless OLED pushbutton: a 96RGB x 64 SSD1331-class OLED on write-only SPI and a debounced SPST switch.",
+   "tags": [
+    "display"
+   ],
    "url": "https://github.com/kokeb-labs-drivers/driver-isf15acp4.git",
    "versions": [
     {
@@ -1086,6 +1365,7 @@ globalThis.KB_CATALOG = {
      "text": "SPI mode 0, up to 10 MHz; a command byte with CMD high, then 8 or 32 bits of data; ENABLE"
     }
    ],
+   "category": "motor",
    "chip": "MAX22200",
    "figures": [
     {
@@ -1112,9 +1392,33 @@ globalThis.KB_CATALOG = {
    "package": "TQFN-32",
    "pinned": "0.1.0-rc.1",
    "repo": "kokeb-labs-drivers/driver-max22200",
+   "requires": {
+    "bus": [
+     "spi"
+    ],
+    "kb_core_min": null,
+    "language": {
+     "compilers": {
+      "arm_gcc": "10",
+      "clang": "13",
+      "esp_idf": "5.0",
+      "gcc": "10",
+      "msvc": "19.30"
+     },
+     "standard": 20
+    },
+    "mcus": [
+     "any"
+    ],
+    "peripheral": null,
+    "rtos": []
+   },
    "requires_owner": false,
    "status": "rc",
    "summary": "C++20 driver for the Analog Devices MAX22200 and MAX22200A octal 36 V, 1 A serial-controlled solenoid and motor drivers.",
+   "tags": [
+    "solenoid-driver"
+   ],
    "url": "https://github.com/kokeb-labs-drivers/driver-max22200.git",
    "versions": [
     {
@@ -1179,6 +1483,7 @@ globalThis.KB_CATALOG = {
      "text": "Clipped ADC (Saturated), noisy line (Unstable), output outside the range (OutputLow, OutputHigh)"
     }
    ],
+   "category": "sensor",
    "chip": "MCP9700",
    "figures": [
     {
@@ -1211,9 +1516,34 @@ globalThis.KB_CATALOG = {
    "package": "SOT-23-3",
    "pinned": "0.1.0-rc.1",
    "repo": "kokeb-labs-drivers/driver-mcp9700",
+   "requires": {
+    "bus": [
+     "adc"
+    ],
+    "kb_core_min": null,
+    "language": {
+     "compilers": {
+      "arm_gcc": "10",
+      "clang": "13",
+      "esp_idf": "5.0",
+      "gcc": "10",
+      "msvc": "19.30"
+     },
+     "standard": 20
+    },
+    "mcus": [
+     "any"
+    ],
+    "peripheral": null,
+    "rtos": []
+   },
    "requires_owner": false,
    "status": "rc",
    "summary": "C++20 driver for the Microchip MCP9700, MCP9700A, MCP9700B, MCP9701 and MCP9701A analog temperature sensors, read through your ADC, with clip, noise and range checks.",
+   "tags": [
+    "adc",
+    "temperature-sensor"
+   ],
    "url": "https://github.com/kokeb-labs-drivers/driver-mcp9700.git",
    "versions": [
     {
@@ -1270,6 +1600,7 @@ globalThis.KB_CATALOG = {
      "text": "chip0402, chip0805, bead (below) | Chip and bead NTC families (typical sizes), p. 1"
     }
    ],
+   "category": "sensor",
    "chip": "NTC thermistor (generic)",
    "figures": [
     {
@@ -1302,9 +1633,34 @@ globalThis.KB_CATALOG = {
    "package": "0603",
    "pinned": "0.1.0-rc.1",
    "repo": "kokeb-labs-drivers/driver-ntc-thermistor",
+   "requires": {
+    "bus": [
+     "adc"
+    ],
+    "kb_core_min": null,
+    "language": {
+     "compilers": {
+      "arm_gcc": "10",
+      "clang": "13",
+      "esp_idf": "5.0",
+      "gcc": "10",
+      "msvc": "19.30"
+     },
+     "standard": 20
+    },
+    "mcus": [
+     "any"
+    ],
+    "peripheral": null,
+    "rtos": []
+   },
    "requires_owner": false,
    "status": "rc",
    "summary": "C++20 driver for NTC thermistors, generic for any part, read through a resistor divider into an ADC port, with integer arithmetic only.",
+   "tags": [
+    "adc",
+    "temperature-sensor"
+   ],
    "url": "https://github.com/kokeb-labs-drivers/driver-ntc-thermistor.git",
    "versions": [
     {
@@ -1361,6 +1717,7 @@ globalThis.KB_CATALOG = {
      "text": "The OE pin (all outputs off at once), when your port has GpioSet()"
     }
    ],
+   "category": "io",
    "chip": "PCA9685",
    "figures": [
     {
@@ -1452,9 +1809,33 @@ globalThis.KB_CATALOG = {
    "package": "TSSOP-28",
    "pinned": "0.1.0-rc.1",
    "repo": "kokeb-labs-drivers/driver-pca9685",
+   "requires": {
+    "bus": [
+     "i2c"
+    ],
+    "kb_core_min": null,
+    "language": {
+     "compilers": {
+      "arm_gcc": "10",
+      "clang": "13",
+      "esp_idf": "5.0",
+      "gcc": "10",
+      "msvc": "19.30"
+     },
+     "standard": 20
+    },
+    "mcus": [
+     "any"
+    ],
+    "peripheral": null,
+    "rtos": []
+   },
    "requires_owner": false,
    "status": "rc",
    "summary": "C++20 driver for the NXP PCA9685 16-channel, 12-bit PWM controller on I2C.",
+   "tags": [
+    "pwm-controller"
+   ],
    "url": "https://github.com/kokeb-labs-drivers/driver-pca9685.git",
    "versions": [
     {
@@ -1515,6 +1896,7 @@ globalThis.KB_CATALOG = {
      "text": "PCAL9555A only: four drive strengths, pull-up or pull-down per pin, input latch, interrupt mask and status, open-drain per port"
     }
    ],
+   "category": "io",
    "chip": "PCAL9555A",
    "figures": [
     {
@@ -1550,9 +1932,33 @@ globalThis.KB_CATALOG = {
    "package": "TSSOP-24",
    "pinned": "0.1.0-rc.1",
    "repo": "kokeb-labs-drivers/driver-pcal9555",
+   "requires": {
+    "bus": [
+     "i2c"
+    ],
+    "kb_core_min": null,
+    "language": {
+     "compilers": {
+      "arm_gcc": "10",
+      "clang": "13",
+      "esp_idf": "5.0",
+      "gcc": "10",
+      "msvc": "19.30"
+     },
+     "standard": 20
+    },
+    "mcus": [
+     "any"
+    ],
+    "peripheral": null,
+    "rtos": []
+   },
    "requires_owner": false,
    "status": "rc",
    "summary": "C++20 driver for the NXP PCA9555 and PCAL9555A 16-bit I2C GPIO expanders.",
+   "tags": [
+    "gpio-expander"
+   ],
    "url": "https://github.com/kokeb-labs-drivers/driver-pcal9555.git",
    "versions": [
     {
@@ -1613,6 +2019,7 @@ globalThis.KB_CATALOG = {
      "text": "STANDBY (optional GpioSet()) and reads INTB (optional GpioGet())"
     }
    ],
+   "category": "other",
    "chip": "PF1550",
    "figures": [
     {
@@ -1654,9 +2061,34 @@ globalThis.KB_CATALOG = {
    "package": "HVQFN-40",
    "pinned": "0.1.0-rc.1",
    "repo": "kokeb-labs-drivers/driver-pf1550",
+   "requires": {
+    "bus": [
+     "i2c"
+    ],
+    "kb_core_min": null,
+    "language": {
+     "compilers": {
+      "arm_gcc": "10",
+      "clang": "13",
+      "esp_idf": "5.0",
+      "gcc": "10",
+      "msvc": "19.30"
+     },
+     "standard": 20
+    },
+    "mcus": [
+     "any"
+    ],
+    "peripheral": null,
+    "rtos": []
+   },
    "requires_owner": false,
    "status": "rc",
    "summary": "C++20 driver for the NXP PF1550 power management IC (single-cell Li-ion linear charger, three buck regulators, three LDOs) on I2C",
+   "tags": [
+    "battery-charger",
+    "pmic"
+   ],
    "url": "https://github.com/kokeb-labs-drivers/driver-pf1550.git",
    "versions": [
     {
@@ -1696,6 +2128,7 @@ globalThis.KB_CATALOG = {
   },
   {
    "capabilities": [],
+   "category": "secure-element",
    "chip": "SE05x",
    "figures": [
     {
@@ -1728,9 +2161,30 @@ globalThis.KB_CATALOG = {
    "package": "HX2QFN20",
    "pinned": "0.1.0-rc.2",
    "repo": "kokeb-labs-drivers/driver-se05x",
+   "requires": {
+    "bus": [
+     "i2c"
+    ],
+    "kb_core_min": null,
+    "language": {
+     "compilers": {
+      "clang": "13",
+      "gcc": "10"
+     },
+     "standard": 20
+    },
+    "mcus": [
+     "any"
+    ],
+    "peripheral": null,
+    "rtos": []
+   },
    "requires_owner": false,
    "status": "rc",
    "summary": "The SE05x is a family of secure elements (SE050, SE051, SE052) that hold keys and credentials isolated from the host, sign, agree keys and attest with them inside the chip, and talk to the host over I2C with T=1 framing and an encrypted SCP03 channel (SE050 1 Introduction, p. 1).",
+   "tags": [
+    "secure-element"
+   ],
    "url": "https://github.com/kokeb-labs-drivers/driver-se05x.git",
    "versions": [
     {
@@ -1817,6 +2271,7 @@ globalThis.KB_CATALOG = {
      "text": "SF06 (5 parts), SF06 gen 2, SF06 dual, SF05, SF04, SFx6000"
     }
    ],
+   "category": "sensor",
    "chip": "SFM modules",
    "figures": [
     {
@@ -1849,9 +2304,33 @@ globalThis.KB_CATALOG = {
    "package": "JST NSH 6-pin 1.0 mm connector",
    "pinned": "0.1.0-rc.1",
    "repo": "kokeb-labs-drivers/driver-sfm-flow-meter",
+   "requires": {
+    "bus": [
+     "i2c"
+    ],
+    "kb_core_min": null,
+    "language": {
+     "compilers": {
+      "arm_gcc": "10",
+      "clang": "13",
+      "esp_idf": "5.0",
+      "gcc": "10",
+      "msvc": "19.30"
+     },
+     "standard": 20
+    },
+    "mcus": [
+     "any"
+    ],
+    "peripheral": null,
+    "rtos": []
+   },
    "requires_owner": false,
    "status": "rc",
    "summary": "C++20 driver for the Sensirion SFM digital mass flow meters on I2C (SFM3000 to SFM6000D).",
+   "tags": [
+    "flow-sensor"
+   ],
    "url": "https://github.com/kokeb-labs-drivers/driver-sfm-flow-meter.git",
    "versions": [
     {
@@ -1912,6 +2391,7 @@ globalThis.KB_CATALOG = {
      "text": "RESN, EN, DRV0 and DRV1 and reads FAULTN, when your port has GpioSet() and GpioRead()"
     }
    ],
+   "category": "motor",
    "chip": "TLE92466ED",
    "figures": [
     {
@@ -1938,9 +2418,33 @@ globalThis.KB_CATALOG = {
    "package": "PG-DSO-36",
    "pinned": "0.1.0-rc.1",
    "repo": "kokeb-labs-drivers/driver-tle92466ed",
+   "requires": {
+    "bus": [
+     "spi"
+    ],
+    "kb_core_min": null,
+    "language": {
+     "compilers": {
+      "arm_gcc": "10",
+      "clang": "13",
+      "esp_idf": "5.0",
+      "gcc": "10",
+      "msvc": "19.30"
+     },
+     "standard": 20
+    },
+    "mcus": [
+     "any"
+    ],
+    "peripheral": null,
+    "rtos": []
+   },
    "requires_owner": false,
    "status": "rc",
    "summary": "C++20 driver for the Infineon TLE92466ED six-channel low-side solenoid driver with integrated current control (SPI).",
+   "tags": [
+    "solenoid-driver"
+   ],
    "url": "https://github.com/kokeb-labs-drivers/driver-tle92466ed.git",
    "versions": [
     {
@@ -1993,6 +2497,7 @@ globalThis.KB_CATALOG = {
      "text": "SPI mode 3, up to 4 MHz on the internal clock, daisy chain; or single wire UART with CRC-8"
     }
    ],
+   "category": "motor",
    "chip": "TMC5160A",
    "figures": [
     {
@@ -2025,9 +2530,36 @@ globalThis.KB_CATALOG = {
    "package": "TQFP-48",
    "pinned": "0.1.0-rc.1",
    "repo": "kokeb-labs-drivers/driver-tmc5160",
+   "requires": {
+    "bus": [
+     "spi",
+     "uart"
+    ],
+    "kb_core_min": null,
+    "language": {
+     "compilers": {
+      "arm_gcc": "10",
+      "clang": "13",
+      "esp_idf": "5.0",
+      "gcc": "10",
+      "msvc": "19.30"
+     },
+     "standard": 20
+    },
+    "mcus": [
+     "any"
+    ],
+    "peripheral": null,
+    "rtos": []
+   },
    "requires_owner": false,
    "status": "rc",
    "summary": "C++20 driver for the Trinamic TMC5160 and TMC5160A stepper motor controller and driver with SPI and UART interfaces",
+   "tags": [
+    "motion-control",
+    "motor-driver",
+    "stepper"
+   ],
    "url": "https://github.com/kokeb-labs-drivers/driver-tmc5160.git",
    "versions": [
     {
@@ -2085,6 +2617,7 @@ globalThis.KB_CATALOG = {
      "text": "RSTN, DRV_EN and WAKE through optional GpioSet(); reads FAULTN through optional GpioGet()"
     }
    ],
+   "category": "motor",
    "chip": "TMC9660",
    "figures": [
     {
@@ -2117,9 +2650,36 @@ globalThis.KB_CATALOG = {
    "package": "TQFN-64",
    "pinned": "0.1.0-rc.1",
    "repo": "kokeb-labs-drivers/driver-tmc9660",
+   "requires": {
+    "bus": [
+     "spi",
+     "uart"
+    ],
+    "kb_core_min": null,
+    "language": {
+     "compilers": {
+      "arm_gcc": "10",
+      "clang": "13",
+      "esp_idf": "5.0",
+      "gcc": "10",
+      "msvc": "19.30"
+     },
+     "standard": 20
+    },
+    "mcus": [
+     "any"
+    ],
+    "peripheral": null,
+    "rtos": []
+   },
    "requires_owner": false,
    "status": "rc",
    "summary": "C++20 driver for the TMC9660 servo controller and gate driver (bootloader, parameter mode and register mode over SPI or UART)",
+   "tags": [
+    "motion-control",
+    "motor-driver",
+    "servo"
+   ],
    "url": "https://github.com/kokeb-labs-drivers/driver-tmc9660.git",
    "versions": [
     {
@@ -2185,6 +2745,7 @@ globalThis.KB_CATALOG = {
      "text": "Linear brightness, an optional gamma 2.2 table, ExtractWhite() and Wheel(); no animations"
     }
    ],
+   "category": "io",
    "chip": "WS2812B",
    "figures": [
     {
@@ -2217,9 +2778,33 @@ globalThis.KB_CATALOG = {
    "package": "5050 (WS2812B)",
    "pinned": "0.1.0-rc.1",
    "repo": "kokeb-labs-drivers/driver-ws2812-rmt",
+   "requires": {
+    "bus": [
+     "pio"
+    ],
+    "kb_core_min": null,
+    "language": {
+     "compilers": {
+      "arm_gcc": "10",
+      "clang": "13",
+      "esp_idf": "5.0",
+      "gcc": "10",
+      "msvc": "19.30"
+     },
+     "standard": 20
+    },
+    "mcus": [
+     "esp32"
+    ],
+    "peripheral": "rmt",
+    "rtos": []
+   },
    "requires_owner": false,
    "status": "rc",
    "summary": "C++20 driver for single-wire addressable RGB and RGBW LEDs (WS2812, WS2812B, WS2812C, WS2812D and the SK6812 family), sent as a timed bit stream through a small port class. On ESP32 the port uses the RMT transmitter.",
+   "tags": [
+    "led"
+   ],
    "url": "https://github.com/kokeb-labs-drivers/driver-ws2812-rmt.git",
    "versions": [
     {
@@ -2393,6 +2978,9 @@ globalThis.KB_CATALOG = {
      "usable_gpio": null
     }
    ],
+   "default_language": {
+    "standard": 20
+   },
    "default_rtos": "freertos",
    "id": "esp32",
    "kb_mcu": "ESP32",
@@ -2431,7 +3019,10 @@ globalThis.KB_CATALOG = {
       "uart": 3
      },
      "id": "esp32",
-     "label": "ESP32"
+     "label": "ESP32",
+     "peripherals": [
+      "rmt"
+     ]
     },
     {
      "buses": {
@@ -2444,7 +3035,10 @@ globalThis.KB_CATALOG = {
       "uart": 2
      },
      "id": "esp32s2",
-     "label": "ESP32-S2"
+     "label": "ESP32-S2",
+     "peripherals": [
+      "rmt"
+     ]
     },
     {
      "buses": {
@@ -2457,7 +3051,10 @@ globalThis.KB_CATALOG = {
       "uart": 3
      },
      "id": "esp32s3",
-     "label": "ESP32-S3"
+     "label": "ESP32-S3",
+     "peripherals": [
+      "rmt"
+     ]
     },
     {
      "buses": {
@@ -2470,7 +3067,10 @@ globalThis.KB_CATALOG = {
       "uart": 2
      },
      "id": "esp32c3",
-     "label": "ESP32-C3"
+     "label": "ESP32-C3",
+     "peripherals": [
+      "rmt"
+     ]
     },
     {
      "buses": {
@@ -2483,7 +3083,10 @@ globalThis.KB_CATALOG = {
       "uart": 2
      },
      "id": "esp32c5",
-     "label": "ESP32-C5"
+     "label": "ESP32-C5",
+     "peripherals": [
+      "rmt"
+     ]
     },
     {
      "buses": {
@@ -2496,7 +3099,10 @@ globalThis.KB_CATALOG = {
       "uart": 2
      },
      "id": "esp32c6",
-     "label": "ESP32-C6"
+     "label": "ESP32-C6",
+     "peripherals": [
+      "rmt"
+     ]
     },
     {
      "buses": {
@@ -2509,7 +3115,10 @@ globalThis.KB_CATALOG = {
       "uart": 2
      },
      "id": "esp32h2",
-     "label": "ESP32-H2"
+     "label": "ESP32-H2",
+     "peripherals": [
+      "rmt"
+     ]
     },
     {
      "buses": {
@@ -2522,7 +3131,10 @@ globalThis.KB_CATALOG = {
       "uart": 5
      },
      "id": "esp32p4",
-     "label": "ESP32-P4"
+     "label": "ESP32-P4",
+     "peripherals": [
+      "rmt"
+     ]
     }
    ]
   },
@@ -2559,6 +3171,9 @@ globalThis.KB_CATALOG = {
      "usable_gpio": null
     }
    ],
+   "default_language": {
+    "standard": 20
+   },
    "default_rtos": "freertos",
    "id": "stm32",
    "kb_mcu": "STM32",
@@ -2584,7 +3199,8 @@ globalThis.KB_CATALOG = {
       "uart": 6
      },
      "id": "stm32f4",
-     "label": "STM32F4"
+     "label": "STM32F4",
+     "peripherals": []
     },
     {
      "buses": {
@@ -2597,7 +3213,8 @@ globalThis.KB_CATALOG = {
       "uart": 5
      },
      "id": "stm32g4",
-     "label": "STM32G4"
+     "label": "STM32G4",
+     "peripherals": []
     },
     {
      "buses": {
@@ -2610,7 +3227,8 @@ globalThis.KB_CATALOG = {
       "uart": 8
      },
      "id": "stm32h7",
-     "label": "STM32H7"
+     "label": "STM32H7",
+     "peripherals": []
     },
     {
      "buses": {
@@ -2623,7 +3241,8 @@ globalThis.KB_CATALOG = {
       "uart": 5
      },
      "id": "stm32l4",
-     "label": "STM32L4"
+     "label": "STM32L4",
+     "peripherals": []
     },
     {
      "buses": {
@@ -2636,7 +3255,8 @@ globalThis.KB_CATALOG = {
       "uart": 5
      },
      "id": "stm32u5",
-     "label": "STM32U5"
+     "label": "STM32U5",
+     "peripherals": []
     }
    ]
   },
@@ -2649,6 +3269,9 @@ globalThis.KB_CATALOG = {
      "usable_gpio": null
     }
    ],
+   "default_language": {
+    "standard": 20
+   },
    "default_rtos": "none",
    "id": "host",
    "kb_mcu": "HOST",
@@ -2678,7 +3301,8 @@ globalThis.KB_CATALOG = {
       "uart": 8
      },
      "id": "host",
-     "label": "Host computer"
+     "label": "Host computer",
+     "peripherals": []
     }
    ]
   }
@@ -2692,6 +3316,29 @@ globalThis.KB_CATALOG = {
    "handlers"
   ],
   "releases": [
+   {
+    "bindings": [],
+    "commit": "57e12601700f0528c6466c5a36b9f8c895d2abc4",
+    "date": "2026-11-21T20:28:55Z",
+    "kind": "dev",
+    "language": {
+     "compilers": {
+      "arm_gcc": "10",
+      "clang": "13",
+      "esp_idf": "5.0",
+      "gcc": "10"
+     },
+     "profile": "KB-CPP20",
+     "source": "kb.yml",
+     "standard": 20,
+     "tested": [
+      20
+     ]
+    },
+    "osv": null,
+    "tag": null,
+    "version": "0.0.0"
+   },
    {
     "bindings": [
      "ads7952",
@@ -2771,6 +3418,39 @@ globalThis.KB_CATALOG = {
   }
  ],
  "schema": 1,
- "source_date": "2026-11-21T04:51:38Z",
+ "source_date": "2026-11-21T20:28:55Z",
+ "tag_index": {
+  "categories": {
+   "io": 4,
+   "memory": 1,
+   "motor": 6,
+   "other": 1,
+   "radio": 0,
+   "secure-element": 1,
+   "sensor": 10
+  },
+  "tags": {
+   "adc": 4,
+   "battery-charger": 1,
+   "display": 1,
+   "eeprom": 1,
+   "flow-sensor": 2,
+   "gpio-expander": 1,
+   "imu": 1,
+   "led": 1,
+   "magnetic-encoder": 1,
+   "motion-control": 2,
+   "motor-driver": 3,
+   "oxygen-sensor": 1,
+   "pmic": 1,
+   "pressure-sensor": 1,
+   "pwm-controller": 1,
+   "secure-element": 1,
+   "servo": 2,
+   "solenoid-driver": 2,
+   "stepper": 1,
+   "temperature-sensor": 2
+  }
+ },
  "tested_sets": []
 };

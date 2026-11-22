@@ -1,0 +1,49 @@
+{
+ "commits": {
+  "1111111111111111111111111111111111111111": [
+   "CVE-2099-0001",
+   "CVE-2099-0002"
+  ],
+  "8ade1b1e83c496e743517bcd055407f6f2d48d0c": [
+   "GHSA-aaaa-bbbb-cccc"
+  ],
+  "a1b977597782bde428df5cce1eaf763a6ef25dbb": [
+   "GHSA-aaaa-bbbb-cccc"
+  ]
+ },
+ "pins": {
+  "third_party/threadx": "1111111111111111111111111111111111111111"
+ },
+ "resolve": {
+  "espressif/esp-idf@v5.5": "2222222222222222222222222222222222222222"
+ },
+ "vulns": {
+  "CVE-2099-0001": {
+   "details": "Fixture   details\nover two lines.",
+   "id": "CVE-2099-0001",
+   "severity": [
+    {
+     "score": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+     "type": "CVSS_V3"
+    }
+   ]
+  },
+  "CVE-2099-0002": {
+   "details": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+   "id": "CVE-2099-0002",
+   "severity": [
+    {
+     "score": "CVSS:4.0/AV:L/AC:L/AT:N/PR:L/UI:N/VC:H/VI:H/VA:L/SC:N/SI:N/SA:N",
+     "type": "CVSS_V4"
+    }
+   ]
+  },
+  "GHSA-aaaa-bbbb-cccc": {
+   "database_specific": {
+    "severity": "MODERATE"
+   },
+   "id": "GHSA-aaaa-bbbb-cccc",
+   "summary": "Fixture advisory with a pipe | in it"
+  }
+ }
+}

@@ -1,0 +1,89 @@
+---
+# Known vulnerabilities of the pinned components (tools/vuln, schema kb-vulns/1, docs/assurance/vulnerabilities.md).
+# Scan the pins in OSV on a push to main that changes the scan or its reviewed list, or when called. A weekly
+# schedule needs a trigger-policy exception in ci-tools (docs/triggers.md) and is not set up yet. The scan opens or
+# updates ONE issue when an OPEN advisory is listed (one that tools/vuln/reviewed.json does not cover), fails (red)
+# when the scan itself fails, then rebuilds and republishes the site with the fresh data embedded at build time (the
+# page has no network access). Nothing is
+# committed. The fixture tests and snapshot check run in the CI gate (ci-vulnerabilities-check.yml, from ci.yml).
+name: Vulnerabilities
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - tools/vuln/**
+  workflow_call:
+
+permissions: {}
+
+concurrency:
+  group: ci-vulnerabilities-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  scan:
+    name: Scan the pinned components
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      issues: write  # the one issue "Known vulnerabilities in pinned components"; nothing else is written
+    env:
+      GH_TOKEN: ${{ github.token }}
+      TITLE: Known vulnerabilities in pinned components
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Scan (a failure here fails the job; nothing below runs)
+        id: scan
+        run: python3 tools/vuln/scan.py --out "$RUNNER_TEMP/vulnerabilities.json"
+      - name: Report open advisories in the one open issue
+        if: ${{ steps.scan.outputs.open != '0' }}
+        run: |
+          set -euo pipefail
+          file="$RUNNER_TEMP/vulnerabilities.json"
+          python3 tools/vuln/issue_body.py "$file" > "$RUNNER_TEMP/body.md"
+          new=$(python3 tools/vuln/issue_body.py --marker "$(cat "$RUNNER_TEMP/body.md")")
+          number=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open --limit 100 --json number,title \
+            --jq "[.[] | select(.title == \"$TITLE\")] | first | .number // empty")
+          if [ -z "$number" ]; then
+            gh issue create --repo "$GITHUB_REPOSITORY" --title "$TITLE" --body-file "$RUNNER_TEMP/body.md"
+            echo "### Opened the issue \"$TITLE\"" >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          old=$(python3 tools/vuln/issue_body.py --marker "$(gh issue view "$number" --repo "$GITHUB_REPOSITORY" \
+            --json body --jq .body)")
+          if [ "$old" = "$new" ]; then
+            echo "### Issue #$number already lists these advisories" >> "$GITHUB_STEP_SUMMARY"
+          else
+            gh issue edit "$number" --repo "$GITHUB_REPOSITORY" --body-file "$RUNNER_TEMP/body.md"
+            gh issue comment "$number" --repo "$GITHUB_REPOSITORY" \
+              --body "The list of advisories changed in the scan of $(date -u +%F); the description is updated."
+            echo "### Updated issue #$number" >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: Tell an open issue that no advisory is open any more
+        if: ${{ steps.scan.outputs.open == '0' }}
+        run: |
+          set -euo pipefail
+          number=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open --limit 100 --json number,title \
+            --jq "[.[] | select(.title == \"$TITLE\")] | first | .number // empty")
+          if [ -n "$number" ]; then
+            gh issue comment "$number" --repo "$GITHUB_REPOSITORY" \
+              --body "The scan of $(date -u +%F) lists no open advisory for the pinned components; close this issue."
+          fi
+
+  # Rebuild the site with the fresh scan and publish it. ci-docs.yml (the docs publish, a caller of ci-tools'
+  # ru-mkdocs-publish) rescans and renders the data in its pre-build checks, so the page embeds it and nothing is
+  # committed. Only from the default branch: a manual run on another ref scans and reports, and publishes nothing.
+  publish:
+    name: Rebuild and publish the site
+    needs: scan
+    if: >-
+      github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+    uses: ./.github/workflows/ci-docs.yml
+    with:
+      refresh_vulnerabilities: true
+    permissions:
+      contents: write  # the publish job pushes gh-pages

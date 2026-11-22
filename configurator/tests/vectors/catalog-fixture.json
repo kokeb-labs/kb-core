@@ -76,6 +76,7 @@
  "drivers": [
   {
    "capabilities": [],
+   "category": "other",
    "chip": "BASIS 2",
    "figures": [],
    "folder": "driver-alicat-basis2",
@@ -89,9 +90,25 @@
    "package": null,
    "pinned": null,
    "repo": "kokeb-labs-drivers/driver-alicat-basis2",
+   "requires": {
+    "bus": [
+     "uart",
+     "modbus"
+    ],
+    "kb_core_min": null,
+    "language": {
+     "standard": 20
+    },
+    "mcus": [
+     "any"
+    ],
+    "peripheral": null,
+    "rtos": []
+   },
    "requires_owner": false,
    "status": "release",
    "summary": "BASIS 2 fixture",
+   "tags": [],
    "url": "https://github.com/kokeb-labs-drivers/driver-alicat-basis2.git",
    "versions": [
     {
@@ -117,6 +134,7 @@
   },
   {
    "capabilities": [],
+   "category": "other",
    "chip": "BMP581",
    "figures": [],
    "folder": "driver-bmp581",
@@ -133,9 +151,25 @@
    "package": null,
    "pinned": null,
    "repo": "kokeb-labs-drivers/driver-bmp581",
+   "requires": {
+    "bus": [
+     "i2c",
+     "spi"
+    ],
+    "kb_core_min": null,
+    "language": {
+     "standard": 20
+    },
+    "mcus": [
+     "any"
+    ],
+    "peripheral": null,
+    "rtos": []
+   },
    "requires_owner": false,
    "status": "release",
    "summary": "BMP581 fixture",
+   "tags": [],
    "url": "https://github.com/kokeb-labs-drivers/driver-bmp581.git",
    "versions": [
     {
@@ -165,6 +199,7 @@
   },
   {
    "capabilities": [],
+   "category": "other",
    "chip": "BNO08x",
    "figures": [],
    "folder": "driver-bno08x",
@@ -181,9 +216,26 @@
    "package": null,
    "pinned": null,
    "repo": "kokeb-labs-drivers/driver-bno08x",
+   "requires": {
+    "bus": [
+     "i2c",
+     "spi",
+     "uart"
+    ],
+    "kb_core_min": null,
+    "language": {
+     "standard": 20
+    },
+    "mcus": [
+     "any"
+    ],
+    "peripheral": null,
+    "rtos": []
+   },
    "requires_owner": true,
    "status": "release",
    "summary": "BNO08x fixture",
+   "tags": [],
    "url": "https://github.com/kokeb-labs-drivers/driver-bno08x.git",
    "versions": [
     {
@@ -210,6 +262,7 @@
   },
   {
    "capabilities": [],
+   "category": "other",
    "chip": "SN65HVD230",
    "figures": [],
    "folder": "driver-canopen-client",
@@ -223,9 +276,24 @@
    "package": null,
    "pinned": null,
    "repo": "kokeb-labs-drivers/driver-canopen-client",
+   "requires": {
+    "bus": [
+     "canopen"
+    ],
+    "kb_core_min": null,
+    "language": {
+     "standard": 20
+    },
+    "mcus": [
+     "any"
+    ],
+    "peripheral": null,
+    "rtos": []
+   },
    "requires_owner": false,
    "status": "release",
    "summary": "SN65HVD230 fixture",
+   "tags": [],
    "url": "https://github.com/kokeb-labs-drivers/driver-canopen-client.git",
    "versions": [
     {
@@ -250,6 +318,7 @@
   },
   {
    "capabilities": [],
+   "category": "other",
    "chip": "DYNAMIXEL",
    "figures": [],
    "folder": "driver-dynamixel",
@@ -263,9 +332,24 @@
    "package": null,
    "pinned": null,
    "repo": "kokeb-labs-drivers/driver-dynamixel",
+   "requires": {
+    "bus": [
+     "uart"
+    ],
+    "kb_core_min": null,
+    "language": {
+     "standard": 20
+    },
+    "mcus": [
+     "any"
+    ],
+    "peripheral": null,
+    "rtos": []
+   },
    "requires_owner": false,
    "status": "release",
    "summary": "DYNAMIXEL fixture",
+   "tags": [],
    "url": "https://github.com/kokeb-labs-drivers/driver-dynamixel.git",
    "versions": [
     {
@@ -290,6 +374,7 @@
   },
   {
    "capabilities": [],
+   "category": "other",
    "chip": "FDO2",
    "figures": [],
    "folder": "driver-fdo2",
@@ -303,9 +388,24 @@
    "package": null,
    "pinned": null,
    "repo": "kokeb-labs-drivers/driver-fdo2",
+   "requires": {
+    "bus": [
+     "uart"
+    ],
+    "kb_core_min": null,
+    "language": {
+     "standard": 20
+    },
+    "mcus": [
+     "any"
+    ],
+    "peripheral": null,
+    "rtos": []
+   },
    "requires_owner": false,
    "status": "release",
    "summary": "FDO2 fixture",
+   "tags": [],
    "url": "https://github.com/kokeb-labs-drivers/driver-fdo2.git",
    "versions": [
     {
@@ -330,6 +430,7 @@
   },
   {
    "capabilities": [],
+   "category": "other",
    "chip": "FIXTURE48",
    "figures": [],
    "folder": "driver-fixture-i2c48",
@@ -345,9 +446,24 @@
    "package": null,
    "pinned": null,
    "repo": "kokeb-labs-drivers/driver-fixture-i2c48",
+   "requires": {
+    "bus": [
+     "i2c"
+    ],
+    "kb_core_min": null,
+    "language": {
+     "standard": 20
+    },
+    "mcus": [
+     "any"
+    ],
+    "peripheral": null,
+    "rtos": []
+   },
    "requires_owner": false,
    "status": "release",
    "summary": "FIXTURE48 fixture",
+   "tags": [],
    "url": "https://github.com/kokeb-labs-drivers/driver-fixture-i2c48.git",
    "versions": [
     {
@@ -372,6 +488,7 @@
   },
   {
    "capabilities": [],
+   "category": "other",
    "chip": "GHOST",
    "figures": [],
    "folder": "driver-ghost",
@@ -385,14 +502,28 @@
    "package": null,
    "pinned": null,
    "repo": "kokeb-labs-drivers/driver-ghost",
+   "requires": {
+    "bus": [],
+    "kb_core_min": null,
+    "language": {
+     "standard": 20
+    },
+    "mcus": [
+     "any"
+    ],
+    "peripheral": null,
+    "rtos": []
+   },
    "requires_owner": false,
    "status": "unpublished",
    "summary": "GHOST fixture",
+   "tags": [],
    "url": "https://github.com/kokeb-labs-drivers/driver-ghost.git",
    "versions": []
   },
   {
    "capabilities": [],
+   "category": "other",
    "chip": "MCP9700",
    "figures": [],
    "folder": "driver-mcp9700",
@@ -406,9 +537,24 @@
    "package": null,
    "pinned": null,
    "repo": "kokeb-labs-drivers/driver-mcp9700",
+   "requires": {
+    "bus": [
+     "adc"
+    ],
+    "kb_core_min": null,
+    "language": {
+     "standard": 20
+    },
+    "mcus": [
+     "any"
+    ],
+    "peripheral": null,
+    "rtos": []
+   },
    "requires_owner": false,
    "status": "release",
    "summary": "MCP9700 fixture",
+   "tags": [],
    "url": "https://github.com/kokeb-labs-drivers/driver-mcp9700.git",
    "versions": [
     {
@@ -444,6 +590,7 @@
   },
   {
    "capabilities": [],
+   "category": "other",
    "chip": "NTC",
    "figures": [],
    "folder": "driver-ntc-thermistor",
@@ -457,9 +604,24 @@
    "package": null,
    "pinned": null,
    "repo": "kokeb-labs-drivers/driver-ntc-thermistor",
+   "requires": {
+    "bus": [
+     "adc"
+    ],
+    "kb_core_min": null,
+    "language": {
+     "standard": 20
+    },
+    "mcus": [
+     "any"
+    ],
+    "peripheral": null,
+    "rtos": []
+   },
    "requires_owner": false,
    "status": "release",
    "summary": "NTC fixture",
+   "tags": [],
    "url": "https://github.com/kokeb-labs-drivers/driver-ntc-thermistor.git",
    "versions": [
     {
@@ -484,6 +646,7 @@
   },
   {
    "capabilities": [],
+   "category": "other",
    "chip": "PCA9685",
    "figures": [],
    "folder": "driver-pca9685",
@@ -562,9 +725,24 @@
    "package": null,
    "pinned": null,
    "repo": "kokeb-labs-drivers/driver-pca9685",
+   "requires": {
+    "bus": [
+     "i2c"
+    ],
+    "kb_core_min": null,
+    "language": {
+     "standard": 20
+    },
+    "mcus": [
+     "any"
+    ],
+    "peripheral": null,
+    "rtos": []
+   },
    "requires_owner": false,
    "status": "rc",
    "summary": "PCA9685 fixture",
+   "tags": [],
    "url": "https://github.com/kokeb-labs-drivers/driver-pca9685.git",
    "versions": [
     {
@@ -589,6 +767,7 @@
   },
   {
    "capabilities": [],
+   "category": "other",
    "chip": "PF1550",
    "figures": [],
    "folder": "driver-pf1550",
@@ -611,9 +790,24 @@
    "package": null,
    "pinned": "0.1.0",
    "repo": "kokeb-labs-drivers/driver-pf1550",
+   "requires": {
+    "bus": [
+     "i2c"
+    ],
+    "kb_core_min": "0.5.0",
+    "language": {
+     "standard": 20
+    },
+    "mcus": [
+     "any"
+    ],
+    "peripheral": null,
+    "rtos": []
+   },
    "requires_owner": false,
    "status": "release",
    "summary": "PF1550 fixture",
+   "tags": [],
    "url": "https://github.com/kokeb-labs-drivers/driver-pf1550.git",
    "versions": [
     {
@@ -678,6 +872,7 @@
   },
   {
    "capabilities": [],
+   "category": "other",
    "chip": "SE05X",
    "figures": [],
    "folder": "driver-se05x",
@@ -693,9 +888,24 @@
    "package": null,
    "pinned": null,
    "repo": "kokeb-labs-drivers/driver-se05x",
+   "requires": {
+    "bus": [
+     "i2c"
+    ],
+    "kb_core_min": null,
+    "language": {
+     "standard": 20
+    },
+    "mcus": [
+     "any"
+    ],
+    "peripheral": null,
+    "rtos": []
+   },
    "requires_owner": false,
    "status": "release",
    "summary": "SE05X fixture",
+   "tags": [],
    "url": "https://github.com/kokeb-labs-drivers/driver-se05x.git",
    "versions": [
     {
@@ -720,6 +930,7 @@
   },
   {
    "capabilities": [],
+   "category": "other",
    "chip": "SFM",
    "figures": [],
    "folder": "driver-sfm-flow-meter",
@@ -733,9 +944,24 @@
    "package": null,
    "pinned": null,
    "repo": "kokeb-labs-drivers/driver-sfm-flow-meter",
+   "requires": {
+    "bus": [
+     "i2c"
+    ],
+    "kb_core_min": null,
+    "language": {
+     "standard": 20
+    },
+    "mcus": [
+     "any"
+    ],
+    "peripheral": null,
+    "rtos": []
+   },
    "requires_owner": false,
    "status": "release",
    "summary": "SFM fixture",
+   "tags": [],
    "url": "https://github.com/kokeb-labs-drivers/driver-sfm-flow-meter.git",
    "versions": [
     {
@@ -760,6 +986,7 @@
   },
   {
    "capabilities": [],
+   "category": "other",
    "chip": "TMC9660",
    "figures": [],
    "folder": "driver-tmc9660",
@@ -773,9 +1000,25 @@
    "package": null,
    "pinned": null,
    "repo": "kokeb-labs-drivers/driver-tmc9660",
+   "requires": {
+    "bus": [
+     "spi",
+     "uart"
+    ],
+    "kb_core_min": null,
+    "language": {
+     "standard": 20
+    },
+    "mcus": [
+     "any"
+    ],
+    "peripheral": null,
+    "rtos": []
+   },
    "requires_owner": false,
    "status": "release",
    "summary": "TMC9660 fixture",
+   "tags": [],
    "url": "https://github.com/kokeb-labs-drivers/driver-tmc9660.git",
    "versions": [
     {
@@ -801,6 +1044,7 @@
   },
   {
    "capabilities": [],
+   "category": "other",
    "chip": "WS2812B",
    "figures": [],
    "folder": "driver-ws2812-rmt",
@@ -814,9 +1058,24 @@
    "package": null,
    "pinned": null,
    "repo": "kokeb-labs-drivers/driver-ws2812-rmt",
+   "requires": {
+    "bus": [
+     "pio"
+    ],
+    "kb_core_min": null,
+    "language": {
+     "standard": 20
+    },
+    "mcus": [
+     "esp32"
+    ],
+    "peripheral": "rmt",
+    "rtos": []
+   },
    "requires_owner": false,
    "status": "release",
    "summary": "WS2812B fixture",
+   "tags": [],
    "url": "https://github.com/kokeb-labs-drivers/driver-ws2812-rmt.git",
    "versions": [
     {
@@ -922,6 +1181,9 @@
      "usable_gpio": 4
     }
    ],
+   "default_language": {
+    "standard": 20
+   },
    "default_rtos": "freertos",
    "id": "esp32",
    "kb_mcu": "ESP32",
@@ -973,7 +1235,8 @@
       "uart": 3
      },
      "id": "esp32",
-     "label": "ESP32"
+     "label": "ESP32",
+     "peripherals": []
     },
     {
      "buses": {
@@ -986,7 +1249,8 @@
       "uart": 2
      },
      "id": "esp32s2",
-     "label": "ESP32-S2"
+     "label": "ESP32-S2",
+     "peripherals": []
     },
     {
      "buses": {
@@ -999,7 +1263,8 @@
       "uart": 3
      },
      "id": "esp32s3",
-     "label": "ESP32-S3"
+     "label": "ESP32-S3",
+     "peripherals": []
     },
     {
      "buses": {
@@ -1012,7 +1277,8 @@
       "uart": 2
      },
      "id": "esp32c3",
-     "label": "ESP32-C3"
+     "label": "ESP32-C3",
+     "peripherals": []
     },
     {
      "buses": {
@@ -1025,7 +1291,8 @@
       "uart": 2
      },
      "id": "esp32c5",
-     "label": "ESP32-C5"
+     "label": "ESP32-C5",
+     "peripherals": []
     },
     {
      "buses": {
@@ -1038,7 +1305,8 @@
       "uart": 2
      },
      "id": "esp32c6",
-     "label": "ESP32-C6"
+     "label": "ESP32-C6",
+     "peripherals": []
     },
     {
      "buses": {
@@ -1051,7 +1319,8 @@
       "uart": 2
      },
      "id": "esp32h2",
-     "label": "ESP32-H2"
+     "label": "ESP32-H2",
+     "peripherals": []
     },
     {
      "buses": {
@@ -1064,7 +1333,8 @@
       "uart": 5
      },
      "id": "esp32p4",
-     "label": "ESP32-P4"
+     "label": "ESP32-P4",
+     "peripherals": []
     }
    ]
   },
@@ -1101,6 +1371,9 @@
      "usable_gpio": null
     }
    ],
+   "default_language": {
+    "standard": 20
+   },
    "default_rtos": "freertos",
    "id": "stm32",
    "kb_mcu": "STM32",
@@ -1126,7 +1399,8 @@
       "uart": 6
      },
      "id": "stm32f4",
-     "label": "STM32F4"
+     "label": "STM32F4",
+     "peripherals": []
     },
     {
      "buses": {
@@ -1139,7 +1413,8 @@
       "uart": 5
      },
      "id": "stm32g4",
-     "label": "STM32G4"
+     "label": "STM32G4",
+     "peripherals": []
     },
     {
      "buses": {
@@ -1152,7 +1427,8 @@
       "uart": 8
      },
      "id": "stm32h7",
-     "label": "STM32H7"
+     "label": "STM32H7",
+     "peripherals": []
     },
     {
      "buses": {
@@ -1165,7 +1441,8 @@
       "uart": 5
      },
      "id": "stm32l4",
-     "label": "STM32L4"
+     "label": "STM32L4",
+     "peripherals": []
     },
     {
      "buses": {
@@ -1178,7 +1455,8 @@
       "uart": 5
      },
      "id": "stm32u5",
-     "label": "STM32U5"
+     "label": "STM32U5",
+     "peripherals": []
     }
    ]
   },
@@ -1191,6 +1469,9 @@
      "usable_gpio": null
     }
    ],
+   "default_language": {
+    "standard": 20
+   },
    "default_rtos": "none",
    "id": "host",
    "kb_mcu": "HOST",
@@ -1220,7 +1501,8 @@
       "uart": 8
      },
      "id": "host",
-     "label": "Host computer"
+     "label": "Host computer",
+     "peripherals": []
     }
    ]
   }
@@ -1328,6 +1610,39 @@
  ],
  "schema": 1,
  "source_date": "2026-11-13T00:00:00Z",
+ "tag_index": {
+  "categories": {
+   "io": 0,
+   "memory": 0,
+   "motor": 0,
+   "other": 16,
+   "radio": 0,
+   "secure-element": 0,
+   "sensor": 0
+  },
+  "tags": {
+   "adc": 0,
+   "battery-charger": 0,
+   "display": 0,
+   "eeprom": 0,
+   "flow-sensor": 0,
+   "gpio-expander": 0,
+   "imu": 0,
+   "led": 0,
+   "magnetic-encoder": 0,
+   "motion-control": 0,
+   "motor-driver": 0,
+   "oxygen-sensor": 0,
+   "pmic": 0,
+   "pressure-sensor": 0,
+   "pwm-controller": 0,
+   "secure-element": 0,
+   "servo": 0,
+   "solenoid-driver": 0,
+   "stepper": 0,
+   "temperature-sensor": 0
+  }
+ },
  "tested_sets": [
   {
    "configs": [

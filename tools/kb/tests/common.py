@@ -20,8 +20,7 @@ def load_json(path):
         return json.load(fh)
 
 
-def vectors():
-    """(file name, vector, catalogue) for every vector, in name order."""
+def _all_vectors():
     out = []
     for name in sorted(n for n in os.listdir(VECTORS) if n.endswith(".json")):
         vec = load_json(os.path.join(VECTORS, name))
@@ -30,6 +29,16 @@ def vectors():
             cat = load_json(os.path.join(VECTORS, cat))
         out.append((name, vec, cat))
     return out
+
+
+def vectors():
+    """(file name, vector, catalogue) of every resolve vector, in name order."""
+    return [v for v in _all_vectors() if "selection" not in v[1]]
+
+
+def availability_vectors():
+    """(file name, vector, site catalogue) of every availability vector: `selection` in place of `image`."""
+    return [v for v in _all_vectors() if "selection" in v[1]]
 
 
 def schema(name):

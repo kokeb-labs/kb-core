@@ -6,14 +6,39 @@
 //   #v=1&f=<family>&t=<target>&b=<board>&r=<rtos>&k=<kb-core version or empty>&p=<port version or empty>
 //    &n=<image name>&d=<name>~<version>~<via>~<bus>,...&m=<bus>~<o|g>,...[&c=1 when release candidates are shown]
 //    [&x=<C++ standard> when the image declares its language, docs/language-floor.md]
+// The driver list's view rides along as optional parameters, written only when they differ from the defaults, and
+// read only when `w=1` is present, so every older link keeps its meaning (version 1 of the view):
+//   w=1 &q=<search text> &fb=<buses> &fc=<categories> &ft=<tags> (comma lists) &fw=0 (all drivers, not only those that
+//   work with the target) &vw=l|g (list, grouped; cards when absent) &gb=b (group by bus; category when absent)
+//   &so=c|b (sort by category or bus; name when absent; a leading - reverses) &su=1 (unavailable drivers listed)
 (function (g) {
   'use strict';
   const KB = (g.KB = g.KB || {});
   const ID = /^[a-z0-9][a-z0-9_.-]*$/;
   const STANDARDS = [17, 20, 23, 26]; // resolver.mjs STANDARDS
+  const VIEW_CODE = { list: 'l', grouped: 'g' };
+  const SORT_CODE = { category: 'c', bus: 'b' };
 
   function clean(v) {
     return typeof v === 'string' && ID.test(v) ? v : '';
+  }
+
+  // The view's parameters (opts.view, a KB.picker view state); only those that differ from the defaults.
+  function encodeView(p, view) {
+    const v = KB.picker ? KB.picker.sanitize(view) : null;
+    if (!v) return;
+    const d = KB.picker.defaults();
+    const out = [];
+    if (v.q.trim()) out.push(['q', v.q.trim()]);
+    for (const [key, list] of [['fb', v.bus], ['fc', v.cat], ['ft', v.tag]]) if (list.length) out.push([key, list.join(',')]);
+    if (!v.fit) out.push(['fw', '0']);
+    if (v.view !== d.view) out.push(['vw', VIEW_CODE[v.view]]);
+    if (v.group !== d.group && v.group === 'bus') out.push(['gb', 'b']);
+    if (v.sort !== d.sort || v.desc) out.push(['so', (v.desc ? '-' : '') + (SORT_CODE[v.sort] || 'n')]);
+    if (v.unavail) out.push(['su', '1']);
+    if (!out.length) return;
+    p.set('w', '1');
+    for (const [k, val] of out) p.set(k, val);
   }
 
   // opts.rc adds c=1 (release candidates shown); opts.omitName leaves the image name out (an opened project's own name).
@@ -32,6 +57,7 @@
     p.set('m', Object.keys(image.buses || {}).sort().map((id) => `${id}~${image.buses[id].model === 'owner' ? 'o' : 'g'}`).join(','));
     if (image.cxx) p.set('x', String(image.cxx));
     if (o.rc) p.set('c', '1');
+    if (o.view) encodeView(p, o.view);
     return '#' + p.toString().replace(/%7E/g, '~').replace(/%2C/g, ',');
   }
 
@@ -66,5 +92,19 @@
     return { rc: p.get('c') === '1' };
   }
 
-  KB.state = { encode, decode, flags };
+  // The driver list's view from the hash, or null when the link carries none (then the stored choice and the defaults rule).
+  function viewState(hash) {
+    const p = new URLSearchParams(String(hash || '').replace(/^#/, ''));
+    if (p.get('w') !== '1' || !KB.picker) return null;
+    const list = (k) => (p.get(k) || '').split(',').filter(Boolean);
+    const so = p.get('so') || '';
+    const sortCode = so.replace(/^-/, '');
+    return KB.picker.sanitize({
+      q: p.get('q') || '', bus: list('fb'), cat: list('fc'), tag: list('ft'), fit: p.get('fw') !== '0',
+      view: { l: 'list', g: 'grouped' }[p.get('vw')] || 'grid', group: p.get('gb') === 'b' ? 'bus' : 'category',
+      sort: { c: 'category', b: 'bus' }[sortCode] || 'name', desc: so.startsWith('-'), unavail: p.get('su') === '1',
+    });
+  }
+
+  KB.state = { encode, decode, flags, viewState };
 })(typeof globalThis !== 'undefined' ? globalThis : this);

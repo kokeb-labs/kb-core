@@ -242,6 +242,9 @@ changes with their release pages, held-back versions, fixed and remaining vulner
 | `KB-RES-024` | The part needs a newer C++ standard than the image's `language.standard` |
 | `KB-RES-025` | The part needs a newer compiler than the image's `language.compilers` |
 | `KB-RES-030` | Unsupported catalogue schema |
+| `KB-RES-031` | Availability only: the driver needs a peripheral the target does not offer |
+| `KB-RES-032` | Availability only: the driver needs a bus the target does not offer |
+| `KB-RES-033` | Availability only: the driver needs another RTOS |
 | `KB-RES-W01` | A release-candidate pin is selected |
 | `KB-RES-W03` | kb-core is an unreleased development revision |
 | `KB-RES-W04` | An older driver version is used: the default one needs a newer C++ standard or compiler |

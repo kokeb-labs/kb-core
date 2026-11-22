@@ -61,7 +61,7 @@ def build() -> str:
     html = re.sub(r'<link rel="modulepreload" href="[^"]+" integrity="[^"]+">\n', "", html)
     html = re.sub(r'<script type="module" src="js/boot.mjs" integrity="[^"]+"></script>', module, html)
     html = re.sub(r'<link rel="stylesheet" href="([^"]+)" integrity="[^"]+">', style, html)
-    html = re.sub(r'<script src="([^"]+)" integrity="[^"]+"></script>', script, html)
+    html = re.sub(r'<script src="([^"]+)" integrity="[^"]+"(?: defer)?></script>', script, html)
     html = re.sub(r'<p class="file-notice".*?</p>\n', "", html, flags=re.S)
     csp_old = re.search(r'content="(default-src[^"]+)"', html).group(1)
     csp = csp_old.replace("script-src 'self'", "script-src " + " ".join(scripts))

@@ -144,11 +144,15 @@ jobs:
     name: Layout and examples
     uses: ./.github/workflows/ci-layout.yml
 
+  vulnerabilities:
+    name: Vulnerability data
+    uses: ./.github/workflows/ci-vulnerabilities-check.yml
+
   ci-gate:
     name: CI gate
     needs:
       [changes, host, quality, misra, cross, esp32, docs, configurator, exports, checks, standalone, integration,
-       mutation, pins, layering, catalog, layout]
+       mutation, pins, layering, catalog, layout, vulnerabilities]
     if: always()
     uses: kokeb-labs/ci-tools/.github/workflows/ru-ci-gate.yml@v1
     permissions:

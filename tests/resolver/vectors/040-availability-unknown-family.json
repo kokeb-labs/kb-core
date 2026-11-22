@@ -1,0 +1,52 @@
+{
+  "catalog": "catalogs/site-availability.json",
+  "description": "An unknown family blocks every driver with KB-RES-003.",
+  "expect": {
+    "available": [],
+    "unavailable": [
+      {
+        "code": "KB-RES-003",
+        "name": "bmp581",
+        "reason": "MCU family 'riscv' is not in the catalogue"
+      },
+      {
+        "code": "KB-RES-003",
+        "name": "gcc_chip",
+        "reason": "MCU family 'riscv' is not in the catalogue"
+      },
+      {
+        "code": "KB-RES-003",
+        "name": "mcp9700",
+        "reason": "MCU family 'riscv' is not in the catalogue"
+      },
+      {
+        "code": "KB-RES-003",
+        "name": "modern_chip",
+        "reason": "MCU family 'riscv' is not in the catalogue"
+      },
+      {
+        "code": "KB-RES-003",
+        "name": "new_core_chip",
+        "reason": "MCU family 'riscv' is not in the catalogue"
+      },
+      {
+        "code": "KB-RES-003",
+        "name": "rtos_chip",
+        "reason": "MCU family 'riscv' is not in the catalogue"
+      },
+      {
+        "code": "KB-RES-003",
+        "name": "uart_chip",
+        "reason": "MCU family 'riscv' is not in the catalogue"
+      },
+      {
+        "code": "KB-RES-003",
+        "name": "ws2812_rmt",
+        "reason": "MCU family 'riscv' is not in the catalogue"
+      }
+    ]
+  },
+  "selection": {
+    "family": "riscv"
+  }
+}

@@ -8,6 +8,20 @@ lists its changes per part, the ESP32 port and its driver pins. The format follo
 
 ### Added
 
+- Vulnerability tooling: a reviewed list (`tools/vuln/reviewed.json`, schema `kb-vex/1`) of advisories whose primary
+  source names the exact pinned version as patched; the eight ThreadX advisories on `v6.5.2.202603b_rel` are on it
+  (upstream GHSA `patched_versions` 6.5.2.202603b, checked 2026-11-21). The scan marks them as reviewed (`review`,
+  counts `open` and `reviewed`; the schema stays `kb-vulns/1`, unreleased until now); an entry stops applying when the
+  pin moves. The issue opens only for open advisories; the page and the Supply chain panel show reviewed ones as
+  *fixed in the pinned version* with reason and source, and the chip reads "0 open, 8 reviewed". The OSV range error
+  for these ids is noted under *Known data issues* in the configurator guide; nothing was reported upstream.
+- Configurator: the *Check* panel is replaced by a *Supply chain* panel (`js/panel.js`, loaded after the first view):
+  SPDX 2.3 and CycloneDX 1.6 downloads with component count, licences and pins; known vulnerabilities of the selected
+  components from the scan (none known, not scanned, missing data, a warning from the 11th day); the release
+  asset and its `gh attestation verify` command; tests, coverage and MISRA chips per driver (kb-core's evidence until
+  drivers have their own); real blockers next to their cause, warnings and notes under a closed *Details*. The
+  stylesheet now uses `light-dark()` instead of a second copy of the dark palette.
+
 ### Changed
 
 - Tests: every kb-core CTest test gets a `TIMEOUT` (`KB_TEST_TIMEOUT`, 120 s by default), and `tools/preflight.sh`
@@ -17,8 +31,8 @@ lists its changes per part, the ESP32 port and its driver pins. The format follo
   threaded handler and DMA suites already do; plain counters lose counts when threads share code, and gcov then
   reports negative hits (`utils/time.hpp:131`), which fails the coverage gate.
 - Configurator: while kb-core has only release candidates the page starts on the newest one (the release-candidate
-  switch turns on) instead of opening with an error; *Open an existing project* is folded; on small screens a bar
-  at the bottom shows whether the selection resolves and offers the ZIP.
+  switch turns on) instead of opening with an error; *Open an existing project* is folded (now inside *Advanced*);
+  on small screens a bar at the bottom shows whether the selection resolves and offers the ZIP.
 
 ### Changed
 

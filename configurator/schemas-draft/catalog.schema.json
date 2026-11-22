@@ -12,6 +12,7 @@
     "bus_kinds",
     "families",
     "drivers",
+    "tag_index",
     "tested_sets"
   ],
   "additionalProperties": false,
@@ -195,6 +196,9 @@
           }
         }
       }
+    },
+    "tag_index": {
+      "$ref": "#/$defs/tag_index"
     }
   },
   "$defs": {
@@ -391,7 +395,8 @@
       "required": [
         "id",
         "label",
-        "buses"
+        "buses",
+        "peripherals"
       ],
       "additionalProperties": false,
       "properties": {
@@ -410,6 +415,14 @@
             ],
             "minimum": 0
           }
+        },
+        "peripherals": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "description": "MCU peripherals (rmt, ...) a driver's `requires.peripheral` can name; this build offers them"
         }
       }
     },
@@ -452,7 +465,8 @@
         "default_rtos",
         "port",
         "targets",
-        "boards"
+        "boards",
+        "default_language"
       ],
       "additionalProperties": false,
       "properties": {
@@ -533,6 +547,24 @@
         },
         "port_planned": {
           "$ref": "#/$defs/repo"
+        },
+        "default_language": {
+          "type": "object",
+          "required": [
+            "standard"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "standard": {
+              "enum": [
+                17,
+                20,
+                23,
+                26
+              ]
+            }
+          },
+          "description": "The C++ standard a new project on this family starts with (the page's default for availability())"
         }
       }
     },
@@ -665,7 +697,10 @@
         "i2c_addresses",
         "versions",
         "folder",
-        "pinned"
+        "pinned",
+        "tags",
+        "category",
+        "requires"
       ],
       "additionalProperties": false,
       "properties": {
@@ -780,6 +815,23 @@
             }
           ],
           "description": "The version kb-core's components/drivers/drivers.lock.yml pins; the default when the user picks none."
+        },
+        "tags": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]*$"
+          },
+          "description": "Allowed search tags, sorted (configurator/data/tags.json)"
+        },
+        "category": {
+          "type": "string",
+          "pattern": "^[a-z][a-z-]*$",
+          "description": "One of the categories of tags.json; never empty"
+        },
+        "requires": {
+          "$ref": "#/$defs/driver_requires"
         }
       }
     },
@@ -919,6 +971,88 @@
             "default"
           ],
           "description": "Where the block was read: the file at the tag, or the registry default for a tag without one"
+        }
+      }
+    },
+    "driver_requires": {
+      "type": "object",
+      "required": [
+        "bus",
+        "mcus",
+        "peripheral",
+        "rtos",
+        "kb_core_min",
+        "language"
+      ],
+      "additionalProperties": false,
+      "description": "What the newest version of the driver needs of a build; availability() in configurator/resolver.mjs and tools/kb/resolver.py reads it",
+      "properties": {
+        "bus": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "description": "Any one of these bus kinds must exist on the target"
+        },
+        "mcus": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "description": "any, or the families it works on"
+        },
+        "peripheral": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "A peripheral the target must offer (target.peripherals)"
+        },
+        "rtos": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "description": "Empty: any RTOS; otherwise the RTOS backends it works with"
+        },
+        "kb_core_min": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/version"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "language": {
+          "$ref": "#/$defs/language"
+        }
+      }
+    },
+    "tag_index": {
+      "type": "object",
+      "required": [
+        "tags",
+        "categories"
+      ],
+      "additionalProperties": false,
+      "description": "Drivers per allowed tag and per category, so chips can show counts",
+      "properties": {
+        "tags": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "categories": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          }
         }
       }
     }

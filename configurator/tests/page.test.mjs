@@ -85,3 +85,21 @@ test('wording rules: one public address, no names of people, products or tools',
     }
   }
 });
+
+test('the main path is target, drivers, output; everything else sits in one closed Advanced disclosure', () => {
+  assert.match(html, /<meta name="description" content="[^"]{40,}">/);
+  const main = html.slice(html.indexOf('<section class="panel" id="step-platform"'), html.indexOf('id="advanced"'));
+  assert.ok(!/id="(board|pins|kb-version|port-version|image-name|show-rc|open-files|tabs|explore)"/.test(main), 'advanced control on the main path');
+  assert.deepEqual([...main.matchAll(/<section class="panel" id="(step-[a-z]+)"/g)].map((m) => m[1]), ['step-platform', 'step-drivers', 'step-output']);
+  assert.equal((html.match(/<details[^>]*id="advanced"[^>]*>/g) || []).length, 1);
+  assert.ok(!/<details[^>]*id="advanced"[^>]* open/.test(html));
+  const adv = html.slice(html.indexOf('id="advanced"'), html.indexOf('</details>', html.indexOf('id="advanced"')));
+  for (const id of ['open-files', 'kb-version', 'port-version', 'image-name', 'show-rc', 'step-buses', 'explore', 'tabs']) assert.ok(adv.includes(`id="${id}"`), id);
+});
+
+test('the page holds no driver, target or board rule of its own', () => {
+  const src = ['picker', 'ui', 'upgrade'].map((f) => readFileSync(join(root, 'js', f + '.js'), 'utf8')).join('\n');
+  const data = JSON.parse(readFileSync(join(root, 'data', 'catalog.json'), 'utf8'));
+  const words = [...data.drivers.map((d) => d.name), ...data.families.flatMap((f) => f.targets.map((t) => t.id))].filter((w) => w.length > 3);
+  for (const w of words) assert.ok(!new RegExp(`['"\`]${w}['"\`]`).test(src), `js names ${w}`);
+});
