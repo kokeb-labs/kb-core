@@ -581,6 +581,8 @@
       
         
       
+        
+      
     
     
     
@@ -1816,14 +1818,14 @@ committed figure no longer matches the code. Each figure below lists the files i
 <details class="kb-figure-desc">
 <summary>Figure description and sources</summary>
 <p>Read from the folders of the repository, so the figure cannot drift. The folder components/lib holds the parts: kb::utils at the bottom, kb::rtos on it, kb::interfaces on that, and kb::handlers on top; kb::dma, the chip-neutral DMA vocabulary, also rests on kb::utils. The folder components/ports holds the MCU ports, which satisfy the interface contracts (the host port is for tests only). The folder components/drivers holds the pinned drivers, each a submodule at a release tag, listed by name; kb::handlers binds them and nothing else may use them.</p>
-<p>Drawn from: <a href="https://github.com/kokeb-labs/kb-core/tree/1abcdaafa809268505960abc47fd43b37489851f/components/lib"><code>components/lib</code></a>; <a href="https://github.com/kokeb-labs/kb-core/tree/1abcdaafa809268505960abc47fd43b37489851f/components/ports"><code>components/ports</code></a>; <a href="https://github.com/kokeb-labs/kb-core/tree/1abcdaafa809268505960abc47fd43b37489851f/components/drivers"><code>components/drivers</code></a>; figure module <a href="https://github.com/kokeb-labs/kb-core/blob/1abcdaafa809268505960abc47fd43b37489851f/docs/diagrams/figures/components-map.py"><code>docs/diagrams/figures/components-map.py</code></a>.</p>
+<p>Drawn from: <a href="https://github.com/kokeb-labs/kb-core/tree/94ef4693fab5901043b99ca1cb61ca008fef8da9/components/lib"><code>components/lib</code></a>; <a href="https://github.com/kokeb-labs/kb-core/tree/94ef4693fab5901043b99ca1cb61ca008fef8da9/components/ports"><code>components/ports</code></a>; <a href="https://github.com/kokeb-labs/kb-core/tree/94ef4693fab5901043b99ca1cb61ca008fef8da9/components/drivers"><code>components/drivers</code></a>; figure module <a href="https://github.com/kokeb-labs/kb-core/blob/94ef4693fab5901043b99ca1cb61ca008fef8da9/docs/diagrams/figures/components-map.py"><code>docs/diagrams/figures/components-map.py</code></a>.</p>
 </details>
-<p>Figure module: <a href="https://github.com/kokeb-labs/kb-core/blob/1abcdaafa809268505960abc47fd43b37489851f/docs/diagrams/figures/components-map.py"><code>docs/diagrams/figures/components-map.py</code></a></p>
+<p>Figure module: <a href="https://github.com/kokeb-labs/kb-core/blob/94ef4693fab5901043b99ca1cb61ca008fef8da9/docs/diagrams/figures/components-map.py"><code>docs/diagrams/figures/components-map.py</code></a></p>
 <p>Drawn from:</p>
 <ul>
-<li><a href="https://github.com/kokeb-labs/kb-core/tree/1abcdaafa809268505960abc47fd43b37489851f/components/lib"><code>components/lib</code></a></li>
-<li><a href="https://github.com/kokeb-labs/kb-core/tree/1abcdaafa809268505960abc47fd43b37489851f/components/ports"><code>components/ports</code></a></li>
-<li><a href="https://github.com/kokeb-labs/kb-core/tree/1abcdaafa809268505960abc47fd43b37489851f/components/drivers"><code>components/drivers</code></a></li>
+<li><a href="https://github.com/kokeb-labs/kb-core/tree/94ef4693fab5901043b99ca1cb61ca008fef8da9/components/lib"><code>components/lib</code></a></li>
+<li><a href="https://github.com/kokeb-labs/kb-core/tree/94ef4693fab5901043b99ca1cb61ca008fef8da9/components/ports"><code>components/ports</code></a></li>
+<li><a href="https://github.com/kokeb-labs/kb-core/tree/94ef4693fab5901043b99ca1cb61ca008fef8da9/components/drivers"><code>components/drivers</code></a></li>
 </ul>
 <h2 id="which-layer-may-depend-on-which">Which layer may depend on which<a class="headerlink" href="#which-layer-may-depend-on-which" title="Permanent link">&para;</a></h2>
 <figure class="kb-figure">
@@ -1963,7 +1965,7 @@ committed figure no longer matches the code. Each figure below lists the files i
 <summary>Figure description and sources</summary>
 <p>Two models, declared per bus, one above the other; callers on other tasks use one access API in both. Model O, the owner task, is the default for real-time buses: one real-time task, a kb::rtos::Thread, calls Service(now) at a fixed rate, steps the single-threaded cores of handlers A and B on BusDomain<SPI1, Owner> without a mutex (an owner check instead), publishes each step to a lock-free SeqlockSnapshot and drains a bounded command queue with completion. Other tasks read the latest snapshot with Latest() (a lock-free copy) or post a request with Request(cmd, timeout) and wait. Model G, the guarded facade, is for slow, sporadic devices: tasks X and Y each call Call(timeout, op) on a Guarded handler, C or D, which takes the handler lock and then, with a bounded wait (TryLockFor), the bus lock of BusDomain<I2C0, Guarded>, which has a mutex, recovery and statistics. An interrupt service routine only sets event flags or notifies the owner task; it never calls a handler.</p>
 </details>
-<p>Figure module: <a href="https://github.com/kokeb-labs/kb-core/blob/1abcdaafa809268505960abc47fd43b37489851f/docs/diagrams/figures/handler-threading.py"><code>docs/diagrams/figures/handler-threading.py</code></a></p>
+<p>Figure module: <a href="https://github.com/kokeb-labs/kb-core/blob/94ef4693fab5901043b99ca1cb61ca008fef8da9/docs/diagrams/figures/handler-threading.py"><code>docs/diagrams/figures/handler-threading.py</code></a></p>
 <h2 id="the-layer-stack">The layer stack<a class="headerlink" href="#the-layer-stack" title="Permanent link">&para;</a></h2>
 <figure class="kb-figure">
 <img src="layer-stack.svg#only-light" alt="Layer stack from the product application through the board HAL to kb::handlers, kb::interfaces, kb::rtos and kb::utils, with the drivers that handlers bind, the MCU ports that satisfy the contracts, and vendor SOUP reached only through boundary files." width="696" height="1417" loading="lazy"><img src="layer-stack.dark.svg#only-dark" alt="Layer stack from the product application through the board HAL to kb::handlers, kb::interfaces, kb::rtos and kb::utils, with the drivers that handlers bind, the MCU ports that satisfy the contracts, and vendor SOUP reached only through boundary files." width="696" height="1417" loading="lazy">
