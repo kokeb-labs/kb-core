@@ -919,6 +919,8 @@
         
       
         
+      
+        
           
         
       
@@ -1182,6 +1184,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../design/board-dma/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Board DMA
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../design/assembler/" class="md-nav__link">
         
   
@@ -1307,6 +1337,17 @@
     <span class="md-ellipsis">
       
         Write an SBOM
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#check-a-boards-dma-and-generate-its-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Check a board's DMA and generate its files
       
     </span>
   </a>
@@ -1571,6 +1612,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#check-a-boards-dma-and-generate-its-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Check a board's DMA and generate its files
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#tests" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1739,9 +1791,41 @@ lock's SHA-256, and no clock is read. <code>--created</code> (or <code>SOURCE_DA
 requires one, otherwise uses <code>1970-01-01T00:00:00Z</code>. The SDK and RTOS (ESP-IDF, FreeRTOS, ThreadX when selected)
 are listed as SOUP. Every top-level component carries a <code>kb:osv</code> property (CycloneDX) or comment (SPDX) with its
 known-vulnerability scan: from <code>--catalog catalog.json</code> when its versions carry scans, else <code>not scanned</code>.</p>
+<h2 id="check-a-boards-dma-and-generate-its-files">Check a board's DMA and generate its files<a class="headerlink" href="#check-a-boards-dma-and-generate-its-files" title="Permanent link">&para;</a></h2>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>python3<span class="w"> </span>tools/kb/kb.py<span class="w"> </span>image<span class="w"> </span>check<span class="w"> </span>examples/boards/stm32h743-dma/board.yml
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>python3<span class="w"> </span>tools/kb/kb.py<span class="w"> </span>board<span class="w"> </span>gen<span class="w"> </span>examples/boards/stm32h743-dma/board.yml<span class="w"> </span>-o<span class="w"> </span>out/
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>python3<span class="w"> </span>tools/kb/kb.py<span class="w"> </span>image<span class="w"> </span>check<span class="w"> </span>--selftest
+</span></code></pre></div>
+<p><code>image check</code> runs the rules R1 to R15 of a <code>board.yml</code> against the routing data in <code>tools/kb/data/dma/</code>;
+<code>board gen</code> writes <code>board_dma.hpp</code>, <code>board_dma.cpp</code>, <code>kb_dma.ld</code>, <code>board_mpu.hpp</code> and a report. Options: <code>--sdkconfig
+FILE</code> (ESP-IDF options, R13), <code>--drivers FILE</code> (frame sizes by driver), <code>--json</code> (the result for tools), <code>--strict</code>
+(warnings fail). <code>--selftest</code> runs the board vectors. <code>python3 tools/kb/dmadata.py --export-json OUT</code> writes the data
+as one JSON bundle for the configurator. Reference: <a href="../design/board-dma/">Board DMA</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Exit</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>The board checks (warnings go to standard error)</td>
+</tr>
+<tr>
+<td>1</td>
+<td>An error finding, or a warning with <code>--strict</code>: one line per finding, <code>error dma.&lt;code&gt; &lt;subject&gt;: &lt;message&gt;</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td>Bad arguments, or a file that cannot be read or parsed</td>
+</tr>
+</tbody>
+</table>
 <h2 id="tests">Tests<a class="headerlink" href="#tests" title="Permanent link">&para;</a></h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>python3<span class="w"> </span>tools/kb/tests/run.py<span class="w">              </span><span class="c1"># unit tests and every vector (exit 77 without PyYAML; 1 in CI)</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>node<span class="w"> </span>tests/resolver/run_js_vectors.mjs<span class="w">     </span><span class="c1"># the same and the upgrade vectors through configurator/resolver.mjs</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>python3<span class="w"> </span>tools/kb/tests/run.py<span class="w">              </span><span class="c1"># unit tests and every vector (exit 77 without PyYAML; 1 in CI)</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>node<span class="w"> </span>tests/resolver/run_js_vectors.mjs<span class="w">     </span><span class="c1"># the same and the upgrade vectors through configurator/resolver.mjs</span>
 </span></code></pre></div>
 <p>Both run under CTest with <code>-DKB_BUILD_TESTS=ON</code> (<code>kb_cli_unit</code>, <code>kb_resolver_js_vectors</code>).</p>
 

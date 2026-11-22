@@ -153,6 +153,10 @@
          <lastmod>2026-11-22</lastmod>
     </url>
     <url>
+         <loc>https://kokeb-labs.github.io/kb-core/latest/adr/ADR-0033-dma-resources-declared-once/</loc>
+         <lastmod>2026-11-22</lastmod>
+    </url>
+    <url>
          <loc>https://kokeb-labs.github.io/kb-core/latest/assurance/</loc>
          <lastmod>2026-11-22</lastmod>
     </url>
@@ -174,6 +178,10 @@
     </url>
     <url>
          <loc>https://kokeb-labs.github.io/kb-core/latest/design/assurance/</loc>
+         <lastmod>2026-11-22</lastmod>
+    </url>
+    <url>
+         <loc>https://kokeb-labs.github.io/kb-core/latest/design/board-dma/</loc>
          <lastmod>2026-11-22</lastmod>
     </url>
     <url>
