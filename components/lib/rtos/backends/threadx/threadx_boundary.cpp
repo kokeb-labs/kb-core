@@ -312,6 +312,11 @@ void MutexUnlock(const detail::MutexStorage& storage) noexcept {
   static_cast<void>(tx_mutex_put(Block<TX_MUTEX>(storage)));
 }
 
+void MutexDelete(detail::MutexStorage& storage) noexcept {
+  static_cast<void>(tx_mutex_delete(Block<TX_MUTEX>(storage)));
+  storage.handle = nullptr;
+}
+
 kb::Status RecursiveMutexCreate(detail::MutexStorage& storage) noexcept {
   return MutexCreate(storage); // a ThreadX mutex is recursive; only the lock rule differs
 }
@@ -322,6 +327,11 @@ bool RecursiveMutexLock(const detail::MutexStorage& storage, uint32_t timeout_ti
 
 void RecursiveMutexUnlock(const detail::MutexStorage& storage) noexcept {
   static_cast<void>(tx_mutex_put(Block<TX_MUTEX>(storage)));
+}
+
+void RecursiveMutexDelete(detail::MutexStorage& storage) noexcept {
+  static_cast<void>(tx_mutex_delete(Block<TX_MUTEX>(storage)));
+  storage.handle = nullptr;
 }
 
 kb::Status SemaphoreCreate(detail::SemaphoreStorage& storage, uint32_t max_count,
@@ -352,6 +362,11 @@ uint32_t SemaphoreCount(const detail::SemaphoreStorage& storage) noexcept {
   static_cast<void>(tx_semaphore_info_get(&Block<SemaphoreBlock>(storage)->semaphore, nullptr,
                                           &count, nullptr, nullptr, nullptr));
   return static_cast<uint32_t>(count);
+}
+
+void SemaphoreDelete(detail::SemaphoreStorage& storage) noexcept {
+  static_cast<void>(tx_semaphore_delete(&Block<SemaphoreBlock>(storage)->semaphore));
+  storage.handle = nullptr;
 }
 
 kb::Status QueueCreate(detail::QueueStorage& storage, std::byte* buffer, std::size_t item_bytes,
@@ -404,6 +419,11 @@ std::size_t QueueSize(const detail::QueueStorage& storage) noexcept {
   return static_cast<std::size_t>(enqueued);
 }
 
+void QueueDelete(detail::QueueStorage& storage) noexcept {
+  static_cast<void>(tx_queue_delete(&Block<QueueBlock>(storage)->queue));
+  storage.handle = nullptr;
+}
+
 kb::Status EventFlagsCreate(detail::EventFlagsStorage& storage) noexcept {
   auto* const group = Construct<TX_EVENT_FLAGS_GROUP>(storage);
   return Publish(storage, group, tx_event_flags_create(group, ObjectName()));
@@ -435,6 +455,11 @@ uint32_t EventFlagsWait(const detail::EventFlagsStorage& storage, uint32_t bits,
                                          WaitOption(timeout_ticks));
   // On success ThreadX reports the flags before any clear; on a timeout, read them now.
   return (result == TX_SUCCESS) ? static_cast<uint32_t>(actual) : CurrentFlags(group);
+}
+
+void EventFlagsDelete(detail::EventFlagsStorage& storage) noexcept {
+  static_cast<void>(tx_event_flags_delete(Block<TX_EVENT_FLAGS_GROUP>(storage)));
+  storage.handle = nullptr;
 }
 
 kb::Status TimerCreate(detail::TimerStorage& storage, const detail::TimerParams& params) noexcept {
@@ -482,6 +507,16 @@ bool TimerStart(const detail::TimerStorage& storage) noexcept {
 
 bool TimerStop(const detail::TimerStorage& storage) noexcept {
   return tx_timer_deactivate(&Block<TimerBlock>(storage)->timer) == TX_SUCCESS;
+}
+
+void TimerDelete(detail::TimerStorage& storage) noexcept {
+  // tx_timer_delete also deactivates it; then its table slot is free for a new timer.
+  auto* const block = Block<TimerBlock>(storage);
+  static_cast<void>(tx_timer_delete(&block->timer));
+  EnterCritical();
+  Shared().timers[static_cast<std::size_t>(block->slot)] = nullptr;
+  ExitCritical();
+  storage.handle = nullptr;
 }
 
 kb::Status ThreadCreate(detail::ThreadStorage& storage,

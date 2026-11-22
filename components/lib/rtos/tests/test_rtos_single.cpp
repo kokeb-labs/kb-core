@@ -1,7 +1,10 @@
 // The kb::rtos contract in one context, deterministic: built over the none backend and over the
 // FreeRTOS and ThreadX boundaries with their fake kernels, so every backend is held to the same
 // results and tick counts. SPDX-License-Identifier: MIT Copyright (c) 2026 The kb-core authors
+#include <array>
+#include <cstddef>
 #include <cstdint>
+#include <new>
 
 #include "kb/rtos/rtos.hpp"
 #include "kb_test.hpp"
@@ -28,6 +31,22 @@ struct Sample {
 };
 void CountFire(void* context) noexcept {
   ++*static_cast<uint32_t*>(context);
+}
+
+// Constructs a T in the same bytes `rounds` times, runs `use` on it and ends it with its
+// destructor: each round's RTOS object is created where the last one was deleted (ADR-0017).
+template <typename T, typename Use>
+bool InSameStorage(uint32_t rounds, Use use) noexcept {
+  alignas(T) static std::array<std::byte, sizeof(T)> bytes{};
+  bool ok = true;
+  for (uint32_t i = 0U; i < rounds; ++i) {
+    void* const raw = static_cast<void*>(bytes.data());
+    // NOLINTNEXTLINE(cppcoreguidelines-owning-memory): placement into the static bytes above
+    T* const object = new (raw) T();
+    ok = use(*object) && ok;
+    object->~T();
+  }
+  return ok;
 }
 } // namespace
 
@@ -276,4 +295,43 @@ KB_TEST("thread defaults: state values, no stop requested, the smallest stack") 
   static SmallThread small{};
   KB_CHECK(!small.StopRequested());
   KB_CHECK_EQ(small.Stats().max_step_us, 0U);
+}
+
+KB_TEST("lifetime: each destructor deletes its RTOS object; the next one in the same bytes works") {
+  kb_rtos_test::ResetBackend();
+  constexpr uint32_t kRounds = 8U;
+  using SampleQueue = r::Queue<Sample, 2>;
+  const bool mutexes = InSameStorage<r::Mutex>(kRounds, [](r::Mutex& m) noexcept {
+    const bool ok = m.Create().IsOk() && m.TryLock() && (!m.TryLockFor(Milliseconds{0U}));
+    m.Unlock();
+    return ok;
+  });
+  const bool recursive =
+      InSameStorage<r::RecursiveMutex>(kRounds, [](r::RecursiveMutex& m) noexcept {
+        const bool ok = m.Create().IsOk() && m.TryLock() && m.TryLock();
+        m.Unlock();
+        m.Unlock();
+        return ok;
+      });
+  const bool semaphores = InSameStorage<r::Semaphore>(kRounds, [](r::Semaphore& s) noexcept {
+    return s.Create(2U, 0U).IsOk() && (s.Count() == 0U) && s.Give() && s.TryTake() && !s.TryTake();
+  });
+  const bool queues = InSameStorage<SampleQueue>(kRounds, [](SampleQueue& q) noexcept {
+    Sample out{};
+    return q.Create().IsOk() && (q.Size() == 0U) && q.TrySend(Sample{.id = 7U, .value = 1}) &&
+           q.TryReceive(out) && (out.id == 7U);
+  });
+  const bool groups = InSameStorage<r::EventFlags>(kRounds, [](r::EventFlags& f) noexcept {
+    const bool fresh = f.Create().IsOk() && (f.Get() == 0U);
+    f.Set(0x5U);
+    return fresh && ((f.WaitAll(0x5U, Milliseconds{0U}) & 0x5U) == 0x5U);
+  });
+  // Never created: the destructor has nothing to delete.
+  const auto untouched = [](const auto&) noexcept { return true; };
+  const bool idle =
+      InSameStorage<r::Timer>(1U, untouched) && InSameStorage<r::Mutex>(1U, untouched) &&
+      InSameStorage<r::RecursiveMutex>(1U, untouched) &&
+      InSameStorage<r::Semaphore>(1U, untouched) && InSameStorage<SampleQueue>(1U, untouched) &&
+      InSameStorage<r::EventFlags>(1U, untouched);
+  KB_CHECK(mutexes && recursive && semaphores && queues && groups && idle);
 }

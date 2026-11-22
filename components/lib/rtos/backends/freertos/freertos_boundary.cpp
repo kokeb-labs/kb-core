@@ -194,6 +194,11 @@ void RecursiveMutexUnlock(const detail::MutexStorage& storage) noexcept {
   static_cast<void>(xSemaphoreGiveRecursive(Semaphore(storage.handle)));
 }
 
+void RecursiveMutexDelete(detail::MutexStorage& storage) noexcept {
+  vQueueDelete(Semaphore(storage.handle));
+  storage.handle = nullptr;
+}
+
 bool MutexLock(const detail::MutexStorage& storage, uint32_t timeout_ticks) noexcept {
   return xSemaphoreTake(Semaphore(storage.handle), static_cast<TickType_t>(timeout_ticks)) ==
          pdTRUE;
@@ -201,6 +206,11 @@ bool MutexLock(const detail::MutexStorage& storage, uint32_t timeout_ticks) noex
 
 void MutexUnlock(const detail::MutexStorage& storage) noexcept {
   static_cast<void>(xSemaphoreGive(Semaphore(storage.handle)));
+}
+
+void MutexDelete(detail::MutexStorage& storage) noexcept {
+  vQueueDelete(Semaphore(storage.handle)); // vSemaphoreDelete: a semaphore is a queue
+  storage.handle = nullptr;
 }
 
 kb::Status SemaphoreCreate(detail::SemaphoreStorage& storage, uint32_t max_count,
@@ -223,6 +233,11 @@ bool SemaphoreGive(const detail::SemaphoreStorage& storage) noexcept {
 
 uint32_t SemaphoreCount(const detail::SemaphoreStorage& storage) noexcept {
   return static_cast<uint32_t>(uxSemaphoreGetCount(Semaphore(storage.handle)));
+}
+
+void SemaphoreDelete(detail::SemaphoreStorage& storage) noexcept {
+  vQueueDelete(Semaphore(storage.handle));
+  storage.handle = nullptr;
 }
 
 kb::Status QueueCreate(detail::QueueStorage& storage, std::byte* buffer, std::size_t item_bytes,
@@ -253,6 +268,11 @@ std::size_t QueueSize(const detail::QueueStorage& storage) noexcept {
   return static_cast<std::size_t>(uxQueueMessagesWaiting(Queue(storage.handle)));
 }
 
+void QueueDelete(detail::QueueStorage& storage) noexcept {
+  vQueueDelete(Queue(storage.handle));
+  storage.handle = nullptr;
+}
+
 kb::Status EventFlagsCreate(detail::EventFlagsStorage& storage) noexcept {
   EventGroupHandle_t handle = xEventGroupCreateStatic(Buffer<StaticEventGroup_t>(storage));
   storage.handle = handle;
@@ -279,6 +299,11 @@ uint32_t EventFlagsWait(const detail::EventFlagsStorage& storage, uint32_t bits,
   return static_cast<uint32_t>(seen);
 }
 
+void EventFlagsDelete(detail::EventFlagsStorage& storage) noexcept {
+  vEventGroupDelete(Group(storage.handle));
+  storage.handle = nullptr;
+}
+
 kb::Status TimerCreate(detail::TimerStorage& storage, const detail::TimerParams& params) noexcept {
   auto* block = Buffer<TimerBlock>(storage);
   block->params = params;
@@ -299,6 +324,12 @@ bool TimerStart(const detail::TimerStorage& storage) noexcept {
 
 bool TimerStop(const detail::TimerStorage& storage) noexcept {
   return xTimerStop(TimerOf(storage.handle), 0U) == pdPASS;
+}
+
+void TimerDelete(detail::TimerStorage& storage) noexcept {
+  // A documented no-op (ADR-0017): xTimerDelete only queues the delete for the timer task, which
+  // may still use the control block after the kb object's storage has ended.
+  storage.handle = nullptr;
 }
 
 kb::Status ThreadCreate(detail::ThreadStorage& storage,
