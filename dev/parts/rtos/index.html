@@ -1697,8 +1697,12 @@ had already passed is counted as an overrun.</p>
 </table>
 <p>Each native object lives in opaque storage inside the kb object (<code>detail::OpaqueStorage</code>), sized and aligned in
 <code>backend.hpp</code>; every backend <code>static_assert</code>s that its object fits. A wait without a limit is <code>kb::kMaxMilliseconds</code>.
-Give every <code>kb::rtos</code> object static storage: objects are never deleted, and ThreadX keeps created objects on kernel
-lists.</p>
+A kb object's destructor deletes its native object (<a href="../../adr/ADR-0017-native-object-lifetime/">ADR-0017</a>):
+<code>vQueueDelete</code> and <code>vEventGroupDelete</code> on FreeRTOS, <code>tx_*_delete</code> on ThreadX, the standard-library destructors on
+the host backend, nothing on <code>none</code> (a timer leaves its table). A FreeRTOS timer is not deleted: <code>xTimerDelete</code> only
+queues the delete for the timer task, which may still use the control block after the storage has ended. Objects that
+live for the whole program still take static storage; never end an object while a thread holds or waits on it (the
+host backend then leaves the object in place rather than destroy it under that thread).</p>
 <h2 id="misra-c2023-notes">MISRA C++:2023 notes<a class="headerlink" href="#misra-c2023-notes" title="Permanent link">&para;</a></h2>
 <ul>
 <li>The API headers and the <code>none</code> backend: zero findings, zero deviations (level <code>high</code>).</li>

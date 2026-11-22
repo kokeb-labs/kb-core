@@ -1209,6 +1209,8 @@
       
         
       
+        
+      
     
     
     
@@ -1814,6 +1816,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../ADR-0017-native-object-lifetime/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0017 Native object lifetime
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../ADR-0030-dma-buffers-and-leases/" class="md-nav__link">
         
   
@@ -2034,7 +2064,7 @@ evidence (<a href="../ADR-0013-hosted-configurator/">ADR-0013</a>). A tag name a
 </span></code></pre></div>
 <p>The lock cannot live in the tagged commit (it would change the SHA it records); it is a release file, and the
    tag's commit is the source of truth it points at.
-5. The pin hygiene checks stay and grow: PIN-001 to PIN-010 (<a href="https://github.com/kokeb-labs/kb-core/blob/c559bdaacf940a0eb76b24257bf266ab08cf6aaf/tools/pins/README.md">tools/pins</a>),
+5. The pin hygiene checks stay and grow: PIN-001 to PIN-010 (<a href="https://github.com/kokeb-labs/kb-core/blob/6004ea8aab898c1e40ae34551491479f55ee8a97/tools/pins/README.md">tools/pins</a>),
    plus PIN-011 (no <code>branch =</code> in <code>.gitmodules</code>; the tag matches <code>^v\d+\.\d+\.\d+(-rc\.\d+)?$</code>; <code>kind</code> agrees with
    the tag) and PIN-012 (at release: the lock is complete and every commit in it equals the tree being released).</p>
 <h2 id="consequences">Consequences<a class="headerlink" href="#consequences" title="Permanent link">&para;</a></h2>

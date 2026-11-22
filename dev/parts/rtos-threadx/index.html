@@ -1707,11 +1707,11 @@ directories and defines, so they always agree. With a product kernel, pass the s
 </table>
 <h2 id="differences-from-freertos-that-a-user-can-see">Differences from FreeRTOS that a user can see<a class="headerlink" href="#differences-from-freertos-that-a-user-can-see" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>Object lifetime.</strong> ThreadX keeps every created object on a kernel list, and kb objects are never deleted, so
-  every <code>kb::rtos</code> object needs static storage (a global, a <code>static</code> local or a member of one), never a stack
-  frame: a stack object would leave a dangling entry on the kernel's list when its frame ends. The rule is the same
-  for every backend; on FreeRTOS a forgotten stack mutex or queue happens to be harmless, on ThreadX it is not.
-  Nothing checks it yet (with <code>TX_DISABLE_ERROR_CHECKING</code> not even the kernel notices a re-created address).</li>
+<li><strong>Object lifetime.</strong> ThreadX keeps every created object on a kernel list. A kb object's destructor deletes its
+  kernel object (<code>tx_*_delete</code>, <a href="../../adr/ADR-0017-native-object-lifetime/">ADR-0017</a>), and a deleted timer frees
+  its slot of the backend's timer table, so a kb object on a stack frame leaves no dangling entry. Static storage is
+  still the rule for objects that live for the whole program; an object must not be ended while a thread holds or
+  waits on it.</li>
 <li><strong>A holder's unbounded retake.</strong> <code>Mutex::TryLockFor(kb::kMaxMilliseconds)</code> by the thread that holds the mutex
   fails at once on ThreadX; on FreeRTOS it never returns. Both are a bug in the caller.</li>
 <li><strong>Mutexes from an interrupt</strong> are not allowed on any backend. On ThreadX <code>tx_thread_identify()</code> in an interrupt

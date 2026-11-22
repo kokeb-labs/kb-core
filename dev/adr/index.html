@@ -1209,6 +1209,8 @@
       
         
       
+        
+      
     
     
     
@@ -1723,6 +1725,34 @@
   
   
     <li class="md-nav__item">
+      <a href="ADR-0017-native-object-lifetime/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ADR-0017 Native object lifetime
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="ADR-0030-dma-buffers-and-leases/" class="md-nav__link">
         
   
@@ -1949,6 +1979,11 @@ that supersedes or amends the old one; the old record stays. Handbook decisions 
 <td><a href="ADR-0016-async-bus-and-held-transactions/">ADR-0016</a></td>
 <td>Non-blocking bus access (<code>Start</code>/<code>Poll</code>) and held bus transactions (<code>BusHold</code>)</td>
 <td>Proposed</td>
+</tr>
+<tr>
+<td><a href="ADR-0017-native-object-lifetime/">ADR-0017</a></td>
+<td>A <code>kb::rtos</code> object's destructor deletes its native object (one delete call per kind in the backend seam)</td>
+<td>Accepted</td>
 </tr>
 <tr>
 <td><a href="ADR-0030-dma-buffers-and-leases/">ADR-0030</a></td>
