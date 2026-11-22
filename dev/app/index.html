@@ -9,8 +9,8 @@
 <meta name="color-scheme" content="light dark">
 <title>kb configurator</title>
 <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
-<link rel="modulepreload" href="resolver.mjs" integrity="sha384-7f5arwgT2QqIAkl3N7+Z4wqW5wbDSuRXqAPAqChpCmv1dZKMeSeNO5xAOckFxCL/">
-<link rel="stylesheet" href="css/app.css" integrity="sha384-zl4XmetqNcaB8/6jepykIgEKZrPqFqk6tE5e8ATSZTu0/EhFOf+IXeAxYK33K0ny">
+<link rel="modulepreload" href="resolver.mjs" integrity="sha384-6mQktHJ5fijZ8OkG0oUYE7yjtx4oqY78V9mLTmLqfAx8J0oOwX/J5xjm1ELlN/NA">
+<link rel="stylesheet" href="css/app.css" integrity="sha384-zeO5n54VIUB1JAxp8Nc7vUBR+hvaWK7BJYTJRRcSV9g2w75VU1jD8LxCERept8OO">
 </head>
 <body class="booting">
 <a class="skip" href="#main">Skip to the configurator</a>
@@ -19,7 +19,7 @@
     <img src="assets/icon.svg" alt="kb" width="32" height="32">
     <div>
       <h1>kb configurator</h1>
-      <p>Pick a platform and drivers; get a pinned, repeatable project with its evidence.</p>
+      <p>Pick a target and drivers; download a pinned, repeatable project.</p>
     </div>
   </div>
   <div class="top-actions">
@@ -42,119 +42,139 @@ catalogue it reads is <a href="data/catalog.json">data/catalog.json</a>.</p></no
 <main id="main" class="layout" tabindex="-1">
   <nav class="result-bar" aria-label="Result">
     <span id="bar-status" class="bar-status" role="status"></span>
-    <a href="#h-check">Check and files</a>
+    <a href="#h-supply">Supply chain</a>
     <button type="button" class="primary" id="bar-zip">Download .zip</button>
   </nav>
   <div class="steps">
-    <details class="panel open-project" id="step-open">
-      <summary><h2 id="h-open">Open an existing project</h2>
-        <span class="hint">Already have a <code>kb-image.yml</code>? Check it for upgrades.</span></summary>
-      <p class="lead">Pick your project's <code>kb-image.yml</code> and, if it has one, its <code>kb-image.lock.yml</code>
-        (both at once). They are read in this browser only: nothing is uploaded or stored, and the address bar gets only
-        catalogue identifiers (not the project's name or drivers this catalogue lacks). The page then shows the
-        project as the selection below and every upgrade the catalogue offers, with the rules of <code>kb upgrade</code>.</p>
-      <div class="row">
-        <div class="field"><label for="open-files">Project files</label>
-          <input type="file" id="open-files" multiple accept=".yml,.yaml,.json" aria-describedby="open-status"></div>
-        <div class="field"><label class="check"><input type="checkbox" id="allow-rc"> Offer release candidates</label>
-          <span class="hint">The same switch as "Show release candidates" in step 3.</span></div>
-      </div>
-      <p class="note" id="open-status" role="status" aria-live="polite"></p>
-      <div id="upgrade" hidden>
-        <h3 id="h-upgrade">Available upgrades</h3>
-        <div class="summary-line" id="upgrade-summary"></div>
-        <div id="upgrade-table"></div>
-        <ul class="findings" id="upgrade-findings" aria-label="Upgrade findings"></ul>
-        <div class="download-row upgrade-actions">
-          <button type="button" class="primary" id="upgrade-apply">Use the upgraded versions</button>
-          <button type="button" id="upgrade-report">Download kb-upgrade.md</button>
-          <button type="button" id="upgrade-image">Download kb-image.yml</button>
-          <button type="button" id="upgrade-lock">Download kb-image.lock.yml</button>
-          <button type="button" class="ghost" id="upgrade-clear" hidden>Clear chosen versions</button>
-        </div>
-        <p class="note">The same files, byte for byte, as <code>kb upgrade kb-image.yml --catalog data/catalog.json -o .</code>
-          run on this page's catalogue (<a href="data/catalog.json">data/catalog.json</a>).</p>
-      </div>
-    </details>
-
     <section class="panel" id="step-platform" aria-labelledby="h-platform">
-      <h2 id="h-platform"><span class="num" aria-hidden="true">1</span> Platform</h2>
-      <p class="lead">The MCU family selects the port; the target and board set how many buses and pins there are.</p>
+      <h2 id="h-platform"><span class="num" aria-hidden="true">1</span> Target</h2>
       <fieldset class="choices" id="families"><legend>MCU family</legend></fieldset>
       <div class="row">
-        <div class="field"><label for="target">Target</label><select id="target"></select></div>
-        <div class="field"><label for="board">Board</label><select id="board" aria-describedby="board-hint"></select>
-          <span class="hint" id="board-hint"></span></div>
+        <div class="field"><label for="target">Target</label><select id="target" aria-describedby="target-hint"></select>
+          <span class="hint" id="target-hint"></span></div>
+        <div class="field"><label for="cxx">C++ standard</label><select id="cxx"
+          title="What your toolchain builds with. A driver that needs a newer standard is hidden."></select>
+          <span class="hint">The family default is preselected.</span></div>
       </div>
-    </section>
-
-    <section class="panel" id="step-rtos" aria-labelledby="h-rtos">
-      <h2 id="h-rtos"><span class="num" aria-hidden="true">2</span> RTOS and versions</h2>
-      <p class="lead" id="rtos-note">The RTOS backend of kb::rtos.</p>
-      <fieldset class="choices" id="rtos"><legend>RTOS backend</legend></fieldset>
-      <div class="row">
-        <div class="field"><label for="kb-version">kb-core version</label><select id="kb-version"></select></div>
-        <div class="field"><label for="port-version">Port version</label><select id="port-version"></select></div>
-        <div class="field"><label for="image-name">Image name</label>
-          <input type="text" id="image-name" autocomplete="off" spellcheck="false" maxlength="40" aria-describedby="image-hint">
-          <span class="hint" id="image-hint">Lower-case letters, digits and dashes; names the folder and the preset.</span></div>
-        <div class="field"><label for="cxx">C++ standard</label><select id="cxx" aria-describedby="cxx-hint"></select>
-          <span class="hint" id="cxx-hint">What your toolchain builds with. A part that needs a newer standard is refused,
-            with the newest version that fits (<a href="https://kokeb-labs.github.io/kb-core/latest/language-floor/">language floor</a>).</span></div>
-      </div>
+      <fieldset class="choices" id="rtos"><legend>RTOS</legend></fieldset>
+      <p class="note" id="board-note">Pins and board mapping come with your board layer.</p>
     </section>
 
     <section class="panel" id="step-drivers" aria-labelledby="h-drivers">
-      <h2 id="h-drivers"><span class="num" aria-hidden="true">3</span> Drivers</h2>
-      <p class="lead">Every chip driver with each published version. The newest final release is the default. Release
-        candidates (<span class="badge rc">rc</span>) are hidden until you turn them on; a driver with only release
-        candidates can then be added.</p>
+      <h2 id="h-drivers"><span class="num" aria-hidden="true">2</span> Drivers</h2>
+      <p class="lead">Only drivers that work with your target are listed.</p>
       <div class="toolbar">
-        <div class="field"><label for="search">Search</label>
-          <input type="search" id="search" placeholder="Chip, bus or capability, e.g. pressure, spi, PMIC" autocomplete="off"></div>
-        <div class="field"><label class="check"><input type="checkbox" id="show-rc"> Show release candidates</label></div>
-        <div class="field"><span class="visually-hidden" id="filters-label">Filter by bus</span>
-          <div class="filters" id="bus-filters" role="group" aria-labelledby="filters-label"></div></div>
+        <div class="field grow"><label for="search">Search</label>
+          <input type="search" id="search" placeholder="Name, function, tag or bus, e.g. pressure" autocomplete="off"
+            title="Searches name, summary, tags, category and bus"></div>
+        <fieldset class="seg" id="view-switch"><legend>View</legend>
+          <button type="button" data-view="grid" aria-pressed="true">Cards</button>
+          <button type="button" data-view="list" aria-pressed="false">List</button>
+          <button type="button" data-view="grouped" aria-pressed="false">Grouped</button></fieldset>
+        <div class="field"><label for="group-by">Group by</label>
+          <select id="group-by" title="Used by the grouped view"><option value="category">Category</option><option value="bus">Bus</option></select></div>
+        <div class="field"><label for="sort-by">Sort by</label>
+          <select id="sort-by"><option value="name">Name</option><option value="category">Category</option><option value="bus">Bus</option></select></div>
+        <div class="field"><button type="button" id="sort-dir" aria-pressed="false" title="Reverse the order">A to Z</button></div>
       </div>
-      <p class="count" id="count" role="status" aria-live="polite"></p>
+      <div class="filter-box">
+        <fieldset class="chips"><legend>Bus</legend><div class="filters" id="bus-filters"></div></fieldset>
+        <fieldset class="chips"><legend>Category</legend><div class="filters" id="cat-filters"></div></fieldset>
+        <details id="tag-details" class="tag-details"><summary>Tags <span id="tag-active" class="sub"></span></summary>
+          <fieldset class="chips"><legend class="visually-hidden">Tags</legend><div class="filters" id="tag-filters"></div></fieldset></details>
+        <label class="check" title="Hide drivers this target, RTOS or C++ standard cannot use"><input type="checkbox" id="fit" checked> Works with my target</label>
+      </div>
+      <div class="result-line">
+        <p class="count" id="count" role="status" aria-live="polite"></p>
+        <button type="button" id="filters-reset" class="ghost">Reset</button>
+      </div>
+      <p class="cascade" id="cascade" role="status" aria-live="polite" hidden><span id="cascade-text"></span>
+        <button type="button" id="cascade-undo">Undo</button></p>
       <p class="count" id="request-chip" hidden></p>
-      <ul class="grid" id="catalogue" aria-label="Driver catalogue"></ul>
+      <div class="tray" id="tray" aria-label="Selected drivers"></div>
+      <div id="catalogue" class="catalogue" aria-label="Driver catalogue"></div>
+      <p class="more"><button type="button" id="more" hidden>Show more</button></p>
+      <div class="unavail-box" id="unavail-box" hidden>
+        <button type="button" id="unavail-toggle" aria-expanded="false" aria-controls="unavail"></button>
+        <div id="unavail" class="catalogue" hidden></div>
+      </div>
     </section>
 
-    <section class="panel" id="step-buses" aria-labelledby="h-buses">
-      <h2 id="h-buses"><span class="num" aria-hidden="true">4</span> Buses, handlers and thread models</h2>
-      <p class="lead">Wire each driver to a bus; kb-core's handler wraps every driver. Give each bus one thread model
-        (ADR-0009): an <strong>owner task</strong> that serves every device on it, or a <strong>guarded facade</strong>
-        that locks around each call.</p>
-      <div id="assign"></div>
-      <div class="buses" id="buses"></div>
-      <div class="pins" id="pins"></div>
-    </section>
-
-    <section class="panel" id="explore" aria-labelledby="h-explore">
-      <h2 id="h-explore"><span class="num" aria-hidden="true">5</span> Inside and tested: <span id="explore-version"></span></h2>
-      <p class="lead">What the image is made of, and what CI tested for this kb-core release: the protocol, the results and
-        every version so far. Read from the release's CI artifacts and assets; nothing is fetched.</p>
-      <div class="tabs" role="tablist" id="explore-tabs" aria-labelledby="h-explore"></div>
-      <div id="explore-panel" class="explore-panel" role="tabpanel"></div>
-    </section>
-  </div>
-
-  <aside class="side" aria-label="Result">
-    <section class="panel" aria-labelledby="h-check">
-      <h2 id="h-check">Check</h2>
-      <div class="summary-line" id="summary" role="status" aria-live="polite"></div>
-      <dl class="evidence" id="evidence"></dl>
-      <ul class="findings" id="findings" aria-label="Findings"></ul>
-    </section>
-    <section class="panel outputs" aria-labelledby="h-out">
-      <h2 id="h-out">Files</h2>
-      <div class="tabs" role="tablist" id="tabs" aria-labelledby="h-out"></div>
-      <div id="tabpanels"></div>
+    <section class="panel" id="step-output" aria-labelledby="h-output">
+      <h2 id="h-output"><span class="num" aria-hidden="true">3</span> Output</h2>
       <div class="download-row">
         <button type="button" class="primary" id="zip">Download starter project (.zip)</button>
+        <button type="button" id="share-out">Copy share link</button>
         <p class="note" id="zip-note"></p>
       </div>
+    </section>
+
+    <details class="panel advanced" id="advanced">
+      <summary><h2 id="h-advanced">Advanced</h2>
+        <span class="hint">Versions, open a project, buses, previews</span></summary>
+
+      <section class="adv" id="step-open" aria-labelledby="h-open">
+        <h3 id="h-open">Open an existing project</h3>
+        <p class="lead">Read in this browser only. Pick <code>kb-image.yml</code> and, if present, its lock file.</p>
+        <div class="row">
+          <div class="field"><label for="open-files">Project files</label>
+            <input type="file" id="open-files" multiple accept=".yml,.yaml,.json" aria-describedby="open-status"></div>
+          <div class="field"><label class="check"><input type="checkbox" id="allow-rc"> Offer release candidates</label></div>
+        </div>
+        <p class="note" id="open-status" role="status" aria-live="polite"></p>
+        <div id="upgrade" hidden>
+          <h3 id="h-upgrade">Available upgrades</h3>
+          <div class="summary-line" id="upgrade-summary"></div>
+          <div id="upgrade-table"></div>
+          <ul class="findings" id="upgrade-findings" aria-label="Upgrade findings"></ul>
+          <div class="download-row upgrade-actions">
+            <button type="button" class="primary" id="upgrade-apply">Use the upgraded versions</button>
+            <button type="button" id="upgrade-report">Download kb-upgrade.md</button>
+            <button type="button" id="upgrade-image">Download kb-image.yml</button>
+            <button type="button" id="upgrade-lock">Download kb-image.lock.yml</button>
+            <button type="button" class="ghost" id="upgrade-clear" hidden>Clear chosen versions</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="adv" id="step-versions" aria-labelledby="h-versions">
+        <h3 id="h-versions">Versions and name</h3>
+        <div class="row">
+          <div class="field"><label for="kb-version">kb-core version</label><select id="kb-version"></select></div>
+          <div class="field"><label for="port-version">Port version</label><select id="port-version"></select></div>
+          <div class="field"><label for="image-name">Image name</label>
+            <input type="text" id="image-name" autocomplete="off" spellcheck="false" maxlength="40"
+              title="Lower-case letters, digits and dashes; names the folder and the preset."></div>
+          <div class="field"><label class="check"><input type="checkbox" id="show-rc"> Show release candidates</label></div>
+        </div>
+      </section>
+
+      <section class="adv" id="step-buses" aria-labelledby="h-buses">
+        <h3 id="h-buses">Drivers, buses and thread models</h3>
+        <p class="lead">Each driver's version and bus; one thread model per bus (owner task or guarded facade).</p>
+        <div id="assign"></div>
+        <div class="buses" id="buses"></div>
+      </section>
+
+      <section class="adv" id="explore" aria-labelledby="h-explore">
+        <h3 id="h-explore">Inside and tested: <span id="explore-version"></span></h3>
+        <div class="tabs" role="tablist" id="explore-tabs" aria-labelledby="h-explore"></div>
+        <div id="explore-panel" class="explore-panel" role="tabpanel"></div>
+      </section>
+
+      <section class="adv outputs" aria-labelledby="h-out">
+        <h3 id="h-out">Preview files</h3>
+        <div class="tabs" role="tablist" id="tabs" aria-labelledby="h-out"></div>
+        <div id="tabpanels"></div>
+      </section>
+    </details>
+  </div>
+
+  <aside class="side" aria-labelledby="h-supply">
+    <section class="panel">
+      <h2 id="h-supply">Supply chain</h2>
+      <p class="sub" id="supply-sum" role="status" aria-live="polite"></p>
+      <div id="supply"><p class="note">Loading the supply-chain summary.</p></div>
     </section>
   </aside>
 </main>
@@ -176,16 +196,20 @@ catalogue it reads is <a href="data/catalog.json">data/catalog.json</a>.</p></no
 </footer>
 
 <script src="vendor/fflate-0.8.2/fflate.umd.js" integrity="sha384-DT0Ls0mO7JmjTnT+oBuMhEJzYJO1zUqzuuMXNdnOmOQRIpN2BgSjvBV/j50NngIT"></script>
-<script src="data/catalog.js" integrity="sha384-z7ugIwGcnlLVOtMREhHPQOIOMG4Vi07wTKXZx7CsgHjmGbJFLZ7VON2ZZ5/ZlyAO"></script>
+<script src="data/catalog.js" integrity="sha384-k/bIIx+NjkpIvbHKk9ZvjYFXFkqX2Bv+OY4zKEw9oypKP6F6Sz1YlW9BQDh5Mfiy"></script>
 <script src="js/core.js" integrity="sha384-w90ycptWLHSy39vTbREpkFzJL/XHhRYhRUMOJiuptwKUQVWagUynVy4NblwC3TFy"></script>
 <script src="js/resolver.js" integrity="sha384-IXgZ1EoqJZ55co37pFfSWfK3u3XsbWS5pkz9lxQx2tl05Pe7rlLfVQVvg3fckQ7v"></script>
-<script src="js/generate.js" integrity="sha384-I0fy8D2y8uxluy5gynqVyLqiVUSb/I6HCU5C+fvt3cGIMWbPCAt9AS/fnb9lXrd8"></script>
-<script src="js/state.js" integrity="sha384-iN1OFQR3VgUxSVKtkedzAFiwGNQkSBdyRYI+knasQLKQqtdtdEmmzco88ev7dyYE"></script>
+<script src="js/generate.js" integrity="sha384-1w5YZT6vuQLS3wiZ8KvKwR/jrvzWdgAaRhWiNydwm/C56Ov5xOeJD11BGD0FRbB1"></script>
+<script src="js/picker.js" integrity="sha384-OOcOBekY7PMNWYVfDDQAqI/7WeSGHgTE5zeEvJU1ikSy6JLqZerjpwtnRFNrf7g7"></script>
+<script src="js/state.js" integrity="sha384-Ucf/oyz7qrwhMT+/vq9B4VuT9kBDyCfMOWK8+w4myJ5AL9qezxLgchF70Zhkf/j0"></script>
 <script src="js/shared.js" integrity="sha384-sxG0W6iIUu6e63T9ZAXKwPKFfmBoZDSfmk40xj5dyWgUXp/OuTwwl3czIAWmSTdE"></script>
 <script src="js/project.js" integrity="sha384-+uMc6JUk/0hp4cuVCeoitLGWgX4s13C72rZ8NUi+4CmGhJZh0PVxUkfd+lSqNDHV"></script>
 <script src="data/evidence.js" integrity="sha384-SmnfmRJc3yNFT3Y0CbNeDB+ZZmrIF7Koz6PvMQVKkfLegbqPdW/BQ5Wfh2hx3Jfa"></script>
 <script src="js/views.js" integrity="sha384-LjXAswiFFdNgOuoKLXju0t88GNR6P2vb4HmLgsUK0tpTAMwD+USxNhSKthvU2UM4"></script>
-<script src="js/ui.js" integrity="sha384-gBAyARpjcXlNOGU5I5IBPSJUdCYpt5DS2gCyvVYKR4fXnc5ybk/yeqdD5feDQYCr"></script>
+<script src="data/vulnerabilities.js" integrity="sha384-F3W39IRcdfH8crZRLZwpMSNma1Ka+VueMjjvc6fsU47UsKp2pFlpLABYI9+2eJSl" defer></script>
+<script src="js/panel.js" integrity="sha384-HsUI3LnipQYKe5f5WMbNR4hFx0z59pdQ+KCmNXJUJlHL9YzIoEtdJJVFk904Pvv5" defer></script>
+<script src="js/upgrade.js" integrity="sha384-g36ym/04MQqUD5kV5Vst6LBgcjMhLuV771aNOVq1Rnmd4X/94r4ly0mTmaJVf5ly"></script>
+<script src="js/ui.js" integrity="sha384-QWKzGJV0sRSShXIz424QIJGOmsct/TrOK4iVn8O/qKG2QXIsi2MN6CTDrxm8j6JM"></script>
 <script type="module" src="js/boot.mjs" integrity="sha384-xQwFO3CxtutDfQdOosbkKnYCNCVSi2sjJpWJF5ljlTVnCe2dQ1N7O1Edt9a/rzZY"></script>
 </body>
 </html>

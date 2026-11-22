@@ -989,6 +989,8 @@
       
         
       
+        
+      
     
     
     
@@ -1160,6 +1162,34 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="vulnerabilities/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Known vulnerabilities
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1248,6 +1278,25 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#per-driver-evidence-planned" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Per-driver evidence (planned)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -1289,6 +1338,10 @@ need if it later qualifies a component, written as the parts land:</p>
 <td><a href="soup/">soup.md</a></td>
 </tr>
 <tr>
+<td>Known vulnerabilities of the pinned components, checked by a scan (OSV)</td>
+<td><a href="vulnerabilities/">vulnerabilities.md</a></td>
+</tr>
+<tr>
 <td>MISRA C++:2023 compliance matrix</td>
 <td><code>misra-matrix.md</code> (with the first source)</td>
 </tr>
@@ -1315,6 +1368,18 @@ need if it later qualifies a component, written as the parts land:</p>
 </tbody>
 </table>
 <p>Design: <a href="../design/assurance/">Assurance</a>.</p>
+<h2 id="per-driver-evidence-planned">Per-driver evidence (planned)<a class="headerlink" href="#per-driver-evidence-planned" title="Permanent link">&para;</a></h2>
+<p>The configurator's panel shows tests, coverage and MISRA chips per selected driver. Drivers publish no evidence of
+their own yet, so every row shows kb-core's (<code>kb-evidence/1</code>) and is labelled <em>kb-core evidence</em>; nothing is derived
+for a driver. When a driver's CI produces evidence, the follow-up is a per-driver block keyed by driver name
+(<code>drivers.&lt;name&gt;</code>) beside the release's evidence, with the same fields the chips read from kb-core's document:</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">{</span><span class="w"> </span><span class="nt">"tests"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"total"</span><span class="p">:</span><span class="w"> </span><span class="mi">41</span><span class="p">,</span><span class="w"> </span><span class="nt">"failures"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">},</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">"coverage"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"line"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"percent"</span><span class="p">:</span><span class="w"> </span><span class="mf">98.0</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="nt">"branch"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"percent"</span><span class="p">:</span><span class="w"> </span><span class="mf">91.0</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="nt">"floors"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"branch"</span><span class="p">:</span><span class="w"> </span><span class="mi">75</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">},</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="nt">"misra"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"passed"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nt">"edition"</span><span class="p">:</span><span class="w"> </span><span class="s2">"MISRA C++:2023"</span><span class="w"> </span><span class="p">},</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="nt">"source"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"run_url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://github.com/&lt;owner&gt;/&lt;repo&gt;/actions/runs/&lt;id&gt;"</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">}</span>
+</span></code></pre></div>
+<p><code>js/panel.js</code> already reads such a block when it is present (the row then says <em>driver evidence</em>). It needs a schema
+change (a new <code>kb-evidence</code> version or an additive <code>drivers</code> property), which this step does not make.</p>
 
 
 

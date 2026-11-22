@@ -2,7 +2,7 @@
 // Copyright (c) 2026 The kb-core authors
 //
 // The page: reads the catalogue (data/catalog.js), keeps the selection in the URL hash, runs the resolver on every
-// change and shows the findings and the files; opens an existing project's kb-image.yml and lock (read locally)
+// change and shows the files and, in the supply-chain panel (js/panel.js), what the selection pulls in; opens an existing project's kb-image.yml and lock (read locally)
 // and shows its upgrades with the shared planner. No network access, no cookies; the only stored value is the
 // colour theme, in localStorage, when the browser allows it. Opened files stay in memory, never in the URL.
 (function (g) {
@@ -13,6 +13,7 @@
   const { latestVersion } = KB.resolver;
   const { generate, zipProject } = KB.generate;
   const { encode, decode, flags } = KB.state;
+  const P = KB.picker;
 
   const $ = (id) => doc.getElementById(id);
 
@@ -101,7 +102,7 @@
   }
 
   function defaults() {
-    const fam = families.get('esp32') || catalog.families[0];
+    const fam = catalog.families.find((f) => f.status === 'supported' && f.port) || catalog.families[0]; // the first family with a port
     const board = fam.boards.find((b) => b.usable_gpio !== null) || fam.boards[0];
     return {
       image: 'my-image',
@@ -178,7 +179,7 @@
   let output = null;
   let activeTab = 'image';
 
-  // -- step 1 and 2 --------------------------------------------------------------------------------------------
+  // -- step 1: target ------------------------------------------------------------------------------------------
   function renderFamilies() {
     const box = $('families');
     box.replaceChildren(box.querySelector('legend') || h('legend', { text: 'MCU family' }));
@@ -186,48 +187,38 @@
       const id = 'fam-' + fam.id;
       box.append(h('div', { class: 'choice' },
         h('input', { type: 'radio', name: 'family', id, value: fam.id, checked: image.mcu.family === fam.id,
-          'aria-describedby': id + '-d', onchange: () => { image.mcu.family = fam.id; image.mcu.target = ''; image.port = fam.port ? newestVersion(fam.port.releases) : null; update(true); } }),
+          'aria-describedby': id + '-d',
+          onchange: () => change(() => { image.mcu.family = fam.id; image.mcu.target = ''; image.port = fam.port ? newestVersion(fam.port.releases) : null; }, true) }),
         h('label', { class: 'face', for: id },
           h('strong', {}, fam.label, ' ', fam.status === 'planned' ? h('span', { class: 'badge planned', text: 'planned' }) : null),
-          h('span', { id: id + '-d', text: fam.id === 'host' ? 'Built into kb-core: test doubles with fault injection'
-            : fam.port ? `Port ${fam.port.name}, ${fam.targets.length} targets` : `No port yet${fam.port_planned ? ` (${fam.port_planned})` : ''}` }))));
+          h('span', { id: id + '-d', text: fam.port ? `${fam.targets.length} target${fam.targets.length === 1 ? '' : 's'}` : 'No port yet' }))));
     }
   }
 
   function renderTargets() {
     const fam = families.get(image.mcu.family);
-    const sel = $('target');
-    sel.replaceChildren(...fam.targets.map((t) => h('option', { value: t.id, selected: t.id === image.mcu.target, text: t.label })));
-    const boards = $('board');
-    boards.replaceChildren(...fam.boards.filter((b) => b.target === image.mcu.target)
-      .map((b) => h('option', { value: b.id, selected: b.id === image.mcu.board, text: b.label })));
-    const board = fam.boards.find((b) => b.id === image.mcu.board);
+    $('target').replaceChildren(...fam.targets.map((t) => h('option', { value: t.id, selected: t.id === image.mcu.target, text: t.label })));
     const target = fam.targets.find((t) => t.id === image.mcu.target);
-    const parts = [];
-    if (target) {
-      const b = target.buses;
-      parts.push(['i2c', 'spi', 'uart', 'can', 'pio'].filter((k) => b[k]).map((k) => `${b[k]} ${k === 'pio' ? 'RMT' : k.toUpperCase()}`).join(', '));
-    }
-    parts.push(board && board.usable_gpio !== null ? `about ${board.usable_gpio} free GPIO` : 'free pins not known for this board');
-    $('board-hint').textContent = parts.join('; ') + '.';
+    $('target-hint').textContent = target
+      ? ['i2c', 'spi', 'uart', 'can', 'pio'].filter((k) => target.buses[k]).map((k) => `${target.buses[k]} ${k === 'pio' ? 'RMT' : k.toUpperCase()}`).join(', ')
+      : '';
   }
 
+  // Only the backends the family allows are offered (catalogue families[].rtos).
   function renderRtos() {
     const fam = families.get(image.mcu.family);
     const box = $('rtos');
-    box.replaceChildren(box.querySelector('legend') || h('legend', { text: 'RTOS backend' }));
-    for (const r of catalog.rtos) {
+    box.replaceChildren(box.querySelector('legend') || h('legend', { text: 'RTOS' }));
+    box.title = fam.rtos_note || '';
+    for (const r of P.rtosFor(catalog, fam.id)) {
       const id = 'rtos-' + r.id;
-      const allowed = fam.rtos.includes(r.id);
-      const why = !allowed ? `Not possible on ${fam.label}` : r.status === 'planned' ? 'Planned backend, not released' : `KB_RTOS=${r.kb_rtos}`;
       box.append(h('div', { class: 'choice' },
-        h('input', { type: 'radio', name: 'rtos', id, value: r.id, checked: image.rtos === r.id, disabled: !allowed,
-          'aria-describedby': id + '-d', onchange: () => { image.rtos = r.id; update(); } }),
+        h('input', { type: 'radio', name: 'rtos', id, value: r.id, checked: image.rtos === r.id,
+          'aria-describedby': id + '-d', onchange: () => change(() => { image.rtos = r.id; }) }),
         h('label', { class: 'face', for: id },
-          h('strong', {}, r.label, ' ', r.status === 'planned' ? h('span', { class: 'badge planned', text: 'planned' }) : null),
-          h('span', { id: id + '-d', text: why }))));
+          h('strong', {}, r.label.replace(/ \(.*$/, ''), ' ', r.status === 'planned' ? h('span', { class: 'badge planned', text: 'planned' }) : null),
+          h('span', { id: id + '-d', text: r.status === 'planned' ? 'Not released yet' : r.id === fam.default_rtos ? 'Default' : '' }))));
     }
-    $('rtos-note').textContent = fam.rtos_note || 'The RTOS backend of kb::rtos.';
   }
 
   // The C++ standard a version needs (its catalogue language block, else the registry default C++20).
@@ -259,18 +250,29 @@
     }
     const name = $('image-name');
     if (doc.activeElement !== name) name.value = image.image;
+    const def = P.defaultStandard(catalog, image.mcu.family);
+    const explicitDefault = image.cxx === def;
     $('cxx').replaceChildren(
-      h('option', { value: '', selected: !image.cxx, text: 'Not declared (no check)' }),
-      ...[20, 23].map((n) => h('option', { value: String(n), selected: image.cxx === n, text: `C++${n}` })));
+      h('option', { value: '', selected: !image.cxx, text: `C++${def} (default)` }),
+      ...(explicitDefault ? [h('option', { value: String(def), selected: true, text: `C++${def} (declared)` })] : []),
+      ...[20, 23].filter((n) => n !== def).map((n) => h('option', { value: String(n), selected: image.cxx === n, text: `C++${n}` })));
   }
 
-  // -- step 3: the catalogue ---------------------------------------------------------------------------------
-  const filter = { text: '', buses: new Set() };
-  const cards = new Map();
+  // -- step 2: the driver picker -------------------------------------------------------------------------------
+  const VIEW_KEY = 'kb-configurator-view';
+  let view = P.defaults();
+  let shown = P.CHUNK; // how many of a long result are rendered; "Show more" adds a chunk
+  let unavail = new Map(); // driver name to {code, reason}, from KB.engine.availability for the current selection
+  const hay = new Map();
+  const nodes = new Map(); // name to {card, row, add, rowAdd, ...}; built once, repainted on every change
+  let cascadeUndo = null; // {image, text}: the selection before the change that dropped something
 
-  function haystack(d) {
-    return [d.name, d.chip, d.package, d.summary, ...(d.versions[0] ? d.versions[0].bus : []),
-      ...d.capabilities.map((c) => c.label + ' ' + c.text)].join(' ').toLowerCase();
+  function storedView() {
+    try { const m = g.localStorage.getItem(VIEW_KEY); return P.VIEWS.includes(m) ? m : null; } catch (e) { return null; }
+  }
+
+  function selected(name) {
+    return image.drivers.find((d) => d.name === name) || null;
   }
 
   function openFigures(d, trigger) {
@@ -279,97 +281,158 @@
     $('figure-body').replaceChildren(...d.figures.map((f) => h('figure', {},
       h('img', { class: 'fig-light', src: f.light, alt: f.alt, loading: 'lazy', decoding: 'async' }),
       h('img', { class: 'fig-dark', src: f.dark, alt: f.alt, loading: 'lazy', decoding: 'async' }),
-      h('figcaption', { text: `${f.kind[0].toUpperCase()}${f.kind.slice(1)}. From the docs of ${d.repo.split('/')[1]}.` }))));
+      h('figcaption', { text: `${f.kind[0].toUpperCase()}${f.kind.slice(1)}. From the docs of ${d.repo.split('/')[1]}.` }))),
+    d.capabilities.length ? h('dl', { class: 'facts' }, d.capabilities.flatMap((c) => [h('dt', { text: c.label }), h('dd', { text: c.text })])) : null);
     dlg.returnFocus = trigger;
     dlg.showModal();
   }
 
-  function selected(name) {
-    return image.drivers.find((d) => d.name === name) || null;
+  const busBadges = (d) => P.busesOf(d).map((b) => h('li', { class: 'badge bus', text: P.busLabel(kinds, b) }));
+  const catBadge = (d) => h('li', { class: 'badge cat', text: P.categoryOf(d).replace('-', ' ') });
+
+  function makeNode(d) {
+    const titleId = 'dn-' + d.name;
+    const fig = d.figures[0];
+    const thumb = fig
+      ? h('button', { type: 'button', class: 'thumb', 'aria-label': `Show the figures of ${d.chip}`, onclick: (e) => openFigures(d, e.currentTarget) },
+        h('img', { class: 'fig-light', src: fig.light, alt: '', loading: 'lazy', decoding: 'async', width: 240, height: 134 }),
+        h('img', { class: 'fig-dark', src: fig.dark, alt: '', loading: 'lazy', decoding: 'async', width: 240, height: 134 }))
+      : h('div', { class: 'thumb empty', text: 'No figure published' });
+    const mkAdd = (id) => h('button', { type: 'button', class: 'add', id, 'aria-pressed': 'false', onclick: () => toggleDriver(d) });
+    const add = mkAdd('add-' + d.name);
+    const note = h('p', { class: 'sub reason', hidden: true });
+    const status = d.status === 'unpublished' ? h('span', { class: 'badge unpublished', text: 'not published' }) : null;
+    const purpose = d.summary || 'No public release yet, so it cannot be pinned.';
+    const card = h('li', { class: 'card', id: 'card-' + d.name, 'aria-labelledby': titleId },
+      thumb,
+      h('div', { class: 'card-body' },
+        h('h3', { id: titleId, title: d.name }, d.chip, status),
+        h('p', { class: 'summary', title: purpose, text: purpose }),
+        h('ul', { class: 'tags', 'aria-label': 'Bus and category' }, busBadges(d), catBadge(d)),
+        note,
+        h('div', { class: 'actions' }, add)));
+    const rowAdd = mkAdd('add-' + d.name);
+    const rowNote = h('span', { class: 'sub reason', hidden: true });
+    const row = h('tr', { class: 'row-item', id: 'row-' + d.name },
+      h('th', { scope: 'row' }, h('strong', { text: d.chip }), ' ', h('span', { class: 'sub', text: d.name }), rowNote),
+      h('td', { class: 'purpose', title: purpose, text: purpose }),
+      h('td', {}, h('ul', { class: 'tags', 'aria-label': 'Buses' }, busBadges(d))),
+      h('td', { text: P.categoryOf(d).replace('-', ' ') }),
+      h('td', {}, rowAdd));
+    return { d, card, row, add, rowAdd, note, rowNote };
   }
 
-  function buildCatalogue() {
-    const list = $('catalogue');
-    const busValues = [...new Set(catalog.drivers.flatMap((d) => (d.versions[0] ? d.versions[0].bus : [])))].sort();
-    $('bus-filters').replaceChildren(...busValues.map((b) => h('button', {
-      type: 'button', 'aria-pressed': 'false', id: 'filter-' + b, text: (kinds[b] && kinds[b].label.split(' ')[0]) || b,
-      onclick: (e) => {
-        if (filter.buses.has(b)) filter.buses.delete(b); else filter.buses.add(b);
-        e.currentTarget.setAttribute('aria-pressed', String(filter.buses.has(b)));
-        applyFilter();
-      },
-    })));
-    for (const d of catalog.drivers) {
-      const titleId = 'dn-' + d.name;
-      const fig = d.figures[0];
-      const thumb = fig
-        ? h('button', { type: 'button', class: 'thumb', 'aria-label': `Show the figures of ${d.chip}`, onclick: (e) => openFigures(d, e.currentTarget) },
-          h('img', { class: 'fig-light', src: fig.light, alt: '', loading: 'lazy', decoding: 'async', width: 240, height: 134 }),
-          h('img', { class: 'fig-dark', src: fig.dark, alt: '', loading: 'lazy', decoding: 'async', width: 240, height: 134 }))
-        : h('div', { class: 'thumb empty', text: 'No figure published' });
-      const latest = pickVersion(d);
-      const versionSel = h('select', { id: 'ver-' + d.name, disabled: !d.versions.length, 'aria-label': `Version of ${d.name}`,
-        onchange: (e) => {
-          const s = selected(d.name);
-          if (s) {
-            s.version = e.target.value;
-            const v = d.versions.find((x) => x.version === s.version);
-            if (!v.bus.includes(s.via)) { s.via = defaultVia(v); s.bus = defaultBus(s.via, s); }
-            update();
-          }
-        } },
-      d.versions.length ? d.versions.map((v) => h('option', { value: v.version, selected: latest && v.version === latest.version, text: verText(v) }))
-        : h('option', { text: 'none published' }));
-      const add = h('button', { type: 'button', class: 'add', id: 'add-' + d.name, 'aria-pressed': 'false', disabled: !d.versions.length,
-        text: 'Add',
-        onclick: () => toggleDriver(d, versionSel.value) });
-      const rcNote = h('p', { class: 'sub rc-note', hidden: true, text: 'Release candidates only: turn on "Show release candidates" to add it.' });
-      const v0 = d.versions[0];
-      const status = d.status === 'unpublished' ? h('span', { class: 'badge unpublished', text: 'not published' })
-        : d.status === 'rc' ? h('span', { class: 'badge rc', text: 'rc' }) : h('span', { class: 'badge release', text: 'release' });
-      const card = h('li', { class: 'card', id: 'card-' + d.name, 'aria-labelledby': titleId },
-        thumb,
-        h('div', { class: 'card-body' },
-          h('h3', { id: titleId }, d.chip, status),
-          h('p', { class: 'sub', text: `${d.name}${d.package ? ' · ' + d.package : ''}` }),
-          h('p', { class: 'summary', text: d.summary || 'This driver has no public release yet, so it cannot be pinned.' }),
-          h('ul', { class: 'tags', 'aria-label': 'Buses' }, (v0 ? v0.bus : []).map((b) => h('li', { class: 'badge bus', text: (kinds[b] && kinds[b].label) || b }))),
-          d.capabilities.length ? h('details', {}, h('summary', { text: 'Capabilities' }),
-            h('dl', {}, d.capabilities.map((c) => [h('dt', { text: c.label }), h('dd', { text: c.text })]))) : null,
-          h('div', { class: 'meta' },
-            h('span', { text: d.licence.spdx }),
-            v0 && !v0.mcus.includes('any') ? h('span', { class: 'badge warn', text: `${v0.mcus.join(', ')} only` }) : null,
-            d.requires_owner ? h('span', { class: 'badge muted', text: 'needs owner task' }) : null),
-          h('div', { class: 'actions' }, h('div', { class: 'field' }, versionSel), add), rcNote));
-      cards.set(d.name, { card, add, versionSel, rcNote, text: haystack(d), d });
-      list.append(card);
+  // The state of a driver's card and row: added or not, unavailable (with the reason), release candidates only.
+  function paintNode(n) {
+    const { d } = n;
+    const s = selected(d.name);
+    const u = unavail.get(d.name);
+    const noVersion = !visibleVersions(d.versions, s ? s.version : null).length;
+    const blocked = !s && (!!u || noVersion);
+    const reason = u && !s ? u.reason : noVersion && !s && d.versions.length ? 'Release candidates only: show them in Advanced.' : '';
+    for (const [el, noteEl] of [[n.add, n.note], [n.rowAdd, n.rowNote]]) {
+      el.disabled = blocked || (!d.versions.length && !s);
+      el.setAttribute('aria-pressed', String(!!s));
+      el.replaceChildren(s ? 'Remove' : 'Add', h('span', { class: 'visually-hidden', text: ` ${d.chip}` }));
+      noteEl.hidden = !reason;
+      noteEl.textContent = reason;
     }
-    $('search').addEventListener('input', (e) => { filter.text = e.target.value; applyFilter(); });
-    applyFilter();
+    n.card.dataset.selected = String(!!s);
+    n.row.dataset.selected = String(!!s);
+    n.card.dataset.unavailable = String(!!u);
   }
 
-  function applyFilter() {
-    const tokens = filter.text.toLowerCase().split(/\s+/).filter(Boolean);
-    let shown = 0;
-    for (const { card, text, d } of cards.values()) {
-      const buses = d.versions[0] ? d.versions[0].bus : [];
-      const ok = tokens.every((t) => text.includes(t)) && (!filter.buses.size || buses.some((b) => filter.buses.has(b)));
-      card.hidden = !ok;
-      if (ok) shown++;
+  function nodeFor(d) {
+    if (!nodes.has(d.name)) nodes.set(d.name, makeNode(d));
+    return nodes.get(d.name);
+  }
+
+  function itemsOf(list, asRows) {
+    return list.map((d) => { const n = nodeFor(d); paintNode(n); return asRows ? n.row : n.card; });
+  }
+
+  function listTable(list) {
+    const sortBtn = (key, label) => {
+      const on = view.sort === key;
+      return h('th', { scope: 'col', 'aria-sort': on ? (view.desc ? 'descending' : 'ascending') : 'none' },
+        h('button', { type: 'button', class: 'ghost sort-head', id: 'sort-h-' + key, onclick: () => {
+          if (view.sort === key) view.desc = !view.desc; else { view.sort = key; view.desc = false; }
+          applyView();
+        } }, label, on ? (view.desc ? ' ↓' : ' ↑') : ''));
+    };
+    return h('div', { class: 'table-wrap' }, h('table', { class: 'list' },
+      h('caption', { class: 'visually-hidden', text: 'Drivers' }),
+      h('thead', {}, h('tr', {}, sortBtn('name', 'Driver'), h('th', { scope: 'col', text: 'Purpose' }), sortBtn('bus', 'Bus'),
+        sortBtn('category', 'Category'), h('th', { scope: 'col' }, h('span', { class: 'visually-hidden', text: 'Action' })))),
+      h('tbody', {}, itemsOf(list, true))));
+  }
+
+  const gridOf = (list, label) => h('ul', { class: 'grid', 'aria-label': label }, itemsOf(list, false));
+
+  function paintList(box, groups, label) {
+    const asList = view.view === 'list';
+    if (!groups.length) { box.replaceChildren(); return; }
+    if (view.view === 'grouped') {
+      box.replaceChildren(...groups.map((gr) => h('section', { class: 'group', 'aria-label': gr.label },
+        h('div', { class: 'group-title', 'aria-hidden': 'true' }, gr.label.replace('-', ' '), h('span', { class: 'sub', text: ` ${gr.items.length}` })),
+        gridOf(gr.items, gr.label))));
+    } else {
+      const items = groups.flatMap((gr) => gr.items);
+      box.replaceChildren(asList ? listTable(items) : gridOf(items, label));
     }
-    $('count').textContent = `${shown} of ${cards.size} drivers shown, ${image.drivers.length} selected.`;
+  }
+
+  function renderCatalogue() {
+    unavail = P.unavailableMap(catalog, image);
+    const res = P.filter(catalog.drivers, view, unavail, kinds, hay);
+    const ordered = P.sort(res.items, view.sort, view.desc, kinds);
+    const groups = view.view === 'grouped' ? P.group(ordered, view.group, kinds) : [{ key: '', label: '', items: ordered }];
+    const cap = P.limit(ordered.length, shown);
+    paintList($('catalogue'), P.take(groups, cap), 'Driver catalogue');
+    $('more').hidden = cap >= ordered.length;
+    if (!$('more').hidden) $('more').textContent = `Show more (${ordered.length - cap} left)`;
+    const total = catalog.drivers.length;
+    const text = `${ordered.length} of ${total} drivers shown, ${image.drivers.length} selected.`;
+    if ($('count').textContent !== text) $('count').textContent = text;
+    // Drivers this target cannot use: listed only on request, each with the one-line reason.
+    const un = P.sort(res.unavailable, view.sort, view.desc, kinds);
+    $('unavail-box').hidden = !un.length;
+    $('unavail-toggle').textContent = `${view.unavail ? 'Hide' : 'Show'} ${un.length} unavailable`;
+    $('unavail-toggle').setAttribute('aria-expanded', String(view.unavail));
+    $('unavail').hidden = !view.unavail || !un.length;
+    if (view.unavail && un.length) paintList($('unavail'), [{ key: '', label: '', items: un }], 'Unavailable drivers');
+    else $('unavail').replaceChildren();
     // No match for a search: offer the intake form, prefilled with the search text reduced to a part-number alphabet.
     const ask = $('request-chip');
-    const part = filter.text.replace(/[^A-Za-z0-9._-]/g, '').slice(0, 40);
-    ask.hidden = shown > 0 || !part;
+    const part = view.q.replace(/[^A-Za-z0-9._-]/g, '').slice(0, 40);
+    ask.hidden = ordered.length > 0 || !part;
     if (!ask.hidden) {
       ask.replaceChildren(`No driver for ${part}: `, h('a', {
         href: `${REQUESTS}?template=request-driver.yml&part=${encodeURIComponent(part)}`, target: '_blank', rel: 'noopener noreferrer',
         text: 'request it' }), ' (opens the request form on GitHub).');
     }
+    renderTray();
   }
 
   const REQUESTS = 'https://github.com/kokeb-labs-drivers/driver-requests/issues/new';
+
+  // The chosen drivers, with a one-line hint when two share a bus.
+  function renderTray() {
+    const box = $('tray');
+    if (!image.drivers.length) { box.replaceChildren(h('p', { class: 'sub', text: 'No drivers chosen yet.' })); return; }
+    const chips = image.drivers.map((s) => {
+      const d = drivers.get(s.name);
+      const u = unavail.get(s.name);
+      return h('li', { class: 'tray-chip' + (u ? ' bad' : ''), title: u ? u.reason : `${s.name} on ${s.bus}` },
+        h('strong', { text: d ? d.chip : s.name }), h('span', { class: 'sub', text: s.bus }),
+        u ? h('span', { class: 'badge warn', text: 'unavailable' }) : null,
+        h('button', { type: 'button', class: 'ghost', id: 'tray-rm-' + s.name, 'aria-label': `Remove ${d ? d.chip : s.name}`, text: '×',
+          onclick: () => toggleDriver(d || { name: s.name, chip: s.name }) }));
+    });
+    const shared = P.sharedBuses(image.drivers, kinds);
+    box.replaceChildren(h('strong', { class: 'tray-title', text: `Selected (${image.drivers.length})` }), h('ul', { class: 'tray-list' }, chips),
+      shared.length ? h('p', { class: 'sub shared-hint', text: shared.map((x) => `${x.names.join(' and ')} share ${x.bus}.`).join(' ') }) : null);
+  }
 
   function toggleDriver(d, version) {
     const s = selected(d.name);
@@ -382,32 +445,104 @@
       const entry = { name: d.name, version: v.version, via: defaultVia(v), bus: '' };
       entry.bus = defaultBus(entry.via, entry);
       image.drivers.push(entry);
+      if (d.requires_owner && image.buses[entry.bus]) image.buses[entry.bus] = { model: 'owner' }; // the bus must be an owner bus
       image.drivers.sort((a, b) => (a.name < b.name ? -1 : 1));
       announce(`${d.chip} added on ${entry.bus}.`);
     }
+    clearCascade();
     update();
   }
 
-  function updateCards() {
-    for (const { card, add, versionSel, rcNote, d } of cards.values()) {
-      const s = selected(d.name);
-      const shownVersions = visibleVersions(d.versions, s ? s.version : null);
-      const want = s ? s.version : (pickVersion(d) || {}).version;
-      versionSel.replaceChildren(...(shownVersions.length
-        ? shownVersions.map((v) => h('option', { value: v.version, selected: v.version === want, text: verText(v) }))
-        : [h('option', { value: '', text: d.versions.length ? 'release candidates only' : 'none published' })]));
-      versionSel.disabled = !shownVersions.length;
-      add.disabled = !shownVersions.length && !s;
-      rcNote.hidden = shownVersions.length > 0 || !d.versions.length;
-      card.dataset.selected = String(!!s);
-      add.setAttribute('aria-pressed', String(!!s));
-      add.replaceChildren(s ? 'Added' : 'Add', h('span', { class: 'visually-hidden', text: ` ${d.chip}` }));
-      if (s && versionSel.value !== s.version) versionSel.value = s.version;
-    }
-    applyFilter();
+  // -- filters, views and the address bar ------------------------------------------------------------------------
+  function chip(group, id, label, count) {
+    return h('button', { type: 'button', 'aria-pressed': 'false', id: `f-${group}-${id}`, 'data-group': group, 'data-id': id,
+      onclick: () => {
+        const list = view[group];
+        view[group] = list.includes(id) ? list.filter((x) => x !== id) : [...list, id].sort();
+        applyView(true);
+      } }, label, count !== undefined ? h('span', { class: 'n', text: String(count) }) : null);
   }
 
-  // -- step 4: buses, handlers, thread models --------------------------------------------------------------
+  function buildFilters() {
+    const busCount = new Map();
+    for (const d of catalog.drivers) for (const b of P.busesOf(d)) busCount.set(b, (busCount.get(b) || 0) + 1);
+    $('bus-filters').replaceChildren(...[...busCount.keys()].sort().map((b) => chip('bus', b, P.busLabel(kinds, b), busCount.get(b))));
+    const idx = catalog.tag_index || { categories: {}, tags: {} };
+    $('cat-filters').replaceChildren(...Object.keys(idx.categories).filter((c) => idx.categories[c] > 0).sort()
+      .map((c) => chip('cat', c, c.replace('-', ' '), idx.categories[c])));
+    $('tag-filters').replaceChildren(...Object.keys(idx.tags).sort().map((t) => chip('tag', t, t, idx.tags[t])));
+  }
+
+  function syncControls() {
+    for (const b of doc.querySelectorAll('.filters button')) b.setAttribute('aria-pressed', String(view[b.dataset.group].includes(b.dataset.id)));
+    for (const b of doc.querySelectorAll('[data-view]')) b.setAttribute('aria-pressed', String(b.dataset.view === view.view));
+    $('group-by').value = view.group;
+    $('group-by').disabled = view.view !== 'grouped';
+    $('sort-by').value = view.sort;
+    $('sort-dir').textContent = view.desc ? 'Z to A' : 'A to Z';
+    $('sort-dir').setAttribute('aria-pressed', String(view.desc));
+    $('fit').checked = view.fit;
+    if ($('search').value !== view.q && doc.activeElement !== $('search')) $('search').value = view.q;
+    $('tag-active').textContent = view.tag.length ? `(${view.tag.length} chosen)` : '';
+    if (view.tag.length) $('tag-details').open = true;
+    $('filters-reset').disabled = !P.filtered(view) && view.sort === 'name' && !view.desc;
+  }
+
+  // Re-render the list after a filter, sort, group or view change, and write the new view to the address bar.
+  function applyView(resetChunk) {
+    if (resetChunk !== false) shown = P.CHUNK;
+    keepFocus(() => { renderCatalogue(); syncControls(); });
+    syncHash();
+  }
+
+  function setViewMode(mode) {
+    view.view = mode;
+    try { g.localStorage.setItem(VIEW_KEY, mode); } catch (e) { /* storage blocked: the choice lasts for this visit */ }
+    applyView();
+    announce(`${{ grid: 'Card', list: 'List', grouped: 'Grouped' }[mode]} view.`);
+  }
+
+  function syncHash() {
+    // While an opened project is shown, its own image name stays out of the address bar (and the share link).
+    const hash = encode(image, { rc: showRc, omitName: KB.upgrade.opened() !== null, view });
+    if (g.location.hash !== hash) g.history.replaceState(null, '', hash);
+  }
+
+  // -- the cascade: what a change to the target, RTOS or C++ standard takes away ---------------------------------
+  function clearCascade() {
+    cascadeUndo = null;
+    $('cascade').hidden = true;
+  }
+
+  // Apply a change to the target, the RTOS or the standard; keep what still fits and say what dropped, with Undo.
+  function change(mutate, platform) {
+    const before = P.clone(image);
+    mutate();
+    normalize();
+    const drops = P.cascade(before, image, P.unavailableMap(catalog, image), catalog);
+    image.drivers = drops.kept;
+    normalize();
+    const text = P.describe(drops);
+    if (text) {
+      cascadeUndo = { image: before, text };
+      $('cascade-text').textContent = text + ' ';
+      $('cascade').hidden = false;
+      announce(text);
+    } else {
+      clearCascade();
+    }
+    update(platform);
+  }
+
+  function undoCascade() {
+    if (!cascadeUndo) return;
+    image = cascadeUndo.image;
+    clearCascade();
+    update(true);
+    announce('Change undone.');
+  }
+
+  // -- advanced: versions, buses, handlers, thread models --------------------------------------------------------------
   function busOptions(via, current) {
     const kind = kinds[via];
     if (!kind) return [h('option', { value: current, text: current })];
@@ -422,7 +557,7 @@
   function renderAssign() {
     const box = $('assign');
     if (!image.drivers.length) {
-      box.replaceChildren(h('p', { class: 'empty-note', text: 'Add drivers in step 3; each one appears here with its bus.' }));
+      box.replaceChildren(h('p', { class: 'empty-note', text: 'Add drivers in step 2; each one appears here.' }));
       return;
     }
     const rows = image.drivers.map((s) => {
@@ -431,18 +566,24 @@
       const vias = v ? v.bus : [s.via];
       return h('tr', {},
         h('td', {}, h('strong', { text: d ? d.chip : s.name }), ' ', h('span', { class: 'sub', text: s.name })),
+        h('td', {}, h('label', { class: 'visually-hidden', for: 'ver-' + s.name, text: `Version of ${s.name}` }),
+          h('select', { id: 'ver-' + s.name, onchange: (e) => {
+            s.version = e.target.value;
+            const nv = d && d.versions.find((x) => x.version === s.version);
+            if (nv && !nv.bus.includes(s.via)) { s.via = defaultVia(nv); s.bus = defaultBus(s.via, s); }
+            update();
+          } }, d ? visibleVersions(d.versions, s.version).map((x) => h('option', { value: x.version, selected: x.version === s.version, text: verText(x) }))
+            : h('option', { value: s.version, text: s.version }))),
         h('td', {}, h('label', { class: 'visually-hidden', for: 'via-' + s.name, text: `Bus kind of ${s.name}` }),
           h('select', { id: 'via-' + s.name, disabled: vias.length < 2, onchange: (e) => { s.via = e.target.value; s.bus = defaultBus(s.via, s); update(); } },
             vias.map((b) => h('option', { value: b, selected: b === s.via, text: (kinds[b] && kinds[b].label) || b })))),
         h('td', {}, h('label', { class: 'visually-hidden', for: 'bus-' + s.name, text: `Bus of ${s.name}` }),
           h('select', { id: 'bus-' + s.name, onchange: (e) => { s.bus = e.target.value; update(); } }, busOptions(s.via, s.bus))),
-        h('td', {}, d && d.requires_owner ? h('span', { class: 'badge muted', text: 'owner task only' }) : h('span', { class: 'sub', text: 'either model' })),
-        h('td', {}, h('button', { type: 'button', class: 'ghost', id: 'rm-' + s.name, 'aria-label': `Remove ${s.name}`, text: 'Remove',
-          onclick: () => { image.drivers = image.drivers.filter((x) => x !== s); announce(`${s.name} removed.`); update(); } })));
+        h('td', {}, d && d.requires_owner ? h('span', { class: 'badge muted', text: 'owner task only' }) : h('span', { class: 'sub', text: 'either model' })));
     });
     box.replaceChildren(h('div', { class: 'table-wrap' }, h('table', { class: 'assign' },
       h('caption', { class: 'visually-hidden', text: 'Bus of each selected driver' }),
-      h('thead', {}, h('tr', {}, ['Driver', 'Talks over', 'Bus', 'Handler'].map((t) => h('th', { scope: 'col', text: t })), h('th', { scope: 'col' }, h('span', { class: 'visually-hidden', text: 'Action' })))),
+      h('thead', {}, h('tr', {}, ['Driver', 'Version', 'Talks over', 'Bus', 'Handler'].map((t) => h('th', { scope: 'col', text: t })))),
       h('tbody', {}, rows))));
   }
 
@@ -469,54 +610,14 @@
             owners.length ? h('p', { text: `${owners.join(', ')} must be serviced continuously and needs an owner task.` }) : null)
           : null);
     }));
-    const pins = result.resolved.pins;
-    const box2 = $('pins');
-    if (!image.drivers.length) { box2.replaceChildren(); return; }
-    const budget = pins.budget;
-    const label = budget !== null
-      ? `Pins: ${pins.min} needed, ${pins.optional} optional control pins, about ${budget} free on this board.`
-      : `Pins: ${pins.min} needed, ${pins.optional} optional control pins; this board's free pins are not known.`;
-    const meter = h('div', { class: 'meter' + (budget !== null && pins.min > budget ? ' over' : ''), role: 'img', 'aria-label': label });
-    if (budget) {
-      const opt = h('span', { class: 'opt' });
-      const min = h('span', {});
-      opt.style.width = Math.min(100, ((pins.min + pins.optional) / budget) * 100) + '%';
-      min.style.width = Math.min(100, (pins.min / budget) * 100) + '%';
-      meter.append(opt, min);
-    }
-    box2.replaceChildren(h('span', { text: label }), budget ? meter : null);
   }
 
-  // -- result: findings, evidence, files ----------------------------------------------------------------------
+  // -- result: the small-screen bar; the panel itself is js/panel.js ---------------------------------------------
   function renderFindings() {
-    const n = { error: 0, warning: 0, info: 0 };
-    for (const f of result.findings) n[f.severity]++;
-    // The small-screen bar: where the result stands, a jump to it and the download, without scrolling past the steps.
-    $('bar-status').textContent = n.error ? `${n.error} error${n.error === 1 ? '' : 's'} to fix` : `Ready, ${n.warning} warning${n.warning === 1 ? '' : 's'}`;
-    $('bar-status').className = n.error ? 'bar-status err' : 'bar-status ok';
-    $('summary').replaceChildren(
-      n.error ? h('span', { class: 'badge err', text: `${n.error} error${n.error === 1 ? '' : 's'}` }) : h('span', { class: 'badge ok', text: 'No errors' }),
-      h('span', { class: 'badge warn', text: `${n.warning} warning${n.warning === 1 ? '' : 's'}` }),
-      h('span', { class: 'badge muted', text: `${n.info} note${n.info === 1 ? '' : 's'}` }));
-    const icon = { error: '!', warning: '!', info: 'i' };
-    $('findings').replaceChildren(...result.findings.map((f) => h('li', { class: 'finding ' + f.severity },
-      h('span', { class: 'icon', 'aria-hidden': 'true', text: icon[f.severity] }),
-      h('span', {}, h('span', { class: 'visually-hidden', text: f.severity + ': ' }), h('code', { text: f.code }),
-        f.mirrors ? h('code', { text: f.mirrors, title: 'The shared kb rule this check mirrors' }) : null, f.message))));
-    const ctx = result.context;
-    const tested = result.resolved.tested_sets.length ? `Tested (${result.resolved.tested_sets.join(', ')})` : 'Untested combination';
-    const comps = output.rows;
-    const scanned = comps.filter((c) => c.osv);
-    const findings = scanned.reduce((a, c) => a + c.osv.findings.length, 0);
-    const cve = !scanned.length ? 'Not scanned' : scanned.length < comps.length
-      ? `${findings} known, ${comps.length - scanned.length} not scanned` : findings ? `${findings} known` : 'None known';
-    const licences = [...new Set(comps.map((c) => c.licence).concat(output.soup.map((s) => s.licence)))].sort().join(', ') || 'none';
-    const count = (k) => comps.filter((c) => c.kind === k).length;
-    const pins = [['release', count('release')], ['rc', count('rc')], ['dev', count('dev')]].filter(([, n]) => n).map(([k, n]) => `${n} ${k}`).join(', ') || 'none';
-    $('evidence').replaceChildren(
-      ...[['Tested set', tested], ['Known CVEs', cve], ['Licences', licences], ['Pins', pins]]
-        .map(([k, v]) => h('div', {}, h('dt', { text: k }), h('dd', { text: v }))));
-    void ctx;
+    const errors = result.findings.filter((f) => f.severity === 'error').length;
+    const warnings = result.findings.filter((f) => f.severity === 'warning').length;
+    $('bar-status').textContent = errors ? `${errors} blocker${errors === 1 ? '' : 's'} to fix` : `Ready, ${warnings} warning${warnings === 1 ? '' : 's'}`;
+    $('bar-status').className = errors ? 'bar-status err' : 'bar-status ok';
   }
 
   function download(name, data, type) {
@@ -564,7 +665,7 @@
     zip.disabled = !output.ready;
     $('bar-zip').disabled = !output.ready;
     $('zip-note').textContent = output.ready
-      ? `Holds every file above plus a ${image.mcu.family === 'esp32' ? 'ESP-IDF' : 'CMake'} project skeleton; built in your browser, repeatable byte for byte.`
+      ? `Holds every file above plus a project skeleton; built in your browser, repeatable byte for byte.`
       : 'Fix the errors first: the archive is only offered for a selection that resolves.';
   }
 
@@ -582,167 +683,6 @@
     $('tab-' + activeTab).focus();
   }
 
-
-  // -- open an existing project and its upgrades ---------------------------------------------------------------
-  // The files stay in memory only; the plan is the shared planner's (resolver.mjs plan, the rules of kb upgrade).
-  let opened = null;
-  let targets = {};
-  let upgradePlan = null;
-  let lastGood = null; // the last plan that worked: its rows stay on screen while a chosen version is refused
-
-  function allowRc() {
-    return showRc;
-  }
-
-  function kbCat() {
-    return KB.shared.kbCatalog(catalog);
-  }
-
-  function computePlan() {
-    if (!opened || !KB.engine) return null;
-    return KB.engine.plan(kbCat(), opened.image, { lock: opened.lock, to: targets, allowRc: allowRc() });
-  }
-
-  // Missing bus kinds and buses get the page's defaults, as when a driver is added by hand.
-  function fillSelection(sel) {
-    for (const d of sel.drivers) {
-      const drv = drivers.get(d.name);
-      if (!drv || !drv.versions.length) continue;
-      let v = drv.versions.find((x) => x.version === d.version);
-      if (!v) { v = pickVersion(drv) || latestVersion(drv); d.version = v.version; }
-      if (!d.via || !v.bus.includes(d.via)) d.via = defaultVia(v);
-      if (!d.bus) d.bus = defaultBus(d.via, d);
-    }
-    return sel;
-  }
-
-  function versionsOf(row) {
-    const cat = kbCat();
-    if (row.kind === 'kb-core') return cat.kb_core.versions;
-    if (row.kind === 'port') {
-      const fam = cat.mcus.find((m) => m.port && `port-${m.port.name}` === row.name);
-      return fam ? fam.port.versions : [];
-    }
-    const d = cat.drivers.find((x) => x.name === row.name);
-    return d ? d.versions : [];
-  }
-
-  function vulnText(ids) {
-    return ids === null ? 'not scanned' : ids.length ? ids.join(', ') : 'none known';
-  }
-
-  function renderUpgrade() {
-    const box = $('upgrade');
-    if (!opened) { box.hidden = true; return; }
-    box.hidden = false;
-    upgradePlan = computePlan();
-    const p = upgradePlan;
-    const sum = $('upgrade-summary');
-    const buttons = ['upgrade-apply', 'upgrade-report', 'upgrade-image', 'upgrade-lock'];
-    if (!p) {
-      sum.replaceChildren(h('span', { class: 'badge muted', text: 'The shared resolver is still loading' }));
-      $('upgrade-table').replaceChildren();
-      $('upgrade-findings').replaceChildren();
-      for (const id of buttons) $(id).disabled = true;
-      return;
-    }
-    for (const id of buttons) $(id).disabled = !p.ok;
-    if (p.ok) lastGood = p;
-    $('upgrade-clear').hidden = !Object.keys(targets).length;
-    // A refused choice (a held-back or older version) keeps the last good rows, so the choice can be changed back.
-    const shown = p.ok ? p : lastGood && Object.keys(targets).length ? lastGood : p;
-    const changed = p.rows.filter((r) => r.change !== 'none');
-    sum.replaceChildren(...[
-      p.ok ? h('span', { class: changed.length ? 'badge warn' : 'badge ok', text: changed.length ? `${changed.length} of ${p.rows.length} components can move` : 'Up to date' })
-        : h('span', { class: 'badge err', text: 'Cannot plan an upgrade' }),
-      p.rows.some((r) => r.breaking) ? h('span', { class: 'badge err', text: 'breaking changes' }) : null,
-      p.rows.some((r) => r.fixed.length) ? h('span', { class: 'badge ok', text: 'fixes known vulnerabilities' }) : null,
-      h('span', { class: 'badge muted', text: `from ${opened.label}` })].filter(Boolean));
-    const head = ['Component', 'Current', 'Upgrade to', 'Change', 'Newest release', 'Known vulnerabilities', 'Held back'];
-    const rows = shown.rows.map((r) => {
-      const heldWhy = new Map(r.held.map((x) => [x.version, KB.engine.HELD_TEXT[x.code] || x.code]));
-      const opts = versionsOf(r).filter((v) => v.kind !== 'dev' || v.version === r.to)
-        .filter((v) => showRc || v.kind !== 'rc' || v.version === r.from || v.version === targets[r.name])
-        .filter((v) => KB.engine.compareVersions(v.version, r.from) >= 0)
-        .sort((a, b) => KB.engine.compareVersions(b.version, a.version));
-      const sel = h('select', { id: 'to-' + r.name, 'aria-label': `Upgrade ${r.name} to`,
-        onchange: (e) => { if (e.target.value) targets[r.name] = e.target.value; else delete targets[r.name]; renderUpgrade(); announce(`${r.name}: ${e.target.value || 'newest selectable'}.`); } },
-      h('option', { value: '', selected: !targets[r.name], text: 'newest selectable' }),
-      opts.map((v) => h('option', { value: v.version, selected: targets[r.name] === v.version, disabled: heldWhy.has(v.version) && targets[r.name] !== v.version,
-        text: `${v.version}${v.kind === 'rc' ? ' (rc)' : v.kind === 'dev' ? ' (dev)' : ''}${v.version === r.from ? ' (current)' : ''}${heldWhy.has(v.version) ? `: held back, ${heldWhy.get(v.version)}` : ''}` })));
-      return h('tr', {},
-        h('td', {}, h('strong', { text: r.name })),
-        h('td', {}, r.from, r.from_kind === 'rc' ? h('span', { class: 'badge rc', text: 'rc' }) : null),
-        h('td', {}, h('div', {}, h('strong', { text: r.to }), ' ', r.to_kind === 'rc' ? h('span', { class: 'badge rc', text: 'rc' }) : null), sel),
-        h('td', {}, r.change === 'none' ? h('span', { class: 'sub', text: 'none' }) : h('span', { class: r.breaking ? 'badge err' : 'badge ok', text: r.breaking ? `${r.change}, breaking` : r.change }),
-          r.notes ? h('div', {}, h('a', { href: r.notes, rel: 'noreferrer noopener', target: '_blank', text: 'release notes' })) : null),
-        h('td', { text: `${r.newest_release || 'none'}${r.newest_rc ? `; rc ${r.newest_rc}` : ''}` }),
-        h('td', { text: r.change === 'none' ? vulnText(r.osv_from) : `${vulnText(r.osv_from)} → ${vulnText(r.osv_to)}` }),
-        h('td', { text: r.held.map((x) => `${x.version}: ${KB.engine.HELD_TEXT[x.code] || x.code}`).join('; ') || '-' }));
-    });
-    $('upgrade-table').replaceChildren(shown.rows.length ? h('div', { class: 'table-wrap' }, h('table', { class: 'assign upgrade' },
-      h('caption', { class: 'visually-hidden', text: 'Available upgrades per component' }),
-      h('thead', {}, h('tr', {}, head.map((t) => h('th', { scope: 'col', text: t })))),
-      h('tbody', {}, rows))) : null);
-    const icon = { error: '!', warning: '!' };
-    $('upgrade-findings').replaceChildren(...[...p.errors.map((e) => ['error', e]), ...p.warnings.map((w) => ['warning', w])]
-      .map(([sev, f]) => h('li', { class: 'finding ' + sev },
-        h('span', { class: 'icon', 'aria-hidden': 'true', text: icon[sev] }),
-        h('span', {}, h('span', { class: 'visually-hidden', text: sev + ': ' }), h('code', { text: f.code }), `${f.message} (${f.subject})`))));
-  }
-
-  function upgradeFile(name) {
-    if (!upgradePlan || !upgradePlan.ok) return;
-    const text = KB.engine.upgradeFiles(upgradePlan, allowRc())[name];
-    download(name, text, 'text/plain;charset=utf-8');
-    announce(`${name} downloaded.`);
-  }
-
-  function applyUpgrade() {
-    if (!upgradePlan || !upgradePlan.ok) return;
-    const p = upgradePlan;
-    const versions = new Map(p.lock.drivers.map((d) => [d.name, d.version]));
-    image.kb_core = p.lock.kb_core.version;
-    const port = p.lock.ports[0];
-    if (port && port.in_tree === false) image.port = port.version;
-    for (const d of image.drivers) {
-      if (!versions.has(d.name)) continue;
-      d.version = versions.get(d.name);
-      const drv = drivers.get(d.name);
-      const v = drv && drv.versions.find((x) => x.version === d.version);
-      if (v && !v.bus.includes(d.via)) { d.via = defaultVia(v); d.bus = defaultBus(d.via, d); }
-    }
-    update();
-    announce('The selection now uses the upgraded versions.');
-  }
-
-  async function openFiles(list) {
-    const status = $('open-status');
-    const files = [];
-    for (const f of [...list]) {
-      if (f.size > 256 * 1024) { status.textContent = `${f.name} is larger than 256 KiB; is it a kb-image.yml?`; return; }
-      files.push({ name: f.name, text: await f.text() });
-    }
-    const found = KB.project.classify(files);
-    if (!found.image && !found.lock) {
-      opened = null;
-      renderUpgrade();
-      status.textContent = found.problems.join(' ') || 'No file chosen.';
-      return;
-    }
-    const lock = found.lock ? found.lock.doc : null;
-    const img = found.image ? found.image.doc : KB.project.imageFromLock(lock);
-    opened = { image: img, lock, label: [found.image && found.image.name, found.lock && found.lock.name].filter(Boolean).join(' + ') };
-    targets = {};
-    lastGood = null;
-    const { selection, notes } = KB.project.toSelection(catalog, img, lock);
-    if (hasRc(selection)) setShowRc(true, false);
-    image = fillSelection(selection);
-    update();
-    const parts = [`Opened ${opened.label}${found.lock ? '' : ' (no lock: unnamed versions are today\'s defaults)'}.`, ...notes, ...found.problems];
-    status.textContent = parts.join(' ');
-    announce(parts[0]);
-  }
 
   // -- the loop -----------------------------------------------------------------------------------------------
   function update(platformChanged) {
@@ -762,17 +702,17 @@
       renderTargets();
       renderRtos();
       renderVersions();
-      updateCards();
+      renderCatalogue();
+      syncControls();
       renderAssign();
       renderBuses();
       renderFindings();
       renderOutputs();
-      renderUpgrade();
+      KB.upgrade.render();
+      if (KB.panel) KB.panel.render({ catalog, image, result, output, h, download, copy, announce, zip: () => $('zip').click() });
       if (KB.views) KB.views.render(catalog, image, result.shared && result.shared.ok ? result.shared.lock : null);
     });
-    // While an opened project is shown, its own image name stays out of the address bar (and the share link).
-    const hash = encode(image, { rc: showRc, omitName: opened !== null });
-    if (g.location.hash !== hash) g.history.replaceState(null, '', hash);
+    syncHash();
   }
 
   // One switch for release candidates: the catalogue, the version lists and the upgrade planner (--allow-rc).
@@ -802,36 +742,38 @@
     setTheme(stored);
     for (const b of doc.querySelectorAll('[data-theme-choice]')) b.addEventListener('click', () => setTheme(b.dataset.themeChoice));
     doc.body.append(h('div', { id: 'announce', class: 'visually-hidden', role: 'status', 'aria-live': 'polite' }));
-    $('target').addEventListener('change', (e) => { image.mcu.target = e.target.value; update(true); });
-    $('board').addEventListener('change', (e) => { image.mcu.board = e.target.value; update(); });
+    $('target').addEventListener('change', (e) => change(() => { image.mcu.target = e.target.value; }, true));
     $('kb-version').addEventListener('change', (e) => { image.kb_core = e.target.value || null; update(); });
     $('port-version').addEventListener('change', (e) => { image.port = e.target.value || null; update(); });
     $('image-name').addEventListener('change', (e) => { image.image = e.target.value; update(); });
-    $('cxx').addEventListener('change', (e) => { image.cxx = e.target.value ? Number(e.target.value) : null; update(); });
+    $('cxx').addEventListener('change', (e) => change(() => { image.cxx = e.target.value ? Number(e.target.value) : null; }));
     $('tabs').addEventListener('keydown', onTabKey);
-    $('open-files').addEventListener('change', (e) => { openFiles(e.target.files).catch((err) => { $('open-status').textContent = `Could not read the files: ${err.message}`; }); });
     $('allow-rc').addEventListener('change', (e) => setShowRc(e.target.checked, true));
     $('show-rc').addEventListener('change', (e) => setShowRc(e.target.checked, true));
-    $('upgrade-clear').addEventListener('click', () => { targets = {}; renderUpgrade(); announce('Chosen versions cleared.'); });
-    $('upgrade-apply').addEventListener('click', applyUpgrade);
-    $('upgrade-report').addEventListener('click', () => upgradeFile(KB.engine.REPORT_FILE));
-    $('upgrade-image').addEventListener('click', () => upgradeFile(KB.engine.IMAGE_FILE));
-    $('upgrade-lock').addEventListener('click', () => upgradeFile(KB.engine.LOCK_FILE));
     $('zip').addEventListener('click', () => {
       const bytes = zipProject(g.fflate, output);
       download(`${KB.core.safeName(image.image)}.zip`, bytes, 'application/zip');
       announce('Starter project downloaded.');
     });
     $('bar-zip').addEventListener('click', () => $('zip').click());
-    $('share').addEventListener('click', () => copy(g.location.href, 'Share link'));
+    for (const id of ['share', 'share-out']) $(id).addEventListener('click', () => copy(g.location.href, 'Share link'));
+    $('search').addEventListener('input', (e) => { view.q = P.sanitize({ q: e.target.value }).q; applyView(); });
+    for (const b of doc.querySelectorAll('[data-view]')) b.addEventListener('click', () => setViewMode(b.dataset.view));
+    $('group-by').addEventListener('change', (e) => { view.group = e.target.value; applyView(); });
+    $('sort-by').addEventListener('change', (e) => { view.sort = e.target.value; applyView(); });
+    $('sort-dir').addEventListener('click', () => { view.desc = !view.desc; applyView(); });
+    $('fit').addEventListener('change', (e) => { view.fit = e.target.checked; applyView(); });
+    $('filters-reset').addEventListener('click', () => { view = P.reset(view); $('search').value = ''; applyView(); announce('Filters cleared.'); });
+    $('more').addEventListener('click', () => { shown += P.CHUNK; applyView(false); announce('More drivers shown.'); });
+    $('unavail-toggle').addEventListener('click', () => { view.unavail = !view.unavail; applyView(false); });
+    $('cascade-undo').addEventListener('click', undoCascade);
     $('reset').addEventListener('click', () => {
-      opened = null;
-      targets = {};
-      lastGood = null;
+      KB.upgrade.reset();
       setShowRc(false, false);
-      $('open-files').value = '';
-      $('open-status').textContent = '';
       image = defaults();
+      view = P.reset(view);
+      $('search').value = '';
+      clearCascade();
       if (hasRc(image)) setShowRc(true, false);
       update();
       announce('Selection cleared.');
@@ -840,17 +782,26 @@
     $('figure-dialog').addEventListener('close', (e) => { const t = e.currentTarget.returnFocus; if (t) t.focus(); });
     g.addEventListener('hashchange', () => {
       const next = decode(g.location.hash);
-      if (next) { image = next; setShowRc(flags(g.location.hash).rc || hasRc(next), false); update(); }
+      if (next) {
+        image = next;
+        view = KB.state.viewState(g.location.hash) || view;
+        clearCascade();
+        setShowRc(flags(g.location.hash).rc || hasRc(next), false);
+        update();
+      }
     });
     const fresh = catalog.source_date.slice(0, 10);
     $('catalog-meta').textContent = `Catalogue built ${fresh} from ${catalog.drivers.length} drivers; configurator ${KB.generate.SITE_VERSION}.`;
-    buildCatalogue();
+    KB.upgrade.init({ $, h, announce, download, defaultVia, defaultBus, pickVersion, visibleVersions, image: () => image,
+      setImage: (x) => { image = x; }, hasRc, setShowRc, showRc: () => showRc, update });
+    view = KB.state.viewState(g.location.hash) || ((m) => (m ? { ...view, view: m } : view))(storedView());
+    buildFilters();
     setShowRc(showRc, false);
     update(false);
     doc.body.classList.remove('booting');
   }
 
   // The page renders at once with the site checks; js/boot.mjs adds the shared resolver and asks for a refresh.
-  KB.ui = { refresh: () => update(false), openFiles };
+  KB.ui = { refresh: () => update(false) };
   init();
 })(globalThis);

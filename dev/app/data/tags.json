@@ -1,0 +1,80 @@
+{
+  "_comment": "Input of tools/build_catalog.py: how a driver repository's GitHub topics become the Configurator's search tags and category. A topic is dropped, aliased to an allowed tag, an allowed tag, or ignored (chip names, vendor names and unknown topics stay searchable through the card's own text). Read docs/configurator.md, section Tags, before changing it.",
+  "schema": 1,
+  "categories": ["sensor", "motor", "memory", "io", "radio", "secure-element", "other"],
+  "drop": [
+    "cpp20", "driver", "embedded", "header-only", "kokeb-labs", "misra-cpp", "kb-driver",
+    "spi", "i2c", "uart", "can", "modbus"
+  ],
+  "allow": [
+    "adc", "battery-charger", "display", "eeprom", "flow-sensor", "gpio-expander", "imu", "led", "magnetic-encoder",
+    "motion-control", "motor-driver", "oxygen-sensor", "pmic", "pressure-sensor", "pwm-controller", "secure-element",
+    "servo", "solenoid-driver", "stepper", "temperature-sensor"
+  ],
+  "alias": {
+    "motor-drive": "motor-driver",
+    "gate-driver": "motor-driver",
+    "flow-controller": "flow-sensor",
+    "mass-flow": "flow-sensor",
+    "neopixel": "led",
+    "sk6812": "led",
+    "ws2812": "led",
+    "ntc": "temperature-sensor",
+    "thermistor": "temperature-sensor",
+    "se050": "secure-element",
+    "hardware-root-of-trust": "secure-element",
+    "oled": "display",
+    "smartdisplay": "display"
+  },
+  "category_of": {
+    "adc": "sensor",
+    "battery-charger": "other",
+    "display": "io",
+    "eeprom": "memory",
+    "flow-sensor": "sensor",
+    "gpio-expander": "io",
+    "imu": "sensor",
+    "led": "io",
+    "magnetic-encoder": "sensor",
+    "motion-control": "motor",
+    "motor-driver": "motor",
+    "oxygen-sensor": "sensor",
+    "pmic": "other",
+    "pressure-sensor": "sensor",
+    "pwm-controller": "io",
+    "secure-element": "secure-element",
+    "servo": "motor",
+    "solenoid-driver": "motor",
+    "stepper": "motor",
+    "temperature-sensor": "sensor"
+  },
+  "fallback": {
+    "_comment": "Used only when no topic ends as an allowed tag: driver.yml `category` (when it names a category), then the first keyword found in driver.yml `description` or the README summary, then the bus. The category is never empty.",
+    "keywords": {
+      "temperature": "temperature-sensor",
+      "pressure": "pressure-sensor",
+      "flow": "flow-sensor",
+      "accelerometer": "imu",
+      "gyroscope": "imu",
+      "encoder": "magnetic-encoder",
+      "stepper": "stepper",
+      "servo": "servo",
+      "eeprom": "eeprom",
+      "gpio expander": "gpio-expander",
+      "pwm": "pwm-controller",
+      "led": "led",
+      "display": "display",
+      "secure element": "secure-element",
+      "battery": "battery-charger",
+      "power management": "pmic",
+      "adc": "adc"
+    },
+    "bus_category": {
+      "adc": "sensor",
+      "can": "motor",
+      "canopen": "motor",
+      "pio": "io",
+      "gpio": "io"
+    }
+  }
+}
