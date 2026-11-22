@@ -36,6 +36,8 @@ void WakeHigherPriorityFromIsr(bool woken); ///< Whether the next ISR call repor
 TickType_t LastTimerCommandTicks();         ///< Block time of the last xTimerStart/xTimerStop.
 TickType_t TimerPeriod(std::size_t index);  ///< The period timer `index` was created with.
 void SetStackHighWater(UBaseType_t words);  ///< What uxTaskGetStackHighWaterMark returns.
+uint32_t QueueDeletes();                    ///< vQueueDelete calls (queues, semaphores, mutexes).
+uint32_t GroupDeletes();                    ///< vEventGroupDelete calls.
 
 } // namespace kb_fake_freertos
 

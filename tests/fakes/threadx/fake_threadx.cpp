@@ -28,6 +28,7 @@ struct Kernel {
   uint32_t relinquishes{0U};
   uint32_t sleeps{0U};
   uint32_t semaphore_creates{0U};
+  uint32_t object_deletes{0U};
   uint32_t overshoot{0U};
   bool fail_thread{false};
   bool fail_activate{false};
@@ -38,7 +39,8 @@ Kernel& K() {
   return k;
 }
 
-// Every successful tx_timer_create of the process: the backend never deletes a timer.
+// Timers of the process that were created and not deleted, across Reset(): each holds a slot of the
+// backend's timer table.
 uint32_t& TimersEver() {
   static uint32_t count = 0U;
   return count;
@@ -79,7 +81,7 @@ void AdvanceTicks(uint32_t ticks) {
     ++K().tick;
     for (std::size_t t = 0U; t < K().timer_count; ++t) {
       TX_TIMER* timer = K().timers[t];
-      if (timer->active && (--timer->remaining == 0U)) {
+      if ((timer != nullptr) && timer->active && (--timer->remaining == 0U)) {
         timer->active = timer->reschedule != 0U;
         timer->remaining = timer->reschedule;
         timer->function(timer->input);
@@ -137,8 +139,11 @@ uint32_t Sleeps() {
 UINT Posture() {
   return K().posture;
 }
-uint32_t TimersCreatedEver() {
+uint32_t TimersHeld() {
   return TimersEver();
+}
+uint32_t ObjectDeletes() {
+  return K().object_deletes;
 }
 uint32_t SemaphoreCreates() {
   return K().semaphore_creates;
@@ -227,6 +232,11 @@ UINT tx_mutex_create(TX_MUTEX* mutex_ptr, CHAR* name_ptr, UINT inherit) {
   mutex_ptr->inherit = inherit;
   return TX_SUCCESS;
 }
+UINT tx_mutex_delete(TX_MUTEX* mutex_ptr) {
+  *mutex_ptr = TX_MUTEX{};
+  ++K().object_deletes;
+  return TX_SUCCESS;
+}
 UINT tx_mutex_get(TX_MUTEX* mutex_ptr, ULONG wait_option) {
   if ((mutex_ptr->owner == nullptr) || (mutex_ptr->owner == Current())) {
     mutex_ptr->owner = Current();
@@ -270,6 +280,11 @@ UINT tx_semaphore_create(TX_SEMAPHORE* semaphore_ptr, CHAR* name_ptr, ULONG init
   ++K().semaphore_creates;
   return TX_SUCCESS;
 }
+UINT tx_semaphore_delete(TX_SEMAPHORE* semaphore_ptr) {
+  *semaphore_ptr = TX_SEMAPHORE{};
+  ++K().object_deletes;
+  return TX_SUCCESS;
+}
 UINT tx_semaphore_get(TX_SEMAPHORE* semaphore_ptr, ULONG wait_option) {
   if (semaphore_ptr->count == 0U) {
     WaitOut(wait_option);
@@ -306,6 +321,11 @@ UINT tx_queue_create(TX_QUEUE* queue_ptr, CHAR* name_ptr, UINT message_size, VOI
   queue_ptr->start = static_cast<ULONG*>(queue_start);
   queue_ptr->words = message_size;
   queue_ptr->capacity = queue_size / (message_size * static_cast<ULONG>(sizeof(ULONG)));
+  return TX_SUCCESS;
+}
+UINT tx_queue_delete(TX_QUEUE* queue_ptr) {
+  *queue_ptr = TX_QUEUE{};
+  ++K().object_deletes;
   return TX_SUCCESS;
 }
 UINT tx_queue_send(TX_QUEUE* queue_ptr, VOID* source_ptr, ULONG wait_option) {
@@ -347,6 +367,11 @@ UINT tx_event_flags_create(TX_EVENT_FLAGS_GROUP* group_ptr, CHAR* name_ptr) {
     return TX_NOT_AVAILABLE;
   }
   group_ptr->flags = 0U;
+  return TX_SUCCESS;
+}
+UINT tx_event_flags_delete(TX_EVENT_FLAGS_GROUP* group_ptr) {
+  *group_ptr = TX_EVENT_FLAGS_GROUP{};
+  ++K().object_deletes;
   return TX_SUCCESS;
 }
 UINT tx_event_flags_set(TX_EVENT_FLAGS_GROUP* group_ptr, ULONG flags_to_set, UINT set_option) {
@@ -401,6 +426,17 @@ UINT tx_timer_create(TX_TIMER* timer_ptr, CHAR* name_ptr, VOID (*expiration_func
   K().timers[K().timer_count] = timer_ptr;
   ++K().timer_count;
   ++TimersEver();
+  return TX_SUCCESS;
+}
+UINT tx_timer_delete(TX_TIMER* timer_ptr) {
+  for (std::size_t t = 0U; t < K().timer_count; ++t) {
+    if (K().timers[t] == timer_ptr) {
+      K().timers[t] = nullptr; // Timer(t) is null from now on; the clock skips it
+    }
+  }
+  *timer_ptr = TX_TIMER{};
+  --TimersEver();
+  ++K().object_deletes;
   return TX_SUCCESS;
 }
 UINT tx_timer_activate(TX_TIMER* timer_ptr) {

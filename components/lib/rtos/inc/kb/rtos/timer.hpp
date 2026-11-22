@@ -31,7 +31,12 @@ public:
   Timer& operator=(const Timer&) = delete;
   Timer(Timer&&) = delete;
   Timer& operator=(Timer&&) = delete;
-  ~Timer() = default;
+  /// Deletes the RTOS object (ADR-0017); nothing may hold, wait on or use it any more.
+  ~Timer() {
+    if (created_) {
+      backend::TimerDelete(storage_);
+    }
+  }
 
   /**
    * @brief Creates a stopped timer that calls `callback(context)` every `period` (or once, if not

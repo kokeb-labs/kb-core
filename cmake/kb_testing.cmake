@@ -5,6 +5,7 @@
 #   kb_strict_target(<target>)                         ISO C++20, no exceptions, no RTTI, warnings as errors
 #   kb_header_checks(<part> <out-var> HEADERS ...)      one generated .cpp per listed header (relative to inc/)
 #   kb_add_unit_test(<name> SOURCES ... LIBS ...)       a test executable and its CTest entry
+#   KB_TEST_TIMEOUT                                    seconds before CTest fails a hung test (every test above)
 #   kb_add_compile_fail_tests(<part> <dir> SOURCES ... LIBS ...)  each file must fail with its "EXPECT: <regex>"
 #   kb_add_fuzz_targets(<part> <dir> TARGETS ... LIBS ...)  fuzz_<name> (libFuzzer, Clang), fuzz_replay_<name> (CTest)
 # Sources are always listed by name (handbook KB-BLD-002: no file(GLOB)).
@@ -26,6 +27,9 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 endif()
 # The standard library's own bounds checks, so an out-of-range span or array access traps in tests and fuzzers.
 set(KB_TEST_DEFINITIONS _GLIBCXX_ASSERTIONS=1 _LIBCPP_HARDENING_MODE=_LIBCPP_HARDENING_MODE_FAST)
+# A hung test fails after this many seconds instead of holding a CI runner for hours: about ten times the slowest
+# test's normal run (the threaded handler suite, a few seconds alone and about 12 s in a loaded parallel ctest).
+set(KB_TEST_TIMEOUT 120 CACHE STRING "Seconds before CTest fails a hung kb-core test")
 
 function(kb_strict_target target)
   target_compile_features(${target} PRIVATE ${KB_CXX_BUILD_FEATURE})
@@ -67,6 +71,7 @@ function(kb_add_unit_test name)
   target_compile_definitions(${name} PRIVATE ${KB_TEST_DEFINITIONS})
   target_link_libraries(${name} PRIVATE ${ARG_LIBS})
   add_test(NAME ${name} COMMAND ${name})
+  set_tests_properties(${name} PROPERTIES TIMEOUT "${KB_TEST_TIMEOUT}")
   # The same sources at -O2, compiled only: GCC's flow warnings need optimisation (ESP-IDF Release builds).
   add_library(${name}_o2 OBJECT ${ARG_SOURCES})
   kb_strict_target(${name}_o2)
@@ -91,7 +96,7 @@ function(kb_add_compile_fail_tests part dir)
     kb_strict_target(${target})
     target_link_libraries(${target} PRIVATE ${ARG_LIBS})
     add_test(NAME ${target} COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR} --target ${target})
-    set_tests_properties(${target} PROPERTIES PASS_REGULAR_EXPRESSION "${expect}")
+    set_tests_properties(${target} PROPERTIES PASS_REGULAR_EXPRESSION "${expect}" TIMEOUT "${KB_TEST_TIMEOUT}")
   endforeach()
 endfunction()
 
@@ -106,6 +111,7 @@ function(kb_add_fuzz_targets part dir)
     target_compile_definitions(fuzz_replay_${name} PRIVATE ${KB_TEST_DEFINITIONS})
     target_link_libraries(fuzz_replay_${name} PRIVATE ${ARG_LIBS})
     add_test(NAME kb_${part}_${name}_corpus COMMAND fuzz_replay_${name} "${dir}/corpus/${name}")
+    set_tests_properties(kb_${part}_${name}_corpus PROPERTIES TIMEOUT "${KB_TEST_TIMEOUT}")
     if(KB_BUILD_FUZZERS)
       add_executable(${name} "${src}")
       kb_strict_target(${name})

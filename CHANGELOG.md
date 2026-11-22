@@ -24,6 +24,12 @@ lists its changes per part, the ESP32 port and its driver pins. The format follo
 
 ### Changed
 
+- Tests: every kb-core CTest test gets a `TIMEOUT` (`KB_TEST_TIMEOUT`, 120 s by default), and `tools/preflight.sh`
+  and `tools/preflight/gates.sh` run ctest with `--timeout 300`, so a hung test fails in minutes rather than
+  holding a CI runner or a workstation (a rare hang of `kb_handlers_threads` on macOS ran for 45 minutes).
+- Coverage builds: the host RTOS backend and `kb_rtos_tests_host` update their profile counters atomically, as the
+  threaded handler and DMA suites already do; plain counters lose counts when threads share code, and gcov then
+  reports negative hits (`utils/time.hpp:131`), which fails the coverage gate.
 - Configurator: while kb-core has only release candidates the page starts on the newest one (the release-candidate
   switch turns on) instead of opening with an error; *Open an existing project* is folded (now inside *Advanced*);
   on small screens a bar at the bottom shows whether the selection resolves and offers the ZIP.
@@ -46,6 +52,15 @@ lists its changes per part, the ESP32 port and its driver pins. The format follo
 
 ### Fixed
 
+- rtos ([ADR-0017](docs/adr/ADR-0017-native-object-lifetime.md)): every `kb::rtos` object's destructor deletes its
+  native object through a new delete call per kind in the backend seam (`MutexDelete`, `RecursiveMutexDelete`,
+  `SemaphoreDelete`, `QueueDelete`, `EventFlagsDelete`, `TimerDelete`). The host backend no longer builds a
+  `std::mutex` or `std::condition_variable` over one that was never destroyed (the likely cause of a rare hang of
+  `kb_handlers_threads` on macOS, every mutex user asleep with no holder), and a host timer's callback no longer
+  runs after the timer ends. ThreadX deletes its objects (`tx_*_delete`) and frees a deleted timer's table slot;
+  FreeRTOS deletes semaphores, mutexes, queues and event groups (`vQueueDelete`, `vEventGroupDelete`) and leaves
+  timers, whose delete is asynchronous; `none` drops an ended timer from its clock. On the host an object still held
+  or waited on by another thread is left in place rather than destroyed under it.
 - ADR numbers: the asynchronous bus and held transactions record is ADR-0016 (it shared 0015 with the ThreadX
   backend); every reference follows.
 - `components/lib/handlers/tests/test_threads.cpp`: a comment line over the 100-column limit.

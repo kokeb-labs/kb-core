@@ -33,7 +33,12 @@ public:
   EventFlags& operator=(const EventFlags&) = delete;
   EventFlags(EventFlags&&) = delete;
   EventFlags& operator=(EventFlags&&) = delete;
-  ~EventFlags() = default;
+  /// Deletes the RTOS object (ADR-0017); nothing may hold, wait on or use it any more.
+  ~EventFlags() {
+    if (created_) {
+      backend::EventFlagsDelete(storage_);
+    }
+  }
 
   /** @brief Creates the group, all flags clear. `AlreadyStarted` on a second call. */
   [[nodiscard]] kb::Result<void> Create() noexcept {

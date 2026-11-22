@@ -7,3 +7,8 @@ add_library(kb_rtos_backend_host STATIC src/host_backend.cpp)
 add_library(kb::rtos_backend_host ALIAS kb_rtos_backend_host)
 kb_strict_target(kb_rtos_backend_host)
 target_link_libraries(kb_rtos_backend_host PUBLIC kb_rtos_api Threads::Threads)
+# Coverage builds: the backend runs on every test thread at once, so its counters are updated atomically (plain
+# counters lose counts under contention and gcov then derives negative ones, which fails the coverage report).
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND "${CMAKE_CXX_FLAGS}" MATCHES "--coverage|-fprofile-arcs")
+  target_compile_options(kb_rtos_backend_host PRIVATE -fprofile-update=atomic)
+endif()

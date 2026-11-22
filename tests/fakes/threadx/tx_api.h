@@ -100,12 +100,14 @@ UINT tx_thread_terminate(TX_THREAD* thread_ptr);
 UINT tx_thread_delete(TX_THREAD* thread_ptr);
 
 UINT tx_mutex_create(TX_MUTEX* mutex_ptr, CHAR* name_ptr, UINT inherit);
+UINT tx_mutex_delete(TX_MUTEX* mutex_ptr);
 UINT tx_mutex_get(TX_MUTEX* mutex_ptr, ULONG wait_option);
 UINT tx_mutex_put(TX_MUTEX* mutex_ptr);
 UINT tx_mutex_info_get(TX_MUTEX* mutex_ptr, CHAR** name, ULONG* count, TX_THREAD** owner,
                        TX_THREAD** first_suspended, ULONG* suspended_count, TX_MUTEX** next_mutex);
 
 UINT tx_semaphore_create(TX_SEMAPHORE* semaphore_ptr, CHAR* name_ptr, ULONG initial_count);
+UINT tx_semaphore_delete(TX_SEMAPHORE* semaphore_ptr);
 UINT tx_semaphore_get(TX_SEMAPHORE* semaphore_ptr, ULONG wait_option);
 UINT tx_semaphore_ceiling_put(TX_SEMAPHORE* semaphore_ptr, ULONG ceiling);
 UINT tx_semaphore_info_get(TX_SEMAPHORE* semaphore_ptr, CHAR** name, ULONG* current_value,
@@ -114,12 +116,14 @@ UINT tx_semaphore_info_get(TX_SEMAPHORE* semaphore_ptr, CHAR** name, ULONG* curr
 
 UINT tx_queue_create(TX_QUEUE* queue_ptr, CHAR* name_ptr, UINT message_size, VOID* queue_start,
                      ULONG queue_size);
+UINT tx_queue_delete(TX_QUEUE* queue_ptr);
 UINT tx_queue_send(TX_QUEUE* queue_ptr, VOID* source_ptr, ULONG wait_option);
 UINT tx_queue_receive(TX_QUEUE* queue_ptr, VOID* destination_ptr, ULONG wait_option);
 UINT tx_queue_info_get(TX_QUEUE* queue_ptr, CHAR** name, ULONG* enqueued, ULONG* available_storage,
                        TX_THREAD** first_suspended, ULONG* suspended_count, TX_QUEUE** next_queue);
 
 UINT tx_event_flags_create(TX_EVENT_FLAGS_GROUP* group_ptr, CHAR* name_ptr);
+UINT tx_event_flags_delete(TX_EVENT_FLAGS_GROUP* group_ptr);
 UINT tx_event_flags_set(TX_EVENT_FLAGS_GROUP* group_ptr, ULONG flags_to_set, UINT set_option);
 UINT tx_event_flags_get(TX_EVENT_FLAGS_GROUP* group_ptr, ULONG requested_flags, UINT get_option,
                         ULONG* actual_flags_ptr, ULONG wait_option);
@@ -131,6 +135,7 @@ UINT tx_timer_create(TX_TIMER* timer_ptr, CHAR* name_ptr, VOID (*expiration_func
                      ULONG expiration_input, ULONG initial_ticks, ULONG reschedule_ticks,
                      UINT auto_activate);
 UINT tx_timer_activate(TX_TIMER* timer_ptr);
+UINT tx_timer_delete(TX_TIMER* timer_ptr);
 UINT tx_timer_deactivate(TX_TIMER* timer_ptr);
 UINT tx_timer_change(TX_TIMER* timer_ptr, ULONG initial_ticks, ULONG reschedule_ticks);
 

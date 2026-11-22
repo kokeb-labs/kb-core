@@ -29,11 +29,12 @@ uint32_t Deletes();                     ///< tx_thread_delete calls.
 uint32_t Relinquishes();                ///< tx_thread_relinquish calls.
 void SetSleepOvershoot(uint32_t ticks); ///< The next tx_thread_sleep wakes this much late.
 uint32_t Sleeps();                      ///< tx_thread_sleep calls.
-UINT Posture();               ///< The interrupt posture now (TX_INT_DISABLE or TX_INT_ENABLE).
-std::size_t TimerCount();     ///< Timers created since Reset().
-uint32_t SemaphoreCreates();  ///< Semaphores created since Reset().
-uint32_t TimersCreatedEver(); ///< Timers created by this process, across Reset() (never deleted).
-TX_TIMER* Timer(std::size_t index); ///< Timer `index` as created.
+UINT Posture();              ///< The interrupt posture now (TX_INT_DISABLE or TX_INT_ENABLE).
+std::size_t TimerCount();    ///< Timers created since Reset().
+uint32_t SemaphoreCreates(); ///< Semaphores created since Reset().
+uint32_t TimersHeld();       ///< Timers created and not deleted by this process, across Reset().
+uint32_t ObjectDeletes(); ///< tx_*_delete calls of mutexes, semaphores, queues, flags and timers.
+TX_TIMER* Timer(std::size_t index); ///< Timer `index` as created; null once deleted.
 
 } // namespace kb_fake_threadx
 

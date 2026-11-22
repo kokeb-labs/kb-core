@@ -3,9 +3,12 @@
  * @brief The `host` RTOS backend: kb::rtos over the C++ standard thread library, for PC tests. Test
  * code, outside the MISRA claim (components/ports/host/README.md).
  *
- * Every object is a standard-library object constructed in the kb object's opaque storage. Waits
- * use steady_clock deadlines; the tick is one millisecond of that clock. Timers run on one thread
- * each.
+ * Every object is a standard-library object constructed in the kb object's opaque storage and
+ * destroyed by the kb object's destructor (the *Delete functions, ADR-0017), so no mutex or
+ * condition variable is ever constructed over one that was not destroyed. An object that a thread
+ * still holds or waits on when its kb object ends is left in place instead (never destroyed under
+ * that thread). Waits use steady_clock deadlines; the tick is one millisecond of that clock. Timers
+ * run on one thread each.
  *
  * SPDX-License-Identifier: MIT
  * Copyright (c) 2026 The kb-core authors
@@ -58,6 +61,7 @@ struct HostSemaphore {
   std::condition_variable cv;
   uint32_t count{0U};
   uint32_t max{1U};
+  uint32_t waiters{0U}; ///< Threads in a take (under `m`).
 };
 struct HostQueue {
   std::mutex m;
@@ -68,11 +72,13 @@ struct HostQueue {
   std::size_t capacity{0U};
   std::size_t head{0U};
   std::size_t count{0U};
+  uint32_t waiters{0U}; ///< Threads in a send or a receive (under `m`).
 };
 struct HostFlags {
   std::mutex m;
   std::condition_variable cv;
   uint32_t bits{0U};
+  uint32_t waiters{0U}; ///< Threads in a wait (under `m`).
 };
 struct HostTimer {
   std::mutex m;
@@ -113,18 +119,38 @@ T* Construct(detail::OpaqueStorage<Bytes>& storage) noexcept {
   return object;
 }
 
-// Waits on `cv` until `ready()` or the timeout; kForever waits without limit.
+// Waits on `cv` until `ready()` or the timeout; kForever waits without limit. `waiters` counts the
+// thread in the wait (the caller holds `lock`), so a delete never destroys `cv` under it.
 template <typename Pred>
-bool WaitFor(std::condition_variable& cv, std::unique_lock<std::mutex>& lock, uint32_t ticks,
-             Pred ready) {
+bool WaitFor(std::condition_variable& cv, std::unique_lock<std::mutex>& lock, uint32_t& waiters,
+             uint32_t ticks, Pred ready) {
   bool ok = false;
+  ++waiters;
   if (ticks == kForever) {
     cv.wait(lock, ready);
     ok = true;
   } else {
     ok = cv.wait_for(lock, Ticks(ticks), ready);
   }
+  --waiters;
   return ok;
+}
+
+// True when no thread holds `object.m` or waits on the object, so it may be destroyed.
+template <typename T>
+bool Unused(T& object) noexcept {
+  const std::unique_lock<std::mutex> lock{object.m, std::try_to_lock};
+  return lock.owns_lock() && (object.waiters == 0U);
+}
+
+// Ends the native object of `storage` (constructed by Construct) when `unused`, and drops the
+// handle either way: a used object is left in place, never destroyed under a thread.
+template <typename T, std::size_t Bytes>
+void Destroy(detail::OpaqueStorage<Bytes>& storage, bool unused) noexcept {
+  if (unused) {
+    As<T>(storage).~T();
+  }
+  storage.handle = nullptr;
 }
 
 void TimerLoop(HostTimer* t) {
@@ -227,6 +253,17 @@ void MutexUnlock(const detail::MutexStorage& storage) noexcept {
   As<HostMutex>(storage).m.unlock();
 }
 
+void MutexDelete(detail::MutexStorage& storage) noexcept {
+  if (storage.handle != nullptr) {
+    auto& m = As<HostMutex>(storage);
+    const bool unused = m.m.try_lock();
+    if (unused) {
+      m.m.unlock();
+    }
+    Destroy<HostMutex>(storage, unused);
+  }
+}
+
 kb::Status RecursiveMutexCreate(detail::MutexStorage& storage) noexcept {
   static_cast<void>(Construct<HostRecursiveMutex>(storage));
   return kb::Status::Ok;
@@ -250,6 +287,17 @@ void RecursiveMutexUnlock(const detail::MutexStorage& storage) noexcept {
   As<HostRecursiveMutex>(storage).m.unlock();
 }
 
+void RecursiveMutexDelete(detail::MutexStorage& storage) noexcept {
+  if (storage.handle != nullptr) {
+    auto& m = As<HostRecursiveMutex>(storage);
+    const bool unused = m.m.try_lock(); // another thread's hold refuses it (the caller's cannot)
+    if (unused) {
+      m.m.unlock();
+    }
+    Destroy<HostRecursiveMutex>(storage, unused);
+  }
+}
+
 kb::Status SemaphoreCreate(detail::SemaphoreStorage& storage, uint32_t max_count,
                            uint32_t initial) noexcept {
   auto* s = Construct<HostSemaphore>(storage);
@@ -261,7 +309,7 @@ kb::Status SemaphoreCreate(detail::SemaphoreStorage& storage, uint32_t max_count
 bool SemaphoreTake(const detail::SemaphoreStorage& storage, uint32_t timeout_ticks) noexcept {
   auto& s = As<HostSemaphore>(storage);
   std::unique_lock<std::mutex> lock{s.m};
-  const bool ok = WaitFor(s.cv, lock, timeout_ticks, [&s] { return s.count > 0U; });
+  const bool ok = WaitFor(s.cv, lock, s.waiters, timeout_ticks, [&s] { return s.count > 0U; });
   if (ok) {
     --s.count;
   }
@@ -292,6 +340,12 @@ uint32_t SemaphoreCount(const detail::SemaphoreStorage& storage) noexcept {
   return s.count;
 }
 
+void SemaphoreDelete(detail::SemaphoreStorage& storage) noexcept {
+  if (storage.handle != nullptr) {
+    Destroy<HostSemaphore>(storage, Unused(As<HostSemaphore>(storage)));
+  }
+}
+
 kb::Status QueueCreate(detail::QueueStorage& storage, std::byte* buffer, std::size_t item_bytes,
                        std::size_t capacity) noexcept {
   kb::Status status = kb::Status::InvalidArgument;
@@ -311,7 +365,7 @@ bool QueueSend(const detail::QueueStorage& storage, const void* item,
   bool ok = false;
   {
     std::unique_lock<std::mutex> lock{q.m};
-    ok = WaitFor(q.not_full, lock, timeout_ticks, [&q] { return q.count < q.capacity; });
+    ok = WaitFor(q.not_full, lock, q.waiters, timeout_ticks, [&q] { return q.count < q.capacity; });
     if (ok) {
       const std::size_t slot = (q.head + q.count) % q.capacity;
       std::memcpy(&q.buffer[slot * q.item_bytes], item, q.item_bytes);
@@ -334,7 +388,7 @@ bool QueueReceive(const detail::QueueStorage& storage, void* item,
   bool ok = false;
   {
     std::unique_lock<std::mutex> lock{q.m};
-    ok = WaitFor(q.not_empty, lock, timeout_ticks, [&q] { return q.count > 0U; });
+    ok = WaitFor(q.not_empty, lock, q.waiters, timeout_ticks, [&q] { return q.count > 0U; });
     if (ok) {
       std::memcpy(item, &q.buffer[q.head * q.item_bytes], q.item_bytes);
       q.head = (q.head + 1U) % q.capacity;
@@ -351,6 +405,12 @@ std::size_t QueueSize(const detail::QueueStorage& storage) noexcept {
   auto& q = As<HostQueue>(storage);
   const std::lock_guard<std::mutex> lock{q.m};
   return q.count;
+}
+
+void QueueDelete(detail::QueueStorage& storage) noexcept {
+  if (storage.handle != nullptr) {
+    Destroy<HostQueue>(storage, Unused(As<HostQueue>(storage)));
+  }
 }
 
 kb::Status EventFlagsCreate(detail::EventFlagsStorage& storage) noexcept {
@@ -391,12 +451,18 @@ uint32_t EventFlagsWait(const detail::EventFlagsStorage& storage, uint32_t bits,
   const auto met = [&f, bits, wait_all] {
     return wait_all ? ((f.bits & bits) == bits) : ((f.bits & bits) != 0U);
   };
-  const bool ok = WaitFor(f.cv, lock, timeout_ticks, met);
+  const bool ok = WaitFor(f.cv, lock, f.waiters, timeout_ticks, met);
   const uint32_t seen = f.bits;
   if (ok && clear_on_exit) {
     f.bits &= ~bits;
   }
   return seen;
+}
+
+void EventFlagsDelete(detail::EventFlagsStorage& storage) noexcept {
+  if (storage.handle != nullptr) {
+    Destroy<HostFlags>(storage, Unused(As<HostFlags>(storage)));
+  }
 }
 
 kb::Status TimerCreate(detail::TimerStorage& storage, const detail::TimerParams& params) noexcept {
@@ -426,6 +492,15 @@ bool TimerStop(const detail::TimerStorage& storage) noexcept {
   }
   t.cv.notify_all();
   return true;
+}
+
+void TimerDelete(detail::TimerStorage& storage) noexcept {
+  if (storage.handle != nullptr) {
+    // ~HostTimer ends and joins the timer's thread (after a running callback returns); a delete
+    // from the timer's own callback cannot join that thread, so the timer is left in place.
+    const bool own_callback = As<HostTimer>(storage).worker.get_id() == std::this_thread::get_id();
+    Destroy<HostTimer>(storage, !own_callback);
+  }
 }
 
 kb::Status ThreadCreate(detail::ThreadStorage& storage,

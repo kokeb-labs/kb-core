@@ -19,6 +19,9 @@
   initial value every path overwrites, a comparison whose two forms agree at the only value where they differ, a
   compile-time margin) is listed in `docs/assurance/equivalent-mutants.yml` with its reason; never deleted.
 - Locally: `tools/preflight.sh --container` runs coverage, sanitizers and fuzzing in the CI image.
+- **Hung tests:** every kb-core CTest test has a `TIMEOUT` of `KB_TEST_TIMEOUT` seconds (120 by default, about ten
+  times the slowest suite's normal run), and the preflight and container gates pass `ctest --timeout 300` for the
+  rest, so a hang fails in minutes instead of holding a runner.
 
 ## CI
 

@@ -43,7 +43,12 @@ public:
   Queue& operator=(const Queue&) = delete;
   Queue(Queue&&) = delete;
   Queue& operator=(Queue&&) = delete;
-  ~Queue() = default;
+  /// Deletes the RTOS object (ADR-0017); nothing may hold, wait on or use it any more.
+  ~Queue() {
+    if (created_) {
+      backend::QueueDelete(storage_);
+    }
+  }
 
   /** @brief Creates the RTOS queue over the internal buffer. `AlreadyStarted` on a second call. */
   [[nodiscard]] kb::Result<void> Create() noexcept {

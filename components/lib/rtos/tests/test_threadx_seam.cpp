@@ -360,9 +360,10 @@ KB_TEST("threadx seam: the timer table is bounded; a full table refuses with Ful
   p.callback = &Count;
   p.context = &fill_fired;
   p.period_ms = 1U;
-  // Timers are never deleted, so the earlier cases of this executable hold slots: one per timer the
-  // kernel created (a failed create gives its slot back). The table holds exactly 32 in all.
-  const uint32_t held = f::TimersCreatedEver();
+  // The earlier cases of this executable hold slots: one per timer the kernel created and the
+  // backend did not delete (a failed create gives its slot back). The table holds exactly 32 in
+  // all.
+  const uint32_t held = f::TimersHeld();
   std::size_t made = 0U;
   Status last = Status::Ok;
   while ((made < timers.size()) && (last == Status::Ok)) {
@@ -378,6 +379,10 @@ KB_TEST("threadx seam: the timer table is bounded; a full table refuses with Ful
   KB_CHECK_EQ(fill_fired, 0U);
   f::Timer(0U)->function(31U); // the last slot holds a fill timer
   KB_CHECK_EQ(fill_fired, 1U);
+  for (std::size_t i = 0U; (i + 1U) < made; ++i) {
+    b::TimerDelete(timers[i]); // their slots are free again
+  }
+  KB_CHECK_EQ(f::TimersHeld(), held);
 }
 
 KB_TEST("threadx seam: critical sections nest and restore the outer posture") {
@@ -497,4 +502,31 @@ KB_TEST("threadx seam: stack high-water is the deepest use the fill pattern show
   f::Thread(2U)->tx_thread_stack_highest_ptr = &g.guard + 1; // past the guard
   KB_CHECK_EQ(b::ThreadStackFree(whole, free_bytes), Status::Ok);
   KB_CHECK_EQ(free_bytes, sizeof(g.words));
+}
+
+KB_TEST("threadx seam: each destructor deletes its kernel object; a deleted timer frees its slot") {
+  f::Reset();
+  static uint32_t fired = 0U;
+  const uint32_t held = f::TimersHeld();
+  {
+    r::Mutex m{};
+    r::RecursiveMutex rm{};
+    r::Semaphore s{};
+    r::Queue<uint32_t, 2> q{};
+    r::EventFlags g{};
+    r::Timer t{};
+    KB_REQUIRE(m.Create().IsOk() && rm.Create().IsOk() && s.Create(1U, 0U).IsOk());
+    KB_REQUIRE(q.Create().IsOk() && g.Create().IsOk());
+    KB_REQUIRE(t.Create(&Count, &fired, Milliseconds{1U}, true).IsOk());
+    KB_CHECK(t.Start());
+    KB_CHECK_EQ(f::TimersHeld(), held + 1U);
+    f::AdvanceTicks(2U);
+    KB_CHECK_EQ(fired, 2U);
+    KB_CHECK_EQ(f::ObjectDeletes(), 0U);
+  }
+  KB_CHECK_EQ(f::ObjectDeletes(), 6U);
+  KB_CHECK_EQ(f::TimersHeld(), held);
+  KB_CHECK(f::Timer(f::TimerCount() - 1U) == nullptr);
+  f::AdvanceTicks(3U);
+  KB_CHECK_EQ(fired, 2U); // the deleted timer never runs again
 }
