@@ -56,3 +56,32 @@
 **Not re-run for driver content**: unit tests, coverage, mutation, fuzzing, MISRA, clang-tidy, cppcheck,
 complexity and handbook checks of the drivers. Each pinned driver passed them in its own CI at its release tag;
 pin hygiene proves the pin is that tag ([ADR-0004](adr/ADR-0004-ci-strategy.md)).
+
+### Which change runs which jobs
+
+A push to a pull request branch starts one run (the `pull_request` event). Pushes start CI only on `main` and on
+`v*` tags, so the same commit is not built twice. The two long jobs, Mutation (shards of 48 to 86 minutes) and MISRA
+(about 30 minutes), are run on a pull request only when it changes something they read. The `Changed files` job
+decides, and the `CI gate` counts a job skipped by that decision as passed. If the `Changed files` job itself fails
+or is cancelled, the gate fails.
+
+| Changed path in the pull request | Mutation and MISRA | Configurator exports | All other jobs |
+| --- | --- | --- | --- |
+| `docs/**` (except `docs/assurance/equivalent-mutants.yml`), `*.md`, `CHANGELOG.md`, `mkdocs.yml` | skipped | skipped | run |
+| `configurator/**` | skipped | run | run |
+| `catalog/**` | skipped | run for `catalog/schemas/**` only | run |
+| `tools/kb/**` | skipped | run | run |
+| `tools/docs`, `tools/examples`, `tools/release`, `tools/vuln`, `tools/evidence`, `tools/pins`, `tools/catalog`, `tools/include_checker` | skipped | skipped | run |
+| `examples/**`, `components/drivers/**`, `components/ports/esp32/**` | skipped | run (`components/**`) | run |
+| `components/lib/**`, `components/ports/host/**` | run | run | run |
+| `cmake/**`, `CMakeLists.txt`, `kb.yml`, `third_party/**`, `deviations/**` | run | run | run |
+| `tools/mutants/**`, `tools/lint/**`, `tools/layout/paths.yml`, `docs/assurance/equivalent-mutants.yml` | run | skipped | run |
+| `tests/fakes`, `tests/harness`, `tests/integration`, `tests/poison`, `tests/layering`, `tests/standalone` | run | skipped | run |
+| `.github/workflows/ci.yml`, `ci-mutation.yml`, `ci-misra.yml` | run | skipped | run |
+| Pull request with the label `full-ci` (add it before the push, then push) | run | run | run |
+| Push to `main`, a `v*` tag, a merge queue entry | run | run | run |
+
+"Run" and "skipped" apply to a pull request; every other job runs on every pull request and every push. A schedule
+or a manual `workflow_dispatch` run is not available: the trigger policy of ci-tools (docs/triggers.md there) allows
+only `push`, `pull_request`, `merge_group` and `workflow_call`. Mutation and MISRA therefore always run on `main`,
+which catches anything a filter let through after the merge.
