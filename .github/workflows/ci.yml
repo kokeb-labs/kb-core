@@ -6,11 +6,15 @@
 name: CI
 
 on:
+  # Pushes run only on main and tags. A branch with a pull request is covered by the pull_request event, so one push
+  # starts one run, not two. merge_group is for a merge queue: it runs the full set on the queued merge.
   push:
-    branches: [main, 'release/*']
+    branches: [main]
     tags: ['v*']
   pull_request:
     branches: [main, 'release/*']
+  merge_group:
+    branches: [main]
 
 permissions:
   contents: read
@@ -20,16 +24,18 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
-  # MISRA and mutation are the long, billed jobs. A pull request that only touches docs, the configurator site or
-  # Markdown cannot change their result, so they are skipped there; the configurator exports run only when the
-  # configurator, the kb tool, the libraries or the build files change. The gate below allows exactly those three
-  # to be skipped. Pushes to main, release branches and tags always run everything.
+  # MISRA and mutation are the long, billed jobs (mutation shards 48-86 minutes, the MISRA scan about 30). A pull
+  # request runs them only when it changes something they read (heavy, below) or carries the label `full-ci`; pushes
+  # to main, tags and the merge queue always run everything. The configurator exports run only when the configurator,
+  # the kb tool, the libraries or the build files change. The gate below counts a job skipped by these filters as
+  # passed (allow_skipped), and fails on a failed or cancelled filter job, because the gate also needs `changes`.
+  # docs/testing.md ("Which change runs which jobs") has the table of which path starts which job.
   changes:
     name: Changed files
     runs-on: ubuntu-latest
     timeout-minutes: 5
     outputs:
-      native: ${{ steps.diff.outputs.native }}
+      heavy: ${{ steps.diff.outputs.heavy }}
       exports: ${{ steps.diff.outputs.exports }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
@@ -40,25 +46,40 @@ jobs:
           EVENT: ${{ github.event_name }}
           BASE: ${{ github.event.pull_request.base.sha }}
           HEAD: ${{ github.event.pull_request.head.sha }}
+          LABELS: ${{ toJSON(github.event.pull_request.labels.*.name) }}
         run: |
-          native=true
+          heavy=true
           exports=true
           if [ "$EVENT" = "pull_request" ]; then
-            native=false
+            heavy=false
             exports=false
+            if printf '%s' "$LABELS" | grep -q '"full-ci"'; then
+              heavy=true
+              exports=true
+            fi
+            # A failed diff must not hide a needed job: fail this job (the gate then fails).
+            files="$(git diff --name-only "$BASE...$HEAD")"
             while IFS= read -r f; do
+              [ -n "$f" ] || continue
+              # Mutation and MISRA read the libraries (headers, sources, their tests and CMake files), the test
+              # support code, the build files, the mutant catalogue, the equivalent-mutant and deviation records,
+              # and their own workflows. Anything else (docs, configurator, catalogue data, kb tool and release
+              # scripts, drivers, the ESP32 port, Markdown) cannot change their result.
               case "$f" in
-                docs/*|configurator/*|tools/docs/*|*.md|mkdocs.yml) ;;
-                *) native=true ;;
+                components/lib/*|components/ports/host/*|cmake/*|CMakeLists.txt|CMakePresets.json|kb.yml|\
+                third_party/*|deviations/*|tools/mutants/*|tools/layout/paths.yml|tools/lint/*|\
+                docs/assurance/equivalent-mutants.yml|\
+                tests/fakes/*|tests/harness/*|tests/integration/*|tests/poison/*|tests/layering/*|tests/standalone/*|\
+                .github/workflows/ci.yml|.github/workflows/ci-mutation.yml|.github/workflows/ci-misra.yml) heavy=true ;;
               esac
               # The configurator exports build what the generator writes against these libraries and build files.
               case "$f" in
                 configurator/*|tools/kb/*|components/*|cmake/*|CMakeLists.txt|kb.yml|catalog/schemas/*|\
                 .github/workflows/ci-exports.yml) exports=true ;;
               esac
-            done < <(git diff --name-only "$BASE...$HEAD")
+            done <<< "$files"
           fi
-          echo "native=$native" >> "$GITHUB_OUTPUT"
+          echo "heavy=$heavy" >> "$GITHUB_OUTPUT"
           echo "exports=$exports" >> "$GITHUB_OUTPUT"
 
   host:
@@ -72,7 +93,7 @@ jobs:
   misra:
     name: MISRA
     needs: changes
-    if: needs.changes.outputs.native == 'true'
+    if: needs.changes.outputs.heavy == 'true'
     uses: ./.github/workflows/ci-misra.yml
 
   cross:
@@ -125,7 +146,7 @@ jobs:
   mutation:
     name: Mutation
     needs: changes
-    if: needs.changes.outputs.native == 'true'
+    if: needs.changes.outputs.heavy == 'true'
     uses: ./.github/workflows/ci-mutation.yml
 
   pins:
