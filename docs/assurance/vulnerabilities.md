@@ -4,12 +4,12 @@
 not edit; the data is configurator/data/vulnerabilities.json (schema catalog/schemas/vulnerabilities.schema.json),
 written by tools/vuln/scan.py. -->
 
-Checked on **2026-11-21** (UTC) against the [OSV](https://osv.dev) database, by `kb-vuln-scan/1`. The scan asks about
+Checked on **2026-11-23** (UTC) against the [OSV](https://osv.dev) database, by `kb-vuln-scan/1`. The scan asks about
 the commit of each pinned component, so a release candidate and a moved tag are judged by the code that is pinned. A
 scan workflow repeats it, rebuilds this page and the configurator's data, and opens an issue when an advisory appears;
 it commits nothing. If the data is more than 10 days old the configurator and this page say so.
 
-**0 open, 8 reviewed** of 8 advisories for 1 of the 24 pinned components; **none known** for the others.
+**0 open, 8 reviewed** of 8 advisories for 1 of the 25 pinned components; **none known** for the others.
 
 An advisory means the database lists the pinned commit as affected. It is not a verdict on whether kb-core or a
 product built from it is exposed: read the advisory, then decide, and record the decision in the [SOUP list](soup.md).
@@ -41,6 +41,7 @@ again. See [Known data issues](../configurator.md#known-data-issues).
 | `driver-pca9685` | `v0.1.0-rc.1` | `ba554fcf9bff` | none known | 0 | 0 |
 | `driver-pcal9555` | `v0.1.0-rc.1` | `b9dabab24897` | none known | 0 | 0 |
 | `driver-pf1550` | `v0.1.0-rc.1` | `c45f52351738` | none known | 0 | 0 |
+| `driver-se05x` | `v0.1.0-rc.2` | `7538e10516f9` | none known | 0 | 0 |
 | `driver-sfm-flow-meter` | `v0.1.0-rc.1` | `d7b75124f4e7` | none known | 0 | 0 |
 | `driver-tle92466ed` | `v0.1.0-rc.1` | `4a33db170d10` | none known | 0 | 0 |
 | `driver-tmc5160` | `v0.1.0-rc.1` | `9ef0483e64ff` | none known | 0 | 0 |

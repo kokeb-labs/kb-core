@@ -2719,6 +2719,99 @@ globalThis.KB_CATALOG = {
    ]
   },
   {
+   "capabilities": [],
+   "category": "sensor",
+   "chip": "TMP117",
+   "figures": [
+    {
+     "alt": "Pinout of the TMP117 in WSON-6, top view: 6 pins and an exposed pad, each with its name, its electrical type as a colour and the driver hook that uses it.",
+     "dark": "assets/figures/tmp117/chip-pinout.dark.svg",
+     "kind": "pinout",
+     "light": "assets/figures/tmp117/chip-pinout.svg"
+    },
+    {
+     "alt": "Outline of the TMP117 in WSON-6 drawn to scale from above: body 2.0 x 2.0 x 0.8 mm, pitch 0.65 mm, 6 pins and an exposed pad.",
+     "dark": "assets/figures/tmp117/chip-outline.dark.svg",
+     "kind": "outline",
+     "light": "assets/figures/tmp117/chip-outline.svg"
+    },
+    {
+     "alt": "Block diagram of the TMP117: its function blocks, how they connect and which package pins reach each block.",
+     "dark": "assets/figures/tmp117/chip-blocks.dark.svg",
+     "kind": "blocks",
+     "light": "assets/figures/tmp117/chip-blocks.svg"
+    }
+   ],
+   "folder": "driver-tmp117",
+   "i2c_addresses": null,
+   "licence": {
+    "copyright": "Copyright (c) 2026 The driver-tmp117 authors",
+    "spdx": "MIT"
+   },
+   "name": "tmp117",
+   "optional_pins": 1,
+   "package": "WSON-6",
+   "pinned": null,
+   "repo": "kokeb-labs-drivers/driver-tmp117",
+   "requires": {
+    "bus": [
+     "i2c"
+    ],
+    "kb_core_min": null,
+    "language": {
+     "compilers": {
+      "clang": "13",
+      "gcc": "10"
+     },
+     "standard": 20
+    },
+    "mcus": [
+     "any"
+    ],
+    "peripheral": null,
+    "rtos": []
+   },
+   "requires_owner": false,
+   "status": "rc",
+   "summary": "The TMP117 is a digital temperature sensor with a 16-bit result in steps of 1/128 °C, accurate to 0.1 °C from -20 °C to 50 °C, a programmable alert window and a small EEPROM, read over I2C or SMBus (1 Features, p. 1).",
+   "tags": [
+    "temperature-sensor"
+   ],
+   "url": "https://github.com/kokeb-labs-drivers/driver-tmp117.git",
+   "versions": [
+    {
+     "bus": [
+      "i2c"
+     ],
+     "commit": "f04e288fd6e4c04796361e4c94e63a7c40108ff8",
+     "date": "2026-11-23T00:04:23Z",
+     "kb_core_min": null,
+     "kind": "rc",
+     "language": {
+      "compilers": {
+       "clang": "13",
+       "gcc": "10"
+      },
+      "profile": "KB-CPP20",
+      "source": "driver.yml",
+      "standard": 20,
+      "tested": [
+       20
+      ]
+     },
+     "mcus": [
+      "any"
+     ],
+     "metadata_source": "tag",
+     "osv": null,
+     "peripheral": null,
+     "requires_owner": false,
+     "tag": "v0.1.0-rc.1",
+     "version": "0.1.0-rc.1"
+    }
+   ]
+  },
+  {
    "capabilities": [
     {
      "label": "Chips",
@@ -3317,29 +3410,6 @@ globalThis.KB_CATALOG = {
   ],
   "releases": [
    {
-    "bindings": [],
-    "commit": "57e12601700f0528c6466c5a36b9f8c895d2abc4",
-    "date": "2026-11-21T20:28:55Z",
-    "kind": "dev",
-    "language": {
-     "compilers": {
-      "arm_gcc": "10",
-      "clang": "13",
-      "esp_idf": "5.0",
-      "gcc": "10"
-     },
-     "profile": "KB-CPP20",
-     "source": "kb.yml",
-     "standard": 20,
-     "tested": [
-      20
-     ]
-    },
-    "osv": null,
-    "tag": null,
-    "version": "0.0.0"
-   },
-   {
     "bindings": [
      "ads7952",
      "ads9324",
@@ -3418,7 +3488,7 @@ globalThis.KB_CATALOG = {
   }
  ],
  "schema": 1,
- "source_date": "2026-11-21T20:28:55Z",
+ "source_date": "2026-11-23T00:04:23Z",
  "tag_index": {
   "categories": {
    "io": 4,
@@ -3427,7 +3497,7 @@ globalThis.KB_CATALOG = {
    "other": 1,
    "radio": 0,
    "secure-element": 1,
-   "sensor": 10
+   "sensor": 11
   },
   "tags": {
    "adc": 4,
@@ -3449,7 +3519,7 @@ globalThis.KB_CATALOG = {
    "servo": 2,
    "solenoid-driver": 2,
    "stepper": 1,
-   "temperature-sensor": 2
+   "temperature-sensor": 3
   }
  },
  "tested_sets": []

@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="541" viewBox="0 0 1200 541" role="img" aria-labelledby="chip-blocks-title chip-blocks-desc" font-family="Inter, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
+<title id="chip-blocks-title">Inside the TMP117</title>
+<desc id="chip-blocks-desc">Block diagram of the TMP117: its function blocks, how they connect and which package pins reach each block.</desc>
+<defs><marker id="fk-arrow-rail" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#8893A2"/></marker></defs>
+<rect x="0.5" y="0.5" width="1199" height="540" rx="16" fill="#FFFFFF" stroke="#E2E7EE"/>
+<text x="32" y="44" font-size="12.5" font-weight="700" letter-spacing="1.2" fill="#7A360E">HARDWARE</text>
+<text x="32" y="77.3" font-size="26" font-weight="700" fill="#0E1726">Inside the TMP117</text>
+<text x="32" y="103.8" font-size="15" fill="#566070">Function blocks and their links, from the datasheet's block diagram (7.2 Functional Block Diagrams, p. 11). Pins on the edge carry their package</text>
+<text x="32" y="125.5" font-size="15" fill="#566070">number.</text>
+<rect x="32" y="141.6" width="1136" height="1" fill="#E2E7EE"/>
+<rect x="128" y="159.6" width="1008" height="320" rx="14" fill="#F1F4F8" stroke="#CBD5E1" stroke-width="1.2"/>
+<path d="M135 359.6 L504 359.6" fill="none" stroke="#2563EB" stroke-width="1.8"/>
+<path d="M135 383.6 L504 383.6" fill="none" stroke="#2563EB" stroke-width="1.8"/>
+<path d="M135 407.6 L504 407.6" fill="none" stroke="#0B7A72" stroke-width="1.8"/>
+<path d="M135 431.6 L504 431.6" fill="none" stroke="#C26A05" stroke-width="1.8"/>
+<path d="M412 255.6 L500 255.6" fill="none" stroke="#8893A2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rail)"/>
+<path d="M748 255.6 L836 255.6" fill="none" stroke="#8893A2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rail)"/>
+<path d="M748 391.6 L754 391.6 Q760 391.6 760 385.6 L760 287.6 Q760 279.6 768 279.6 L836 279.6" fill="none" stroke="#8893A2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rail)" marker-start="url(#fk-arrow-rail)"/>
+<path d="M960 339.6 L960 299.6" fill="none" stroke="#8893A2" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#fk-arrow-rail)" marker-start="url(#fk-arrow-rail)"/>
+<rect x="168" y="223.6" width="240" height="72" rx="10" fill="#E6F6F4" stroke="#0B7A72" stroke-width="1.4"/>
+<rect x="168" y="231.6" width="4" height="56" rx="2" fill="#0B7A72"/>
+<rect x="504" y="223.6" width="240" height="72" rx="10" fill="#F1F4F8" stroke="#64748B" stroke-width="1.4"/>
+<rect x="504" y="231.6" width="4" height="56" rx="2" fill="#64748B"/>
+<rect x="840" y="223.6" width="240" height="72" rx="10" fill="#FBEFE6" stroke="#9A4A17" stroke-width="1.4"/>
+<rect x="840" y="231.6" width="4" height="56" rx="2" fill="#9A4A17"/>
+<rect x="840" y="343.6" width="240" height="104" rx="10" fill="#FFF5E3" stroke="#C26A05" stroke-width="1.4"/>
+<rect x="840" y="351.6" width="4" height="88" rx="2" fill="#C26A05"/>
+<rect x="504" y="343.6" width="240" height="104" rx="10" fill="#EAF2FF" stroke="#2563EB" stroke-width="1.4"/>
+<rect x="504" y="351.6" width="4" height="88" rx="2" fill="#2563EB"/>
+<rect x="121" y="352.6" width="14" height="14" rx="3" fill="#EAF2FF" stroke="#2563EB" stroke-width="1.4"/>
+<rect x="121" y="376.6" width="14" height="14" rx="3" fill="#EAF2FF" stroke="#2563EB" stroke-width="1.4"/>
+<rect x="121" y="400.6" width="14" height="14" rx="3" fill="#E6F6F4" stroke="#0B7A72" stroke-width="1.4"/>
+<rect x="121" y="424.6" width="14" height="14" rx="3" fill="#FFF5E3" stroke="#C26A05" stroke-width="1.4"/>
+<text x="144" y="184.6" font-size="13" font-weight="700" fill="#334155">TMP117</text>
+<text x="206.9" y="184.6" font-size="12" fill="#334155">WSON-6</text>
+<text x="188" y="250.3" font-size="15" font-weight="700" fill="#0B5F59">Temperature sensor</text>
+<text x="188" y="275.1" font-size="13" fill="#2B3442">internal BJT, ADC</text>
+<text x="524" y="250.3" font-size="15" font-weight="700" fill="#334155">Control logic</text>
+<text x="524" y="275.1" font-size="13" fill="#2B3442">oscillator, cycle, averaging</text>
+<text x="860" y="250.3" font-size="15" font-weight="700" fill="#7A360E">Register bank</text>
+<text x="860" y="275.1" font-size="13" fill="#2B3442">00h to 08h, 0Fh</text>
+<text x="860" y="370.3" font-size="15" font-weight="700" fill="#8A3C0B">EEPROM</text>
+<text x="860" y="395.1" font-size="13" fill="#2B3442">defaults, user word</text>
+<text x="524" y="370.3" font-size="15" font-weight="700" fill="#1E429F">Serial interface</text>
+<text x="524" y="395.1" font-size="13" fill="#2B3442">I2C, SMBus</text>
+<text x="114" y="364.1" font-size="12.5" font-weight="600" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" text-anchor="end" fill="#0E1726">SCL  1</text>
+<text x="114" y="388.1" font-size="12.5" font-weight="600" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" text-anchor="end" fill="#0E1726">SDA  6</text>
+<text x="114" y="412.1" font-size="12.5" font-weight="600" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" text-anchor="end" fill="#0E1726">ADD0  4</text>
+<text x="114" y="436.1" font-size="12.5" font-weight="600" font-family="'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace" text-anchor="end" fill="#0E1726">ALERT  3</text>
+<circle cx="504" cy="359.6" r="3" fill="#2563EB"/>
+<circle cx="504" cy="383.6" r="3" fill="#2563EB"/>
+<circle cx="504" cy="407.6" r="3" fill="#0B7A72"/>
+<circle cx="504" cy="431.6" r="3" fill="#C26A05"/>
+<rect x="432.8" y="245.6" width="46.4" height="20" rx="10" fill="#FFFFFF"/>
+<text x="456" y="259.9" font-size="12" font-weight="500" text-anchor="middle" fill="#566070">result</text>
+<rect x="765.2" y="245.6" width="53.5" height="20" rx="10" fill="#FFFFFF"/>
+<text x="792" y="259.9" font-size="12" font-weight="500" text-anchor="middle" fill="#566070">counts</text>
+<rect x="770.7" y="269.6" width="54.6" height="20" rx="10" fill="#FFFFFF"/>
+<text x="798" y="283.9" font-size="12" font-weight="500" text-anchor="middle" fill="#566070">frames</text>
+<rect x="941" y="309.6" width="38" height="20" rx="10" fill="#FFFFFF"/>
+<text x="960" y="323.9" font-size="12" font-weight="500" text-anchor="middle" fill="#566070">load</text>
+<rect x="32" y="494.9" width="14" height="14" rx="4" fill="#EAF2FF" stroke="#2563EB" stroke-width="1.4"/>
+<text x="54" y="506.6" font-size="12.5" fill="#566070">bus</text>
+<rect x="100.9" y="494.9" width="14" height="14" rx="4" fill="#E6F6F4" stroke="#0B7A72" stroke-width="1.4"/>
+<text x="122.9" y="506.6" font-size="12.5" fill="#566070">digital in</text>
+<rect x="199.3" y="494.9" width="14" height="14" rx="4" fill="#FFF5E3" stroke="#C26A05" stroke-width="1.4"/>
+<text x="221.3" y="506.6" font-size="12.5" fill="#566070">open drain</text>
+<path d="M312.3 501.2L342.3 501.2" fill="none" stroke="#8893A2" stroke-width="1.6" marker-end="url(#fk-arrow-rail)"/>
+<text x="356.3" y="506.6" font-size="12.5" fill="#566070">signal or data between blocks</text>
+</svg>

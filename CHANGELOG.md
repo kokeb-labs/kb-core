@@ -6,8 +6,28 @@ lists its changes per part, the ESP32 port and its driver pins. The format follo
 
 ## [Unreleased]
 
+## [0.1.0-rc.2] - 2026-11-22
+
+The second release candidate: DMA assignment from a declared board, the rtos object-lifetime fix, the redesigned
+Configurator, and the port SDK asset. `cmake/kb_version.cmake` now reads 0.1.0 (it read 0.0.0 in rc.1).
+APIs may still change before 0.1.0.
+
+### Repository
+
+- `cmake/kb_version.cmake` is 0.1.0, so `find_package(kb 0.1 ...)` and the release tag agree.
+- Test `kb_cli_unit`: the development revision is found by its kind, not as the last entry of the catalogue (the
+  catalogue sorts by version, and 0.1.0 is newer than 0.1.0-rc.1).
+
 ### Added
 
+- Port SDK ([Port SDK](docs/port-sdk.md)): every release carries `kb-port-sdk-<version>.tar.gz` (the public headers of
+  the interfaces and `kb::dma`, the host models and fakes, the DMA conformance suite, the CMake helpers, the layout
+  file, a slice of `catalog/compat.yml` and the licence: the `vendor` list of `tools/layout/paths.yml`) and
+  `kb-port-sdk-<version>.manifest.json` (per-file SHA-256, the archive's SHA-256). Both are in `SHA256SUMS` and the
+  SPDX SBOM and covered by the release's signed build provenance, so a port pins a version and a hash instead of
+  keeping a copy. `tools/release/port_sdk.py` builds the archive reproducibly and verifies one; the release job
+  refuses a tag whose version differs from `cmake/kb_version.cmake`; the test `kb_port_sdk` builds a minimal port from
+  the extracted archive alone and runs the DMA conformance suite on it.
 - Vulnerability tooling: a reviewed list (`tools/vuln/reviewed.json`, schema `kb-vex/1`) of advisories whose primary
   source names the exact pinned version as patched; the eight ThreadX advisories on `v6.5.2.202603b_rel` are on it
   (upstream GHSA `patched_versions` 6.5.2.202603b, checked 2026-11-21). The scan marks them as reviewed (`review`,
@@ -34,8 +54,6 @@ lists its changes per part, the ESP32 port and its driver pins. The format follo
   switch turns on) instead of opening with an error; *Open an existing project* is folded (now inside *Advanced*);
   on small screens a bar at the bottom shows whether the selection resolves and offers the ZIP.
 
-### Changed
-
 - Figures: all 22 diagrams are drawn from figkit model files (`docs/model/<id>.<kind>.yml`) with the shared kinds
   (graph, state, seq, matrix, pipeline), about 640 px wide and read top to bottom so they stay readable on a phone;
   the components map still reads the repository folders, and the thread-model figure stays a module of plain figkit
@@ -44,6 +62,15 @@ lists its changes per part, the ESP32 port and its driver pins. The format follo
 
 ### dma
 
+- Board DMA: `board.yml` declares regions, buffers and streams; `kb image check BOARD` refuses conflicts by the rules R1
+  to R15 (stream and channel use, request routing, reach, cache and MPU, interrupt priorities, GDMA budget, frame
+  limits, errata, dual core, region layout) against the routing data in `tools/kb/data/dma/` and exits 1 on an error;
+  `kb board gen BOARD -o DIR` writes `board_dma.hpp`, `board_dma.cpp`, `kb_dma.ld`, `board_mpu.hpp` and a report, byte
+  for byte the same each time. `kb image check --selftest` runs 85 vectors (`tests/resolver/vectors/board/`, a pass and
+  a fail for every rule); `tools/kb/dmadata.py --export-json` writes the data as one JSON bundle for the configurator.
+  Two example boards (STM32H743, ESP32-C6), a host ctest `kb_board_gen_host` that compiles the generated code against
+  `kb::dma`, and a cross-compile job that links the H7 output with `kb_dma.ld` ([Board DMA](docs/design/board-dma.md)).
+- ADR-0033, DMA resources declared once (number provisional).
 - Board declarations (`kb/dma/assignment.hpp`): `StreamAssignment`, `InterruptLimits`, `BusLimits` and `StreamShape`,
   the values the board generator writes from `board.yml`, with the compile-time checks `RequireInterruptTier`,
   `RequireSamePriority`, `RequireBusCarries` and `RequireShape` and four compile-fail tests.
@@ -105,15 +132,6 @@ may still change before 0.1.0.
   to fail on the model with its defect; compile-fail tests, a stream fuzz target, a threaded test and a mutation
   catalogue (`tools/mutants/dma.txt`).
 - ADR-0030 to ADR-0032 (numbers provisional).
-- Board DMA: `board.yml` declares regions, buffers and streams; `kb image check BOARD` refuses conflicts by the rules R1
-  to R15 (stream and channel use, request routing, reach, cache and MPU, interrupt priorities, GDMA budget, frame
-  limits, errata, dual core, region layout) against the routing data in `tools/kb/data/dma/` and exits 1 on an error;
-  `kb board gen BOARD -o DIR` writes `board_dma.hpp`, `board_dma.cpp`, `kb_dma.ld`, `board_mpu.hpp` and a report, byte
-  for byte the same each time. `kb image check --selftest` runs 85 vectors (`tests/resolver/vectors/board/`, a pass and
-  a fail for every rule); `tools/kb/dmadata.py --export-json` writes the data as one JSON bundle for the configurator.
-  Two example boards (STM32H743, ESP32-C6), a host ctest `kb_board_gen_host` that compiles the generated code against
-  `kb::dma`, and a cross-compile job that links the H7 output with `kb_dma.ld` ([Board DMA](docs/design/board-dma.md)).
-- ADR-0033, DMA resources declared once (number provisional).
 
 ### Build, CI and tools
 

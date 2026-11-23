@@ -170,7 +170,9 @@ let prefix = '';
 const check = (name, ok, detail) => { checks.push({ name: prefix + name, ok: !!ok, detail }); };
 
 // The newest kb-core in the catalogue: a release once one exists, else the development revision.
-const kbNewest = JSON.parse(readFileSync(join(root, 'data', 'catalog.json'), 'utf8')).kb_core.releases[0];
+const catalogData = JSON.parse(readFileSync(join(root, 'data', 'catalog.json'), 'utf8'));
+const kbNewest = catalogData.kb_core.releases[0];
+const driverCount = catalogData.drivers.length;  // the checks follow the catalogue, not a fixed number
 const kbWarning = kbNewest.kind === 'dev' ? 'CFG-KB-003' : 'CFG-RC-001';
 const example = `#v=1&f=esp32&t=esp32s3&b=esp32s3-devkitc&r=freertos&k=${kbNewest.version}&p=&n=weather-node`
   + '&d=bmp581~0.1.0-rc.1~i2c~i2c0,bno08x~0.1.0-rc.1~spi~spi0,pf1550~0.1.0-rc.1~i2c~i2c0,ws2812_rmt~0.1.0-rc.1~pio~pio0'
@@ -369,7 +371,7 @@ try {
     hidden: document.getElementById('cascade').hidden })`);
   check('Undo restores the selection and the target', undone.selected === 4 && undone.family === 'esp32' && undone.hidden, undone);
   await click('label[for="fam-stm32"]');
-  check('a planned family makes every driver unavailable, with one reason', await evaluate(`/^(Show|Hide) 23 unavailable$/.test(document.getElementById('unavail-toggle').textContent)
+  check('a planned family makes every driver unavailable, with one reason', await evaluate(`new RegExp('^(Show|Hide) ' + ${driverCount} + ' unavailable$').test(document.getElementById('unavail-toggle').textContent)
     && document.querySelectorAll('#catalogue .card').length === 0 && /no port/.test(document.querySelector('#unavail .reason').textContent)`));
   await click('#cascade-undo');
 

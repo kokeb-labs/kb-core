@@ -1,5 +1,5 @@
 {
- "checked_at": "2026-11-21",
+ "checked_at": "2026-11-23",
  "components": [
   {
    "advisories": [],
@@ -190,6 +190,17 @@
   },
   {
    "advisories": [],
+   "commit": "7538e10516f97b752c8c10e661b77e8b479163c2",
+   "count": 0,
+   "name": "driver-se05x",
+   "open": 0,
+   "purl": "pkg:github/kokeb-labs-drivers/driver-se05x@v0.1.0-rc.2",
+   "reviewed": 0,
+   "status": "none known",
+   "version": "v0.1.0-rc.2"
+  },
+  {
+   "advisories": [],
    "commit": "d7b75124f4e722b089f26d87acad611cb19e6e73",
    "count": 0,
    "name": "driver-sfm-flow-meter",
@@ -371,7 +382,7 @@
    "version": "v6.5.2.202603b_rel"
   }
  ],
- "kb_core": "0.0.0",
+ "kb_core": "0.1.0",
  "scanner": "kb-vuln-scan/1",
  "schema": "kb-vulns/1",
  "source": "OSV",
@@ -379,7 +390,7 @@
  "status": "reviewed: fixed in the pinned version",
  "totals": {
   "advisories": 8,
-  "components": 24,
+  "components": 25,
   "open": 0,
   "reviewed": 8,
   "with_advisories": 1

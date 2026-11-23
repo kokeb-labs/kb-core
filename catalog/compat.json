@@ -294,6 +294,23 @@
       "version": "0.1.0"
     },
     {
+      "binding": "kb/handlers/bindings/se05x.hpp",
+      "bus": [
+        "i2c"
+      ],
+      "commit": "7538e10516f97b752c8c10e661b77e8b479163c2",
+      "configs": [],
+      "kb_core_min": null,
+      "mcus": [
+        "any"
+      ],
+      "name": "se05x",
+      "peripheral": null,
+      "repo": "kokeb-labs-drivers/driver-se05x",
+      "tag": "v0.1.0-rc.2",
+      "version": "0.1.0"
+    },
+    {
       "binding": "kb/handlers/bindings/sfm_flow_meter.hpp",
       "bus": [
         "i2c"
@@ -381,6 +398,6 @@
       "version": "0.1.0"
     }
   ],
-  "kb_core": "0.0.0",
+  "kb_core": "0.1.0",
   "schema": 1
 }

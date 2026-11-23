@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2026 The kb-core authors
 PROJECT_NAME           = "kb-core"
-PROJECT_NUMBER         = 0.0.0
+PROJECT_NUMBER         = 0.1.0
 PROJECT_BRIEF          = "API reference: utils, rtos, interfaces"
 OUTPUT_DIRECTORY       = build/doxygen
 INPUT                  = docs/_doxygen/mainpage.md components/lib/utils/inc/kb/utils components/lib/rtos/inc/kb/rtos components/lib/interfaces/inc/kb/interfaces
